@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "error-container": "#ffdad6", "tertiary-fixed": "#ffdadc", "on-surface-variant": "#424843", "on-primary-fixed": "#052013", "on-tertiary-fixed": "#3f0110", "on-secondary-fixed": "#2b1700", "primary-fixed": "#cbead4", "on-tertiary-fixed-variant": "#792d39", "on-secondary": "#ffffff", "tertiary-container": "#762b37", "primary-fixed-dim": "#afceb9", "secondary": "#885200", "tertiary": "#591522", "primary": "#193325", "on-tertiary-container": "#fb95a0", "on-error": "#ffffff", "on-primary-container": "#9bb9a4", "secondary-fixed": "#ffddbb", "outline-variant": "#c2c8c1", "surface": "#fef9ef", "surface-container-lowest": "#ffffff", "surface-bright": "#fef9ef", "surface-container-high": "#ede8de", "error": "#ba1a1a", "surface-container-highest": "#e7e2d8", "inverse-primary": "#afceb9", "on-primary-fixed-variant": "#314d3c", "tertiary-fixed-dim": "#ffb2b9", "on-tertiary": "#ffffff", "inverse-surface": "#32302a", "on-secondary-container": "#6d4100", "on-primary": "#ffffff", "on-background": "#1d1c16", "primary-container": "#2f4a3a", "secondary-fixed-dim": "#ffb868", "surface-dim": "#dedad0", "background": "#fef9ef", "surface-variant": "#e7e2d8", "surface-tint": "#496553", "surface-container-low": "#f8f3e9", "on-secondary-fixed-variant": "#673d00", "on-error-container": "#93000a", "outline": "#727973", "surface-container": "#f2ede3", "on-surface": "#1d1c16", "secondary-container": "#fea93e", "inverse-on-surface": "#f5f0e6" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1.5rem", "margin-mobile": "1.25rem", "space-sm": "1rem", "margin": "2.5rem", "gutter": "1.5rem", "space-xl": "4rem", "gutter-mobile": "1rem", "section-gap-mobile": "4rem", "space-lg": "2.5rem", "space-xs": "0.5rem", "section-gap": "7.5rem" }, "fontFamily": { "body-sm": ["Inter"], "display-xl-mobile": ["Newsreader"], "body-md": ["Inter"], "body-lg": ["Inter"], "headline-sm": ["Newsreader"], "display-xl": ["Newsreader"], "label-sm": ["Inter"], "headline-md": ["Newsreader"], "caption": ["Inter"], "headline-lg": ["Newsreader"], "title-editorial": ["Newsreader"], "headline-lg-mobile": ["Newsreader"], "label-caps": ["Inter"] }, "fontSize": { "body-sm": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }], "display-xl-mobile": ["38px", { "lineHeight": "46px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "body-md": ["16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }], "body-lg": ["18px", { "lineHeight": "30px", "letterSpacing": "-0.005em", "fontWeight": "400" }], "headline-sm": ["22px", { "lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "500" }], "display-xl": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }], "headline-md": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "500" }], "caption": ["11px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "400" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.015em", "fontWeight": "400" }], "title-editorial": ["19px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "label-caps": ["13px", { "lineHeight": "18px", "letterSpacing": "0.08em", "fontWeight": "600" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="bg-primary-container text-on-primary text-center py-1.5 px-4 font-label-caps text-caption tracking-widest flex items-center justify-center gap-1.5"><span>Free shipping over ₹499 · Small-batch fresh</span></div><div class="h-20 px-gutter-mobile flex items-center justify-between"><div class="flex items-center gap-1"><button aria-label="Menu" class="w-11 h-11 flex items-center justify-center text-primary active:scale-95 transition-transform"><span class="material-symbols-outlined text-[24px]">menu</span></button><button aria-label="Search" class="w-11 h-11 flex items-center justify-center text-primary active:scale-95 transition-transform"><span class="material-symbols-outlined text-[22px]">search</span></button></div><div class="flex flex-col items-center justify-center text-center"><span class="font-headline-sm text-headline-sm italic text-primary leading-none tracking-tight">Botanica Pantry</span><span class="font-label-sm text-[10px] uppercase tracking-widest text-on-surface-variant font-medium mt-0.5">Artisan Atelier</span></div><div class="flex items-center gap-1"><a aria-label="Cart with 2 items" class="w-11 h-11 flex items-center justify-center text-primary relative active:scale-95 transition-transform" data-path="shopping-cart" href="#"><span class="material-symbols-outlined text-[22px]">local_mall</span><span class="absolute top-2 right-2 w-4 h-4 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-[10px] font-semibold flex items-center justify-center leading-none">2</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-20 bg-surface min-h-[calc(100vh-5rem)]"><div class="flex flex-col w-full">
+<!-- SECTION 1: HERO -->
+<section class="flex flex-col px-5 pt-4 pb-12">
+<div class="flex flex-col items-center text-center">
+<span class="font-label-caps text-label-caps uppercase tracking-widest text-secondary font-semibold">Small-Batch Superfoods</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile italic text-primary mt-2">Clean food. Nothing else.</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-sm">Single-origin harvests and heritage superfoods sourced directly from ethical smallholder farmers across India. Zero preservatives or artificial processing.</p>
+</div>
+<!-- Hero Image Card with Provenance Badge -->
+<div class="relative w-full mt-6 rounded-2xl overflow-hidden bg-surface-container-low shadow-sm">
+<img class="w-full h-72 object-cover" data-alt="Close-up overhead of artisanal golden roasted fox nuts makhana served in a speckled ceramic bowl surrounded by raw pumpkin and chia seeds on natural textured linen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQikdCHy1vRSJZuPXLZxplSsN2I9AG9ts85ZuOYjTAAtV4cuHbMKmHMJ-Ibyu46rgNzxq25lPRwYTEdLE8vi91pdVy51_FJxA6m9oimpNB14K0coQTw50RSYPQD-9VYqjS478TrlMJ8btKvFlcYP-wrB8OgWx4233oknXF9nrH7zS9q1xiQ985NWnft_4PTavGwl9CtfwzuR-wPNSovAHrf-KDJIdSuvnVgAYprTc8"/>
+<div class="absolute bottom-3 left-3 right-3 bg-surface/90 backdrop-blur-md px-3.5 py-2 rounded-full flex items-center justify-between">
+<div class="flex items-center gap-1.5 min-w-0">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span class="font-label-sm text-[11px] text-on-surface uppercase tracking-wider truncate">Fresh Harvest Batch #084 · Mithila Lotus Kernels</span>
+</div>
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0">verified</span>
+</div>
+</div>
+<!-- CTAs -->
+<div class="flex flex-col gap-3 mt-6">
+<button class="w-full h-12 rounded-full bg-primary-container text-on-primary font-label-caps text-label-caps tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span>Shop the Collection</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<a class="w-full text-center py-2 font-label-caps text-label-caps text-primary hover:text-secondary transition-colors underline decoration-outline-variant underline-offset-4" href="#philosophy">
+        Our Story →
+      </a>
+</div>
+<!-- Trust Micro-Badges 2x2 Grid -->
+<div class="grid grid-cols-2 gap-2.5 mt-8 pt-6 border-t-0">
+<div class="bg-surface-container-low p-3 rounded-xl flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-primary">biotech</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[12px] text-primary">Lab Tested</span>
+<span class="font-caption text-caption text-on-surface-variant">Every Single Lot</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-xl flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-primary">eco</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[12px] text-primary">Zero Additives</span>
+<span class="font-caption text-caption text-on-surface-variant">100% Unadulterated</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-xl flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-primary">handshake</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[12px] text-primary">Trusted Growers</span>
+<span class="font-caption text-caption text-on-surface-variant">Ethical Living Wage</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-xl flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-primary">inventory_2</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[12px] text-primary">Resealable Kraft</span>
+<span class="font-caption text-caption text-on-surface-variant">Aroma Guard Lock</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: SHOP BY SUPERFOOD (2-Column Grid) -->
+<section class="flex flex-col px-5 py-8 bg-surface-container-low">
+<div class="flex flex-col mb-5">
+<span class="font-label-caps text-caption uppercase tracking-widest text-secondary font-semibold">The Pantry Foundation</span>
+<h2 class="font-headline-md text-headline-md italic text-primary mt-1">Shop by Superfood</h2>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- 1: Fox Seeds -->
+<a class="bg-surface rounded-xl p-3 flex flex-col justify-between group active:scale-[0.98] transition-all" href="#">
+<div class="w-full h-32 rounded-lg bg-surface-container overflow-hidden mb-2 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Roasted crunchy fox seeds makhana stored in artisanal packaging on warm wood background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5VnfPVfWcHbs87TRt364ZXC_7dTMeDTT1-tRykf2OLXrSTz5C30o2f__s1pmA7zYD_EGBZVnDhongdiTO3MbTgaOI4Z58t7hAK3MX9UyQVbjRsu3RTU3a80zY4uFsrbytyW90Bsf_uzRNwPa8gHATBpKuddnDznE_cK4B2A5-r0vrg9PVT7w1F4gsfKr1wiu9ZnePjYkk05pvhjgXjE78rPqPUQJHfvdI3Ze_rZ0n"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-surface/90 text-caption font-label-caps text-on-surface">Bihar</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[16px] leading-tight text-primary">Fox Seeds (Makhana)</span>
+<span class="font-caption text-caption text-on-surface-variant mt-0.5">100g / 250g</span>
+<div class="flex items-center justify-between mt-2 pt-1.5 border-t-0">
+<span class="font-label-caps text-label-caps text-primary font-bold">₹249</span>
+<span class="material-symbols-outlined text-[18px] text-primary group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</div>
+</div>
+</a>
+<!-- 2: Chia Seeds -->
+<a class="bg-surface rounded-xl p-3 flex flex-col justify-between group active:scale-[0.98] transition-all" href="#">
+<div class="w-full h-32 rounded-lg bg-surface-container overflow-hidden mb-2 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Black organic chia seeds displayed in a clear pantry jar with wooden spoon on soft linen cloth" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW-8s8FO3S9x3u5Swd_0N-zLG52EZMp866BuY30wI-orAAm0zgi1f1pyDciOgu0ucEPBYaqn_PdYH9JA8wjveFMzG2vIJliv9_IpiwmZgWGrI3W5VFlJIlbxYJKjXAFOfzXW7VjJgH6qL75Ivir4sU026QMRxuZOCAcBdwt_Cg0eC9hH06J-_dMysoDGouEZV4JyyNS_PLFDehzsJXynQRGY-M7_7EF7GCF4blCdif"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-surface/90 text-caption font-label-caps text-on-surface">Madhya Pradesh</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[16px] leading-tight text-primary">Chia Seeds</span>
+<span class="font-caption text-caption text-on-surface-variant mt-0.5">250g / 500g</span>
+<div class="flex items-center justify-between mt-2 pt-1.5 border-t-0">
+<span class="font-label-caps text-label-caps text-primary font-bold">₹199</span>
+<span class="material-symbols-outlined text-[18px] text-primary group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</div>
+</div>
+</a>
+<!-- 3: Sunflower Seeds -->
+<a class="bg-surface rounded-xl p-3 flex flex-col justify-between group active:scale-[0.98] transition-all" href="#">
+<div class="w-full h-32 rounded-lg bg-surface-container overflow-hidden mb-2 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Raw sunflower seeds shelled on natural parchment with warm kitchen lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_drj7RSdis0GFEs0RPsDqOcXsYGOzALk2G9TUSqK1DddfbUYCba4-my4S9UEQNm864tkQo3OHmqjddmEvAMOt98QB0ek6NE6HUyKmOoD1oOWbcywreof1kYf5gXYdxpeoohAXDE6TrpIMO_79dGDcRSbAgGFLMGlZ5WI4ou1eAGe8ZXMj-7t3CbLeWszA-3zOODFcIJnYn1KFdz1kqqfwaG59NKfEmuP1g34Imvd3"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-surface/90 text-caption font-label-caps text-on-surface">Karnataka</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[16px] leading-tight text-primary">Sunflower Seeds</span>
+<span class="font-caption text-caption text-on-surface-variant mt-0.5">250g / 500g</span>
+<div class="flex items-center justify-between mt-2 pt-1.5 border-t-0">
+<span class="font-label-caps text-label-caps text-primary font-bold">₹179</span>
+<span class="material-symbols-outlined text-[18px] text-primary group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</div>
+</div>
+</a>
+<!-- 4: Pumpkin Seeds -->
+<a class="bg-surface rounded-xl p-3 flex flex-col justify-between group active:scale-[0.98] transition-all" href="#">
+<div class="w-full h-32 rounded-lg bg-surface-container overflow-hidden mb-2 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Vibrant green organic pepitas pumpkin seeds sprinkled on rustic ceramic plate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBesgrGJ2XI1BdERfsJvIcLH1kfHJdd1ZSeLGERV6RZZpsQAHsUJB4qsj-U7wN8x31f6zVJw4OEIiYSXD8UrYzUvkbkt1SGttfDOCaJTp0pNJz5pXm_eoyVOVGUwSpRcWjWNrt3pb1dqCBKSp4TaACcwp3EyAZ6t3aRpqb-QpGHZOiAaICAhBS9oin4COjCf_wYD0uACl_tLZYMncZuy99XSnCSH3qXb0hdTGbki6dM"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-surface/90 text-caption font-label-caps text-on-surface">Rajasthan</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[16px] leading-tight text-primary">Pumpkin Seeds</span>
+<span class="font-caption text-caption text-on-surface-variant mt-0.5">250g / 500g</span>
+<div class="flex items-center justify-between mt-2 pt-1.5 border-t-0">
+<span class="font-label-caps text-label-caps text-primary font-bold">₹229</span>
+<span class="material-symbols-outlined text-[18px] text-primary group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</div>
+</div>
+</a>
+<!-- 5: Black Berries -->
+<a class="bg-surface rounded-xl p-3 flex flex-col justify-between group active:scale-[0.98] transition-all" href="#">
+<div class="w-full h-32 rounded-lg bg-surface-container overflow-hidden mb-2 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Sun-dried dark wild blackberries in a handcrafted wooden bowl with soft ambient light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC6NSFTmwlw9nrQQRC05y0qxWxIiH4hslBO6RjQ-BTmILR23bjSwbaeiRl5IpzCjZJMmrj6jrN0EzCOMZQBFGiY-zHAg_yEeehbgi6Lv5W8stnLf-DSRqmOOFY30JJY9-K6yHIrGvnEIDtfHxoXVQov_VkO8AwyihyjbgrvBz55laf0MmtPrDMvGO2eydG1ZfBdUPoFFAs95sw8qtHhpBnFdk5esSMvS1il90FLrDb"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-surface/90 text-caption font-label-caps text-on-surface">Kashmir</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[16px] leading-tight text-primary">Black Berries</span>
+<span class="font-caption text-caption text-on-surface-variant mt-0.5">150g / 300g</span>
+<div class="flex items-center justify-between mt-2 pt-1.5 border-t-0">
+<span class="font-label-caps text-label-caps text-primary font-bold">₹349</span>
+<span class="material-symbols-outlined text-[18px] text-primary group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</div>
+</div>
+</a>
+<!-- 6: Sea Buckthorn -->
+<a class="bg-surface rounded-xl p-3 flex flex-col justify-between group active:scale-[0.98] transition-all" href="#">
+<div class="w-full h-32 rounded-lg bg-surface-container overflow-hidden mb-2 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Golden orange dried sea buckthorn berries harvested in Ladakh mountains in a paper pouch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA_U3k2dd07LsVa67iYcXDZrmIwEBlGR3TbLzFitvqLCDvIJaqEa7D1QF3Km4SHc8HQN6Y0EwF5buWvHmGs7PciHS_EOqNjdC1wKgGFkOLVniYO9NFe6I_KA7O37w0pWMzH0Z45AFHxrq73wWn2Swv0Nsja6jJgbQ7D6P1WQ98-H_o0l78K-tZYIgWPQ3-S2sFA6y9rVojp6JaLeb3LVGacTmR0hxnisNNjOahCoVC"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-surface/90 text-caption font-label-caps text-on-surface">Ladakh</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[16px] leading-tight text-primary">Sea Buckthorn</span>
+<span class="font-caption text-caption text-on-surface-variant mt-0.5">150g / 300g</span>
+<div class="flex items-center justify-between mt-2 pt-1.5 border-t-0">
+<span class="font-label-caps text-label-caps text-primary font-bold">₹389</span>
+<span class="material-symbols-outlined text-[18px] text-primary group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</div>
+</div>
+</a>
+</div>
+</section>
+<!-- SECTION 3: ARTISAN BESTSELLERS (2x2 Grid) -->
+<section class="flex flex-col px-5 py-10">
+<div class="flex items-baseline justify-between mb-5">
+<div>
+<span class="font-label-caps text-caption uppercase tracking-widest text-secondary font-semibold">Craft Favorites</span>
+<h2 class="font-headline-md text-headline-md italic text-primary mt-1">Artisan Bestsellers</h2>
+</div>
+<span class="font-label-sm text-caption text-on-surface-variant">4 Handpicked</span>
+</div>
+<div class="grid grid-cols-2 gap-3.5">
+<!-- Card 1 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col justify-between relative shadow-sm">
+<div class="w-full h-36 rounded-lg bg-surface-container overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Himalayan rock salt roasted makhana lotus puffs overflowing in small terracotta dish" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfKyaxTzGMAZiWsz-cEVKZNktAW6QUR6A3xL5imt_VUldhxOYNbkXRHiC67_ZQHsL4SDUnj2XsXjnnNDmjZFH7H462Bcm8ZMdEWZtBxiehLNu7dU-ML7_HKxK6aBou3IUqI3mhvu46ZHi2q9c1cs-jyCoiDuZO-7U0aXXeo8iY233CtyQFuh0hC2x8DGzebUnNqAJxLO-nYEswuHFW-sOHo73XzKmOgb0HoTR8O5Dp"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-[10px] font-semibold">Bestseller</span>
+</div>
+<div class="mt-2.5 flex flex-col flex-grow">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-caption text-on-surface font-semibold">4.9</span>
+<span class="font-caption text-caption text-on-surface-variant">(86)</span>
+</div>
+<span class="font-headline-sm text-[15px] leading-snug text-primary mt-1">Roasted Himalayan Makhana</span>
+<span class="font-label-caps text-label-caps text-primary font-bold mt-1">₹249</span>
+</div>
+<button class="mt-3 w-full h-10 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm font-medium flex items-center justify-center active:scale-95 transition-transform" onclick="this.textContent = '✓ Added'; setTimeout(() =&gt; this.textContent = '+ Add', 1500);">
+          + Add
+        </button>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col justify-between relative shadow-sm">
+<div class="w-full h-36 rounded-lg bg-surface-container overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Artisanal glass jar filled with tiny nutrient-dense organic black and white chia seeds" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKJ4eEMaw_wBW5gCBIDXdUM15CCv2BeyGG2KZzW0uR8BwWyYyqXmp5DLaRoV-hHzl57G1GjsWgDZE6VEsYZR3HZYZHWfWpVQrn5nOjqj07pe5FTBtckCHaNlQp1w_c3yGXp6CchToz6r1YEMbJmKymshXGoa-kQo70ACs-BExGkNp4hGLE9sl3h0e8x5MqDwzFNQNxgyOE8ZOCXfdMBCXUwtqlIQKg3-fjsUnVP27W"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-[10px] font-semibold">Popular</span>
+</div>
+<div class="mt-2.5 flex flex-col flex-grow">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-caption text-on-surface font-semibold">4.8</span>
+<span class="font-caption text-caption text-on-surface-variant">(112)</span>
+</div>
+<span class="font-headline-sm text-[15px] leading-snug text-primary mt-1">Raw Organic Chia Seeds</span>
+<span class="font-label-caps text-label-caps text-primary font-bold mt-1">₹380</span>
+</div>
+<button class="mt-3 w-full h-10 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm font-medium flex items-center justify-center active:scale-95 transition-transform" onclick="this.textContent = '✓ Added'; setTimeout(() =&gt; this.textContent = '+ Add', 1500);">
+          + Add
+        </button>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col justify-between relative shadow-sm">
+<div class="w-full h-36 rounded-lg bg-surface-container overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Wild harvested orange sea buckthorn berries dried and stored in recyclable brown craft pouch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtTGFmYkXtFiS9bjXK3a_Ht-huoQU2VUEAe7zbzbqO59NMzXMQZbk7Y8AdtAKUkBb3ZclAOr8GGCAz2AplsNGAWxCyjoIJLoXcEktHfRec-86jFGCMCjGtnuNsEdXmheeSMDKCaWV_DGoEmNZYj84jiYn-KGWgCjTYWau6meKwLneYckm10WlLq92MuL3gQJQx8u08ZlgtAAd7oc77xwxmLt6AvwWdeZj3zPMU5z3x"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-[10px] font-semibold">Harvest New</span>
+</div>
+<div class="mt-2.5 flex flex-col flex-grow">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-caption text-on-surface font-semibold">4.9</span>
+<span class="font-caption text-caption text-on-surface-variant">(43)</span>
+</div>
+<span class="font-headline-sm text-[15px] leading-snug text-primary mt-1">Wild Sea Buckthorn Dried</span>
+<span class="font-label-caps text-label-caps text-primary font-bold mt-1">₹420</span>
+</div>
+<button class="mt-3 w-full h-10 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm font-medium flex items-center justify-center active:scale-95 transition-transform" onclick="this.textContent = '✓ Added'; setTimeout(() =&gt; this.textContent = '+ Add', 1500);">
+          + Add
+        </button>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col justify-between relative shadow-sm">
+<div class="w-full h-36 rounded-lg bg-surface-container overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Heirloom seed blend of pumpkin, sunflower, and flax seeds in a stoneware apothecary jar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGSbgLEKj9ceOCxrvpZBgZEqxgl2rbjO-CP0yf5CKLODgHcdrqeLuaI7s71E_1uCTU-Hlv3lsF5-qoYoxbUOwpoPXLX0_FlJ77DAu9YpmF5gmuxJZ6m5287KTQgDKv2kxX005MJQkuPRH9eU77JbshzkaAnFeNCXgKoGFO6bEapMUxAVM20nSq-SudgLjiElLgrfN8PEGbN44HohJI1JYM7o84WGC3gSO56ZufmbT2"/>
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-[10px] font-semibold">Pantry Staple</span>
+</div>
+<div class="mt-2.5 flex flex-col flex-grow">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-caption text-on-surface font-semibold">4.8</span>
+<span class="font-caption text-caption text-on-surface-variant">(64)</span>
+</div>
+<span class="font-headline-sm text-[15px] leading-snug text-primary mt-1">Heirloom Seed Duo Mix</span>
+<span class="font-label-caps text-label-caps text-primary font-bold mt-1">₹320</span>
+</div>
+<button class="mt-3 w-full h-10 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm font-medium flex items-center justify-center active:scale-95 transition-transform" onclick="this.textContent = '✓ Added'; setTimeout(() =&gt; this.textContent = '+ Add', 1500);">
+          + Add
+        </button>
+</div>
+</div>
+<div class="flex justify-center mt-6">
+<a class="font-label-caps text-label-caps text-primary hover:text-secondary flex items-center gap-1 transition-colors" href="#">
+<span>View All Bestsellers</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</section>
+<!-- SECTION 4: WHY SIMPLE MATTERS (Editorial Storytelling Stack) -->
+<section class="flex flex-col px-5 py-10 bg-surface-container-low" id="philosophy">
+<div class="rounded-2xl overflow-hidden bg-surface-container mb-6 shadow-sm">
+<img class="w-full h-64 object-cover" data-alt="Pantry counter lined with bamboo glass jars filled with hemp chia and goji berries alongside kraft brown pouches in sunlit artisan kitchen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBG-rk2s7EDBuB4pZ1O7GKOZRWwZ12-0OyAyt5qHX92B0VbWnKtfCMwng6JVEYAdo51N4SPvJQcTIOPDojCeaNmsFR3ZYFhGsZdfXUWob31w4OlVbDXal5LlRn0hP2e_zK0BVyc65EopxpN0CtjpO-JtEkajXXOLoNEUGmigWM8fqO0uUn_4R3IU3x49_OSFyIYFPoafOlmU7Sr9CfOTpb2uTSDofGFH0343Na5hKTS"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-caption uppercase tracking-widest text-secondary font-semibold">Our Philosophy</span>
+<h2 class="font-headline-md text-headline-md italic text-primary mt-1">Why simple matters</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Modern snacking became complicated with stabilizers, corn syrup, and palm oils. We believe nourishment belongs to simple sun, soil, and slow heat.</p>
+</div>
+<div class="flex flex-col gap-4 mt-6">
+<!-- 01 -->
+<div class="bg-surface p-4 rounded-xl flex gap-3.5 items-start">
+<span class="font-title-editorial text-title-editorial text-secondary font-bold shrink-0">01</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[16px] text-primary">Sourced with care</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Partnering directly with regional organic farms in Kashmir, Ladakh, and Mithila for seasonal, soil-first harvests.</p>
+</div>
+</div>
+<!-- 02 -->
+<div class="bg-surface p-4 rounded-xl flex gap-3.5 items-start">
+<span class="font-title-editorial text-title-editorial text-secondary font-bold shrink-0">02</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[16px] text-primary">Nothing added</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Zero refined sugars, synthetic preservatives, artificial flavoring, or sulfur dioxide. Raw ingredients honor your body.</p>
+</div>
+</div>
+<!-- 03 -->
+<div class="bg-surface p-4 rounded-xl flex gap-3.5 items-start">
+<span class="font-title-editorial text-title-editorial text-secondary font-bold shrink-0">03</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[16px] text-primary">Packed small-batch</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Milled and wood-roasted weekly in climate-sealed kraft paper pouches to preserve living enzymes and crunch.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 5: FIND YOUR DAILY RITUAL (Mobile Interactive Selector) -->
+<section class="flex flex-col px-5 py-10">
+<div class="flex flex-col text-center items-center mb-6">
+<span class="font-label-caps text-caption uppercase tracking-widest text-secondary font-semibold">Personal Pantry Guide</span>
+<h2 class="font-headline-md text-headline-md italic text-primary mt-1">Find your daily ritual</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Select your moment to discover mindful botanical pairings.</p>
+</div>
+<!-- 3 Horizontal Pill Tabs -->
+<div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="ritual-tabs">
+<button class="ritual-pill shrink-0 px-4 py-2 rounded-full font-label-caps text-label-caps bg-primary-container text-on-primary" onclick="selectRitual('snack', this)">
+        Snacking
+      </button>
+<button class="ritual-pill shrink-0 px-4 py-2 rounded-full font-label-caps text-label-caps bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="selectRitual('breakfast', this)">
+        Breakfast Bowls
+      </button>
+<button class="ritual-pill shrink-0 px-4 py-2 rounded-full font-label-caps text-label-caps bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="selectRitual('smoothie', this)">
+        Smoothies &amp; Elixirs
+      </button>
+</div>
+<!-- Dynamic Recommendation Card -->
+<div class="bg-surface-container-low rounded-2xl p-4 mt-5 flex flex-col gap-4 shadow-sm transition-all duration-300" id="ritual-card">
+<div class="w-full h-44 rounded-xl overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Slow-roasted crunchy makhana sprinkled with sea salt and roasted pumpkin seeds served in a rustic warm bowl" id="ritual-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHJ0ac7bqE8_oQbOV68CA6pb7XYfohgHgekpxJVSARoH0k38PZYD0jgUhEH_1hDqUO2c1p5OeP3rYoYbzkmCTlV_P1vDOYEnbHx0zN59s76ZLHXlYj141XeEjiLii54TDr2aiiGE_AmqX66VcKrlQksSmMGqS9MQvv1OFd_AErVeG5bpbeZX58oDgv-h5gE5XMDOkYE2bYFriZkD2zYHPc-2JuEjTc1No2nsb6VrqL"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-caption text-secondary uppercase font-semibold" id="ritual-tag">Afternoon Energy</span>
+<span class="font-label-caps text-label-caps text-primary font-bold" id="ritual-price">Starting at ₹249</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mt-1" id="ritual-title">Slow-Roasted Sea Salt Makhana + Pepitas</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1.5" id="ritual-desc">Gentle cold-pressed mustard oil with Himalayan rock salt. Light, airy crunch providing 8g pure plant protein per bowl without sluggish digestion.</p>
+</div>
+<button class="w-full h-12 rounded-full bg-primary-container text-on-primary font-label-caps text-label-caps tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-transform" id="ritual-btn">
+<span>Explore Snack Blends</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- SECTION 6: COMMUNITY VOICES -->
+<section class="flex flex-col px-5 py-10 bg-surface-container-low">
+<div class="flex flex-col items-center text-center mb-6">
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface shadow-sm mb-2">
+<div class="flex text-secondary">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-label-caps text-caption text-primary font-bold">4.9 / 5</span>
+</div>
+<h2 class="font-headline-md text-headline-md italic text-primary">Community Voices</h2>
+<span class="font-caption text-caption text-on-surface-variant mt-0.5">Based on 142 small-batch patrons</span>
+</div>
+<div class="flex flex-col gap-3.5">
+<!-- Review 1 -->
+<div class="bg-surface p-4 rounded-xl flex flex-col gap-2.5 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary font-label-sm text-[11px] font-semibold flex items-center justify-center">AK</div>
+<span class="font-label-caps text-label-caps text-primary">Ananya K., New Delhi</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-caption font-label-sm text-on-surface-variant">Batch #084</span>
+</div>
+<div class="flex text-secondary">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface italic">“The makhana tastes noticeably fresher than any store brand. You can smell the subtle wood roast the second you open the kraft pouch.”</p>
+</div>
+<!-- Review 2 -->
+<div class="bg-surface p-4 rounded-xl flex flex-col gap-2.5 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-secondary text-on-secondary font-label-sm text-[11px] font-semibold flex items-center justify-center">RM</div>
+<span class="font-label-caps text-label-caps text-primary">Rohan M., Mumbai</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-caption font-label-sm text-on-surface-variant">Batch #081</span>
+</div>
+<div class="flex text-secondary">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface italic">“The wild sea buckthorn berries have this gentle, tart vibrancy. Perfect over my morning rolled oats without needing any processed honey.”</p>
+</div>
+</div>
+</section>
+<!-- SECTION 7: JOURNAL NOTES -->
+<section class="flex flex-col px-5 py-10">
+<div class="flex items-baseline justify-between mb-5">
+<div>
+<span class="font-label-caps text-caption uppercase tracking-widest text-secondary font-semibold">The Atelier Dispatch</span>
+<h2 class="font-headline-md text-headline-md italic text-primary mt-1">Journal Notes</h2>
+</div>
+<a class="font-label-caps text-caption text-primary hover:text-secondary" href="#">All Notes →</a>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Article 1 -->
+<a class="bg-surface-container-low rounded-xl overflow-hidden group shadow-sm flex flex-col" href="#">
+<div class="w-full h-44 overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Traditional farmer gathering floating lotus flower seed pods in shallow Mithila wetlands at dawn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaO6JucsGu1dS1R3BLTg5Ck12oXPq9QHw1WAW-aRGy9zht1WcqgxGFgXWyS91f7Ox8D29oF2qk3DxHrnVYP6_pqovYqsKYLKQwg48rtcN1kB_ji05F8FUPzTfeUXXg3h9HqHLfAV-38lPMrQ2zF7y-jg3XUHXhk3eVdDFenRAF74Wn2CQZW6087s32UmmPDVgmaWbEXH6ZuAlYevoFxHrNLqIrxMRn0vUtfAPWXbxo"/>
+</div>
+<div class="p-4 flex flex-col">
+<span class="font-label-caps text-caption text-secondary font-medium">5 MIN READ · ORIGIN</span>
+<h3 class="font-headline-sm text-[18px] text-primary mt-1 group-hover:text-secondary transition-colors">The Ancient Lotus Wetlands of Mithila</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1.5">How multi-generational farmers harvest fox nuts in harmony with fresh water sanctuaries.</p>
+<span class="font-label-caps text-label-caps text-primary mt-3 flex items-center gap-1 font-semibold">
+            Read story →
+          </span>
+</div>
+</a>
+<!-- Article 2 -->
+<a class="bg-surface-container-low rounded-xl overflow-hidden group shadow-sm flex flex-col" href="#">
+<div class="w-full h-44 overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="Golden bright sea buckthorn berries clinging to thorny bushes in cold rugged Ladakh Himalayan altitude" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHLVBdW1u5JOCk13w7eNezuJcbFo-csgUbJefBHzFdRhNMVsBTe6xZ11p7QiYz22n2cxg89gNREwmeGYsOWArf6ehH88RprZ73sntU6MtQMC2rRW13vzDKMOV6It8yqRAUKFHPJX1I_fbXX6RAJ8A9-_7YmiuLsf_EBbxX1LhbsOsubRGGOPk01-5gvqKamS0lwT7UtBDHKhqZ_WnJsmvjPTaOAWtP_QICxu6tcrML"/>
+</div>
+<div class="p-4 flex flex-col">
+<span class="font-label-caps text-caption text-secondary font-medium">4 MIN READ · BOTANY</span>
+<h3 class="font-headline-sm text-[18px] text-primary mt-1 group-hover:text-secondary transition-colors">Sea Buckthorn: Ladakh’s Golden Berry</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1.5">Exploring the adaptogenic resilience of wild mountain berries growing above 10,000 feet.</p>
+<span class="font-label-caps text-label-caps text-primary mt-3 flex items-center gap-1 font-semibold">
+            Read story →
+          </span>
+</div>
+</a>
+</div>
+</section>
+<!-- SECTION 8: NEWSLETTER BAND -->
+<section class="flex flex-col px-5 py-8">
+<div class="w-full bg-primary-container text-on-primary rounded-2xl p-6 flex flex-col items-center text-center shadow-sm">
+<span class="material-symbols-outlined text-[28px] text-primary-fixed mb-2">local_florist</span>
+<h2 class="font-headline-md text-headline-md italic text-primary-fixed">Join our harvest table</h2>
+<p class="font-body-sm text-body-sm text-primary-fixed-dim mt-2 max-w-xs">Receive early dispatch notices on limited wild-foraged harvests, origin field notes, and mindful recipes.</p>
+<form class="w-full flex flex-col gap-3 mt-6" onsubmit="event.preventDefault(); this.innerHTML = '&lt;p class=\'font-label-caps text-label-caps text-primary-fixed py-2\'&gt;Thank you for joining our circle. Welcome.&lt;/p&gt;';">
+<input class="w-full h-12 rounded-full px-5 bg-surface text-on-surface placeholder:text-on-surface-variant text-body-sm focus:outline-none focus:ring-1 focus:ring-secondary-container" placeholder="Enter your email address" required="" type="email"/>
+<button class="w-full h-12 rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-label-caps tracking-wider flex items-center justify-center active:scale-95 transition-transform" type="submit">
+          Subscribe
+        </button>
+</form>
+<span class="font-caption text-caption text-primary-fixed-dim mt-3">Dispatched bi-weekly. Unsubscribe anytime.</span>
+</div>
+</section>
+</div>
+<script>
+  function selectRitual(type, btn) {
+    document.querySelectorAll('.ritual-pill').forEach(el => {
+      el.className = 'ritual-pill shrink-0 px-4 py-2 rounded-full font-label-caps text-label-caps bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors';
+    });
+    btn.className = 'ritual-pill shrink-0 px-4 py-2 rounded-full font-label-caps text-label-caps bg-primary-container text-on-primary transition-colors';
+
+    const card = document.getElementById('ritual-card');
+    const tag = document.getElementById('ritual-tag');
+    const price = document.getElementById('ritual-price');
+    const title = document.getElementById('ritual-title');
+    const desc = document.getElementById('ritual-desc');
+    const btnText = document.getElementById('ritual-btn');
+
+    if (type === 'snack') {
+      tag.textContent = 'Afternoon Energy';
+      price.textContent = 'Starting at ₹249';
+      title.textContent = 'Slow-Roasted Sea Salt Makhana + Pepitas';
+      desc.textContent = 'Gentle cold-pressed mustard oil with Himalayan rock salt. Light, airy crunch providing 8g pure plant protein per bowl without sluggish digestion.';
+      btnText.querySelector('span').textContent = 'Explore Snack Blends';
+    } else if (type === 'breakfast') {
+      tag.textContent = 'Morning Foundation';
+      price.textContent = 'Starting at ₹199';
+      title.textContent = 'Sprouted Chia & Heirloom Flax Porridge';
+      desc.textContent = 'Raw soaked mucilage seeds loaded with plant Omega-3s. Keeps blood sugar stabilized until noon with gentle soluble fiber.';
+      btnText.querySelector('span').textContent = 'Explore Morning Seeds';
+    } else if (type === 'smoothie') {
+      tag.textContent = 'Adaptogen Fuel';
+      price.textContent = 'Starting at ₹389';
+      title.textContent = 'Ladakhi Sea Buckthorn & Berry Elixir';
+      desc.textContent = 'Sun-dried high altitude sea buckthorn pulsed into raw smoothies for natural Vitamin C, bioflavonoids, and radiant skin protection.';
+      btnText.querySelector('span').textContent = 'Explore Elixir Berries';
+    }
+  }
+</script><footer class="w-full mt-section-gap-mobile px-margin-mobile pt-space-lg pb-space-xl bg-surface-container-low text-on-surface flex flex-col gap-space-md shadow-[0_-1px_6px_rgba(0,0,0,0.02)]"><div class="flex flex-col gap-space-xs"><span class="font-headline-sm text-headline-sm italic text-primary">Botanica Pantry</span><p class="font-body-sm text-body-sm text-on-surface-variant">Pure harvested superfoods, ethically crafted from small regenerative farms.</p></div><div class="flex flex-col gap-space-sm pt-space-xs"><div class="flex flex-col gap-2.5"><span class="font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider">The Atelier</span><div class="flex flex-col gap-2 font-body-sm text-body-sm text-on-surface"><a class="transition-colors hover:text-secondary" href="#">Pantry Provisions</a><a class="transition-colors hover:text-secondary" href="#">Origin &amp; Harvest Notes</a><a class="transition-colors hover:text-secondary" href="#">Artisan Collective</a></div></div><div class="flex flex-col gap-2.5 pt-space-xs"><span class="font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider">Care &amp; Dispatch</span><div class="flex flex-col gap-2 font-body-sm text-body-sm text-on-surface"><a class="transition-colors hover:text-secondary" href="#">Shipping Guidelines</a><a class="transition-colors hover:text-secondary" href="#">Batch Authenticity</a><a class="transition-colors hover:text-secondary" href="#">Customer Concierge</a></div></div></div><div class="flex flex-col gap-space-xs pt-space-sm"><span class="font-label-sm text-caption uppercase tracking-wider text-on-surface-variant">Accepted Transactions</span><div class="flex items-center gap-space-xs flex-wrap"><span class="px-2.5 py-1 bg-surface rounded-full text-caption font-label-caps text-on-surface-variant">UPI</span><span class="px-2.5 py-1 bg-surface rounded-full text-caption font-label-caps text-on-surface-variant">RuPay</span><span class="px-2.5 py-1 bg-surface rounded-full text-caption font-label-caps text-on-surface-variant">Visa</span><span class="px-2.5 py-1 bg-surface rounded-full text-caption font-label-caps text-on-surface-variant">Mastercard</span></div></div><div class="pt-space-xs text-caption font-caption text-on-surface-variant flex flex-col gap-1"><span>© 2025 Botanica Pantry Atelier. All rights reserved.</span><span>Crafted in small batches with mindful ingredients.</span></div></footer></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.05)]" data-active-classes="text-primary font-semibold"><div class="flex justify-around items-center h-20 px-space-xs"><a aria-current="page" class="flex flex-col items-center justify-center gap-1 w-16 h-16 transition-colors text-primary font-semibold" data-path="artisan-pantry-home" href="#"><span class="material-symbols-outlined text-[22px]">spa</span><span class="font-label-sm text-label-sm">Pantry</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-16 text-on-surface-variant hover:text-on-surface transition-colors" data-path="curated-catalog" href="#"><span class="material-symbols-outlined text-[22px]">grid_view</span><span class="font-label-sm text-label-sm">Shop</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-16 text-on-surface-variant hover:text-on-surface transition-colors" data-path="harvest-stories" href="#"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm">Journal</span></a><a class="flex flex-col items-center justify-center gap-1 w-16 h-16 text-on-surface-variant hover:text-on-surface transition-colors" data-path="patron-account" href="#"><span class="material-symbols-outlined text-[22px]">account_circle</span><span class="font-label-sm text-label-sm">Account</span></a></div></nav></body></html>
