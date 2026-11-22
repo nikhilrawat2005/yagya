@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Botanica Pantry — Next.js Superfoods Store
 
-## Getting Started
+An artisan, data-driven e-commerce frontend built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, **Zustand**, and **Motion (Framer Motion) + Lenis**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## How to Change Products, Images, and Brand Text
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+All store content is driven by a single source of truth in `/src/lib/data/`. You will **never** need to touch UI components or layouts when updating products or branding.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Adding or Editing Products
+* **File:** [`src/lib/data/products.ts`](file:///c:/Users/NIKHIL%20RAWAT/OneDrive/Desktop/Nikhil%20PROJECT/Cipher/yagya/src/lib/data/products.ts)
+* Each product conforms to the `Product` schema:
+  ```typescript
+  {
+    id: 'prod-unique-id',
+    slug: 'unique-product-slug', // Used in URL: /product/unique-product-slug
+    name: 'Roasted Lotus Pops',
+    category: 'Fox Seeds (Makhana)',
+    categorySlug: 'makhana', // Matches categories.ts
+    shortDescription: 'One-line summary for shop & card grids',
+    description: 'Detailed description for product detail page',
+    provenance: 'Mithila Lotus Kernels · Batch #085',
+    origin: 'Bihar Origin',
+    images: [
+      { src: '/products/makhana/hero.jpg', alt: 'Artisan makhana pouch' },
+      { src: '/products/makhana/detail.jpg', alt: 'Overhead bowl shot' }
+    ],
+    variants: [
+      { id: 'v-100', label: '100g Sampler', weight: '100g', price: 129, mrp: 159, sku: 'BP-100', stock: 50 },
+      { id: 'v-250', label: '250g Regular', weight: '250g', price: 249, mrp: 299, sku: 'BP-250', stock: 100 }
+    ],
+    badges: ['Bestseller', 'Batch #085'],
+    rating: 4.9,
+    reviewCount: 142,
+    nutritionFacts: [
+      { label: 'Plant Protein', value: '9.7g / 100g' },
+      { label: 'Dietary Fiber', value: '14.5g / 100g' }
+    ],
+    howToUse: ['Enjoy directly from pouch', 'Toss into warm curries'],
+    storage: 'Store airtight in cool pantry.',
+    tags: ['makhana', 'high-protein', 'vegan'],
+    isFeatured: true,
+    isBestseller: true,
+    relatedSlugs: ['raw-organic-chia-seeds']
+  }
+  ```
+* **Adding a product takes 2 minutes:** Just add an object to the `products` array and images. Everything (Shop filters, Search, Bestsellers, Cart, Checkout, Pairs-well-with) updates automatically.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Adding or Replacing Product Images
+* Place new product photos inside `/public/products/<slug>/` or reference remote URLs.
+* If an image link is broken or missing, the built-in `<ProductImageWithFallback />` displays a graceful neutral branded placeholder so your design never breaks.
 
-## Learn More
+### 3. Updating Categories
+* **File:** [`src/lib/data/categories.ts`](file:///c:/Users/NIKHIL%20RAWAT/OneDrive/Desktop/Nikhil%20PROJECT/Cipher/yagya/src/lib/data/categories.ts)
+* Add or rename categories here; the Homepage *"Shop by superfood"* grid and the Shop category pills dynamically render from this list.
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Updating Brand Text, Announcements & Policies
+* **File:** [`src/lib/data/site.ts`](file:///c:/Users/NIKHIL%20RAWAT/OneDrive/Desktop/Nikhil%20PROJECT/Cipher/yagya/src/lib/data/site.ts)
+* Configures:
+  * Brand name (`Botanica Pantry`) & Tagline
+  * Top Announcement Bar text
+  * Free Shipping threshold (`₹499`) & currency
+  * Care email, phone, and atelier address
+  * Social links
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## How to Run Locally
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+2. **Start the Next.js dev server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+3. **Build and Test production build:**
+   ```bash
+   npm run build
+   npm run start
+   ```
+4. **Type check & Lint:**
+   ```bash
+   npx tsc --noEmit
+   npm run lint
+   ```

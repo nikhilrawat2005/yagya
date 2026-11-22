@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Fraunces, Inter } from 'next/font/google';
 import './globals.css';
+import './tailwind-built.css';
 import { siteConfig } from '@/lib/data/site';
 import { SmoothScrollProvider } from '@/components/motion/SmoothScrollProvider';
 import { CartDrawer } from '@/components/cart/CartDrawer';
