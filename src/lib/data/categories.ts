@@ -64,4 +64,12 @@ export const categories: Category[] = [
     originBadge: 'Ladakh Gold',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9lYncPXx9zA5fkVEkn9VOEq6AtzRtV1nvT-2VFDcSs5t-lqiepue8hzjW41tN59fiY3Q7nR19kRPqJrkzsJd78jzYJbc99mWjwLUIs_-avRYFkvHZHrsOzu7YkkgzhkYswTYTE_KKd9RDb8D2oqAU0GtRLnf58WT8szqvH6p7rKj4-rkP4kIzeADrbvcAT_W42YKtxwFJtrhybbjbgCJL4Tyz6SnNpFIlgojaNVMi',
   },
+  {
+    id: 'pantry-bundles',
+    name: 'Artisan Pantry Mix',
+    slug: 'bundles',
+    description: 'Hand-blended heritage seed essentials',
+    originBadge: 'Curated Pairings',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCLhdWTOkPbl9dZc-gYpIyPmxdmkOHmHL6gvXlbpCWApZ03Ulm2Zv1ZBacadTJHcU12V3nIcct6dcvvtqxGxEo8PMv7Q8DdEbBqyeqkd-H6rd_pSzo4kRjrVh--l-ijQ7fA4d4HgT0pSB54nFKzVFK_9WGW43_3CIiHtF4FChNyCT9SX6vWE7tvyqNxqHxItWbVsul2bgPqHnXQBeUE-mTaW-CAttOCOAeWS-Iu9j85',
+  },
 ];

@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
 interface MarqueeProps {
   children: ReactNode;
@@ -22,19 +22,29 @@ export function Marquee({ children, speedSeconds = 25, className = '' }: Marquee
 
   return (
     <div className={`overflow-hidden whitespace-nowrap flex select-none group ${className}`}>
-      <div
-        className="flex min-w-full shrink-0 items-center justify-around gap-8 animate-marquee group-hover:[animation-play-state:paused]"
-        style={{ animationDuration: `${speedSeconds}s` }}
+      <motion.div
+        className="flex shrink-0 items-center gap-8 pr-8"
+        animate={{ x: ['0%', '-100%'] }}
+        transition={{
+          repeat: Infinity,
+          ease: 'linear',
+          duration: speedSeconds,
+        }}
       >
         {children}
-      </div>
-      <div
+      </motion.div>
+      <motion.div
         aria-hidden="true"
-        className="flex min-w-full shrink-0 items-center justify-around gap-8 animate-marquee group-hover:[animation-play-state:paused]"
-        style={{ animationDuration: `${speedSeconds}s` }}
+        className="flex shrink-0 items-center gap-8 pr-8"
+        animate={{ x: ['0%', '-100%'] }}
+        transition={{
+          repeat: Infinity,
+          ease: 'linear',
+          duration: speedSeconds,
+        }}
       >
         {children}
-      </div>
+      </motion.div>
     </div>
   );
 }

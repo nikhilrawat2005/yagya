@@ -14,7 +14,7 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col w-full pb-16">
       {/* 1. HERO SECTION */}
-      <section className="max-w-[1200px] w-full mx-auto px-4 md:px-8 pt-8 md:pt-14">
+      <section className="max-w-[1200px] w-full mx-auto px-4 md:px-8 pt-4 md:pt-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Column */}
           <div className="lg:col-span-6 flex flex-col items-start pr-0 lg:pr-6">
