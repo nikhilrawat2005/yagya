@@ -1,113 +1,149 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #193325;
-  --color-primary-container: #2f4a3a;
-  --color-primary-fixed: #cbead4;
-  --color-primary-fixed-dim: #afceb9;
-  --color-on-primary: #ffffff;
-  --color-on-primary-container: #9bb9a4;
-  --color-on-primary-fixed: #052013;
-  --color-on-primary-fixed-variant: #314d3c;
+  /* PPT Exact Colors:
+     Background: Oat White #F6EFE2
+     Fibonacci blocks:
+       Apricot Mist: #FDE6C8
+       Peach Glow: #FBC98A
+       Sea Buckthorn Orange: #F28C1B
+     Text & UI:
+       Blueberry Indigo: #2E3175
+       Cranberry: #B3122D
+       Charcoal: #2B2B2B
+       Burnt Orange: #D9700B
+  */
 
-  --color-secondary: #885200;
-  --color-secondary-container: #fea93e;
-  --color-secondary-fixed: #ffddbb;
-  --color-secondary-fixed-dim: #ffb868;
-  --color-on-secondary: #ffffff;
-  --color-on-secondary-container: #6d4100;
-  --color-on-secondary-fixed: #2b1700;
-  --color-on-secondary-fixed-variant: #673d00;
+  --color-primary: #2E3175;                  /* Blueberry Indigo */
+  --color-primary-container: #23265D;
+  --color-primary-fixed: #E4E5FA;
+  --color-primary-fixed-dim: #C5C7F5;
+  --color-on-primary: #FFFFFF;
+  --color-on-primary-container: #E4E5FA;
+  --color-on-primary-fixed: #0D0E29;
 
-  --color-tertiary: #591522;
-  --color-tertiary-container: #762b37;
-  --color-tertiary-fixed: #ffdadc;
-  --color-tertiary-fixed-dim: #ffb2b9;
-  --color-on-tertiary: #ffffff;
-  --color-on-tertiary-container: #fb95a0;
-  --color-on-tertiary-fixed: #3f0110;
-  --color-on-tertiary-fixed-variant: #792d39;
+  /* Sea Buckthorn Orange & Accents */
+  --color-secondary: #F28C1B;                /* Sea Buckthorn Orange */
+  --color-secondary-container: #D9700B;      /* Burnt Orange (hover state) */
+  --color-secondary-fixed: #FDE6C8;          /* Apricot Mist */
+  --color-secondary-fixed-dim: #FBC98A;      /* Peach Glow */
+  --color-on-secondary: #FFFFFF;
+  --color-on-secondary-container: #FFFFFF;
 
-  --color-surface: #fef9ef;
-  --color-surface-dim: #dedad0;
-  --color-surface-bright: #fef9ef;
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f8f3e9;
-  --color-surface-container: #f2ede3;
-  --color-surface-container-high: #ede8de;
-  --color-surface-container-highest: #e7e2d8;
-  --color-surface-variant: #e7e2d8;
-  --color-on-surface: #1d1c16;
-  --color-on-surface-variant: #424843;
-  --color-surface-tint: #496553;
+  /* Cranberry Accent */
+  --color-tertiary: #B3122D;                 /* Cranberry */
+  --color-tertiary-container: #8F0E24;
+  --color-tertiary-fixed: #FDE8EB;
+  --color-tertiary-fixed-dim: #F8B4BD;
+  --color-on-tertiary: #FFFFFF;
+  --color-on-tertiary-container: #FFFFFF;
 
-  --color-outline: #727973;
-  --color-outline-variant: #c2c8c1;
-  --color-background: #fef9ef;
-  --color-on-background: #1d1c16;
-  --color-inverse-surface: #32302a;
-  --color-inverse-on-surface: #f5f0e6;
-  --color-inverse-primary: #afceb9;
+  /* Canvas Oat White */
+  --color-surface: #F6EFE2;                  /* Oat White canvas */
+  --color-surface-dim: #EBDDC9;
+  --color-surface-bright: #FBF8F2;
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #F9F3EA;
+  --color-surface-container: #F4ECE0;
+  --color-surface-container-high: #EFE4D4;
+  --color-surface-container-highest: #E8DCC9;
+  --color-surface-variant: #FDE6C8;          /* Apricot Mist */
+  --color-on-surface: #2E3175;               /* Blueberry Indigo text */
+  --color-on-surface-variant: #2B2B2B;       /* Charcoal */
+  --color-surface-tint: #F28C1B;
 
-  --color-error: #ba1a1a;
-  --color-error-container: #ffdad6;
-  --color-on-error: #ffffff;
-  --color-on-error-container: #93000a;
+  --color-outline: #2B2B2B;                  /* Charcoal */
+  --color-outline-variant: #E2D3BE;
+  --color-background: #F6EFE2;               /* Oat White */
+  --color-on-background: #2E3175;            /* Blueberry Indigo */
+  --color-inverse-surface: #2E3175;
+  --color-inverse-on-surface: #F6EFE2;
+  --color-inverse-primary: #FBC98A;
 
-  --font-serif: var(--font-fraunces), serif;
-  --font-sans: var(--font-inter), sans-serif;
+  /* Brand Specific custom colors */
+  --color-oat: #F6EFE2;
+  --color-apricot: #FDE6C8;
+  --color-peach: #FBC98A;
+  --color-seabuckthorn: #F28C1B;
+  --color-blueberry: #2E3175;
+  --color-cranberry: #B3122D;
+  --color-charcoal: #2B2B2B;
+  --color-burnt: #D9700B;
+
+  /* Fonts */
+  --font-serif: var(--font-fragilita), 'Playfair Display', Georgia, serif;
+  --font-sans: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-script: var(--font-script), 'Segoe Script', 'Caveat', cursive;
+  --font-mono: var(--font-space-mono), 'Space Mono', monospace;
 }
 
-:root {
-  --font-fraunces: 'Fraunces', serif;
-  --font-inter: 'Inter', sans-serif;
+body {
+  background-color: #F6EFE2;
+  color: #2E3175;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  background-color: #fef9ef;
-  color: #1d1c16;
-  font-family: var(--font-inter), sans-serif;
-  overflow-x: hidden;
-  selection-background-color: #2f4a3a;
-  selection-color: #ffffff;
+/* Handwritten / Sketch Marker utilities */
+.font-script {
+  font-family: var(--font-script), 'Segoe Script', cursive;
 }
 
-::selection {
-  background-color: #2f4a3a;
-  color: #ffffff;
+.font-mono-meta {
+  font-family: var(--font-space-mono), 'Space Mono', monospace;
 }
 
-/* Material Symbols sizing */
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  vertical-align: middle;
-  line-height: 1;
+.marker-underline {
+  position: relative;
+  display: inline-block;
 }
 
-.material-symbols-outlined.fill-current {
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+.marker-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 3px;
+  background-color: #2B2B2B;
+  border-radius: 9999px;
+  opacity: 0.85;
+  transform: rotate(-0.5deg);
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+.marker-box {
+  border: 1.5px solid #2B2B2B;
+  box-shadow: 2px 3px 0px #2B2B2B;
 }
 
-.animate-marquee {
-  animation: marquee 30s linear infinite;
+.golden-radius {
+  border-radius: 1.618rem;
 }
 
-/* Hide scrollbar for clean UI where needed */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.btn-yagya {
+  background-color: #2E3175;
+  color: #FFFFFF;
+  font-family: var(--font-jakarta), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+.btn-yagya:hover {
+  background-color: #D9700B;
+  transform: translateY(-1px);
+}
+
+.btn-yagya-orange {
+  background-color: #F28C1B;
+  color: #FFFFFF;
+  font-family: var(--font-jakarta), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-yagya-orange:hover {
+  background-color: #D9700B;
+  transform: translateY(-1px);
 }

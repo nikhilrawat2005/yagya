@@ -19,22 +19,22 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  name: 'Botanica Pantry',
-  tagline: 'Clean food. Nothing else.',
+  name: 'Yagya',
+  tagline: 'Clean Superfoods. Nothing Else.',
   description:
-    'Single-origin harvests and heritage superfoods sourced directly from ethical smallholder farmers across India. Zero preservatives, fillers, or artificial processing.',
-  announcement: 'Free shipping over ₹499 · Packed fresh in small batches',
+    'Authentic Himalayan dried sea buckthorn berries, seeds & heritage superfoods. Sourced with zero added sugar directly from high-altitude ethical farms.',
+  announcement: '100% Pure Himalayan Superfoods · Free shipping over ₹499',
   freeShippingThreshold: 499,
   currency: 'INR',
   currencySymbol: '₹',
   contact: {
-    email: 'care@botanicapantry.in',
+    email: 'care@yagyafoods.in',
     phone: '+91 98765 43210',
-    address: 'Atelier Botanica, DLF Phase 5, Gurugram, HR 122002',
+    address: 'Yagya Naturals, Himalayan Organic Hub, India',
   },
   social: {
-    instagram: 'https://instagram.com/botanicapantry',
-    twitter: 'https://twitter.com/botanicapantry',
-    youtube: 'https://youtube.com/@botanicapantry',
+    instagram: 'https://instagram.com/yagyafoods',
+    twitter: 'https://twitter.com/yagyafoods',
+    youtube: 'https://youtube.com/@yagyafoods',
   },
 };

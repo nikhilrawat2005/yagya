@@ -44,6 +44,73 @@ export interface Product {
 
 export const products: Product[] = [
   {
+    id: 'prod-seabuckthorn',
+    slug: 'dried-sea-buckthorn-berries',
+    name: 'Dried Sea Buckthorn Berries',
+    category: 'Wild Berries',
+    categorySlug: 'sea-buckthorn',
+    shortDescription: 'Whole dehydrated mountain berries rich in rare plant Omega-7, Vitamin C & antioxidants.',
+    description:
+      'Harvested directly from partner farmers and packed under strict hygiene standards, our whole Dried Sea Buckthorn Berries bring consumers the authentic, local, and traditional taste of the mountains—with zero added sugar. Gently dehydrated to lock in their dense nutrition, these berries deliver a vibrant, tangy burst of rare plant-based Omega-7 alongside Omegas 3, 6, and 9, natural Vitamin C, carotenoids, and dietary fiber. Retains nutrient-rich pulp and seeds.',
+    provenance: 'Himalayan Cold-Desert Harvest · 100% Pure',
+    origin: 'Ladakh & Spiti Valley',
+    images: [
+      {
+        src: '/yagya-logo.png',
+        alt: 'Whole Dried Himalayan Sea Buckthorn Berries',
+      },
+    ],
+    variants: [
+      {
+        id: 'sb-100g',
+        label: '100g Pouch',
+        weight: '100g',
+        price: 249,
+        mrp: 320,
+        sku: 'YAGYA-SB-100',
+        stock: 50,
+      },
+      {
+        id: 'sb-250g',
+        label: '250g Daily Pack',
+        weight: '250g',
+        price: 549,
+        mrp: 699,
+        sku: 'YAGYA-SB-250',
+        stock: 45,
+      },
+      {
+        id: 'sb-500g',
+        label: '500g Family Reserve',
+        weight: '500g',
+        price: 999,
+        mrp: 1299,
+        sku: 'YAGYA-SB-500',
+        stock: 25,
+      },
+    ],
+    badges: ['Bestseller', 'Zero Added Sugar', 'Omega-7 Rich'],
+    rating: 4.9,
+    reviewCount: 142,
+    nutritionFacts: [
+      { label: 'Energy', value: '34.5 kcal / 10g' },
+      { label: 'Vitamin C', value: '65 mg (81.3% RDA)' },
+      { label: 'Omega 7 & 9', value: '0.68 g' },
+      { label: 'Dietary Fiber', value: '2.2 g' },
+      { label: 'Added Sugar', value: '0.0 g' },
+    ],
+    howToUse: [
+      'Enjoy 1 tablespoon (10g) daily straight from the pack for a tangy crunch',
+      'Steep in warm water for 5 mins for an antioxidant-rich herbal infusion',
+      'Blend into morning smoothies, oatmeal bowls, or sprinkle over yogurts',
+    ],
+    storage: 'Store in a cool, dry, and dark place away from direct sunlight. Reseal pouch tightly after every use.',
+    tags: ['sea buckthorn', 'omega 7', 'vitamin c', 'wild berries', 'superfoods'],
+    isFeatured: true,
+    isBestseller: true,
+    relatedSlugs: ['roasted-himalayan-makhana', 'organic-kashmir-walnuts'],
+  },
+  {
     id: 'prod-makhana',
     slug: 'roasted-himalayan-makhana',
     name: 'Roasted Himalayan Makhana',
