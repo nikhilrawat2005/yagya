@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans, Playfair_Display, Caveat, Space_Mono } from 'next/font/google';
+import {
+  Playfair_Display,
+  Playpen_Sans,
+  Plus_Jakarta_Sans,
+  Space_Mono,
+} from 'next/font/google';
 import './globals.css';
-import './tailwind-built.css';
 import { siteConfig } from '@/lib/data/site';
 import { SmoothScrollProvider } from '@/components/motion/SmoothScrollProvider';
 import { CartDrawer } from '@/components/cart/CartDrawer';
@@ -10,19 +14,19 @@ import { Footer } from '@/components/layout/Footer';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
-  variable: '--font-fragilita',
+  variable: '--font-playfair',
+  display: 'swap',
+});
+
+const playpenSans = Playpen_Sans({
+  subsets: ['latin'],
+  variable: '--font-playpen',
   display: 'swap',
 });
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-jakarta',
-  display: 'swap',
-});
-
-const caveat = Caveat({
-  subsets: ['latin'],
-  variable: '--font-script',
   display: 'swap',
 });
 
@@ -34,7 +38,7 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} — ${siteConfig.tagline}`,
+  title: `${siteConfig.name} — Seeds & Berries, Straight From The Farm`,
   description: siteConfig.description,
 };
 
@@ -46,15 +50,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${plusJakarta.variable} ${caveat.variable} ${spaceMono.variable}`}
+      className={[
+        playfair.variable,
+        playpenSans.variable,
+        plusJakarta.variable,
+        spaceMono.variable,
+      ].join(' ')}
     >
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-        />
-      </head>
-      <body className="bg-oat text-blueberry antialiased font-sans selection:bg-seabuckthorn selection:text-white">
+      <body className="bg-oat text-indigo antialiased font-sans selection:bg-seabuckthorn selection:text-oat">
         <SmoothScrollProvider>
           <Navbar />
           <CartDrawer />

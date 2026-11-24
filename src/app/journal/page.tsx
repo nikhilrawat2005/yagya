@@ -5,16 +5,16 @@ export default async function JournalPage() {
   const articles = await getJournalArticles();
 
   return (
-    <div className="max-w-[1000px] mx-auto px-4 md:px-8 py-12">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24">
       <div className="text-center max-w-xl mx-auto mb-12">
-        <span className="text-xs font-semibold uppercase tracking-widest text-secondary block mb-1">
-          Atelier Chronicle
+        <span className="font-mono-meta text-xs uppercase tracking-widest text-cranberry block mb-2">
+          Field Chronicle
         </span>
-        <h1 className="font-serif text-3xl sm:text-4xl text-primary font-normal mb-3">
+        <h1 className="font-display text-4xl sm:text-5xl text-indigo font-semibold mb-3">
           Harvest Journal
         </h1>
-        <p className="text-xs text-on-surface-variant leading-relaxed">
-          Essays on regenerative cultivation, seasonal foraging notes, and mindful seed rituals.
+        <p className="font-script-body text-base text-indigo">
+          Notes from Indian seed belts, cool hill berry bushes, and farm-direct packing.
         </p>
       </div>
 
@@ -22,28 +22,33 @@ export default async function JournalPage() {
         {articles.map((art) => (
           <article
             key={art.id}
-            className="bg-surface-container-low rounded-2xl overflow-hidden border border-outline-variant/30 flex flex-col justify-between shadow-xs hover:shadow-md transition-shadow"
+            className="bg-apricot/45 rounded-2xl overflow-hidden border-2 border-charcoal flex flex-col justify-between"
           >
             <div>
-              <div className="relative aspect-[16/10] bg-surface">
-                <ProductImageWithFallback src={art.image} alt={art.title} fill className="object-cover" />
+              <div className="relative aspect-[16/10] bg-oat border-b border-charcoal/20 p-6 flex items-center justify-center">
+                <ProductImageWithFallback
+                  src={art.image}
+                  alt={art.title}
+                  fill
+                  className="object-contain p-4"
+                />
               </div>
               <div className="p-6">
-                <div className="flex justify-between text-[11px] font-semibold text-secondary uppercase tracking-wider mb-2">
-                  <span>{art.category}</span>
-                  <span className="text-on-surface-variant/70">{art.readTime}</span>
+                <div className="flex justify-between font-mono-meta text-[11px] uppercase tracking-wider mb-2">
+                  <span className="text-cranberry font-bold">{art.category}</span>
+                  <span className="text-indigo/75">{art.readTime}</span>
                 </div>
-                <h2 className="font-serif text-xl font-medium text-primary mb-2 leading-snug">
+                <h2 className="font-sans text-lg font-semibold text-indigo mb-2 leading-snug">
                   {art.title}
                 </h2>
-                <p className="text-xs text-on-surface-variant leading-relaxed line-clamp-3">
+                <p className="font-script-body text-sm text-indigo/90 line-clamp-3">
                   {art.excerpt}
                 </p>
               </div>
             </div>
 
             <div className="px-6 pb-6 pt-2">
-              <span className="text-[11px] text-on-surface-variant/60">{art.date}</span>
+              <span className="font-mono-meta text-[11px] text-indigo/75">{art.date}</span>
             </div>
           </article>
         ))}

@@ -10,7 +10,6 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
   const isCartOpen = useCartStore((s) => s.isOpen);
 
   useEffect(() => {
-    // Rehydrate cart store on client mount
     useCartStore.persist.rehydrate();
   }, []);
 
@@ -23,7 +22,7 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
       smoothWheel: true,
     });
 
-    let rafId: number;
+    let rafId = 0;
     function raf(time: number) {
       lenis.raf(time);
       rafId = requestAnimationFrame(raf);

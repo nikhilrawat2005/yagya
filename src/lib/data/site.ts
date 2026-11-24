@@ -20,17 +20,17 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: 'Yagya',
-  tagline: 'Clean Superfoods. Nothing Else.',
+  tagline: 'Seeds & Berries, Straight From The Farm',
   description:
-    'Authentic Himalayan dried sea buckthorn berries, seeds & heritage superfoods. Sourced with zero added sugar directly from high-altitude ethical farms.',
-  announcement: '100% Pure Himalayan Superfoods · Free shipping over ₹499',
+    'Honest Indian seeds and mountain berries harvested directly from partner farming communities and packed fresh in small batches.',
+  announcement: 'Seeds & Berries Straight From Indian Farms · Free Dispatch Over ₹499',
   freeShippingThreshold: 499,
   currency: 'INR',
   currencySymbol: '₹',
   contact: {
     email: 'care@yagyafoods.in',
     phone: '+91 98765 43210',
-    address: 'Yagya Naturals, Himalayan Organic Hub, India',
+    address: 'Yagya Naturals, India',
   },
   social: {
     instagram: 'https://instagram.com/yagyafoods',

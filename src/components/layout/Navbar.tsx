@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'motion/react';
+import { Menu, X, ShoppingBag } from 'lucide-react';
 import { siteConfig } from '@/lib/data/site';
+import { categories } from '@/lib/data/categories';
 import { useCartStore } from '@/lib/store/cartStore';
 
 export function Navbar() {
@@ -15,9 +16,7 @@ export function Navbar() {
   const openCart = useCartStore((s) => s.openCart);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -25,172 +24,146 @@ export function Navbar() {
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
       {/* Announcement Bar */}
-      <div className="bg-[#2E3175] text-[#F6EFE2] py-2 text-center border-b border-[#2B2B2B]/10 px-4">
-        <p className="text-xs uppercase font-medium tracking-[0.08em] font-sans">
-          {siteConfig.announcement}
-        </p>
+      <div className="bg-indigo text-oat py-2 text-center border-b border-charcoal/15 px-4">
+        <p className="font-ui-label text-[11px]">{siteConfig.announcement}</p>
       </div>
 
-      {/* Main Navbar */}
+      {/* Main Navbar (solid Oat White, zero glassmorphism) */}
       <header
-        className={`transition-all duration-300 border-b ${
-          scrolled
-            ? 'bg-[#F6EFE2]/95 backdrop-blur-md border-[#2B2B2B]/15 shadow-sm py-2.5'
-            : 'bg-[#F6EFE2]/90 backdrop-blur-sm border-[#2B2B2B]/10 py-3.5'
+        className={`bg-oat transition-colors duration-200 border-b ${
+          scrolled ? 'border-charcoal/25 py-2.5' : 'border-charcoal/15 py-3'
         }`}
       >
-        <div className="max-w-[1240px] mx-auto px-4 md:px-8 flex items-center justify-between">
-          {/* Mobile menu toggle & Logo */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+          {/* Mobile toggle & Logo */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1.5 text-[#2E3175] hover:text-[#D9700B] transition-colors focus:outline-none"
-              aria-label="Toggle mobile menu"
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              className="lg:hidden p-2 text-indigo hover:text-burnt transition-colors cursor-pointer"
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileMenuOpen}
             >
-              <span className="material-symbols-outlined text-2xl">
-                {mobileMenuOpen ? 'close' : 'menu'}
-              </span>
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
 
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative w-10 h-10 md:w-11 md:h-11 rounded-full overflow-hidden border-2 border-[#2E3175]/20 group-hover:border-[#F28C1B] transition-colors bg-white flex items-center justify-center p-0.5">
+            <Link href="/" className="flex items-center gap-3 group shrink-0">
+              <div className="relative w-11 h-11 rounded-xl overflow-hidden border border-charcoal/20 bg-oat shrink-0">
                 <Image
                   src="/yagya-logo.png"
-                  alt="Yagya Logo"
-                  width={44}
-                  height={44}
-                  className="object-contain w-full h-full"
+                  alt="Yagya Superfoods"
+                  fill
+                  sizes="44px"
+                  className="object-cover"
                   priority
                 />
               </div>
               <div className="flex flex-col">
-                <span className="font-serif text-2xl md:text-3xl font-bold text-[#2E3175] tracking-tight leading-none group-hover:text-[#D9700B] transition-colors">
+                <span className="font-display text-2xl font-semibold text-indigo tracking-tight leading-none group-hover:text-burnt transition-colors">
                   {siteConfig.name}
                 </span>
-                <span className="text-[10px] tracking-[0.16em] uppercase text-[#B3122D] font-bold font-sans">
-                  SUPERFOODS
+                <span className="font-ui-label text-[10px] text-cranberry mt-1">
+                  Farm Superfoods
                 </span>
               </div>
             </Link>
           </div>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-8 text-xs font-semibold uppercase tracking-[0.08em] text-[#2E3175]">
-            <Link
-              href="/shop"
-              className="relative hover:text-[#D9700B] transition-colors py-1 group"
-            >
+          {/* Desktop Nav Links (Supports all 5 Categories + Core Pages) */}
+          <nav
+            aria-label="Main navigation"
+            className="hidden lg:flex items-center gap-6 text-xs font-ui-label text-indigo"
+          >
+            <Link href="/shop" className="hover:text-burnt transition-colors py-1">
               Shop All
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F28C1B] transition-all duration-200 group-hover:w-full" />
             </Link>
             <Link
-              href="/shop?category=sea-buckthorn"
-              className="relative hover:text-[#D9700B] transition-colors py-1 group"
+              href={`/shop?category=${categories[0].slug}`}
+              className="hover:text-burnt transition-colors py-1"
             >
-              Sea Buckthorn
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F28C1B] transition-all duration-200 group-hover:w-full" />
+              Seeds &amp; Grains
             </Link>
             <Link
-              href="/about"
-              className="relative hover:text-[#D9700B] transition-colors py-1 group"
+              href={`/shop?category=${categories[1].slug}`}
+              className="hover:text-burnt transition-colors py-1"
             >
-              Our Mountain Story
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F28C1B] transition-all duration-200 group-hover:w-full" />
+              Berries
             </Link>
-            <Link
-              href="/journal"
-              className="relative hover:text-[#D9700B] transition-colors py-1 group"
-            >
-              Journal
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F28C1B] transition-all duration-200 group-hover:w-full" />
+            <Link href="/about" className="hover:text-burnt transition-colors py-1">
+              Our Story
             </Link>
-            <Link
-              href="/contact"
-              className="relative hover:text-[#D9700B] transition-colors py-1 group"
-            >
+            <Link href="/contact" className="hover:text-burnt transition-colors py-1">
               Contact
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F28C1B] transition-all duration-200 group-hover:w-full" />
             </Link>
           </nav>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-3">
+          {/* Right: Cart & Shop CTA */}
+          <div className="flex items-center gap-3 shrink-0">
             <Link
               href="/shop"
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold tracking-[0.08em] uppercase bg-[#2E3175] text-[#F6EFE2] hover:bg-[#D9700B] transition-colors shadow-xs"
+              className="group relative overflow-hidden hidden sm:inline-flex px-5 py-2.5 rounded-full bg-indigo text-oat text-xs font-ui-label transition-colors duration-250"
             >
-              <span>Explore Superfoods</span>
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 bg-burnt -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"
+              />
+              <span className="relative z-10">Explore Harvest</span>
             </Link>
 
-            {/* Cart Button */}
             <button
+              type="button"
               onClick={openCart}
-              className="relative p-2 text-[#2E3175] hover:text-[#D9700B] transition-colors rounded-full hover:bg-[#FDE6C8]/60 cursor-pointer"
-              aria-label="Open cart"
+              aria-label={`Open shopping bag, ${totalItems} items`}
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border-2 border-charcoal bg-apricot hover:bg-burnt hover:text-oat hover:border-burnt text-indigo transition-colors duration-250 cursor-pointer group"
             >
-              <span className="material-symbols-outlined text-2xl">
-                shopping_bag
-              </span>
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#B3122D] text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#F6EFE2] font-mono-meta">
-                  {totalItems}
-                </span>
-              )}
+              <ShoppingBag className="w-4 h-4 transition-colors duration-200" />
+              <span className="font-mono-meta text-xs font-bold">{totalItems}</span>
             </button>
           </div>
         </div>
-      </header>
 
-      {/* Mobile Drawer Menu */}
-      <AnimatePresence>
+        {/* Mobile Drawer */}
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="lg:hidden bg-[#F6EFE2] border-b border-[#2B2B2B]/15 px-6 py-6 shadow-xl"
+          <nav
+            aria-label="Mobile navigation"
+            className="lg:hidden bg-oat border-t border-charcoal/15 px-6 py-5 space-y-3"
           >
-            <div className="flex flex-col gap-4">
+            <Link
+              href="/shop"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-1.5 font-ui-label text-xs text-indigo hover:text-burnt"
+            >
+              Shop All Superfoods
+            </Link>
+            {categories.map((cat) => (
               <Link
-                href="/shop"
+                key={cat.id}
+                href={`/shop?category=${cat.slug}`}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-base font-semibold uppercase tracking-[0.08em] text-[#2E3175] hover:text-[#D9700B] py-2 border-b border-[#2B2B2B]/10"
+                className="block py-1.5 font-ui-label text-xs text-indigo hover:text-burnt"
               >
-                Shop All
+                {cat.name}
               </Link>
-              <Link
-                href="/shop?category=sea-buckthorn"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-base font-semibold uppercase tracking-[0.08em] text-[#2E3175] hover:text-[#D9700B] py-2 border-b border-[#2B2B2B]/10"
-              >
-                Sea Buckthorn & Berries
-              </Link>
+            ))}
+            <div className="pt-2 border-t border-charcoal/15 flex gap-6">
               <Link
                 href="/about"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-base font-semibold uppercase tracking-[0.08em] text-[#2E3175] hover:text-[#D9700B] py-2 border-b border-[#2B2B2B]/10"
+                className="py-1 font-ui-label text-xs text-indigo hover:text-burnt"
               >
-                Our Mountain Story
-              </Link>
-              <Link
-                href="/journal"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-base font-semibold uppercase tracking-[0.08em] text-[#2E3175] hover:text-[#D9700B] py-2 border-b border-[#2B2B2B]/10"
-              >
-                Superfood Journal
+                Our Story
               </Link>
               <Link
                 href="/contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-base font-semibold uppercase tracking-[0.08em] text-[#2E3175] hover:text-[#D9700B] py-2"
+                className="py-1 font-ui-label text-xs text-indigo hover:text-burnt"
               >
                 Contact
               </Link>
             </div>
-          </motion.div>
+          </nav>
         )}
-      </AnimatePresence>
+      </header>
     </div>
   );
 }

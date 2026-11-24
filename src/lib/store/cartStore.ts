@@ -94,7 +94,7 @@ export const useCartStore = create<CartStore>()(
       },
     }),
     {
-      name: 'botanica-cart-storage',
+      name: 'yagya-cart-storage',
       skipHydration: true,
     }
   )

@@ -17,11 +17,11 @@ export const reviews: Review[] = [
     rating: 5,
     date: '18 Nov 2026',
     location: 'Jaipur, RJ',
-    title: 'The cleanest crunch I have ever found',
+    title: 'Crisp pumpkin seeds with real farm freshness',
     comment:
-      'The difference between commercial makhana and Botanica’s harvest is night and day. You can taste the purity and fresh roasting without any stale oil smell.',
+      'Clean, plump kaddu kernels without any stale oil smell. We roast a spoonful every morning for salads and oats.',
     verifiedBuyer: true,
-    productSlug: 'roasted-himalayan-makhana',
+    productSlug: 'pumpkin-seeds',
   },
   {
     id: 'rev-2',
@@ -31,9 +31,9 @@ export const reviews: Review[] = [
     location: 'Bengaluru, KA',
     title: 'Staple for my morning ritual',
     comment:
-      'The black chia seeds gel evenly in almond milk within 10 minutes. Clean, zero grit or dirt residue. Packaging is aesthetic on my open kitchen shelf.',
+      'The chia seeds hydrate evenly in water within 15 minutes with zero dust or grit. Honest packaging and crisp seal.',
     verifiedBuyer: true,
-    productSlug: 'raw-organic-chia-seeds',
+    productSlug: 'chia-seeds',
   },
   {
     id: 'rev-3',
@@ -41,10 +41,10 @@ export const reviews: Review[] = [
     rating: 5,
     date: '09 Nov 2026',
     location: 'Dehradun, UK',
-    title: 'Rare Nubra golden berries',
+    title: 'Authentic tangy sea buckthorn berries',
     comment:
-      'Finding real dried sea buckthorn without added sulfur or syrup in India was impossible until Botanica. It has that authentic wild tang.',
+      'Finding whole dried sea buckthorn without added sugar or syrup was rare until Yagya. Clean, vibrant mountain tartness.',
     verifiedBuyer: true,
-    productSlug: 'wild-sea-buckthorn-dried',
+    productSlug: 'dried-sea-buckthorn-berries',
   },
 ];

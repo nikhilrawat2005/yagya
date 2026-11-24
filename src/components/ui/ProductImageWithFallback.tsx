@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { Sprout } from 'lucide-react';
 
 interface ProductImageProps {
   src: string;
@@ -27,11 +28,11 @@ export function ProductImageWithFallback({
   if (error || !src) {
     return (
       <div
-        className={`bg-surface-container-low flex flex-col items-center justify-center text-on-surface-variant/50 p-4 border border-outline-variant/30 ${className}`}
+        className={`bg-apricot flex flex-col items-center justify-center text-indigo p-4 border border-charcoal/20 ${className}`}
       >
-        <span className="material-symbols-outlined text-3xl mb-1 text-primary/40">eco</span>
-        <span className="text-xs uppercase tracking-widest font-sans font-medium text-primary/60">
-          Botanica Harvest
+        <Sprout className="w-6 h-6 mb-1.5 text-indigo" />
+        <span className="text-[11px] uppercase tracking-[0.08em] font-sans font-medium text-indigo">
+          Yagya Harvest
         </span>
       </div>
     );

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { Search, X, Sprout } from 'lucide-react';
 import { Product } from '@/lib/data/products';
 import { Category } from '@/lib/data/categories';
 import { ProductCard } from '@/components/product/ProductCard';
@@ -18,15 +19,10 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
   const [maxPrice, setMaxPrice] = useState<number>(500);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // Filter & Sort logic
   const filteredProducts = useMemo(() => {
     return products
       .filter((p) => {
-        // Category filter
-        if (selectedCategory !== 'all' && p.categorySlug !== selectedCategory) {
-          return false;
-        }
-        // Search query
+        if (selectedCategory !== 'all' && p.categorySlug !== selectedCategory) return false;
         if (
           searchQuery &&
           !p.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -34,139 +30,145 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
         ) {
           return false;
         }
-        // Price filter (against lowest variant price)
         const minPrice = Math.min(...p.variants.map((v) => v.price));
-        if (minPrice > maxPrice) {
-          return false;
-        }
+        if (minPrice > maxPrice) return false;
         return true;
       })
       .sort((a, b) => {
         const priceA = a.variants[0]?.price || 0;
         const priceB = b.variants[0]?.price || 0;
-
         if (selectedSort === 'price-low') return priceA - priceB;
         if (selectedSort === 'price-high') return priceB - priceA;
         if (selectedSort === 'rating') return b.rating - a.rating;
-        return 0; // 'featured'
+        return 0;
       });
   }, [products, selectedCategory, searchQuery, maxPrice, selectedSort]);
 
+  const activeCategoryObj = categories.find((c) => c.slug === selectedCategory);
+
   return (
-    <div className="max-w-[1200px] mx-auto px-4 md:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-20">
       {/* Header */}
-      <div className="mb-8 pb-6 border-b border-outline-variant/40 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div className="mb-8 pb-6 border-b border-charcoal/20 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-widest text-secondary block mb-1">
-            Pantry Harvest Collection
+          <span className="font-mono-meta text-xs uppercase tracking-widest text-cranberry block mb-1">
+            5-Category Lineup · {products.length} Launch Harvests
           </span>
-          <h1 className="font-serif text-3xl sm:text-4xl text-primary font-normal">
+          <h1 className="font-display text-4xl sm:text-5xl text-indigo font-semibold">
             Shop All Superfoods
           </h1>
         </div>
 
         {/* Search Input */}
         <div className="relative w-full md:w-72">
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-indigo/70" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search harvest..."
-            className="w-full bg-surface-container-low border border-outline-variant/60 rounded-full pl-10 pr-4 py-2 text-xs text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
+            placeholder="Search seeds or berries..."
+            aria-label="Search harvest"
+            className="w-full bg-oat border-2 border-charcoal/30 rounded-full pl-10 pr-8 py-2 text-xs text-indigo focus:outline-none focus:border-indigo"
           />
-          <span className="material-symbols-outlined text-base absolute left-3.5 top-2.5 text-on-surface-variant">
-            search
-          </span>
           {searchQuery && (
             <button
+              type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-3.5 top-2.5 text-xs text-on-surface-variant hover:text-primary"
+              aria-label="Clear search"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-indigo/70 hover:text-cranberry cursor-pointer"
             >
-              ✕
+              <X className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
       </div>
 
-      {/* Filter Tabs & Sort Controls */}
+      {/* Category Filter Tabs & Sort */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-        {/* Category Pills */}
         <div className="flex flex-wrap items-center gap-2">
           <button
+            type="button"
             onClick={() => setSelectedCategory('all')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
+            className={`px-4 py-2 rounded-full font-ui-label text-[11px] transition-colors cursor-pointer ${
               selectedCategory === 'all'
-                ? 'bg-primary-container text-surface'
-                : 'bg-surface-container-low text-on-surface-variant hover:text-primary'
+                ? 'bg-indigo text-oat'
+                : 'bg-apricot text-indigo border border-charcoal/25 hover:bg-peach'
             }`}
           >
-            All Superfoods ({products.length})
+            All ({products.length})
           </button>
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.slug)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
-                selectedCategory === cat.slug
-                  ? 'bg-primary-container text-surface'
-                  : 'bg-surface-container-low text-on-surface-variant hover:text-primary'
-              }`}
-            >
-              {cat.name}
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const count = products.filter((p) => p.categorySlug === cat.slug).length;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => setSelectedCategory(cat.slug)}
+                className={`px-4 py-2 rounded-full font-ui-label text-[11px] transition-colors cursor-pointer ${
+                  selectedCategory === cat.slug
+                    ? 'bg-indigo text-oat'
+                    : 'bg-apricot text-indigo border border-charcoal/25 hover:bg-peach'
+                }`}
+              >
+                {cat.name} ({count})
+              </button>
+            );
+          })}
         </div>
 
-        {/* Sort & Price Filter */}
-        <div className="flex items-center gap-4 text-xs font-medium text-on-surface-variant">
+        <div className="flex items-center gap-4 font-mono-meta text-xs text-indigo">
           <div className="flex items-center gap-2">
-            <span>Max ₹{maxPrice}:</span>
+            <label htmlFor="max-price">Max ₹{maxPrice}</label>
             <input
+              id="max-price"
               type="range"
               min="150"
-              max="800"
+              max="500"
               step="50"
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
-              className="accent-primary cursor-pointer w-24"
+              className="accent-indigo cursor-pointer w-24"
             />
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span>Sort:</span>
-            <select
-              value={selectedSort}
-              onChange={(e) => setSelectedSort(e.target.value)}
-              className="bg-surface-container-low border border-outline-variant/40 rounded-lg px-2.5 py-1 text-xs text-on-surface focus:outline-none"
-            >
-              <option value="featured">Featured Harvest</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
-            </select>
-          </div>
+          <select
+            value={selectedSort}
+            onChange={(e) => setSelectedSort(e.target.value)}
+            aria-label="Sort products"
+            className="bg-apricot border border-charcoal/30 rounded-lg px-2.5 py-1.5 text-xs text-indigo focus:outline-none cursor-pointer"
+          >
+            <option value="featured">Featured Harvest</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Highest Rated</option>
+          </select>
         </div>
       </div>
 
       {/* Products Grid */}
       {filteredProducts.length === 0 ? (
-        <div className="text-center py-20 bg-surface-container-low rounded-2xl border border-outline-variant/30">
-          <span className="material-symbols-outlined text-4xl text-on-surface-variant/40 mb-2">
-            eco
-          </span>
-          <p className="font-serif text-xl font-medium text-primary mb-1">No superfoods match your filter</p>
-          <p className="text-xs text-on-surface-variant max-w-sm mx-auto mb-6">
-            Try adjusting your price ceiling or search query to browse available seasonal crops.
+        <div className="text-center py-20 bg-apricot/45 rounded-2xl border-2 border-charcoal/25 px-6">
+          <Sprout className="w-8 h-8 text-indigo mx-auto mb-3" />
+          <p className="font-display text-2xl font-semibold text-indigo mb-2">
+            {activeCategoryObj
+              ? `${activeCategoryObj.name} — Harvest Arriving Soon`
+              : 'No superfoods match your filter'}
+          </p>
+          <p className="font-script-body text-sm text-indigo/85 max-w-md mx-auto mb-6">
+            {activeCategoryObj
+              ? activeCategoryObj.description
+              : 'Try adjusting your price ceiling or search query to view our active harvests.'}
           </p>
           <button
+            type="button"
             onClick={() => {
               setSelectedCategory('all');
-              setMaxPrice(800);
+              setMaxPrice(500);
               setSearchQuery('');
             }}
-            className="px-5 py-2 rounded-full bg-primary-container text-surface text-xs font-semibold uppercase tracking-wider"
+            className="btn-primary-yagya px-6 py-3 rounded-full text-xs"
           >
-            Reset Filters
+            VIEW LAUNCH HARVEST
           </button>
         </div>
       ) : (

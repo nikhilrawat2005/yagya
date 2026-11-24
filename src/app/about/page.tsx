@@ -1,54 +1,44 @@
-import Link from 'next/link';
 import { siteConfig } from '@/lib/data/site';
-import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
+import { Floating3DAsset } from '@/components/ui/Floating3DAsset';
+import { FibonacciBlocks } from '@/components/shapes/FibonacciBlocks';
+import { Button } from '@/components/ui/Button';
 
 export default function AboutPage() {
   return (
-    <div className="max-w-[1000px] mx-auto px-4 md:px-8 py-12">
-      <div className="text-center max-w-2xl mx-auto mb-12">
-        <span className="text-xs font-semibold uppercase tracking-widest text-secondary block mb-1">
-          Our Story & Soil
-        </span>
-        <h1 className="font-serif text-3xl sm:text-5xl text-primary font-normal mb-4">
-          The Botanica Pantry Philosophy
-        </h1>
-        <p className="text-base text-on-surface-variant leading-relaxed">
-          {siteConfig.description}
-        </p>
-      </div>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-16">
+        <div className="lg:col-span-6 space-y-5">
+          <span className="font-mono-meta text-xs uppercase tracking-widest text-cranberry block">
+            Our Story &amp; Soil
+          </span>
+          <h1 className="font-display text-4xl sm:text-5xl text-indigo font-semibold leading-tight">
+            The <span className="text-cranberry italic">Yagya</span> Farm Philosophy
+          </h1>
+          <p className="font-script-body text-base sm:text-lg text-indigo">
+            {siteConfig.description}
+          </p>
+          <p className="font-script-body text-base text-indigo/90">
+            We partner directly with farming families across Madhya Pradesh, Rajasthan,
+            Karnataka, Himachal, and Ladakh — skipping long middleman chains and packing
+            every batch under strict hygiene controls.
+          </p>
+          <div className="pt-2">
+            <Button href="/shop">EXPLORE HARVEST</Button>
+          </div>
+        </div>
 
-      <div className="relative rounded-2xl overflow-hidden aspect-[16/9] bg-surface-container-low mb-12 shadow-sm border border-outline-variant/30">
-        <ProductImageWithFallback
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4Y_yLhxexFpa0Jj0wcVSGACCOsVqlxTP3X4U_acAphLNMt8lcuhLybZrpS6UT9ck5zsag6131m7mqK-Rqh3u2NNmwyed6YWfqrZVltPgtUk5va2Hzum9fBwJxrdNDVq384xTzdSX_t3Bi5kEEkd4806ux8w96IxhUElTkKfUUW8yWay3JRgkVqx7Y5rPuZfPa8IoW6l8lLnhkc8MbQ5CjIdnbRL5D6RV8gpcS-xZM"
-          alt="Natural pantry shelves with wholesome seeds"
-          fill
-          priority
-          className="object-cover"
-        />
-      </div>
-
-      <div className="prose prose-stone max-w-none text-xs sm:text-sm text-on-surface-variant leading-relaxed space-y-6">
-        <p>
-          In a world dominated by ultra-processed food and synthetic supplements, we founded{' '}
-          <strong>{siteConfig.name}</strong> on a solitary conviction: true vitality has always been
-          simple. Nature crafted complete nutritional matrixes thousands of years before laboratories
-          formulated isolated pills.
-        </p>
-        <p>
-          We source directly from smallholder farming families practicing traditional, chemical-free
-          agriculture across Mithila, Kashmir, and high Himalayan valleys. Every seed is sun-dried,
-          gently woodfire roasted or mechanically shelled, and packed at source in resealable multi-barrier
-          pouches.
-        </p>
-      </div>
-
-      <div className="mt-12 text-center">
-        <Link
-          href="/shop"
-          className="px-8 py-3.5 rounded-full bg-primary-container text-surface hover:bg-secondary text-xs font-semibold uppercase tracking-wider inline-block"
-        >
-          Explore the Harvest
-        </Link>
+        <div className="lg:col-span-6 relative flex items-center justify-center py-4">
+          <div className="relative w-full max-w-[460px]">
+            <FibonacciBlocks unit={36} showSpiralArc showIndices />
+            <Floating3DAsset
+              src="/images/3d/jar-reserve-01.webp"
+              alt="Yagya matte clay jar"
+              width={250}
+              height={250}
+              className="absolute left-[18%] -top-[8%] w-[52%] z-20"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,149 +1,113 @@
 @import "tailwindcss";
 
 @theme {
-  /* PPT Exact Colors:
-     Background: Oat White #F6EFE2
-     Fibonacci blocks:
-       Apricot Mist: #FDE6C8
-       Peach Glow: #FBC98A
-       Sea Buckthorn Orange: #F28C1B
-     Text & UI:
-       Blueberry Indigo: #2E3175
-       Cranberry: #B3122D
-       Charcoal: #2B2B2B
-       Burnt Orange: #D9700B
-  */
+  /* =========================================================
+     STRICT BRAND COLOUR PALETTE (No pure white / no pure black)
+     ========================================================= */
 
-  --color-primary: #2E3175;                  /* Blueberry Indigo */
-  --color-primary-container: #23265D;
-  --color-primary-fixed: #E4E5FA;
-  --color-primary-fixed-dim: #C5C7F5;
-  --color-on-primary: #FFFFFF;
-  --color-on-primary-container: #E4E5FA;
-  --color-on-primary-fixed: #0D0E29;
+  /* Background & Shape Group */
+  --color-oat: #F6EFE2;           /* Page canvas */
+  --color-apricot: #FDE6C8;       /* Soft Fibonacci shape blocks */
+  --color-peach: #FBC98A;         /* Mid Fibonacci shape blocks */
+  --color-seabuckthorn: #F28C1B;  /* Main Fibonacci shape blocks */
 
-  /* Sea Buckthorn Orange & Accents */
-  --color-secondary: #F28C1B;                /* Sea Buckthorn Orange */
-  --color-secondary-container: #D9700B;      /* Burnt Orange (hover state) */
-  --color-secondary-fixed: #FDE6C8;          /* Apricot Mist */
-  --color-secondary-fixed-dim: #FBC98A;      /* Peach Glow */
-  --color-on-secondary: #FFFFFF;
-  --color-on-secondary-container: #FFFFFF;
+  /* Text, Button & Detail Group */
+  --color-indigo: #2E3175;        /* Headings, body text, primary buttons */
+  --color-cranberry: #B3122D;     /* 1-3 highlighted key words per sentence */
+  --color-charcoal: #2B2B2B;      /* Marker-sketch doodles & underlines only */
+  --color-burnt: #D9700B;         /* Button hover state only */
 
-  /* Cranberry Accent */
-  --color-tertiary: #B3122D;                 /* Cranberry */
-  --color-tertiary-container: #8F0E24;
-  --color-tertiary-fixed: #FDE8EB;
-  --color-tertiary-fixed-dim: #F8B4BD;
-  --color-on-tertiary: #FFFFFF;
-  --color-on-tertiary-container: #FFFFFF;
+  /* Semantic Aliases */
+  --color-background: var(--color-oat);
+  --color-surface: var(--color-oat);
+  --color-surface-soft: var(--color-apricot);
+  --color-surface-mid: var(--color-peach);
+  --color-surface-accent: var(--color-seabuckthorn);
+  --color-primary: var(--color-indigo);
+  --color-primary-hover: var(--color-burnt);
+  --color-on-primary: var(--color-oat);
+  --color-highlight: var(--color-cranberry);
+  --color-doodle: var(--color-charcoal);
 
-  /* Canvas Oat White */
-  --color-surface: #F6EFE2;                  /* Oat White canvas */
-  --color-surface-dim: #EBDDC9;
-  --color-surface-bright: #FBF8F2;
-  --color-surface-container-lowest: #FFFFFF;
-  --color-surface-container-low: #F9F3EA;
-  --color-surface-container: #F4ECE0;
-  --color-surface-container-high: #EFE4D4;
-  --color-surface-container-highest: #E8DCC9;
-  --color-surface-variant: #FDE6C8;          /* Apricot Mist */
-  --color-on-surface: #2E3175;               /* Blueberry Indigo text */
-  --color-on-surface-variant: #2B2B2B;       /* Charcoal */
-  --color-surface-tint: #F28C1B;
+  /* =========================================================
+     LOCKED TYPOGRAPHY TOKENS (Google Fonts via next/font/google)
+     ========================================================= */
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-script: var(--font-playpen), cursive;
+  --font-sans: var(--font-jakarta), sans-serif;
+  --font-mono: var(--font-space-mono), monospace;
 
-  --color-outline: #2B2B2B;                  /* Charcoal */
-  --color-outline-variant: #E2D3BE;
-  --color-background: #F6EFE2;               /* Oat White */
-  --color-on-background: #2E3175;            /* Blueberry Indigo */
-  --color-inverse-surface: #2E3175;
-  --color-inverse-on-surface: #F6EFE2;
-  --color-inverse-primary: #FBC98A;
-
-  /* Brand Specific custom colors */
-  --color-oat: #F6EFE2;
-  --color-apricot: #FDE6C8;
-  --color-peach: #FBC98A;
-  --color-seabuckthorn: #F28C1B;
-  --color-blueberry: #2E3175;
-  --color-cranberry: #B3122D;
-  --color-charcoal: #2B2B2B;
-  --color-burnt: #D9700B;
-
-  /* Fonts */
-  --font-serif: var(--font-fragilita), 'Playfair Display', Georgia, serif;
-  --font-sans: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-script: var(--font-script), 'Segoe Script', 'Caveat', cursive;
-  --font-mono: var(--font-space-mono), 'Space Mono', monospace;
+  /* =========================================================
+     FIBONACCI & GOLDEN RATIO SPACING SCALE (Base = 8px, phi = 1.618)
+     ========================================================= */
+  --spacing-fib-1: 0.5rem;   /* 1 x 8px  = 8px   */
+  --spacing-fib-2: 1rem;     /* 2 x 8px  = 16px  */
+  --spacing-fib-3: 1.5rem;   /* 3 x 8px  = 24px  */
+  --spacing-fib-5: 2.5rem;   /* 5 x 8px  = 40px  */
+  --spacing-fib-8: 4rem;     /* 8 x 8px  = 64px  */
+  --spacing-fib-13: 6.5rem;  /* 13 x 8px = 104px */
 }
 
-body {
-  background-color: #F6EFE2;
-  color: #2E3175;
+@layer base {
+  html {
+    background-color: var(--color-oat);
+    color: var(--color-indigo);
+  }
+
+  body {
+    background-color: var(--color-oat);
+    color: var(--color-indigo);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-charcoal);
+    outline-offset: 3px;
+  }
 }
 
-/* Handwritten / Sketch Marker utilities */
-.font-script {
-  font-family: var(--font-script), 'Segoe Script', cursive;
+/* Typography Role Utilities */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-script-body {
+  font-family: var(--font-script);
+  line-height: 1.68;
+}
+
+.font-ui-label {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .font-mono-meta {
-  font-family: var(--font-space-mono), 'Space Mono', monospace;
+  font-family: var(--font-mono);
 }
 
-.marker-underline {
-  position: relative;
-  display: inline-block;
-}
-
-.marker-underline::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 100%;
-  height: 3px;
-  background-color: #2B2B2B;
-  border-radius: 9999px;
-  opacity: 0.85;
-  transform: rotate(-0.5deg);
-}
-
-.marker-box {
-  border: 1.5px solid #2B2B2B;
-  box-shadow: 2px 3px 0px #2B2B2B;
-}
-
-.golden-radius {
-  border-radius: 1.618rem;
-}
-
-.btn-yagya {
-  background-color: #2E3175;
-  color: #FFFFFF;
-  font-family: var(--font-jakarta), sans-serif;
+/* Primary Button: Indigo bg, Oat text, Jakarta ALL CAPS 0.08em, hover Burnt Orange */
+.btn-primary-yagya {
+  background-color: var(--color-indigo);
+  color: var(--color-oat);
+  font-family: var(--font-sans);
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-weight: 600;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 180ms ease;
+  cursor: pointer;
 }
 
-.btn-yagya:hover {
-  background-color: #D9700B;
-  transform: translateY(-1px);
+.btn-primary-yagya:hover {
+  background-color: var(--color-burnt);
 }
 
-.btn-yagya-orange {
-  background-color: #F28C1B;
-  color: #FFFFFF;
-  font-family: var(--font-jakarta), sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-yagya-orange:hover {
-  background-color: #D9700B;
-  transform: translateY(-1px);
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
