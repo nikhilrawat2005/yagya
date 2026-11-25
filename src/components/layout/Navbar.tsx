@@ -9,7 +9,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { siteConfig } from '@/lib/data/site';
 import { ASSETS } from '@/lib/assets';
 import { useCartStore } from '@/lib/store/cartStore';
-import { Doodle, DoodleUnderline } from '@/components/doodles';
+import { DoodleUnderline } from '@/components/doodles';
 
 const NAV_LINKS = [
   { href: '/about', label: 'Story' },
@@ -63,14 +63,6 @@ export function Navbar() {
             >
               {siteConfig.name.toUpperCase()}
             </span>
-            <Doodle
-              name="flame-small-a"
-              tone="flame"
-              size={18}
-              priority
-              inline
-              className="shrink-0 opacity-90"
-            />
           </Link>
 
           {/* Right: 4 Minimal Links + Bag Trigger + Mobile Toggle */}

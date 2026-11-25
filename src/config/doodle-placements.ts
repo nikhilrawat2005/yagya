@@ -35,8 +35,8 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
   home: {
     'chapter-01': [
       {
-        name: 'diya-with-rays-a',
-        tone: 'flame',
+        name: 'sun-rays-a',
+        tone: 'peach',
         size: 'clamp(96px, 14vw, 172px)',
         position: '-top-12 -right-6 sm:-top-16 sm:-right-8 z-0',
         rotate: 6,
@@ -47,9 +47,9 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
         delay: 0.1,
       },
       {
-        name: 'sparks-burst-a',
-        tone: 'peach',
-        size: 64,
+        name: 'star-tiny-sparkle-trio',
+        tone: 'apricot',
+        size: 56,
         position: '-top-10 right-24 sm:right-28 z-0',
         rotate: -10,
         showOn: 'md+',
@@ -136,8 +136,8 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-04': [
       {
-        name: 'diya-lit-large-a',
-        tone: 'flame',
+        name: 'seed-in-hand-open-palm-b',
+        tone: 'apricot',
         size: 'clamp(120px, 15vw, 196px)',
         position: '-top-16 -left-8 z-0',
         rotate: -5,
@@ -502,8 +502,8 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-03': [
       {
-        name: 'diya-b',
-        tone: 'flame',
+        name: 'sun-rays-b',
+        tone: 'peach',
         size: 'clamp(100px, 13vw, 160px)',
         position: '-top-14 -right-6 z-0',
         rotate: 6,

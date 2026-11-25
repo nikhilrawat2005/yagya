@@ -4,10 +4,9 @@ import React from 'react';
 import { Doodle, type DoodleTone } from '@/components/doodles/Doodle';
 import type { DoodleName } from '@/lib/doodles';
 
-export type DoodleDividerVariant = 'flame' | 'leaf' | 'diamond' | 'dots' | 'vine' | 'wave';
+export type DoodleDividerVariant = 'leaf' | 'diamond' | 'dots' | 'vine' | 'wave';
 
 const VARIANT_MAP: Record<DoodleDividerVariant, DoodleName> = {
-  flame: 'divider-flame-center',
   leaf: 'divider-leaf-center',
   diamond: 'divider-diamond-center',
   dots: 'divider-three-dots',

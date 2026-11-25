@@ -7,9 +7,9 @@ export default function NotFound() {
     <div className="min-h-[100dvh] bg-navy text-oat pt-32 pb-24 px-4 flex items-center">
       <div className="relative max-w-md mx-auto w-full">
         <Doodle
-          name="diya-lit-large-b"
-          tone="flame"
-          size="clamp(110px, 16vw, 176px)"
+          name="seed-sprout-a"
+          tone="peach"
+          size="clamp(100px, 14vw, 160px)"
           float
           priority
           rotate={-4}

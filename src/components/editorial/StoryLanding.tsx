@@ -489,7 +489,7 @@ export function StoryLanding() {
             </OatSheet>
           </div>
         </div>
-        <DoodleDivider variant="flame" tone="flame" className="mt-12" />
+        <DoodleDivider variant="leaf" tone="peach" className="mt-12" />
       </BackgroundChapter>
     </div>
   );

@@ -31,9 +31,8 @@ export function Footer() {
               />
             </div>
             <div>
-              <span className="font-display text-lg tracking-[0.08em] font-semibold text-oat flex items-center gap-1.5 leading-none">
-                <span>{siteConfig.name.toUpperCase()}</span>
-                <Doodle name="flame-small-b" tone="flame" size={16} inline />
+              <span className="font-display text-lg tracking-[0.08em] font-semibold text-oat block leading-none">
+                {siteConfig.name.toUpperCase()}
               </span>
               <span className="text-xs text-apricot/75 mt-1 flex items-center gap-1.5">
                 <Doodle name="icon-leaf-drop" tone="apricot" size={14} inline opacity={0.8} />
