@@ -19,9 +19,6 @@ export interface AnimatedTabsProps<T extends string> {
   className?: string;
 }
 
-/**
- * Shared spring-animated tab strip with glowing active indicator (`layoutId`).
- */
 export function AnimatedTabs<T extends string>({
   tabs,
   activeTab,
@@ -36,7 +33,7 @@ export function AnimatedTabs<T extends string>({
     return (
       <div
         role="tablist"
-        className={`flex flex-wrap border-b border-charcoal/20 gap-6 font-ui-label text-xs ${className}`}
+        className={`flex flex-wrap border-b border-white/20 gap-6 font-ui-label text-[11px] ${className}`}
       >
         {tabs.map((tab) => {
           const active = activeTab === tab.id;
@@ -48,7 +45,7 @@ export function AnimatedTabs<T extends string>({
               aria-selected={active}
               onClick={() => onChange(tab.id)}
               className={`relative pb-2.5 transition-colors duration-200 cursor-pointer ${
-                active ? 'text-indigo' : 'text-indigo/65 hover:text-burnt'
+                active ? 'text-oat' : 'text-apricot/65 hover:text-oat'
               }`}
             >
               <span>{tab.label}</span>
@@ -56,7 +53,7 @@ export function AnimatedTabs<T extends string>({
                 <motion.span
                   layoutId={layoutId}
                   transition={prefersReducedMotion ? { duration: 0.01 } : MOTION_SPRING.tactile}
-                  className="absolute left-0 right-0 -bottom-[1px] h-0.5 rounded-full bg-gradient-to-r from-seabuckthorn via-burnt to-indigo shadow-[0_0_10px_var(--glow-primary)]"
+                  className="absolute left-0 right-0 -bottom-[1px] h-[2px] bg-flame"
                 />
               )}
             </button>
@@ -76,19 +73,19 @@ export function AnimatedTabs<T extends string>({
             role="tab"
             type="button"
             aria-selected={active}
-            whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
+            whileTap={prefersReducedMotion ? undefined : { scale: 0.97 }}
             onClick={() => onChange(tab.id)}
-            className={`relative overflow-hidden px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-ui-label text-xs border transition-colors duration-200 cursor-pointer ${
+            className={`relative overflow-hidden px-4 py-2 rounded-[4px] font-ui-label text-[11px] border transition-colors duration-200 cursor-pointer ${
               active
-                ? 'text-oat border-indigo shadow-[var(--glow-level-1)]'
-                : 'bg-apricot/80 text-indigo border-charcoal/25 hover:border-burnt hover:shadow-[var(--glow-level-1)]'
+                ? 'text-oat border-flame'
+                : 'bg-[#F6EFE2]/[0.12] text-apricot/90 border-white/20 hover:border-apricot/45 hover:text-oat'
             }`}
           >
             {active && (
               <motion.span
                 layoutId={layoutId}
                 transition={prefersReducedMotion ? { duration: 0.01 } : MOTION_SPRING.tactile}
-                className="absolute inset-0 bg-indigo rounded-full"
+                className="absolute inset-0 bg-flame rounded-[3px]"
               />
             )}
             <span className="relative z-10">{tab.label}</span>
@@ -117,9 +114,9 @@ export function AnimatedTabPanel({
       <motion.div
         key={tabKey}
         role="tabpanel"
-        initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 8, filter: 'blur(3px)' }}
-        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-        exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -6, filter: 'blur(3px)' }}
+        initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
         transition={{
           duration: prefersReducedMotion ? 0.1 : MOTION_DURATION.fast + 0.05,
           ease: MOTION_EASE.smooth,

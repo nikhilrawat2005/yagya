@@ -1,15 +1,13 @@
 import type { Metadata } from 'next';
 import {
   Playfair_Display,
-  Playpen_Sans,
-  Plus_Jakarta_Sans,
-  Space_Mono,
+  DM_Sans,
+  Caveat,
 } from 'next/font/google';
 import './globals.css';
 import { siteConfig } from '@/lib/data/site';
 import { SmoothScrollProvider } from '@/components/motion/SmoothScrollProvider';
 import { PageTransition } from '@/components/motion/PageTransition';
-import { CursorGlow } from '@/components/ui/CursorGlow';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -20,22 +18,15 @@ const playfair = Playfair_Display({
   display: 'swap',
 });
 
-const playpenSans = Playpen_Sans({
+const dmSans = DM_Sans({
   subsets: ['latin'],
-  variable: '--font-playpen',
+  variable: '--font-dm-sans',
   display: 'swap',
 });
 
-const plusJakarta = Plus_Jakarta_Sans({
+const caveat = Caveat({
   subsets: ['latin'],
-  variable: '--font-jakarta',
-  display: 'swap',
-});
-
-const spaceMono = Space_Mono({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  variable: '--font-space-mono',
+  variable: '--font-caveat',
   display: 'swap',
 });
 
@@ -54,17 +45,15 @@ export default function RootLayout({
       lang="en"
       className={[
         playfair.variable,
-        playpenSans.variable,
-        plusJakarta.variable,
-        spaceMono.variable,
+        dmSans.variable,
+        caveat.variable,
       ].join(' ')}
     >
-      <body className="bg-oat text-indigo antialiased font-sans selection:bg-seabuckthorn selection:text-oat">
+      <body className="bg-navy text-oat antialiased font-sans selection:bg-flame selection:text-oat">
         <SmoothScrollProvider>
-          <CursorGlow />
           <Navbar />
           <CartDrawer />
-          <main className="min-h-screen pt-24 md:pt-28">
+          <main className="min-h-screen">
             <PageTransition>{children}</PageTransition>
           </main>
           <Footer />

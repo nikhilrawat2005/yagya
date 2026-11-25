@@ -7,27 +7,17 @@ import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilit
 
 export interface Card3DProps {
   children: React.ReactNode;
-  /** Maximum tilt angle in degrees on each axis (default 8deg). */
   maxTilt?: number;
-  /** Extra classes applied to the outer perspective container (grid spans, etc.). */
   className?: string;
-  /** Classes applied to the clipped card surface inside the 3D plane. */
   surfaceClassName?: string;
-  /** Show radial warm Apricot/Sea Buckthorn specular glare following the pointer. */
   enableGlare?: boolean;
-  /** Subtle lift (-4px) on pointer hover. */
   lift?: boolean;
-  /** Semantic wrapper element type. */
   as?: 'div' | 'article';
 }
 
-/**
- * Interactive 3D tilt card with pointer-tracking glare highlight, layered depth support
- * via `<Card3DLayer>`, warm Sea Buckthorn glow edge, and clean touch/reduced-motion fallbacks.
- */
 export function Card3D({
   children,
-  maxTilt = 8,
+  maxTilt = 6,
   className = '',
   surfaceClassName = '',
   enableGlare = true,
@@ -48,7 +38,7 @@ export function Card3D({
   const glareX = useSpring(rawGlareX, { stiffness: 260, damping: 28 });
   const glareY = useSpring(rawGlareY, { stiffness: 260, damping: 28 });
 
-  const glareBackground = useMotionTemplate`radial-gradient(360px circle at ${glareX}% ${glareY}%, var(--glow-glare) 0%, rgba(242, 140, 27, 0.16) 42%, transparent 75%)`;
+  const glareBackground = useMotionTemplate`radial-gradient(360px circle at ${glareX}% ${glareY}%, rgba(253, 230, 200, 0.22) 0%, rgba(223, 127, 37, 0.10) 42%, transparent 75%)`;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!enableInteractiveMotion || !cardRef.current) return;
@@ -95,37 +85,20 @@ export function Card3D({
               }
             : undefined
         }
-        whileHover={
-          enableInteractiveMotion && lift
-            ? { y: -5, scale: 1.012 }
-            : undefined
-        }
+        whileHover={enableInteractiveMotion && lift ? { y: -4 } : undefined}
         whileTap={prefersReducedMotion ? undefined : { scale: 0.985 }}
         transition={MOTION_SPRING.tactile}
-        className={`relative h-full w-full rounded-2xl transition-[box-shadow,border-color] duration-300 ease-[var(--ease-smooth)] ${
-          hovered ? 'shadow-[var(--glow-level-2)]' : 'shadow-[0_2px_10px_-2px_rgba(43,43,43,0.08)]'
+        className={`relative h-full w-full rounded-[6px] transition-[box-shadow,border-color,background-color] duration-300 ease-[var(--ease-smooth)] ${
+          hovered ? 'shadow-[var(--sheet-shadow-hover)]' : 'shadow-[var(--sheet-shadow)]'
         } ${surfaceClassName}`}
       >
-        {/* Dynamic radial glare highlight clipped cleanly to card radius */}
         {enableInteractiveMotion && enableGlare && (
           <motion.div
             aria-hidden="true"
             style={{ background: glareBackground }}
-            animate={{ opacity: hovered ? 0.55 : 0 }}
-            transition={{ duration: 0.2 }}
+            animate={{ opacity: hovered ? 0.65 : 0 }}
+            transition={{ duration: 0.22 }}
             className="pointer-events-none absolute inset-0 z-10 rounded-[inherit]"
-          />
-        )}
-
-        {/* Warm ambient edge ring on hover */}
-        {enableInteractiveMotion && (
-          <div
-            aria-hidden="true"
-            className={`pointer-events-none absolute inset-0 z-10 rounded-[inherit] ring-1 transition-opacity duration-300 ${
-              hovered
-                ? 'ring-seabuckthorn/60 opacity-100'
-                : 'ring-transparent opacity-0'
-            }`}
           />
         )}
 
@@ -137,25 +110,17 @@ export function Card3D({
 
 export interface Card3DLayerProps {
   children: React.ReactNode;
-  /** Depth in px along Z axis when parent Card3D tilts (default 14px). */
   depth?: number;
   className?: string;
 }
 
-/**
- * Inner parallax layer for Card3D. Translates along Z only on desktop pointer devices.
- */
-export function Card3DLayer({ children, depth = 14, className = '' }: Card3DLayerProps) {
+export function Card3DLayer({ children, depth = 12, className = '' }: Card3DLayerProps) {
   const { enableInteractiveMotion } = useInteractiveCapabilities();
   const hasPositionUtility = /\b(absolute|fixed|sticky|relative)\b/.test(className);
 
   return (
     <div
-      style={
-        enableInteractiveMotion
-          ? { transform: `translateZ(${depth}px)` }
-          : undefined
-      }
+      style={enableInteractiveMotion ? { transform: `translateZ(${depth}px)` } : undefined}
       className={`${hasPositionUtility ? '' : 'relative '}${className}`.trim()}
     >
       {children}

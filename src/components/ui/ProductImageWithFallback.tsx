@@ -11,7 +11,7 @@ interface ProductImageProps {
   width?: number;
   height?: number;
   className?: string;
-  priority?: boolean;
+  preload?: boolean;
 }
 
 export function ProductImageWithFallback({
@@ -21,17 +21,17 @@ export function ProductImageWithFallback({
   width,
   height,
   className = '',
-  priority = false,
+  preload = false,
 }: ProductImageProps) {
   const [error, setError] = useState(false);
 
   if (error || !src) {
     return (
       <div
-        className={`bg-apricot flex flex-col items-center justify-center text-indigo p-4 border border-charcoal/20 ${className}`}
+        className={`bg-oat/10 flex flex-col items-center justify-center text-oat p-4 border border-white/20 rounded-[6px] ${className}`}
       >
-        <Sprout className="w-6 h-6 mb-1.5 text-indigo" />
-        <span className="text-[11px] uppercase tracking-[0.08em] font-sans font-medium text-indigo">
+        <Sprout className="w-6 h-6 mb-1.5 text-peach" />
+        <span className="text-[11px] uppercase tracking-[0.12em] font-sans font-medium text-apricot">
           Yagya Harvest
         </span>
       </div>
@@ -45,7 +45,7 @@ export function ProductImageWithFallback({
         alt={alt}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        priority={priority}
+        preload={preload}
         onError={() => setError(true)}
         className={className}
       />
@@ -58,7 +58,7 @@ export function ProductImageWithFallback({
       alt={alt}
       width={width || 600}
       height={height || 600}
-      priority={priority}
+      preload={preload}
       onError={() => setError(true)}
       className={className}
     />

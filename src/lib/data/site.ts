@@ -22,15 +22,15 @@ export const siteConfig: SiteConfig = {
   name: 'Yagya',
   tagline: 'Seeds & Berries, Straight From The Farm',
   description:
-    'Honest Indian seeds and mountain berries harvested directly from partner farming communities and packed fresh in small batches.',
-  announcement: 'Seeds & Berries Straight From Indian Farms · Free Dispatch Over ₹499',
+    'Honest harvest seeds, mountain berries, dry fruits, raw nuts, and slow-roasted makhana sourced directly from partner farming communities and packed fresh in small batches.',
+  announcement: 'Farm-Direct Harvests · Pure Small-Batch Superfoods · Free Dispatch Over ₹499',
   freeShippingThreshold: 499,
   currency: 'INR',
   currencySymbol: '₹',
   contact: {
     email: 'care@yagyafoods.in',
     phone: '+91 98765 43210',
-    address: 'Yagya Naturals, India',
+    address: 'Yagya Naturals · Small-Batch Farm Network',
   },
   social: {
     instagram: 'https://instagram.com/yagyafoods',

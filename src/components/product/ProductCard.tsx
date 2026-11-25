@@ -29,81 +29,84 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Card3D
       as="article"
-      maxTilt={7}
+      maxTilt={5}
       className="h-full"
-      surfaceClassName="group bg-apricot/45 hover:bg-apricot/85 border-2 border-charcoal p-4 flex flex-col justify-between transition-colors duration-250"
+      surfaceClassName="group bg-[#F6EFE2]/[0.13] hover:bg-[#F6EFE2]/[0.20] backdrop-blur-[18px] border border-white/25 p-5 flex flex-col justify-between transition-colors duration-300"
     >
       <Link href={`/product/${product.slug}`} className="block">
         {product.badges.length > 0 && (
-          <Card3DLayer depth={12} className="mb-2">
-            <span className="glow-badge inline-block font-ui-label text-[10px] px-2.5 py-0.5 rounded-full bg-peach text-indigo border border-charcoal/25">
+          <Card3DLayer depth={10} className="mb-3">
+            <span className="inline-block font-ui-label text-[10px] px-2.5 py-0.5 rounded-[4px] bg-oat/15 text-peach border border-white/20">
               {product.badges[0]}
             </span>
           </Card3DLayer>
         )}
 
-        <Card3DLayer depth={8} className="mb-3">
-          <div className="relative rounded-xl aspect-square bg-oat border border-charcoal/20 p-4 flex items-center justify-center overflow-hidden glow-border">
+        <Card3DLayer depth={8} className="mb-4">
+          <div className="relative rounded-[6px] aspect-square bg-[#F6EFE2]/[0.10] border border-white/20 flex items-center justify-center overflow-hidden">
             <ProductImageWithFallback
               src={primaryImage?.src || ''}
               alt={primaryImage?.alt || product.name}
               fill
-              className="object-contain p-3 transition-transform duration-500 ease-[var(--ease-smooth)] group-hover:scale-108"
+              className={
+                primaryImage?.src?.includes('/images/products/')
+                  ? 'object-cover transition-transform duration-500 ease-[var(--ease-smooth)] group-hover:scale-106'
+                  : 'object-contain p-5 transition-transform duration-500 ease-[var(--ease-smooth)] group-hover:scale-106'
+              }
             />
           </div>
         </Card3DLayer>
 
-        <Card3DLayer depth={12}>
-          <span className="font-mono-meta text-[11px] text-cranberry block mb-1">
+        <Card3DLayer depth={10}>
+          <span className="font-ui-label text-[10px] text-peach/90 block mb-1.5">
             {product.origin}
           </span>
 
-          <h3 className="font-sans text-base font-semibold text-indigo group-hover:text-burnt transition-colors duration-200 leading-snug line-clamp-1 mb-1.5">
+          <h3 className="font-display text-xl font-medium text-oat group-hover:text-peach transition-colors duration-200 leading-snug line-clamp-1 mb-1.5">
             {product.name}
           </h3>
 
-          <p className="font-script-body text-sm text-indigo/90 line-clamp-2 mb-3">
+          <p className="text-xs sm:text-sm text-apricot/85 line-clamp-2 mb-4 leading-relaxed">
             {product.shortDescription}
           </p>
         </Card3DLayer>
       </Link>
 
       <Card3DLayer
-        depth={16}
-        className="pt-3 border-t border-charcoal/15 flex items-center justify-between gap-2 mt-auto"
+        depth={12}
+        className="pt-3.5 border-t border-white/15 flex items-center justify-between gap-2 mt-auto"
       >
         <div className="flex flex-col">
           <div className="flex items-baseline gap-1.5">
-            <span className="font-mono-meta font-bold text-base text-indigo">
+            <span className="text-base font-semibold text-oat">
               ₹{defaultVariant.price}
             </span>
             {defaultVariant.mrp > defaultVariant.price && (
-              <span className="font-mono-meta text-xs text-indigo/50 line-through">
+              <span className="text-xs text-apricot/50 line-through">
                 ₹{defaultVariant.mrp}
               </span>
             )}
           </div>
-          <span className="font-mono-meta text-[10px] text-indigo/75">
+          <span className="text-[11px] text-apricot/75">
             / {defaultVariant.weight}
           </span>
         </div>
 
         <GlowButton
           type="button"
-          variant="primary"
+          variant={added ? 'secondary' : 'primary'}
           size="sm"
           onClick={handleAdd}
           disabled={added}
           aria-label={`Add ${product.name} to bag`}
-          className={added ? '!bg-cranberry !border-cranberry' : ''}
         >
           <AnimatePresence mode="wait" initial={false}>
             {added ? (
               <motion.span
                 key="added"
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.85 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
+                exit={{ opacity: 0, scale: 0.85 }}
                 transition={{ duration: 0.16, ease: MOTION_EASE.smooth }}
                 className="inline-flex items-center gap-1.5"
               >
@@ -113,9 +116,9 @@ export function ProductCard({ product }: { product: Product }) {
             ) : (
               <motion.span
                 key="add"
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.85 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
+                exit={{ opacity: 0, scale: 0.85 }}
                 transition={{ duration: 0.16, ease: MOTION_EASE.smooth }}
                 className="inline-flex items-center gap-1.5"
               >

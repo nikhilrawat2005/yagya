@@ -1,15 +1,2 @@
-export { FibonacciBlocks } from '@/components/shapes/FibonacciBlocks';
-export type { FibonacciBlocksProps } from '@/components/shapes/FibonacciBlocks';
-export { DoodlePath } from './DoodlePath';
-export { DoodleUnderline } from './DoodleUnderline';
-export { DoodleCircle } from './DoodleCircle';
-export { DoodleArrow } from './DoodleArrow';
-export { DoodleSparkle } from './DoodleSparkle';
-export { DoodleSeed } from './DoodleSeed';
-export { DoodleBerry } from './DoodleBerry';
-export { DoodleJar } from './DoodleJar';
-export { DoodleLeaf } from './DoodleLeaf';
-export { DoodleSwirl } from './DoodleSwirl';
-export { DoodleSun } from './DoodleSun';
-export { DoodleCategorySketch } from './DoodleCategorySketch';
-export { FloatingDoodle } from './FloatingDoodle';
+export { DoodleSVG } from '@/components/editorial/DoodleSVG';
+export type { DoodleSVGProps, DoodleName, DoodleTone } from '@/components/editorial/DoodleSVG';

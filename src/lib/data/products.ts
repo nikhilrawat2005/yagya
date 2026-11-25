@@ -51,9 +51,9 @@ export interface Product {
 }
 
 /**
- * Core Launch Lineup (7 Farm Superfoods)
- * All descriptions, ingredients, serving sizes, and nutrition facts come verbatim
- * from `Yagya content/Nutrition facts and description.docx`.
+ * Complete Yagya Harvest Lineup (20 Small-Batch Products)
+ * Core 7 farm seeds & berries carry reference tables from `Yagya content/Nutrition facts and description.docx`.
+ * Orchard dried fruits, whole nuts, and seasoned makhana pack variants follow the documented catalog lineup.
  */
 export const products: Product[] = [
   {
@@ -70,8 +70,8 @@ export const products: Product[] = [
     origin: 'Himalayan Valleys',
     images: [
       {
-        src: '/images/3d/berry-seabuckthorn-01.webp',
-        alt: '3D clay render of whole Dried Sea Buckthorn Berries with indigo stems',
+        src: '/images/products/dried-sea-buckthorn-berries.webp',
+        alt: 'Bowl of amber Dried Sea Buckthorn Berries with leafy stem on dark slate',
       },
     ],
     variants: [
@@ -131,11 +131,11 @@ export const products: Product[] = [
     description:
       'Known traditionally as Alsi in Hindi and Jawas in Marathi, our flax seeds are a nutrient-dense superfood packed with plant-based Omega-3 fatty acids, gut-friendly dietary fiber, lignans, and protein. Grown as a cool-season winter crop across fertile belts in Madhya Pradesh, Uttar Pradesh, Rajasthan, and Chhattisgarh, and cleaned and packed straight from farming communities.',
     provenance: 'Rabi Harvest · Madhya Pradesh & Rajasthan',
-    origin: 'Indian Rabi Belt',
+    origin: 'Winter Rabi Belt',
     images: [
       {
-        src: '/images/3d/seed-flax-01.webp',
-        alt: '3D clay render of toasted amber-orange Flax Seeds',
+        src: '/images/products/flax-seeds.webp',
+        alt: 'Wooden scoop pouring amber-brown Flax Seeds with dried flax pods on slate',
       },
     ],
     variants: [
@@ -182,15 +182,15 @@ export const products: Product[] = [
     category: 'Seeds & Grains',
     categorySlug: 'seeds-and-grains',
     shortDescription:
-      'Plump Indian kaddu pepitas delivering 29.8g protein per 100g and natural crunch.',
+      'Plump kaddu pepitas delivering 29.8g protein per 100g and natural crunch.',
     description:
-      'Known as kaddu or sitaphal seeds across Indian households, pumpkin seeds (pepitas) are a powerhouse superfood rich in plant protein, heart-healthy unsaturated fats, dietary fiber, magnesium, zinc, and iron. Grown across India’s warm, sun-drenched plains in West Bengal, Odisha, Tamil Nadu, Karnataka, and northern belts.',
+      'Known traditionally as kaddu or sitaphal seeds, pumpkin seeds (pepitas) are a powerhouse superfood rich in plant protein, heart-healthy unsaturated fats, dietary fiber, magnesium, zinc, and iron. Grown across warm, sun-drenched plains in West Bengal, Odisha, Tamil Nadu, Karnataka, and northern belts.',
     provenance: 'Farm-Direct Pepitas · River & Southern Plains',
-    origin: 'Indian Plains',
+    origin: 'Sun-Drenched Plains',
     images: [
       {
-        src: '/images/3d/seed-pumpkin-01.webp',
-        alt: '3D clay render of flat oval Pumpkin Seed kernels',
+        src: '/images/products/pumpkin-seeds.webp',
+        alt: 'Dark bowl of plump green Pumpkin Seeds beside sliced gourd on slate',
       },
     ],
     variants: [
@@ -238,11 +238,11 @@ export const products: Product[] = [
     description:
       'Chia seeds (Salvia hispanica) pack high dietary fiber, plant-based omega-3 fatty acids, protein, and key minerals like calcium and magnesium. Grown during rabi and winter months in Madhya Pradesh, Maharashtra, Karnataka, and Rajasthan, and sourced directly from local farmers under strict hygiene packing to keep out dust and moisture.',
     provenance: 'Madhya Pradesh & Karnataka Rabi Harvest',
-    origin: 'Central & Southern India',
+    origin: 'Central & Southern Belt',
     images: [
       {
-        src: '/images/3d/seed-chia-01.webp',
-        alt: '3D clay render of speckled indigo and charcoal Chia Seeds',
+        src: '/images/products/chia-seeds.webp',
+        alt: 'Glass jar of Chia Seeds with wooden spoon and soaked chia drink on slate',
       },
     ],
     variants: [
@@ -295,8 +295,8 @@ export const products: Product[] = [
     origin: 'Karnataka & Maharashtra',
     images: [
       {
-        src: '/images/3d/seed-sunflower-01.webp',
-        alt: '3D clay render of striped and shelled Sunflower Seeds',
+        src: '/images/products/sunflower-seeds.webp',
+        alt: 'Cream bowl of hulled Sunflower Seeds beside dried sunflower head on slate',
       },
     ],
     variants: [
@@ -414,8 +414,8 @@ export const products: Product[] = [
     origin: 'Cool-Climate Orchards',
     images: [
       {
-        src: '/images/3d/berry-cranberry-01.webp',
-        alt: '3D clay render of plump crimson Dried Cranberries',
+        src: '/images/products/dried-cranberries.webp',
+        alt: 'Speckled bowl of ruby-red Dried Cranberries with fresh berries on dark slate',
       },
     ],
     variants: [
@@ -462,5 +462,540 @@ export const products: Product[] = [
     isFeatured: true,
     isBestseller: true,
     relatedSlugs: ['dried-blueberries', 'dried-sea-buckthorn-berries', 'pumpkin-seeds'],
+  },
+  // --- Dried Fruits ---
+  {
+    id: 'prod-anjeer',
+    slug: 'dried-anjeer-figs',
+    name: 'Dried Anjeer (Figs)',
+    category: 'Dried Fruits',
+    categorySlug: 'dried-fruits',
+    shortDescription:
+      'Sun-cured orchard figs prized for soft honeyed texture, natural seeds, and unglazed purity.',
+    description:
+      'Hand-picked from sunny orchard rows and cured slowly to lock in deep honeyed flavour without added sugar or glazing agents. Enjoy our whole Dried Anjeer soaked overnight or sliced into warm morning bowls.',
+    provenance: 'Orchard Harvest · Whole Sun-Cured Rings',
+    origin: 'Sun-Cured Orchard Belt',
+    images: [
+      {
+        src: '/images/products/dried-anjeer-figs.webp',
+        alt: 'Whole and halved Dried Anjeer figs with fig leaf on dark slate',
+      },
+    ],
+    variants: [
+      { id: 'anj-100', label: '100g', weight: '100g', price: 299, mrp: 349, sku: 'YAG-ANJ-100', stock: 45 },
+      { id: 'anj-200', label: '200g', weight: '200g', price: 569, mrp: 649, sku: 'YAG-ANJ-200', stock: 35 },
+      { id: 'anj-500', label: '500g', weight: '500g', price: 1299, mrp: 1499, sku: 'YAG-ANJ-500', stock: 20 },
+    ],
+    badges: ['Sun Cured', 'Zero Added Sugar'],
+    rating: 4.9,
+    reviewCount: 64,
+    servingSize: '30 g (2–3 figs)',
+    nutritionFacts: [],
+    nutritionFootnote:
+      '100% single-origin sun-cured dried figs. Batch-specific nutritional assays are printed on each sealed pouch.',
+    ingredients: '100% Whole Dried Figs (Anjeer).',
+    allergenAdvice: 'Packed in a facility that handles tree nuts, peanuts, sesame, and seeds.',
+    howToUse: [
+      'Soak 2 whole figs overnight in water or milk for a traditional morning ritual.',
+      'Chop into warm porridge, halwa, artisanal trail mixes, or energy laddoos.',
+    ],
+    storage: 'Store in a cool, dry, airtight pantry jar away from heat and moisture.',
+    tags: ['anjeer', 'dried figs', 'dried fruits', 'zero added sugar'],
+    isFeatured: true,
+    isBestseller: false,
+    relatedSlugs: ['dates', 'almonds', 'dried-cranberries'],
+  },
+  {
+    id: 'prod-dates',
+    slug: 'dates',
+    name: 'Dates',
+    category: 'Dried Fruits',
+    categorySlug: 'dried-fruits',
+    shortDescription:
+      'Glossy, tender orchard dates with natural caramel richness and zero added syrup.',
+    description:
+      'Selected for soft bite and deep caramel sweetness directly off the palm. Free from glucose glazing or artificial preservatives, these dates deliver quick natural carbohydrates alongside warm kitchen versatility.',
+    provenance: 'Palm Grove Harvest · Soft & Natural',
+    origin: 'Warm Palm Orchards',
+    images: [
+      {
+        src: '/images/products/dates.webp',
+        alt: 'Stacked glossy Dates with halved fruit and brass spoon',
+      },
+    ],
+    variants: [
+      { id: 'dat-100', label: '100g', weight: '100g', price: 199, mrp: 239, sku: 'YAG-DAT-100', stock: 60 },
+      { id: 'dat-200', label: '200g', weight: '200g', price: 369, mrp: 429, sku: 'YAG-DAT-200', stock: 45 },
+    ],
+    badges: ['Zero Glaze', 'Natural Sweetener'],
+    rating: 4.8,
+    reviewCount: 53,
+    servingSize: '30 g (3–4 dates)',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'Single-ingredient orchard dates. Exact nutritional values vary mildly across seasonal harvests.',
+    ingredients: '100% Whole Natural Dates.',
+    allergenAdvice: 'May contain natural date pits; handle gently. Facility handles tree nuts and seeds.',
+    howToUse: [
+      'Enjoy two dates with a whole almond before workouts or long commutes.',
+      'Blend into smoothies, plant milks, or date-and-seed energy bars as a sugar alternative.',
+    ],
+    storage: 'Store in a cool, dry place; refrigerate in warm humid months for lasting tenderness.',
+    tags: ['dates', 'khajoor', 'dried fruits', 'natural sweetener'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['dried-anjeer-figs', 'almonds', 'cashews'],
+  },
+  {
+    id: 'prod-pineapple',
+    slug: 'dried-pineapple',
+    name: 'Dried Pineapple Rings',
+    category: 'Dried Fruits',
+    categorySlug: 'dried-fruits',
+    shortDescription:
+      'Sun-ripened golden pineapple slices gently dehydrated for chewy tropical brightness.',
+    description:
+      'Thick-cut rings of ripe pineapple dried carefully in warm airflow tunnels to preserve golden colour, floral aroma, and satisfying chewy bite for effortless snacking and baking.',
+    provenance: 'Hillside Orchard Cut · Slow Dried',
+    origin: 'Foothill Tropical Groves',
+    images: [
+      {
+        src: '/images/products/dried-pineapple.webp',
+        alt: 'Stacked golden Dried Pineapple Rings on deep navy slate',
+      },
+    ],
+    variants: [
+      { id: 'pin-100', label: '100g', weight: '100g', price: 229, mrp: 269, sku: 'YAG-PIN-100', stock: 50 },
+      { id: 'pin-200', label: '200g', weight: '200g', price: 429, mrp: 499, sku: 'YAG-PIN-200', stock: 30 },
+    ],
+    badges: ['Golden Rings', 'Small Batch'],
+    rating: 4.7,
+    reviewCount: 38,
+    servingSize: '30 g',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'Gentle low-temperature fruit dehydration with lot traceability printed on pack.',
+    ingredients: 'Sliced Tropical Pineapple, Cane Sugar (light osmotic cure).',
+    allergenAdvice: 'Facility processes tree nuts, peanuts, and seeds.',
+    howToUse: [
+      'Tear golden rings for trail packs, lunchboxes, or tea-time platters.',
+      'Dice over yogurt bowls or infused sparkling water.',
+    ],
+    storage: 'Reseal barrier pouch firmly away from direct sunlight and humidity.',
+    tags: ['pineapple', 'dried pineapple', 'dried fruits', 'tropical'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['dried-kiwi', 'dried-cranberries', 'pumpkin-seeds'],
+  },
+  {
+    id: 'prod-kiwi',
+    slug: 'dried-kiwi',
+    name: 'Dried Kiwi Slices',
+    category: 'Dried Fruits',
+    categorySlug: 'dried-fruits',
+    shortDescription:
+      'Emerald dehydrated kiwi rounds balancing crisp tang and gentle orchard sweetness.',
+    description:
+      'Picked at peak orchard firmness and sliced evenly to retain characteristic speckled seeds, emerald vibrancy, and refreshing tangy sweetness.',
+    provenance: 'Orchard Harvest · Whole Seeded Slices',
+    origin: 'Cool Highland Orchards',
+    images: [
+      {
+        src: '/images/products/dried-kiwi.webp',
+        alt: 'Translucent green Dried Kiwi slices arranged beside fresh kiwi on olive slate',
+      },
+    ],
+    variants: [
+      { id: 'kiw-100', label: '100g', weight: '100g', price: 239, mrp: 279, sku: 'YAG-KIW-100', stock: 45 },
+      { id: 'kiw-200', label: '200g', weight: '200g', price: 449, mrp: 519, sku: 'YAG-KIW-200', stock: 30 },
+    ],
+    badges: ['Bright & Tangy', 'Orchard Sliced'],
+    rating: 4.8,
+    reviewCount: 41,
+    servingSize: '30 g',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'High-barrier pouch preserves vibrant natural pigment and moisture balance.',
+    ingredients: 'Dehydrated Green Kiwi Slices, Cane Sugar.',
+    allergenAdvice: 'Processed in a clean unit that handles tree nuts and seeds.',
+    howToUse: [
+      'Pack into travel tins for a bright, palate-refreshing snack.',
+      'Chop finely into muesli, chia puddings, or chilled fruit salads.',
+    ],
+    storage: 'Store sealed in a cool, dark cabinet away from heat sources.',
+    tags: ['kiwi', 'dried kiwi', 'dried fruits', 'tangy'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['dried-pineapple', 'dried-sea-buckthorn-berries', 'chia-seeds'],
+  },
+  // --- Nuts ---
+  {
+    id: 'prod-pine-nuts',
+    slug: 'pine-nuts',
+    name: 'Pine Nuts (Chilgoza)',
+    category: 'Nuts',
+    categorySlug: 'nuts',
+    shortDescription:
+      'Delicate, buttery shelled mountain pine kernels hand-sorted for creamy crunch.',
+    description:
+      'Revered across high cedar forests for their rich resinous aroma and melt-in-the-mouth texture, our shelled chilgoza pine nuts are hand-graded in small lots for raw snacking, pestos, and celebratory dishes.',
+    provenance: 'Mountain Cedar Forests · Shelled Kernels',
+    origin: 'High-Altitude Cedar Forests',
+    images: [
+      {
+        src: '/images/products/pine-nuts.webp',
+        alt: 'Dark bowl of shelled Pine Nuts with pine needles and pinecone',
+      },
+    ],
+    variants: [
+      { id: 'pnu-100', label: '100g', weight: '100g', price: 649, mrp: 749, sku: 'YAG-PNU-100', stock: 28 },
+      { id: 'pnu-200', label: '200g', weight: '200g', price: 1249, mrp: 1449, sku: 'YAG-PNU-200', stock: 18 },
+      { id: 'pnu-500', label: '500g', weight: '500g', price: 2899, mrp: 3299, sku: 'YAG-PNU-500', stock: 10 },
+    ],
+    badges: ['Mountain Harvest', 'Hand Sorted'],
+    rating: 5.0,
+    reviewCount: 44,
+    servingSize: '20 g',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'Nitrogen-flushed small-batch pouch protects delicate pine kernel oils.',
+    ingredients: '100% Shelled Pine Nut Kernels.',
+    allergenAdvice: 'Contains Tree Nuts. Packed where almonds, cashews, and seeds are handled.',
+    howToUse: [
+      'Lightly warm in a dry skillet for 60 seconds and fold over fresh herbs or pasta.',
+      'Enjoy a small spoonful raw with honey or saffron milk.',
+    ],
+    storage: 'Store chilled or in a dark cool place after opening to preserve fresh oils.',
+    tags: ['pine nuts', 'chilgoza', 'nuts', 'mountain'],
+    isFeatured: true,
+    isBestseller: false,
+    relatedSlugs: ['almonds', 'hazelnuts', 'cashews'],
+  },
+  {
+    id: 'prod-almonds',
+    slug: 'almonds',
+    name: 'Whole Almonds',
+    category: 'Nuts',
+    categorySlug: 'nuts',
+    shortDescription:
+      'Crisp, unbroken whole almond kernels graded for sweet nutty bite and skin-on fiber.',
+    description:
+      'Selected for uniform size, thin amber skin, and clean snap without bitter kernels. Ideal for overnight soaking, homemade almond milk, or roasting with warming pantry spices.',
+    provenance: 'Orchard Harvest · Unbroken Whole Kernels',
+    origin: 'Northern Valley Orchards',
+    images: [
+      {
+        src: '/images/products/almonds.webp',
+        alt: 'Wooden bowl of whole skin-on Almonds with almond blossoms',
+      },
+    ],
+    variants: [
+      { id: 'alm-100', label: '100g', weight: '100g', price: 219, mrp: 259, sku: 'YAG-ALM-100', stock: 75 },
+      { id: 'alm-200', label: '200g', weight: '200g', price: 419, mrp: 489, sku: 'YAG-ALM-200', stock: 55 },
+      { id: 'alm-500', label: '500g', weight: '500g', price: 949, mrp: 1099, sku: 'YAG-ALM-500', stock: 30 },
+    ],
+    badges: ['100% Natural', 'Skin-On Whole'],
+    rating: 4.9,
+    reviewCount: 82,
+    servingSize: '28 g (approx. 23 kernels)',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'Raw unroasted almonds sorted under clean food-safety controls.',
+    ingredients: '100% Whole Natural Almonds.',
+    allergenAdvice: 'Contains Tree Nuts. Facility handles cashews, hazelnuts, and seeds.',
+    howToUse: [
+      'Soak 8–10 almonds overnight and peel in the morning for gentle digestion.',
+      'Sliver over kheer, oats, and salads, or stone-grind into almond butter.',
+    ],
+    storage: 'Keep airtight in a cool, dry place away from strong odours.',
+    tags: ['almonds', 'badam', 'nuts', 'protein'],
+    isFeatured: true,
+    isBestseller: true,
+    relatedSlugs: ['cashews', 'dates', 'dried-anjeer-figs'],
+  },
+  {
+    id: 'prod-cashews',
+    slug: 'cashews',
+    name: 'Whole Cashews',
+    category: 'Nuts',
+    categorySlug: 'nuts',
+    shortDescription:
+      'Plump ivory whole cashews selected for natural sweet creaminess and unbroken halves.',
+    description:
+      'Whole W240-grade style cashews harvested from coastal groves and gently drum-cured so every crescent snaps cleanly and blends effortlessly into creamy gravies, desserts, and everyday snacking.',
+    provenance: 'Coastal Groves · Ivory Whole Grade',
+    origin: 'Coastal Grove Farms',
+    images: [
+      {
+        src: '/images/products/cashews.webp',
+        alt: 'Cream ceramic bowl of Whole Cashews on olive slate',
+      },
+    ],
+    variants: [
+      { id: 'cas-100', label: '100g', weight: '100g', price: 229, mrp: 269, sku: 'YAG-CAS-100', stock: 65 },
+      { id: 'cas-200', label: '200g', weight: '200g', price: 439, mrp: 519, sku: 'YAG-CAS-200', stock: 45 },
+      { id: 'cas-500', label: '500g', weight: '500g', price: 999, mrp: 1149, sku: 'YAG-CAS-500', stock: 25 },
+    ],
+    badges: ['Ivory Whole', 'Zero Salt Added'],
+    rating: 4.9,
+    reviewCount: 71,
+    servingSize: '28 g',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'Packed fresh in high-barrier laminated pouches to prevent oxidation.',
+    ingredients: '100% Whole Ivory Cashew Kernels.',
+    allergenAdvice: 'Contains Tree Nuts.',
+    howToUse: [
+      'Lightly toast in ghee with a pinch of rock salt or whole pepper.',
+      'Soak and blend into silky plant-based creams, smoothies, and festive curries.',
+    ],
+    storage: 'Store tightly sealed in a cool, dark place.',
+    tags: ['cashews', 'kaju', 'nuts', 'creamy'],
+    isFeatured: false,
+    isBestseller: true,
+    relatedSlugs: ['almonds', 'hazelnuts', 'black-pepper-makhana'],
+  },
+  {
+    id: 'prod-hazelnuts',
+    slug: 'hazelnuts',
+    name: 'Whole Hazelnuts',
+    category: 'Nuts',
+    categorySlug: 'nuts',
+    shortDescription:
+      'Round, fragrant orchard hazelnuts ideal for warm roasting, praline crunch, and cocoa pairings.',
+    description:
+      'Whole skin-on hazelnuts bursting with aromatic nutty oil. Delicious raw for crisp snacking, or slow-toasted in a skillet until their papery skins loosen and release rich, warm café aromatics.',
+    provenance: 'Cool Orchard Lots · Unroasted Whole',
+    origin: 'Temperate Hill Groves',
+    images: [
+      {
+        src: '/images/products/hazelnuts.webp',
+        alt: 'Wooden bowl of Whole Hazelnuts with cracked shells and green leaves',
+      },
+    ],
+    variants: [
+      { id: 'haz-100', label: '100g', weight: '100g', price: 299, mrp: 349, sku: 'YAG-HAZ-100', stock: 40 },
+      { id: 'haz-200', label: '200g', weight: '200g', price: 569, mrp: 649, sku: 'YAG-HAZ-200', stock: 28 },
+    ],
+    badges: ['Raw & Whole', 'Rich Aroma'],
+    rating: 4.8,
+    reviewCount: 36,
+    servingSize: '28 g',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'Sealed fresh per small batch for deep natural hazelnut crunch.',
+    ingredients: '100% Whole Natural Hazelnuts.',
+    allergenAdvice: 'Contains Tree Nuts.',
+    howToUse: [
+      'Roast gently at low heat for 8 minutes, rub off skins, and crush over dark chocolate oats.',
+      'Blend with cocoa powder and dates for an honest homemade chocolate-nut spread.',
+    ],
+    storage: 'Reseal tightly and keep in a dry, cool cabinet.',
+    tags: ['hazelnuts', 'nuts', 'baking', 'roasting'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['almonds', 'pine-nuts', 'dried-blueberries'],
+  },
+  // --- Flavoured Makhana (100g Seasoned Fox Nuts) ---
+  {
+    id: 'prod-mint-makhana',
+    slug: 'mint-makhana',
+    name: 'Mint Makhana',
+    category: 'Flavoured Makhana',
+    categorySlug: 'flavoured-makhana',
+    shortDescription:
+      'Airy slow-roasted fox nuts dusted with cooling garden mint and mild aromatic herbs.',
+    description:
+      'Hand-harvested wetland lotus seeds popped clean and roasted slowly without heavy deep-frying, then tumbled gently with dried mint leaf powder and pantry spices for a featherlight afternoon crunch.',
+    provenance: 'Wetland Lotus Seeds · Small-Batch Roasted',
+    origin: 'Wetland Pond Harvest',
+    images: [
+      {
+        src: '/images/products/mint-makhana.webp',
+        alt: 'Matte black bowl of Mint Makhana with fresh green mint leaves',
+      },
+    ],
+    variants: [
+      { id: 'mkh-mnt-100', label: '100g', weight: '100g', price: 179, mrp: 219, sku: 'YAG-MKH-MNT', stock: 60 },
+    ],
+    badges: ['Slow Roasted', '100g Jar Pack'],
+    rating: 4.9,
+    reviewCount: 58,
+    servingSize: '25 g',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'Air-popped and drum-roasted without palm oil or artificial synthetic flavours.',
+    ingredients: 'Popped Lotus Seeds (Makhana), Cold-Pressed Edible Oil, Dried Mint Leaf Powder, Spices & Salt.',
+    allergenAdvice: 'Processed in a clean unit that handles tree nuts, peanuts, and dairy seasonings.',
+    howToUse: [
+      'Serve crisp straight from the pouch alongside afternoon herbal tea or buttermilk.',
+      'Crush lightly as a cool crunchy topper for chaat bowls and tomato soup.',
+    ],
+    storage: 'Keep zip lock firmly closed immediately after opening so puffs stay crisp.',
+    tags: ['makhana', 'mint makhana', 'fox nuts', 'roasted snacks'],
+    isFeatured: true,
+    isBestseller: true,
+    relatedSlugs: ['black-salt-makhana', 'black-pepper-makhana', 'spicy-masala-makhana'],
+  },
+  {
+    id: 'prod-black-salt-makhana',
+    slug: 'black-salt-makhana',
+    name: 'Black Salt Makhana',
+    category: 'Flavoured Makhana',
+    categorySlug: 'flavoured-makhana',
+    shortDescription:
+      'Classic dry-roasted lotus puffs seasoned simply with mineral-rich pink kala namak.',
+    description:
+      'Comforting everyday simplicity: crisp whole fox nuts lightly tumbled with crushed black salt crystals and a hint of black pepper — clean, light, and satisfying with tea or late-evening reading.',
+    provenance: 'Wetland Lotus Seeds · Kala Namak Blend',
+    origin: 'Wetland Pond Harvest',
+    images: [
+      {
+        src: '/images/products/black-salt-makhana.webp',
+        alt: 'Speckled bowl of Black Salt Makhana beside brass spoon of pink kala namak',
+      },
+    ],
+    variants: [
+      { id: 'mkh-slt-100', label: '100g', weight: '100g', price: 169, mrp: 199, sku: 'YAG-MKH-SLT', stock: 65 },
+    ],
+    badges: ['Light & Crisp', 'Minimal Spice'],
+    rating: 4.8,
+    reviewCount: 47,
+    servingSize: '25 g',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'Small-batch slow roasted for consistent snap without greasiness.',
+    ingredients: 'Popped Lotus Seeds (Makhana), Cold-Pressed Edible Oil, Black Salt (Kala Namak).',
+    allergenAdvice: 'Facility handles tree nuts, sesame, and dairy.',
+    howToUse: [
+      'Enjoy plain as a zero-guilt movie or desk crunch.',
+      'Pair alongside roasted cashews and almonds for a balanced tea tray.',
+    ],
+    storage: 'Reseal tightly after every handful to lock out humidity.',
+    tags: ['makhana', 'black salt', 'kala namak', 'fox nuts'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['mint-makhana', 'black-pepper-makhana', 'pumpkin-seeds'],
+  },
+  {
+    id: 'prod-peri-peri-makhana',
+    slug: 'peri-peri-makhana',
+    name: 'Peri Peri Makhana',
+    category: 'Flavoured Makhana',
+    categorySlug: 'flavoured-makhana',
+    shortDescription:
+      'Fiery, tangy slow-roasted fox nuts tossed with red chili flakes, citrus zest, and garlic.',
+    description:
+      'Bright chili warmth meets airy fox-nut crispness. Tumbled in warm batch drums with crushed red chilies, paprika, garlic notes, and tangy dry lime for bold snacking without refined-flour chips.',
+    provenance: 'Wetland Lotus Seeds · Spiced Chili Drum',
+    origin: 'Wetland Pond Harvest',
+    images: [
+      {
+        src: '/images/products/peri-peri-makhana.webp',
+        alt: 'Dark matte bowl of Peri Peri Makhana surrounded by dried red chilies',
+      },
+    ],
+    variants: [
+      { id: 'mkh-per-100', label: '100g', weight: '100g', price: 179, mrp: 219, sku: 'YAG-MKH-PER', stock: 55 },
+    ],
+    badges: ['Bold Heat', 'Slow Roasted'],
+    rating: 4.9,
+    reviewCount: 62,
+    servingSize: '25 g',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'Coloured naturally with red chili and paprika rather than artificial dyes.',
+    ingredients: 'Popped Lotus Seeds (Makhana), Cold-Pressed Edible Oil, Peri Peri Spice Blend (Chili, Garlic, Onion, Dry Citrus, Salt).',
+    allergenAdvice: 'Facility processes tree nuts, peanuts, and milk solids.',
+    howToUse: [
+      'Pour straight into snack bowls when craving spicy evening crunch.',
+      'Toss whole over tortilla soups or roasted sweet corn salads.',
+    ],
+    storage: 'Keep away from dampness and seal pouch immediately after serving.',
+    tags: ['makhana', 'peri peri', 'spicy snack', 'fox nuts'],
+    isFeatured: false,
+    isBestseller: true,
+    relatedSlugs: ['spicy-masala-makhana', 'black-pepper-makhana', 'cashews'],
+  },
+  {
+    id: 'prod-black-pepper-makhana',
+    slug: 'black-pepper-makhana',
+    name: 'Black Pepper Makhana',
+    category: 'Flavoured Makhana',
+    categorySlug: 'flavoured-makhana',
+    shortDescription:
+      'Fragrant cracked black peppercorns folded over warm dry-roasted lotus puffs.',
+    description:
+      'Sharp, warming black peppercorn cracks cling lightly to every crisp white puff, delivering bright aromatics and clean savouriness without overwhelming the delicate lotus kernel.',
+    provenance: 'Wetland Lotus Seeds · Cracked Peppermill',
+    origin: 'Wetland Pond Harvest',
+    images: [
+      {
+        src: '/images/products/black-pepper-makhana.webp',
+        alt: 'Cream ceramic bowl of Black Pepper Makhana next to pepper mill and peppercorns',
+      },
+    ],
+    variants: [
+      { id: 'mkh-pep-100', label: '100g', weight: '100g', price: 179, mrp: 219, sku: 'YAG-MKH-PEP', stock: 50 },
+    ],
+    badges: ['Cracked Pepper', 'Slow Roasted'],
+    rating: 4.8,
+    reviewCount: 43,
+    servingSize: '25 g',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'Seasoned immediately post-roast so coarse pepper adheres evenly.',
+    ingredients: 'Popped Lotus Seeds (Makhana), Cold-Pressed Edible Oil, Cracked Black Pepper, Rock Salt.',
+    allergenAdvice: 'Facility handles tree nuts, peanuts, and seeds.',
+    howToUse: [
+      'Serve alongside hot masala chai or clear vegetable broths.',
+      'Mix with toasted sunflower and pumpkin seeds for an office desk jar.',
+    ],
+    storage: 'Store dry and airtight.',
+    tags: ['makhana', 'black pepper', 'peppercorn', 'fox nuts'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['black-salt-makhana', 'mint-makhana', 'cashews'],
+  },
+  {
+    id: 'prod-spicy-masala-makhana',
+    slug: 'spicy-masala-makhana',
+    name: 'Spicy Masala Makhana',
+    category: 'Flavoured Makhana',
+    categorySlug: 'flavoured-makhana',
+    shortDescription:
+      'Toasted cumin, coriander, dry mango, and red chili blended over crunchy fox nuts.',
+    description:
+      'Our classic pantry spice mix: aromatic roasted cumin and coriander seeds ground fresh with tangy amchoor and red chili, coating every popped lotus kernel in unmistakable homestyle warmth.',
+    provenance: 'Wetland Lotus Seeds · Roasted Cumin & Chili',
+    origin: 'Wetland Pond Harvest',
+    images: [
+      {
+        src: '/images/products/spicy-masala-makhana.webp',
+        alt: 'Dark bowl of Spicy Masala Makhana with cumin seeds, coriander seeds, and chilies',
+      },
+    ],
+    variants: [
+      { id: 'mkh-mas-100', label: '100g', weight: '100g', price: 179, mrp: 219, sku: 'YAG-MKH-MAS', stock: 58 },
+    ],
+    badges: ['Homestyle Spice', 'Slow Roasted'],
+    rating: 4.9,
+    reviewCount: 54,
+    servingSize: '25 g',
+    nutritionFacts: [],
+    nutritionFootnote:
+      'Crafted with whole ground pantry spices and zero synthetic MSG.',
+    ingredients: 'Popped Lotus Seeds (Makhana), Cold-Pressed Edible Oil, Cumin, Coriander, Dry Mango Powder, Chili & Black Salt.',
+    allergenAdvice: 'Facility processes tree nuts, peanuts, sesame, and dairy.',
+    howToUse: [
+      'Open straight for festive tea platters or travel road-trip jars.',
+      'Garnish warm moong dal chilla or spiced yogurt raita.',
+    ],
+    storage: 'Zip lock tightly immediately after opening to keep full crunch.',
+    tags: ['makhana', 'masala makhana', 'fox nuts', 'cumin chili'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['peri-peri-makhana', 'black-salt-makhana', 'mint-makhana'],
   },
 ];

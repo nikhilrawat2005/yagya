@@ -2,113 +2,93 @@
 
 @theme {
   /* =========================================================
-     STRICT BRAND COLOUR PALETTE (No pure white / no pure black)
+     YAGYA EDITORIAL PALETTE (Strictly 4 Dark Bases + 3 Lights + Flame Accent)
      ========================================================= */
 
-  /* Background & Shape Group */
-  --color-oat: #F6EFE2;           /* Page canvas */
-  --color-apricot: #FDE6C8;       /* Soft Fibonacci shape blocks */
-  --color-peach: #FBC98A;         /* Mid Fibonacci shape blocks */
-  --color-seabuckthorn: #F28C1B;  /* Main Fibonacci shape blocks */
+  /* 4 Chapter Dark Bases (matched to /background photography) */
+  --color-navy: #141C2B;       /* Neon Navy (20-0142) — Chapter 01 Blueberries */
+  --color-olive: #4B510A;      /* Olive Green (#4B510A) — Chapter 02 Olives */
+  --color-olive-deep: #252905; /* Deep Olive shadow tone */
+  --color-purple: #381B31;     /* Potent Purple (19-2520) — Chapter 03 Plums */
+  --color-aubergine: #24141F;  /* Aubergine Gleam (20-0124) — Chapter 04 Blackberries */
 
-  /* Text, Button & Detail Group */
-  --color-indigo: #2E3175;        /* Headings, body text, primary buttons */
-  --color-cranberry: #B3122D;     /* 1-3 highlighted key words per sentence */
-  --color-charcoal: #2B2B2B;      /* Marker-sketch doodles & underlines only */
-  --color-burnt: #D9700B;         /* Button hover state only */
+  /* Light Palette */
+  --color-oat: #F6EFE2;        /* Oat White — primary text, sheets, line art */
+  --color-apricot: #FDE6C8;    /* Apricot Mist — warm secondary text, strokes */
+  --color-peach: #FBC98A;      /* Peach Glow — subtle highlights & numerals */
+
+  /* Brand Accent (from attached Diya Flame logo, used sparingly) */
+  --color-flame: #DF7F25;      /* Yagya Flame Orange */
+  --color-flame-soft: #EA9846; /* Warm inner flame hover tint */
 
   /* Semantic Aliases */
-  --color-background: var(--color-oat);
-  --color-surface: var(--color-oat);
-  --color-surface-soft: var(--color-apricot);
-  --color-surface-mid: var(--color-peach);
-  --color-surface-accent: var(--color-seabuckthorn);
-  --color-primary: var(--color-indigo);
-  --color-primary-hover: var(--color-burnt);
-  --color-on-primary: var(--color-oat);
-  --color-highlight: var(--color-cranberry);
-  --color-doodle: var(--color-charcoal);
+  --color-background: var(--color-navy);
+  --color-surface: var(--color-aubergine);
+  --color-primary: var(--color-oat);
+  --color-accent: var(--color-flame);
 
   /* =========================================================
-     LOCKED TYPOGRAPHY TOKENS (Google Fonts via next/font/google)
+     EDITORIAL TYPOGRAPHY TOKENS (Google Fonts via next/font/google)
      ========================================================= */
   --font-display: var(--font-playfair), Georgia, serif;
-  --font-script: var(--font-playpen), cursive;
-  --font-sans: var(--font-jakarta), sans-serif;
-  --font-mono: var(--font-space-mono), monospace;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-annotation: var(--font-caveat), cursive;
 
   /* =========================================================
-     FIBONACCI & GOLDEN RATIO SPACING SCALE (Base = 8px, phi = 1.618)
-     ========================================================= */
-  --spacing-fib-1: 0.5rem;   /* 1 x 8px  = 8px   */
-  --spacing-fib-2: 1rem;     /* 2 x 8px  = 16px  */
-  --spacing-fib-3: 1.5rem;   /* 3 x 8px  = 24px  */
-  --spacing-fib-5: 2.5rem;   /* 5 x 8px  = 40px  */
-  --spacing-fib-8: 4rem;     /* 8 x 8px  = 64px  */
-  --spacing-fib-13: 6.5rem;  /* 13 x 8px = 104px */
-
-  /* =========================================================
-     GLOW, SHADOW, DURATION & EASING TOKENS (Brand-Derived)
+     TIMING & EASING TOKENS
      ========================================================= */
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-snappy: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
 
-  --duration-fast: 150ms;
-  --duration-base: 300ms;
-  --duration-slow: 600ms;
-
-  --shadow-glow-sm: 0 4px 14px -2px rgba(43, 43, 43, 0.1), 0 0 14px -2px rgba(251, 201, 138, 0.42);
-  --shadow-glow-md: 0 12px 28px -6px rgba(43, 43, 43, 0.16), 0 0 24px -2px rgba(242, 140, 27, 0.34);
-  --shadow-glow-lg: 0 20px 42px -10px rgba(43, 43, 43, 0.2), 0 0 36px 2px rgba(217, 112, 11, 0.45);
-  --shadow-glow-indigo: 0 10px 26px -6px rgba(46, 49, 117, 0.28), 0 0 22px -2px rgba(242, 140, 27, 0.3);
-  --shadow-glow-focus: 0 0 0 2px #F6EFE2, 0 0 0 4px #2E3175, 0 0 20px 2px rgba(242, 140, 27, 0.48);
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 700ms;
 }
 
 :root {
-  /* Core glow tokens derived strictly from Yagya's warm-harvest & indigo palette */
-  --glow-primary: rgba(242, 140, 27, 0.36);       /* Sea Buckthorn */
-  --glow-primary-strong: rgba(217, 112, 11, 0.54); /* Burnt Orange */
-  --glow-secondary: rgba(46, 49, 117, 0.28);      /* Indigo */
-  --glow-secondary-strong: rgba(46, 49, 117, 0.48);
-  --glow-accent: rgba(179, 18, 45, 0.28);         /* Cranberry */
-  --glow-soft: rgba(251, 201, 138, 0.44);         /* Peach */
-  --glow-glare: rgba(253, 230, 200, 0.65);        /* Apricot specular glare */
+  --sheet-bg: rgba(246, 239, 226, 0.14);
+  --sheet-bg-hover: rgba(246, 239, 226, 0.21);
+  --sheet-bg-strong: rgba(246, 239, 226, 0.19);
+  --sheet-border: rgba(255, 255, 255, 0.25);
+  --sheet-border-hover: rgba(253, 230, 200, 0.42);
+  --sheet-shadow: 0 24px 60px -18px rgba(10, 12, 18, 0.48), 0 4px 18px -4px rgba(10, 12, 18, 0.24);
+  --sheet-shadow-hover: 0 32px 72px -18px rgba(10, 12, 18, 0.56), 0 0 28px -6px rgba(223, 127, 37, 0.22);
 
-  --glow-level-1: 0 4px 14px -2px rgba(43, 43, 43, 0.1), 0 0 14px -2px var(--glow-soft);
-  --glow-level-2: 0 12px 28px -6px rgba(43, 43, 43, 0.16), 0 0 24px -2px var(--glow-primary);
-  --glow-level-3: 0 20px 42px -10px rgba(43, 43, 43, 0.2), 0 0 36px 2px var(--glow-primary-strong);
+  --glow-flame: rgba(223, 127, 37, 0.34);
+  --glow-oat: rgba(246, 239, 226, 0.24);
+  --glow-soft: rgba(251, 201, 138, 0.26);
 
-  --duration-fast: 150ms;
-  --duration-base: 300ms;
-  --duration-slow: 600ms;
+  --glow-level-1: 0 6px 20px -4px rgba(10, 12, 18, 0.32), 0 0 18px -4px var(--glow-oat);
+  --glow-level-2: 0 12px 32px -6px rgba(10, 12, 18, 0.42), 0 0 26px -2px var(--glow-flame);
+  --shadow-glow-focus: 0 0 0 2px #141C2B, 0 0 0 4px #F6EFE2, 0 0 18px 2px var(--glow-flame);
 
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 700ms;
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-snappy: cubic-bezier(0.2, 0.8, 0.2, 1);
-
-  --transition-fast: 150ms cubic-bezier(0.22, 1, 0.36, 1);
-  --transition-base: 300ms cubic-bezier(0.22, 1, 0.36, 1);
-  --transition-slow: 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-fast: 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-base: 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-slow: 700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
   html {
-    background-color: var(--color-oat);
-    color: var(--color-indigo);
+    background-color: var(--color-navy);
+    color: var(--color-oat);
+    scroll-behavior: smooth;
   }
 
   body {
-    background-color: var(--color-oat);
-    color: var(--color-indigo);
+    background-color: var(--color-navy);
+    color: var(--color-oat);
     font-family: var(--font-sans);
     overflow-x: hidden;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-indigo);
+    outline: 2px solid var(--color-oat);
     outline-offset: 3px;
-    box-shadow: 0 0 18px 2px var(--glow-primary);
+    box-shadow: 0 0 18px 2px var(--glow-flame);
   }
 }
 
@@ -117,73 +97,48 @@
   font-family: var(--font-display);
 }
 
-.font-script-body {
-  font-family: var(--font-script);
-  line-height: 1.68;
+.font-annotation {
+  font-family: var(--font-annotation);
+  line-height: 1.35;
 }
 
 .font-ui-label {
   font-family: var(--font-sans);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
 }
 
-.font-mono-meta {
-  font-family: var(--font-mono);
-}
-
-/* =========================================================
-   REUSABLE GLOW + LIFT + UNDERLINE + MICRO-INTERACTION UTILITIES
-   ========================================================= */
-
-.glow-hover {
-  transition:
-    box-shadow var(--transition-base),
-    border-color var(--transition-base),
-    background-color var(--transition-base),
-    color var(--transition-fast),
-    transform var(--transition-base);
-}
-
-.glow-border {
-  border-color: rgba(43, 43, 43, 0.25);
-  box-shadow: 0 2px 10px -2px rgba(43, 43, 43, 0.06);
-  transition:
-    border-color var(--transition-base),
-    box-shadow var(--transition-base),
-    background-color var(--transition-base);
-}
-
-.glow-border:focus-within {
-  border-color: var(--color-indigo);
-  box-shadow: var(--glow-level-2);
-}
-
-.lift-hover {
+/* Signature Oat-Sheet Frosted Paper Utility */
+.oat-sheet {
+  background-color: var(--sheet-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--sheet-border);
+  border-radius: 6px;
+  box-shadow: var(--sheet-shadow);
   transition:
     transform var(--transition-base),
-    box-shadow var(--transition-base),
+    background-color var(--transition-base),
     border-color var(--transition-base),
-    background-color var(--transition-base);
+    box-shadow var(--transition-base);
 }
 
-.glow-badge {
-  transition:
-    box-shadow var(--transition-fast),
-    border-color var(--transition-fast),
-    transform var(--transition-fast),
-    background-color var(--transition-fast);
+@media (hover: hover) and (pointer: fine) {
+  .oat-sheet-interactive:hover {
+    transform: translateY(-4px);
+    background-color: var(--sheet-bg-hover);
+    border-color: var(--sheet-border-hover);
+    box-shadow: var(--sheet-shadow-hover);
+  }
 }
 
-/* Animated Underline Links (grows from center by default, or left via modifier) */
+/* Editorial Underline & Interaction Utilities */
 .nav-link-underline {
   position: relative;
   display: inline-flex;
   align-items: center;
-  transition:
-    color var(--transition-fast),
-    text-shadow var(--transition-base);
+  transition: color var(--transition-fast);
 }
 
 .nav-link-underline::after {
@@ -191,24 +146,13 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -2px;
-  height: 2px;
-  border-radius: 9999px;
-  background: linear-gradient(90deg, var(--color-seabuckthorn), var(--color-burnt), var(--color-cranberry));
+  bottom: -3px;
+  height: 1.5px;
+  background-color: var(--color-flame);
   transform: scaleX(0);
-  transform-origin: center;
-  transition:
-    transform var(--transition-base),
-    opacity var(--transition-base);
-  opacity: 0;
-}
-
-.nav-link-underline-left::after {
   transform-origin: left;
-}
-
-.nav-link-underline[data-active="true"] {
-  text-shadow: 0 0 14px var(--glow-primary);
+  transition: transform var(--transition-base), opacity var(--transition-base);
+  opacity: 0;
 }
 
 .nav-link-underline[data-active="true"]::after {
@@ -216,11 +160,30 @@
   opacity: 1;
 }
 
-.icon-hover-pop {
-  transition:
-    transform var(--transition-base),
-    color var(--transition-fast),
-    filter var(--transition-base);
+@media (hover: hover) and (pointer: fine) {
+  .nav-link-underline:hover::after,
+  .nav-link-underline:focus-visible::after {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  .glow-hover:hover {
+    box-shadow: var(--glow-level-1);
+  }
+
+  .glow-border:hover {
+    border-color: var(--sheet-border-hover);
+    box-shadow: var(--glow-level-1);
+  }
+
+  .icon-hover-pop {
+    transition: transform var(--transition-base), color var(--transition-fast);
+  }
+
+  .group:hover .icon-hover-pop,
+  .icon-hover-pop:hover {
+    transform: scale(1.1) rotate(-4deg);
+  }
 }
 
 .glow-input {
@@ -232,109 +195,22 @@
 
 .glow-input:focus {
   outline: none;
-  border-color: var(--color-indigo);
-  box-shadow: 0 0 0 3px var(--glow-soft), 0 0 20px -2px var(--glow-primary);
+  border-color: var(--color-peach);
+  box-shadow: 0 0 0 2px rgba(246, 239, 226, 0.16), 0 0 18px -2px var(--glow-flame);
 }
 
 .glow-input[aria-invalid="true"]:focus {
-  border-color: var(--color-cranberry);
-  box-shadow: 0 0 0 3px var(--glow-accent), 0 0 18px -2px var(--glow-accent);
-}
-
-/* Keyframes for subtle ambient float/shimmer */
-@keyframes yagya-ambient-pulse {
-  0%, 100% {
-    opacity: 0.45;
-    transform: scale(1) translate3d(0, 0, 0);
-  }
-  50% {
-    opacity: 0.72;
-    transform: scale(1.06) translate3d(0, -6px, 0);
-  }
-}
-
-.animate-ambient-glow {
-  animation: yagya-ambient-pulse 7s ease-in-out infinite;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .glow-hover:hover {
-    box-shadow: var(--glow-level-2);
-  }
-
-  .glow-border:hover {
-    border-color: rgba(217, 112, 11, 0.65);
-    box-shadow: var(--glow-level-2);
-  }
-
-  .lift-hover:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--glow-level-2);
-  }
-
-  .glow-badge:hover {
-    box-shadow: var(--glow-level-1);
-    border-color: var(--color-burnt);
-    transform: translateY(-1px);
-  }
-
-  .nav-link-underline:hover::after,
-  .nav-link-underline:focus-visible::after {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-
-  .nav-link-underline:hover {
-    text-shadow: 0 0 12px var(--glow-soft);
-  }
-
-  .group:hover .icon-hover-pop,
-  .icon-hover-pop:hover {
-    transform: scale(1.12) rotate(-6deg);
-    filter: drop-shadow(0 0 6px var(--glow-primary));
-  }
-}
-
-.glow-hover:active,
-.lift-hover:active {
-  transform: scale(0.985);
-}
-
-/* Primary Button: Indigo bg, Oat text, Jakarta ALL CAPS 0.08em, hover Burnt Orange + Glow */
-.btn-primary-yagya {
-  background-color: var(--color-indigo);
-  color: var(--color-oat);
-  font-family: var(--font-sans);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  transition:
-    background-color var(--transition-base),
-    box-shadow var(--transition-base),
-    transform var(--transition-fast);
-  cursor: pointer;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .btn-primary-yagya:hover {
-    background-color: var(--color-burnt);
-    box-shadow: var(--glow-level-2);
-    transform: scale(1.03);
-  }
-}
-
-.btn-primary-yagya:active {
-  transform: scale(0.97);
+  border-color: var(--color-flame);
+  box-shadow: 0 0 0 2px rgba(223, 127, 37, 0.3);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-
-  .animate-ambient-glow {
-    animation: none !important;
   }
 }

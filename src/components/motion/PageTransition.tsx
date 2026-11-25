@@ -12,8 +12,8 @@ export interface PageTransitionProps {
 
 /**
  * Smooth App Router page transition using AnimatePresence.
- * Uses `initial={false}` so initial SSR HTML renders immediately with zero LCP delay,
- * then animates opacity, vertical slide, and subtle blur clear on client route changes.
+ * Animates opacity only (no transform or filter) so fixed backdrops and side
+ * chapter indices inside pages remain anchored to the true viewport.
  */
 export function PageTransition({ children, className = '' }: PageTransitionProps) {
   const pathname = usePathname();
@@ -23,12 +23,8 @@ export function PageTransition({ children, className = '' }: PageTransitionProps
     <AnimatePresence initial={false} mode="sync">
       <motion.div
         key={pathname}
-        initial={
-          prefersReducedMotion
-            ? { opacity: 0 }
-            : { opacity: 0, y: 10, filter: 'blur(4px)' }
-        }
-        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{
           duration: prefersReducedMotion ? 0.12 : MOTION_DURATION.base,
           ease: MOTION_EASE.smooth,
