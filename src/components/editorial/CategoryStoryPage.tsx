@@ -79,6 +79,7 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
                 trigger="mount"
                 text={`${config.titleLead} ${config.titleAccent}`}
                 accentWord={config.titleAccent}
+                accentStyle="double"
                 className="font-display text-4xl sm:text-5xl lg:text-[52px] font-medium tracking-tight text-oat mb-5"
               />
               <p className="text-sm sm:text-base text-apricot/95 leading-relaxed max-w-lg mb-7">

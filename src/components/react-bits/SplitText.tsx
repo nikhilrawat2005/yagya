@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { useInView, useReducedMotion } from 'motion/react';
+import { DoodleUnderline } from '@/components/doodles';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -20,6 +21,7 @@ export interface SplitTextProps {
   duration?: number;
   /** Optional single word (case-insensitive) to render in editorial italic accent */
   accentWord?: string;
+  accentStyle?: 'none' | 'circle' | 'double';
   accentClassName?: string;
   className?: string;
 }
@@ -33,6 +35,7 @@ export function SplitText({
   stagger = 0.045,
   duration = 0.65,
   accentWord,
+  accentStyle = 'none',
   accentClassName = 'italic text-peach',
   className = '',
 }: SplitTextProps) {
@@ -89,39 +92,65 @@ export function SplitText({
 
   return (
     <div ref={containerRef} className="inline-block max-w-full">
-      <Component className={`leading-[1.1] ${className}`}>
+      <Component className={`leading-[1.12] ${className}`}>
         <span className="sr-only">{text}</span>
         <span aria-hidden="true" className="inline-flex flex-wrap gap-x-[0.26em]">
           {words.map((word, wordIndex) => {
             const match = isAccentMatch(word);
             const wordClass = match ? accentClassName : '';
+            const punctuationMatch = word.match(/^(.+?)([.,!?;:]+)$/);
+            const coreWord = match && punctuationMatch ? punctuationMatch[1] : word;
+            const trailingPunct = match && punctuationMatch ? punctuationMatch[2] : '';
 
-            if (splitBy === 'words') {
-              return (
-                <span
-                  key={`${word}-${wordIndex}`}
-                  className="inline-block overflow-hidden pb-[0.12em] -mb-[0.12em]"
-                >
-                  <span className={`split-unit inline-block will-change-transform ${wordClass}`}>
-                    {word}
+            const renderUnit = () => {
+              if (splitBy === 'words') {
+                return (
+                  <span className="inline-block overflow-hidden pb-[0.12em] -mb-[0.12em]">
+                    <span className={`split-unit inline-block will-change-transform ${wordClass}`}>
+                      {coreWord}
+                    </span>
                   </span>
+                );
+              }
+              return (
+                <span className={`inline-flex overflow-hidden pb-[0.12em] -mb-[0.12em] ${wordClass}`}>
+                  {Array.from(coreWord).map((char, charIndex) => (
+                    <span
+                      key={`${char}-${charIndex}`}
+                      className="split-unit inline-block will-change-transform"
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </span>
+              );
+            };
+
+            if (match && accentStyle !== 'none') {
+              return (
+                <span key={`${word}-${wordIndex}`} className="inline-flex items-baseline">
+                  <DoodleUnderline
+                    variant={accentStyle}
+                    tone="peach"
+                    delay={0.45}
+                    drawDuration={2.0}
+                    priority={trigger === 'mount'}
+                  >
+                    {renderUnit()}
+                  </DoodleUnderline>
+                  {trailingPunct && (
+                    <span className="split-unit inline-block">{trailingPunct}</span>
+                  )}
                 </span>
               );
             }
 
             return (
-              <span
-                key={`${word}-${wordIndex}`}
-                className={`inline-flex overflow-hidden pb-[0.12em] -mb-[0.12em] ${wordClass}`}
-              >
-                {Array.from(word).map((char, charIndex) => (
-                  <span
-                    key={`${char}-${charIndex}`}
-                    className="split-unit inline-block will-change-transform"
-                  >
-                    {char}
-                  </span>
-                ))}
+              <span key={`${word}-${wordIndex}`} className="inline-block">
+                {renderUnit()}
+                {trailingPunct && (
+                  <span className="split-unit inline-block">{trailingPunct}</span>
+                )}
               </span>
             );
           })}

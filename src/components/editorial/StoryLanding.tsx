@@ -122,7 +122,8 @@ export function StoryLanding() {
                 trigger="mount"
                 text="Pure farm harvests, gathered like an offering."
                 accentWord="offering"
-                className="font-display text-3xl sm:text-4xl lg:text-[46px] font-medium tracking-tight text-oat mb-4"
+                accentStyle="circle"
+                className="font-display text-3xl sm:text-4xl lg:text-[46px] font-medium tracking-tight text-oat mb-5"
               />
 
               <p className="text-sm sm:text-base text-apricot/95 leading-relaxed max-w-md mb-6">
@@ -201,7 +202,8 @@ export function StoryLanding() {
                     trigger="scroll"
                     text="Rooted in the clarity of the Diya."
                     accentWord="Diya"
-                    className="font-display text-3xl sm:text-4xl lg:text-[42px] font-medium tracking-tight text-oat mb-4"
+                    accentStyle="double"
+                    className="font-display text-3xl sm:text-4xl lg:text-[42px] font-medium tracking-tight text-oat mb-5"
                   />
 
                   <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">
@@ -247,9 +249,10 @@ export function StoryLanding() {
                 <Doodle
                   name="seed-bowl-a"
                   tone="peach"
-                  size={64}
+                  size={104}
                   opacity={0.95}
                   draw
+                  drawDuration={2.2}
                   float
                   hover
                   inline
@@ -340,7 +343,8 @@ export function StoryLanding() {
                 trigger="scroll"
                 text="Gently dried. Naturally dense."
                 accentWord="dense"
-                className="font-display text-3xl sm:text-[40px] font-medium tracking-tight text-oat mb-4"
+                accentStyle="circle"
+                className="font-display text-3xl sm:text-[40px] font-medium tracking-tight text-oat mb-5"
               />
 
               <p className="text-sm sm:text-base text-apricot/95 leading-relaxed mb-5">
@@ -356,9 +360,10 @@ export function StoryLanding() {
                 <Doodle
                   name="berry-bowl-a"
                   tone="apricot"
-                  size={52}
-                  opacity={0.92}
+                  size={88}
+                  opacity={0.94}
                   draw
+                  drawDuration={2.2}
                   float
                   hover
                   inline
@@ -367,7 +372,7 @@ export function StoryLanding() {
             </OatSheet>
           </div>
 
-          {/* Overlapping Minimal Nutrition Highlights Sheet with large animated botanical doodles */}
+          {/* Overlapping Minimal Nutrition Highlights Sheet with large slow-drawing seed & berry doodles */}
           <div className="lg:col-span-6 lg:col-start-7 lg:mt-8 relative">
             <SpotlightCard spotlightColor="rgba(246, 239, 226, 0.10)" className="relative z-10 p-6 sm:p-8">
               <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-white/20">
@@ -400,21 +405,22 @@ export function StoryLanding() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-2">
-                          <span className="font-display text-2xl sm:text-[28px] font-semibold text-peach whitespace-nowrap block leading-none mb-1.5 tabular-nums">
+                          <span className="font-display text-xl sm:text-[23px] font-semibold text-peach whitespace-nowrap block leading-none mb-1.5 tabular-nums">
                             {item.value}
                           </span>
                           {doodleName && (
                             <Doodle
                               name={doodleName}
                               tone="apricot"
-                              size={58}
-                              opacity={0.94}
+                              size={64}
+                              opacity={0.95}
                               draw
+                              drawDuration={2.2}
                               float
                               hover
-                              delay={0.1 * idx}
+                              delay={0.18 * idx}
                               inline
-                              className="shrink-0 -mt-1"
+                              className="shrink-0 -mt-1.5"
                             />
                           )}
                         </div>
@@ -456,7 +462,8 @@ export function StoryLanding() {
                 trigger="scroll"
                 text="Honest food that asks for nothing extra."
                 accentWord="nothing"
-                className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-oat mb-5"
+                accentStyle="double"
+                className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-oat mb-6"
               />
 
               <p className="text-sm sm:text-base text-apricot/95 leading-relaxed max-w-lg mb-8">
@@ -465,7 +472,19 @@ export function StoryLanding() {
                 nourishment rooted in living soil.
               </p>
 
-              <div className="relative flex flex-wrap items-center gap-4">
+              <div className="relative flex flex-wrap items-center gap-3">
+                <Doodle
+                  name="arrow-curved-03"
+                  tone="peach"
+                  size={52}
+                  rotate={-6}
+                  opacity={0.92}
+                  draw
+                  drawDuration={1.8}
+                  showOn="sm+"
+                  inline
+                  className="-ml-1 shrink-0"
+                />
                 <GlowButton href="/shop" variant="cta" magnetic>
                   <span>Explore Collection</span>
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />

@@ -56,6 +56,7 @@ export default function AboutPage() {
                     trigger="mount"
                     text="The Yagya Philosophy"
                     accentWord="Yagya"
+                    accentStyle="circle"
                     className="font-display text-4xl sm:text-5xl text-oat font-medium relative z-10"
                   />
                   <p className="text-sm sm:text-base text-apricot/95 leading-relaxed relative z-10">

@@ -27,6 +27,7 @@ export interface DoodleProps {
   tone?: DoodleTone;
   size?: number | string;
   draw?: boolean;
+  drawDuration?: number;
   drawKey?: number;
   float?: boolean;
   parallax?: boolean;
@@ -38,6 +39,7 @@ export interface DoodleProps {
   showOn?: DoodleShowOn;
   hideOnMobile?: boolean;
   inline?: boolean;
+  preserveAspectRatio?: string;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -94,25 +96,27 @@ function useMotionEnvironment() {
 
 /**
  * Hand-drawn SVG doodle loaded inline from /public/assets/doodles via the typed registry.
- * Uses currentColor + vector-effect="non-scaling-stroke" for uniform 1.5-2px line weight,
- * draws on scroll once when 30% in view, and supports optional hero float & desktop parallax.
+ * Uses currentColor + vector-effect="non-scaling-stroke" for uniform stroke weight,
+ * draws slowly on scroll so creation is clearly visible, and supports gentle float & hover.
  */
 export function Doodle({
   name,
   tone = 'oat',
   size,
   draw = true,
+  drawDuration,
   drawKey = 0,
   float = false,
   parallax = false,
   hover = false,
   rotate = 0,
-  opacity = 0.9,
+  opacity = 0.92,
   delay = 0,
   priority = false,
   showOn = 'all',
   hideOnMobile = false,
   inline = false,
+  preserveAspectRatio,
   className = '',
   style,
 }: DoodleProps) {
@@ -120,22 +124,23 @@ export function Doodle({
   const containerRef = useRef<HTMLDivElement>(null);
   const { prefersReducedMotion, isLowPower, isMobile, canHover } = useMotionEnvironment();
   const [svgData, setSvgData] = useState<ParsedDoodleSvg | null>(null);
+  const [priorityReady, setPriorityReady] = useState(false);
 
   const nearViewport = useInView(containerRef, {
     once: true,
-    margin: '280px 0px',
+    margin: '320px 0px',
   });
 
   const inDrawView = useInView(containerRef, {
     once: true,
-    amount: 0.15,
+    amount: 0.2,
   });
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end start'],
   });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [-18, 18]);
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [-16, 16]);
 
   useEffect(() => {
     if (!priority && !nearViewport) return;
@@ -147,6 +152,14 @@ export function Doodle({
       active = false;
     };
   }, [name, priority, nearViewport]);
+
+  useEffect(() => {
+    if (!priority || !svgData) return;
+    const timer = window.setTimeout(() => {
+      setPriorityReady(true);
+    }, 140);
+    return () => window.clearTimeout(timer);
+  }, [priority, svgData, drawKey]);
 
   const effectiveShowOn: DoodleShowOn = hideOnMobile && showOn === 'all' ? 'md+' : showOn;
   const resolvedSize = size ?? meta.defaultSize;
@@ -160,15 +173,17 @@ export function Doodle({
         }
       : {
           width: resolvedSize,
-          aspectRatio: isWide ? '4 / 1' : '1 / 1',
+          ...(preserveAspectRatio === 'none'
+            ? {}
+            : { aspectRatio: isWide ? '4 / 1' : '1 / 1' }),
         };
 
-  const drawDuration = isMobile || isLowPower ? 0.8 : 1.15;
+  const resolvedDuration = drawDuration ?? (isMobile || isLowPower ? 1.6 : 2.15);
   const shouldDraw = draw && !prefersReducedMotion;
   const shouldFloat = float && !prefersReducedMotion && !isLowPower;
   const shouldParallax = parallax && !prefersReducedMotion && !isMobile;
   const shouldHover = hover && canHover && !prefersReducedMotion;
-  const visible = priority || inDrawView;
+  const visible = prefersReducedMotion || !shouldDraw || (priority ? priorityReady || inDrawView : inDrawView);
 
   const isPositioned = inline || /\b(absolute|fixed|sticky|relative)\b/.test(className);
   const posClass = isPositioned ? '' : 'relative';
@@ -186,15 +201,15 @@ export function Doodle({
         ...(shouldParallax ? { y: parallaxY } : undefined),
       }}
       initial={{ rotate }}
-      whileHover={shouldHover ? { rotate: rotate + 8, scale: 1.12 } : undefined}
+      whileHover={shouldHover ? { rotate: rotate + 7, scale: 1.1 } : undefined}
       transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
     >
       <motion.div
         className="w-full h-full"
-        animate={shouldFloat ? { y: [-6, 6, -6], rotate: [-2.5, 2.5, -2.5] } : undefined}
+        animate={shouldFloat ? { y: [-5, 5, -5], rotate: [-2, 2, -2] } : undefined}
         transition={
           shouldFloat
-            ? { duration: 4.8, repeat: Infinity, ease: 'easeInOut' }
+            ? { duration: 5.2, repeat: Infinity, ease: 'easeInOut' }
             : undefined
         }
       >
@@ -202,15 +217,16 @@ export function Doodle({
           <svg
             key={`${name}-${drawKey}`}
             viewBox={svgData.viewBox}
+            preserveAspectRatio={preserveAspectRatio ?? 'xMidYMid meet'}
             fill="none"
             stroke="currentColor"
-            strokeWidth={1.75}
+            strokeWidth={1.85}
             strokeLinecap="round"
             strokeLinejoin="round"
             className="w-full h-full overflow-visible"
           >
             {svgData.primitives.map((prim, idx) => {
-              const pathDelay = delay + Math.min(idx * 0.04, 0.28);
+              const pathDelay = delay + Math.min(idx * 0.16, 0.8);
               if (prim.tag === 'path') {
                 return (
                   <motion.path
@@ -228,8 +244,8 @@ export function Doodle({
                     transition={
                       shouldDraw
                         ? {
-                            pathLength: { duration: drawDuration, delay: pathDelay, ease: 'easeOut' },
-                            opacity: { duration: 0.2, delay: pathDelay },
+                            pathLength: { duration: resolvedDuration, delay: pathDelay, ease: [0.22, 1, 0.36, 1] },
+                            opacity: { duration: 0.25, delay: pathDelay },
                           }
                         : { duration: 0 }
                     }
@@ -245,10 +261,10 @@ export function Doodle({
                     r={prim.attrs.r}
                     vectorEffect="non-scaling-stroke"
                     initial={shouldDraw ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
-                    animate={visible ? { pathLength: 1, opacity: 1 } : undefined}
+                    animate={visible ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
                     transition={
                       shouldDraw
-                        ? { pathLength: { duration: drawDuration, delay: pathDelay, ease: 'easeOut' }, opacity: { duration: 0.2, delay: pathDelay } }
+                        ? { pathLength: { duration: resolvedDuration, delay: pathDelay, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.25, delay: pathDelay } }
                         : { duration: 0 }
                     }
                   />
@@ -264,10 +280,10 @@ export function Doodle({
                     y2={prim.attrs.y2}
                     vectorEffect="non-scaling-stroke"
                     initial={shouldDraw ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
-                    animate={visible ? { pathLength: 1, opacity: 1 } : undefined}
+                    animate={visible ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
                     transition={
                       shouldDraw
-                        ? { pathLength: { duration: drawDuration, delay: pathDelay, ease: 'easeOut' }, opacity: { duration: 0.2, delay: pathDelay } }
+                        ? { pathLength: { duration: resolvedDuration, delay: pathDelay, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.25, delay: pathDelay } }
                         : { duration: 0 }
                     }
                   />
@@ -275,13 +291,20 @@ export function Doodle({
               }
               if (prim.tag === 'ellipse') {
                 return (
-                  <ellipse
+                  <motion.ellipse
                     key={idx}
                     cx={prim.attrs.cx}
                     cy={prim.attrs.cy}
                     rx={prim.attrs.rx}
                     ry={prim.attrs.ry}
                     vectorEffect="non-scaling-stroke"
+                    initial={shouldDraw ? { pathLength: 0, opacity: 0, scale: 0.85 } : { pathLength: 1, opacity: 1, scale: 1 }}
+                    animate={visible ? { pathLength: 1, opacity: 1, scale: 1 } : { pathLength: 0, opacity: 0, scale: 0.85 }}
+                    transition={
+                      shouldDraw
+                        ? { duration: resolvedDuration * 0.7, delay: pathDelay, ease: [0.22, 1, 0.36, 1] }
+                        : { duration: 0 }
+                    }
                   />
                 );
               }

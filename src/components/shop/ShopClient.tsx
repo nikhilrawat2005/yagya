@@ -101,6 +101,7 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                     trigger="mount"
                     text="Explore Yagya"
                     accentWord="Yagya"
+                    accentStyle="double"
                     className="font-display text-4xl sm:text-5xl text-oat font-medium"
                   />
                 </div>

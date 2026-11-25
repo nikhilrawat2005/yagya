@@ -25,28 +25,27 @@ export interface DoodleClusterProps {
 
 const PRESET_SLOTS: Record<DoodleClusterLayout, readonly string[]> = {
   'corner-peek': [
-    '-top-8 -right-6',
-    '-top-12 right-12',
-    'top-8 -right-10',
-    '-top-4 right-24',
+    '-top-16 -right-8',
+    '-top-14 right-24',
+    'top-8 -right-12',
+    '-top-6 right-32',
   ],
   'edge-trail': [
-    '-top-6 left-4',
-    '-top-9 left-28',
-    '-bottom-8 right-10',
-    '-bottom-5 right-32',
+    '-top-10 left-4',
+    '-top-12 left-32',
+    '-bottom-10 right-10',
+    '-bottom-8 right-36',
   ],
   'side-accent': [
-    'top-2 -left-10',
-    'top-24 -left-8',
-    'bottom-6 -left-10',
-    'bottom-24 -left-6',
+    'top-2 -left-12',
+    'top-28 -left-10',
+    'bottom-6 -left-12',
+    'bottom-28 -left-8',
   ],
 };
 
 /**
- * Places 2-4 doodles in a composed decorative arrangement with automatic
- * 110ms staggered draw timing and zero pointer/focus interference.
+ * Places 2-4 doodles in front (z-20) with slow staggered self-drawing timing.
  */
 export function DoodleCluster({
   layout = 'corner-peek',
@@ -59,19 +58,20 @@ export function DoodleCluster({
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none select-none ${className}`}
+      className={`pointer-events-none select-none relative z-20 ${className}`}
     >
       {items.slice(0, 4).map((item, idx) => (
         <Doodle
           key={item.name}
           name={item.name}
           tone={item.tone ?? 'oat'}
-          size={item.size ?? (idx === 0 ? 112 : 68)}
+          size={item.size ?? (idx === 0 ? 148 : 112)}
           rotate={item.rotate ?? (idx % 2 === 0 ? -8 : 7)}
-          opacity={item.opacity ?? (idx === 0 ? 0.88 : 0.72)}
-          float={item.float}
+          opacity={item.opacity ?? 0.92}
+          float={item.float ?? true}
+          drawDuration={2.2}
           priority={priority}
-          delay={idx * 0.11}
+          delay={idx * 0.2}
           showOn={item.showOn ?? (idx >= 2 ? 'md+' : 'all')}
           className={`absolute ${slots[idx] ?? ''}`}
         />

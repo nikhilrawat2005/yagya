@@ -25,9 +25,10 @@ export function ChapterDoodleLayer({
           tone={item.tone}
           size={item.size}
           rotate={item.rotate}
-          opacity={item.opacity ?? 0.85}
+          opacity={item.opacity ?? 0.92}
           float={item.float}
           parallax={item.parallax}
+          drawDuration={item.drawDuration ?? 2.2}
           delay={item.delay ?? 0}
           showOn={item.showOn}
           priority={priority}

@@ -39,6 +39,7 @@ export default function ContactPage() {
                   trigger="mount"
                   text="Write To Yagya"
                   accentWord="Yagya"
+                  accentStyle="circle"
                   className="font-display text-4xl sm:text-5xl text-oat font-medium mb-3"
                 />
                 <p className="text-sm sm:text-base text-apricot/95">

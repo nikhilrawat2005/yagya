@@ -32,6 +32,7 @@ export default async function JournalPage() {
                   trigger="mount"
                   text="Harvest Journal"
                   accentWord="Journal"
+                  accentStyle="double"
                   className="font-display text-4xl sm:text-5xl text-oat font-medium mb-3"
                 />
                 <p className="text-sm sm:text-base text-apricot/90">

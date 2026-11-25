@@ -32,13 +32,15 @@ export function EditorialProductCard({
   return (
     <div className={`relative group ${className}`}>
       {doodleName && (
-        <div className="hidden sm:block absolute -top-6 -right-5 z-0 pointer-events-none transition-transform duration-300 ease-[var(--ease-smooth)] [@media(hover:hover)]:group-hover:rotate-[4deg]">
+        <div className="hidden sm:block absolute -top-10 -right-7 z-20 pointer-events-none transition-transform duration-300 ease-[var(--ease-smooth)] [@media(hover:hover)]:group-hover:rotate-[4deg]">
           <Doodle
             name={doodleName}
-            tone="apricot"
-            size={64}
+            tone="peach"
+            size={88}
             rotate={-6}
-            opacity={0.78}
+            opacity={0.92}
+            float
+            drawDuration={2.0}
             inline
           />
         </div>
