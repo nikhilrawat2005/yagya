@@ -9,16 +9,8 @@ import { BackgroundChapter } from '@/components/editorial/BackgroundChapter';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { DoodleSVG } from '@/components/editorial/DoodleSVG';
 import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
-import { ChapterIndex, type ChapterDefinition } from '@/components/editorial/ChapterIndex';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { ASSETS } from '@/lib/assets';
-
-const CHAPTERS: ReadonlyArray<ChapterDefinition> = [
-  { id: 'chapter-01', number: '01', label: 'The Offering' },
-  { id: 'chapter-02', number: '02', label: 'The Origin' },
-  { id: 'chapter-03', number: '03', label: 'Craft & Inside' },
-  { id: 'chapter-04', number: '04', label: 'The Promise' },
-];
 
 const NUTRITION_HIGHLIGHTS = [
   {
@@ -84,8 +76,6 @@ export function StoryLanding() {
 
   return (
     <div className="relative w-full text-oat">
-      <ChapterIndex chapters={CHAPTERS} />
-
       {/* ================================================================
           CHAPTER 01 — NEON NAVY / BLUEBERRIES — HERO
          ================================================================ */}

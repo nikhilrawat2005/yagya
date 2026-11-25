@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { BackgroundChapter } from '@/components/editorial/BackgroundChapter';
-import { ChapterIndex, type ChapterDefinition } from '@/components/editorial/ChapterIndex';
 import { PAGE_BACKGROUND_SETS, type PageBackgroundKey } from '@/lib/assets';
 
 export interface PageChapterItem {
@@ -26,18 +25,11 @@ export interface PageBackgroundSetProps {
 export function PageBackgroundSet({
   page,
   chapters,
-  showIndex = true,
 }: PageBackgroundSetProps) {
   const backgrounds = PAGE_BACKGROUND_SETS[page];
-  const indexDefs: ChapterDefinition[] = chapters.map((ch) => ({
-    id: ch.id,
-    number: ch.chapterNumber,
-    label: ch.chapterLabel,
-  }));
 
   return (
     <div className="relative w-full text-oat">
-      {showIndex && indexDefs.length > 1 && <ChapterIndex chapters={indexDefs} />}
       {chapters.map((chapter, idx) => {
         const bg = backgrounds[idx % backgrounds.length];
         return (
