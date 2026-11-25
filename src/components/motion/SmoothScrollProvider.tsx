@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect } from 'react';
 import Lenis from 'lenis';
-import { useReducedMotion } from 'motion/react';
+import { MotionConfig, useReducedMotion } from 'motion/react';
 import { useCartStore } from '@/lib/store/cartStore';
 
 export function SmoothScrollProvider({ children }: { children: ReactNode }) {
@@ -41,5 +41,5 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
     };
   }, [shouldReduceMotion, isCartOpen]);
 
-  return <>{children}</>;
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }

@@ -13,6 +13,7 @@ export interface Category {
   originNote: string;
   accentToken: 'apricot' | 'peach' | 'seabuckthorn';
   image: string;
+  useDoodleEmblem?: boolean;
 }
 
 export const categories: Category[] = [
@@ -41,7 +42,8 @@ export const categories: Category[] = [
     description: 'Naturally sun-cured orchard fruits with zero artificial glazing.',
     originNote: 'Seasonal Harvest Lineup',
     accentToken: 'apricot',
-    image: '/images/3d/jar-reserve-01.webp',
+    image: '',
+    useDoodleEmblem: true,
   },
   {
     id: 'cat-nuts',
@@ -50,7 +52,8 @@ export const categories: Category[] = [
     description: 'Single-origin whole nut kernels graded for crispness and natural oil density.',
     originNote: 'Seasonal Harvest Lineup',
     accentToken: 'peach',
-    image: '/images/3d/jar-reserve-01.webp',
+    image: '',
+    useDoodleEmblem: true,
   },
   {
     id: 'cat-flavoured-makhana',
@@ -59,6 +62,7 @@ export const categories: Category[] = [
     description: 'Hand-popped Mithila lotus seeds roasted in small batches with whole spices.',
     originNote: 'Mithila Wetlands, Bihar',
     accentToken: 'apricot',
-    image: '/images/3d/jar-reserve-01.webp',
+    image: '',
+    useDoodleEmblem: true,
   },
 ];

@@ -5,8 +5,17 @@ import { ArrowRight } from 'lucide-react';
 import { Product } from '@/lib/data/products';
 import { FibonacciBlocks } from '@/components/shapes/FibonacciBlocks';
 import { Floating3DAsset } from '@/components/ui/Floating3DAsset';
-import { DoodleCircle, DoodleArrow } from '@/components/doodles';
-import { Button } from '@/components/ui/Button';
+import {
+  DoodleCircle,
+  DoodleArrow,
+  DoodleUnderline,
+  DoodleSparkle,
+  DoodleLeaf,
+  DoodleJar,
+  FloatingDoodle,
+} from '@/components/doodles';
+import { GlowButton } from '@/components/ui/GlowButton';
+import { FadeInSection } from '@/components/motion/FadeInSection';
 
 interface NutritionSpotlightSectionProps {
   product: Product;
@@ -46,11 +55,26 @@ export function NutritionSpotlightSection({ product }: NutritionSpotlightSection
       </div>
 
       <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-[5fr_8fr] items-center">
-        {/* LEFT 5fr: Floating 3D Sea Buckthorn & Jar over Fibonacci Shapes */}
+        {/* LEFT 5fr: Floating 3D Sea Buckthorn & Black Marker Harvest Jar over Fibonacci Shapes */}
         <div className="relative min-h-[320px] lg:min-h-[600px] flex items-center justify-center p-8">
           <div aria-hidden="true" className="lg:hidden absolute inset-0 pointer-events-none z-0">
             <FibonacciBlocks fullBleed mirrored negativeSpaceMajor={false} showSpiralArc />
           </div>
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute w-72 h-72 rounded-full animate-ambient-glow z-10"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(242,140,27,0.26) 0%, rgba(251,201,138,0.12) 55%, transparent 75%)',
+            }}
+          />
+
+          <DoodleLeaf
+            variant="sprig"
+            delay={0.25}
+            className="hidden sm:block absolute left-6 top-8 w-12 h-12 z-20 opacity-80"
+          />
 
           <Floating3DAsset
             src="/images/3d/berry-seabuckthorn-01.webp"
@@ -60,39 +84,50 @@ export function NutritionSpotlightSection({ product }: NutritionSpotlightSection
             floatDistance={6}
             duration={5.6}
             rotateDeg={1.5}
+            parallaxDepth={12}
             className="relative z-20 w-[62%] max-w-[300px]"
           />
 
-          <Floating3DAsset
-            src="/images/3d/jar-reserve-01.webp"
-            alt="Yagya harvest jar"
-            width={220}
-            height={220}
+          <FloatingDoodle
             floatDistance={5}
             duration={6.2}
-            rotateDeg={-1}
-            className="hidden sm:block absolute -right-10 bottom-6 w-[44%] max-w-[210px] z-30"
-          />
+            rotateDeg={-1.2}
+            parallaxDepth={-10}
+            className="hidden sm:block absolute -right-4 bottom-6 w-[40%] max-w-[185px] z-30"
+          >
+            <DoodleJar delay={0.2} />
+          </FloatingDoodle>
         </div>
 
         {/* RIGHT 8fr: Calm Oat White Negative Space holding Verified Nutrition Facts */}
-        <div className="px-6 sm:px-10 lg:pl-16 lg:pr-[max(2rem,calc((100vw-80rem)/2+2rem))] py-14 lg:py-20">
-          <span className="font-mono-meta text-xs uppercase tracking-widest text-cranberry block mb-2">
-            04 · Verified Nutrition Spotlight
-          </span>
+        <FadeInSection className="px-6 sm:px-10 lg:pl-16 lg:pr-[max(2rem,calc((100vw-80rem)/2+2rem))] py-14 lg:py-20">
+          <div className="relative inline-flex items-center gap-2 mb-2">
+            <span className="font-mono-meta text-xs uppercase tracking-widest text-cranberry">
+              04 · Verified Nutrition Spotlight
+            </span>
+            <DoodleSparkle delay={0.2} className="w-5 h-5" />
+          </div>
 
           <h2
             id="nutrition-heading"
             className="font-display text-3xl sm:text-5xl text-indigo font-semibold leading-tight mb-4"
           >
             Mountain Berry{' '}
-            <span className="text-cranberry italic">Nutrition</span>, Unedited
+            <span className="relative inline-block text-cranberry italic">
+              Nutrition
+              <DoodleUnderline
+                variant="single"
+                delay={0.2}
+                className="absolute -bottom-1.5 left-0 w-full"
+              />
+            </span>
+            , Unedited
           </h2>
 
           <p className="font-script-body text-base text-indigo max-w-2xl mb-8">
             Whole Dried Sea Buckthorn Berries keep their nutrient-rich pulp and seed oils
             intact — delivering{' '}
-            <span className="relative inline-block px-3 py-0.5 font-mono-meta font-bold text-cranberry">
+            <span className="glow-hover relative inline-block px-3 py-0.5 rounded-full font-mono-meta font-bold text-cranberry">
               650 mg Vitamin C
               <DoodleCircle
                 delay={0.25}
@@ -103,7 +138,7 @@ export function NutritionSpotlightSection({ product }: NutritionSpotlightSection
           </p>
 
           {/* Verbatim Nutrition Table */}
-          <div className="bg-apricot/45 border-2 border-charcoal rounded-2xl overflow-hidden mb-8">
+          <div className="glow-border bg-apricot/45 border-2 border-charcoal rounded-2xl overflow-hidden mb-8">
             <div className="px-5 py-3 bg-peach/70 border-b border-charcoal/25 flex flex-wrap items-center justify-between gap-2">
               <h3 className="font-sans text-sm font-semibold text-indigo">
                 {product.name} — Nutritional Information
@@ -125,7 +160,10 @@ export function NutritionSpotlightSection({ product }: NutritionSpotlightSection
                 </thead>
                 <tbody className="divide-y divide-charcoal/15 font-mono-meta text-xs text-indigo">
                   {highlightedRows.map((row) => (
-                    <tr key={row.nutrient}>
+                    <tr
+                      key={row.nutrient}
+                      className="transition-colors duration-200 hover:bg-peach/40"
+                    >
                       <td className="px-5 py-2.5 font-sans font-medium">{row.nutrient}</td>
                       <td className="px-5 py-2.5">{row.per100g}</td>
                       <td className="px-5 py-2.5 font-bold text-cranberry">{row.perServe}</td>
@@ -141,13 +179,13 @@ export function NutritionSpotlightSection({ product }: NutritionSpotlightSection
           </div>
 
           <div className="relative inline-flex items-center gap-4">
-            <Button href={`/product/${product.slug}`}>
+            <GlowButton href={`/product/${product.slug}`} variant="cta" magnetic>
               <span>READ FULL SPEC &amp; BUY</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
+              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+            </GlowButton>
             <DoodleArrow direction="down-left" delay={0.35} className="hidden sm:block" />
           </div>
-        </div>
+        </FadeInSection>
       </div>
     </section>
   );

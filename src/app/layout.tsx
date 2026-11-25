@@ -8,6 +8,8 @@ import {
 import './globals.css';
 import { siteConfig } from '@/lib/data/site';
 import { SmoothScrollProvider } from '@/components/motion/SmoothScrollProvider';
+import { PageTransition } from '@/components/motion/PageTransition';
+import { CursorGlow } from '@/components/ui/CursorGlow';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -59,9 +61,12 @@ export default function RootLayout({
     >
       <body className="bg-oat text-indigo antialiased font-sans selection:bg-seabuckthorn selection:text-oat">
         <SmoothScrollProvider>
+          <CursorGlow />
           <Navbar />
           <CartDrawer />
-          <main className="min-h-screen pt-24 md:pt-28">{children}</main>
+          <main className="min-h-screen pt-24 md:pt-28">
+            <PageTransition>{children}</PageTransition>
+          </main>
           <Footer />
         </SmoothScrollProvider>
       </body>

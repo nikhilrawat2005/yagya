@@ -1,7 +1,8 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
+import { MOTION_DURATION, MOTION_EASE, VIEWPORT_ONCE } from '@/lib/motion/tokens';
 
 interface StaggerProps {
   children: ReactNode;
@@ -9,17 +10,23 @@ interface StaggerProps {
   className?: string;
 }
 
-export function StaggerContainer({ children, staggerDelay = 0.08, className = '' }: StaggerProps) {
+export function StaggerContainer({
+  children,
+  staggerDelay = 0.08,
+  className = '',
+}: StaggerProps) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-40px' }}
+      viewport={VIEWPORT_ONCE}
       variants={{
         hidden: {},
         visible: {
           transition: {
-            staggerChildren: staggerDelay,
+            staggerChildren: prefersReducedMotion ? 0 : staggerDelay,
           },
         },
       }}
@@ -30,17 +37,30 @@ export function StaggerContainer({ children, staggerDelay = 0.08, className = ''
   );
 }
 
-export function StaggerItem({ children, className = '' }: { children: ReactNode; className?: string }) {
+export function StaggerItem({
+  children,
+  className = '',
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 20 },
+        hidden: {
+          opacity: 0,
+          y: prefersReducedMotion ? 0 : 20,
+          filter: prefersReducedMotion ? 'blur(0px)' : 'blur(4px)',
+        },
         visible: {
           opacity: 1,
           y: 0,
+          filter: 'blur(0px)',
           transition: {
-            duration: 0.5,
-            ease: [0.22, 1, 0.36, 1],
+            duration: prefersReducedMotion ? 0.15 : MOTION_DURATION.slow,
+            ease: MOTION_EASE.smooth,
           },
         },
       }}

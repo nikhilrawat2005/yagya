@@ -6,6 +6,9 @@ import { X, ShoppingBag, Trash2, Minus, Plus, Sprout, CheckCircle2 } from 'lucid
 import { useCartStore } from '@/lib/store/cartStore';
 import { siteConfig } from '@/lib/data/site';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
+import { MOTION_EASE, MOTION_SPRING } from '@/lib/motion/tokens';
+import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
+import { GlowButton } from '@/components/ui/GlowButton';
 
 export function CartDrawer() {
   const {
@@ -20,6 +23,8 @@ export function CartDrawer() {
     getFreeShippingProgress,
   } = useCartStore();
 
+  const { prefersReducedMotion } = useInteractiveCapabilities();
+
   const subtotal = getSubtotal();
   const shippingFee = getShippingFee();
   const grandTotal = getGrandTotal();
@@ -29,15 +34,20 @@ export function CartDrawer() {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 overflow-hidden" role="dialog" aria-modal="true" aria-label="Shopping Bag">
-          {/* Backdrop using Charcoal tint (no pure black) */}
+        <div
+          className="fixed inset-0 z-50 overflow-hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Shopping Bag"
+        >
+          {/* Backdrop using Charcoal tint + soft backdrop blur */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.22 }}
             onClick={closeCart}
-            className="absolute inset-0 bg-charcoal/50 cursor-pointer"
+            className="absolute inset-0 bg-charcoal/45 backdrop-blur-sm cursor-pointer"
           />
 
           <div className="fixed inset-y-0 right-0 max-w-full flex pl-8">
@@ -45,25 +55,28 @@ export function CartDrawer() {
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 28, stiffness: 260 }}
-              className="w-screen max-w-md bg-oat border-l-2 border-charcoal flex flex-col text-indigo"
+              transition={prefersReducedMotion ? { duration: 0.12 } : MOTION_SPRING.overlay}
+              className="w-screen max-w-md bg-oat border-l-2 border-charcoal shadow-[var(--glow-level-3)] flex flex-col text-indigo"
             >
               {/* Header */}
               <div className="px-6 py-4 border-b border-charcoal/20 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <ShoppingBag className="w-5 h-5 text-indigo" />
+                  <ShoppingBag className="w-5 h-5 text-indigo icon-hover-pop" />
                   <h2 className="font-sans text-lg font-semibold text-indigo">
                     Your Harvest Bag
                   </h2>
                 </div>
-                <button
+                <motion.button
                   type="button"
+                  whileHover={prefersReducedMotion ? undefined : { rotate: 90 }}
+                  whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
+                  transition={MOTION_SPRING.tactile}
                   onClick={closeCart}
-                  className="p-1.5 rounded-full text-indigo hover:bg-apricot transition-colors cursor-pointer"
+                  className="p-2 rounded-full text-indigo hover:bg-apricot hover:text-burnt glow-hover transition-colors cursor-pointer"
                   aria-label="Close bag"
                 >
                   <X className="w-5 h-5" />
-                </button>
+                </motion.button>
               </div>
 
               {/* Free Shipping Progress */}
@@ -77,16 +90,26 @@ export function CartDrawer() {
                       </span>
                     ) : (
                       <>
-                        Add <span className="font-mono-meta font-bold text-cranberry">₹{remainingForFreeShipping}</span> for free shipping
+                        Add{' '}
+                        <span className="font-mono-meta font-bold text-cranberry">
+                          ₹{remainingForFreeShipping}
+                        </span>{' '}
+                        for free shipping
                       </>
                     )}
                   </span>
                   <span className="font-mono-meta text-[11px]">{freeShippingProgress}%</span>
                 </div>
                 <div className="w-full bg-oat rounded-full h-2 border border-charcoal/20 overflow-hidden">
-                  <div
-                    className="bg-seabuckthorn h-full transition-[width] duration-300"
-                    style={{ width: `${freeShippingProgress}%` }}
+                  <motion.div
+                    initial={false}
+                    animate={{ width: `${freeShippingProgress}%` }}
+                    transition={{ duration: 0.4, ease: MOTION_EASE.smooth }}
+                    className={`h-full transition-shadow duration-300 ${
+                      remainingForFreeShipping === 0
+                        ? 'bg-gradient-to-r from-seabuckthorn to-burnt shadow-[0_0_12px_var(--glow-primary-strong)]'
+                        : 'bg-seabuckthorn'
+                    }`}
                   />
                 </div>
               </div>
@@ -95,8 +118,8 @@ export function CartDrawer() {
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
                 {items.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center p-6">
-                    <div className="w-16 h-16 rounded-full bg-apricot border-2 border-charcoal/25 flex items-center justify-center mb-4">
-                      <Sprout className="w-7 h-7 text-indigo" />
+                    <div className="w-16 h-16 rounded-full bg-apricot border-2 border-charcoal/25 flex items-center justify-center mb-4 glow-hover">
+                      <Sprout className="w-7 h-7 text-indigo icon-hover-pop" />
                     </div>
                     <p className="font-display text-xl font-semibold text-indigo mb-2">
                       Your harvest bag is empty
@@ -104,83 +127,93 @@ export function CartDrawer() {
                     <p className="font-script-body text-sm text-indigo/85 max-w-xs mb-6">
                       Explore our farm-direct seeds and berries packed fresh in small batches.
                     </p>
-                    <Link
-                      href="/shop"
-                      onClick={closeCart}
-                      className="btn-primary-yagya px-6 py-3 rounded-full text-xs"
-                    >
+                    <GlowButton href="/shop" variant="cta" onClick={closeCart}>
                       SHOP SUPERFOODS
-                    </Link>
+                    </GlowButton>
                   </div>
                 ) : (
-                  items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex gap-4 p-3 rounded-xl bg-apricot/45 border border-charcoal/20"
-                    >
-                      <div className="relative w-20 h-20 rounded-lg bg-oat border border-charcoal/15 shrink-0 overflow-hidden p-1">
-                        <ProductImageWithFallback
-                          src={item.product.images[0]?.src || ''}
-                          alt={item.product.name}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
+                  <AnimatePresence initial={false}>
+                    {items.map((item) => (
+                      <motion.div
+                        key={item.id}
+                        layout={!prefersReducedMotion}
+                        initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: 24, scale: 0.96 }}
+                        transition={{ duration: 0.24, ease: MOTION_EASE.smooth }}
+                        className="group flex gap-4 p-3 rounded-xl bg-apricot/45 hover:bg-apricot/80 border border-charcoal/20 glow-border"
+                      >
+                        <Link
+                          href={`/product/${item.product.slug}`}
+                          onClick={closeCart}
+                          className="relative w-20 h-20 rounded-lg bg-oat border border-charcoal/15 shrink-0 overflow-hidden p-1"
+                        >
+                          <ProductImageWithFallback
+                            src={item.product.images[0]?.src || ''}
+                            alt={item.product.name}
+                            fill
+                            className="object-contain transition-transform duration-300 ease-out group-hover:scale-108"
+                          />
+                        </Link>
 
-                      <div className="flex-1 min-w-0 flex flex-col justify-between">
-                        <div className="flex items-start justify-between gap-2">
-                          <div>
-                            <Link
-                              href={`/product/${item.product.slug}`}
-                              onClick={closeCart}
-                              className="font-sans text-sm font-semibold text-indigo hover:text-burnt line-clamp-1"
-                            >
-                              {item.product.name}
-                            </Link>
-                            <span className="font-mono-meta text-[11px] text-cranberry block">
-                              {item.variant.weight}
-                            </span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => removeItem(item.id)}
-                            aria-label={`Remove ${item.product.name}`}
-                            className="p-1 text-indigo/70 hover:text-cranberry transition-colors cursor-pointer"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-
-                        <div className="flex items-center justify-between pt-2">
-                          <div className="inline-flex items-center border border-charcoal/30 rounded-full bg-oat">
-                            <button
+                        <div className="flex-1 min-w-0 flex flex-col justify-between">
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <Link
+                                href={`/product/${item.product.slug}`}
+                                onClick={closeCart}
+                                className="nav-link-underline nav-link-underline-left font-sans text-sm font-semibold text-indigo hover:text-burnt line-clamp-1"
+                              >
+                                {item.product.name}
+                              </Link>
+                              <span className="font-mono-meta text-[11px] text-cranberry block mt-0.5">
+                                {item.variant.weight}
+                              </span>
+                            </div>
+                            <motion.button
                               type="button"
-                              onClick={() => updateQuantity(item.id, -1)}
-                              aria-label="Decrease quantity"
-                              className="w-7 h-7 flex items-center justify-center text-indigo hover:text-burnt cursor-pointer"
+                              whileTap={prefersReducedMotion ? undefined : { scale: 0.88 }}
+                              onClick={() => removeItem(item.id)}
+                              aria-label={`Remove ${item.product.name}`}
+                              className="p-1.5 rounded-full text-indigo/70 hover:text-cranberry hover:bg-oat glow-hover transition-colors cursor-pointer"
                             >
-                              <Minus className="w-3 h-3" />
-                            </button>
-                            <span className="w-7 text-center font-mono-meta text-xs font-bold">
-                              {item.quantity}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => updateQuantity(item.id, 1)}
-                              aria-label="Increase quantity"
-                              className="w-7 h-7 flex items-center justify-center text-indigo hover:text-burnt cursor-pointer"
-                            >
-                              <Plus className="w-3 h-3" />
-                            </button>
+                              <Trash2 className="w-4 h-4 icon-hover-pop" />
+                            </motion.button>
                           </div>
 
-                          <span className="font-mono-meta text-sm font-bold text-indigo">
-                            ₹{item.variant.price * item.quantity}
-                          </span>
+                          <div className="flex items-center justify-between pt-2">
+                            <div className="inline-flex items-center border border-charcoal/30 rounded-full bg-oat glow-border">
+                              <motion.button
+                                type="button"
+                                whileTap={prefersReducedMotion ? undefined : { scale: 0.88 }}
+                                onClick={() => updateQuantity(item.id, -1)}
+                                aria-label="Decrease quantity"
+                                className="w-7 h-7 flex items-center justify-center rounded-l-full text-indigo hover:text-burnt hover:bg-apricot/60 transition-colors cursor-pointer"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </motion.button>
+                              <span className="w-7 text-center font-mono-meta text-xs font-bold">
+                                {item.quantity}
+                              </span>
+                              <motion.button
+                                type="button"
+                                whileTap={prefersReducedMotion ? undefined : { scale: 0.88 }}
+                                onClick={() => updateQuantity(item.id, 1)}
+                                aria-label="Increase quantity"
+                                className="w-7 h-7 flex items-center justify-center rounded-r-full text-indigo hover:text-burnt hover:bg-apricot/60 transition-colors cursor-pointer"
+                              >
+                                <Plus className="w-3 h-3" />
+                              </motion.button>
+                            </div>
+
+                            <span className="font-mono-meta text-sm font-bold text-indigo">
+                              ₹{item.variant.price * item.quantity}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  ))
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 )}
               </div>
 
@@ -204,13 +237,14 @@ export function CartDrawer() {
                     </div>
                   </div>
 
-                  <Link
+                  <GlowButton
                     href="/checkout"
+                    variant="cta"
                     onClick={closeCart}
-                    className="btn-primary-yagya w-full py-3.5 rounded-full text-xs flex items-center justify-center"
+                    className="w-full py-3.5"
                   >
                     PROCEED TO CHECKOUT
-                  </Link>
+                  </GlowButton>
                 </div>
               )}
             </motion.div>

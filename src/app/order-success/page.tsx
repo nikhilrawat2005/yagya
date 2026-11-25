@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
-import Link from 'next/link';
 import { Check } from 'lucide-react';
+import { GlowButton } from '@/components/ui/GlowButton';
+import { FadeInSection } from '@/components/motion/FadeInSection';
 
 function OrderSuccessContent({
   searchParams,
@@ -24,9 +25,9 @@ async function OrderSuccessDetails({
   const total = resolved.total || '249';
 
   return (
-    <div className="max-w-lg mx-auto px-4 py-16 text-center">
-      <div className="w-20 h-20 mx-auto rounded-full bg-apricot border-2 border-charcoal text-indigo flex items-center justify-center mb-6">
-        <Check className="w-9 h-9 text-indigo" />
+    <FadeInSection className="max-w-lg mx-auto px-4 py-16 text-center">
+      <div className="glow-hover w-20 h-20 mx-auto rounded-full bg-apricot border-2 border-charcoal text-indigo flex items-center justify-center mb-6 shadow-[var(--glow-level-2)]">
+        <Check className="w-9 h-9 text-indigo icon-hover-pop" />
       </div>
 
       <span className="font-mono-meta text-xs uppercase tracking-widest text-cranberry block mb-1">
@@ -39,7 +40,7 @@ async function OrderSuccessDetails({
         Thank you for choosing Yagya farm-direct superfoods. Your batch is packed fresh and sealed carefully.
       </p>
 
-      <div className="bg-apricot/55 rounded-2xl p-6 border-2 border-charcoal/30 text-left mb-8 space-y-3 text-xs font-sans">
+      <div className="glow-border bg-apricot/55 rounded-2xl p-6 border-2 border-charcoal/30 text-left mb-8 space-y-3 text-xs font-sans">
         <div className="flex justify-between pb-3 border-b border-charcoal/15">
           <span>Order Identifier</span>
           <span className="font-mono-meta font-bold text-indigo">{orderId}</span>
@@ -55,17 +56,14 @@ async function OrderSuccessDetails({
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <Link href="/shop" className="btn-primary-yagya px-6 py-3 rounded-full text-xs">
+        <GlowButton href="/shop" variant="cta" magnetic>
           EXPLORE MORE
-        </Link>
-        <Link
-          href="/"
-          className="px-6 py-3 rounded-full bg-oat border-2 border-charcoal text-indigo font-ui-label text-xs hover:bg-apricot transition-colors"
-        >
+        </GlowButton>
+        <GlowButton href="/" variant="secondary">
           RETURN HOME
-        </Link>
+        </GlowButton>
       </div>
-    </div>
+    </FadeInSection>
   );
 }
 
