@@ -16,7 +16,7 @@ export function ChapterDoodleLayer({
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none select-none absolute inset-0 overflow-visible"
+      className="pointer-events-none select-none absolute inset-0 z-20 overflow-visible"
     >
       {placements.map((item) => (
         <Doodle

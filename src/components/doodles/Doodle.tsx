@@ -63,7 +63,7 @@ function getClientEnvSnapshot() {
   const isLowPower =
     typeof navigator !== 'undefined' &&
     typeof navigator.hardwareConcurrency === 'number' &&
-    navigator.hardwareConcurrency <= 4;
+    navigator.hardwareConcurrency <= 2;
   const isMobile = window.innerWidth < 640;
   const canHover = window.matchMedia('(hover: hover)').matches;
   if (
@@ -128,7 +128,7 @@ export function Doodle({
 
   const inDrawView = useInView(containerRef, {
     once: true,
-    amount: 0.3,
+    amount: 0.15,
   });
 
   const { scrollYProgress } = useScroll({
@@ -163,9 +163,9 @@ export function Doodle({
           aspectRatio: isWide ? '4 / 1' : '1 / 1',
         };
 
-  const drawDuration = isMobile || isLowPower ? 0.8 : 1.2;
+  const drawDuration = isMobile || isLowPower ? 0.8 : 1.15;
   const shouldDraw = draw && !prefersReducedMotion;
-  const shouldFloat = float && !prefersReducedMotion && !isLowPower && !isMobile;
+  const shouldFloat = float && !prefersReducedMotion && !isLowPower;
   const shouldParallax = parallax && !prefersReducedMotion && !isMobile;
   const shouldHover = hover && canHover && !prefersReducedMotion;
   const visible = priority || inDrawView;
@@ -177,7 +177,7 @@ export function Doodle({
     <motion.div
       ref={containerRef}
       aria-hidden="true"
-      className={`pointer-events-none select-none ${posClass} ${SHOW_ON_CLASSES[effectiveShowOn]} ${className}`}
+      className={`${shouldHover ? 'pointer-events-auto' : 'pointer-events-none'} select-none ${posClass} ${SHOW_ON_CLASSES[effectiveShowOn]} ${className}`}
       style={{
         color: DOODLE_TONE_HEX[tone],
         opacity,
@@ -186,15 +186,15 @@ export function Doodle({
         ...(shouldParallax ? { y: parallaxY } : undefined),
       }}
       initial={{ rotate }}
-      whileHover={shouldHover ? { rotate: rotate + 4 } : undefined}
+      whileHover={shouldHover ? { rotate: rotate + 8, scale: 1.12 } : undefined}
       transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
     >
       <motion.div
         className="w-full h-full"
-        animate={shouldFloat ? { y: [-4, 4, -4] } : undefined}
+        animate={shouldFloat ? { y: [-6, 6, -6], rotate: [-2.5, 2.5, -2.5] } : undefined}
         transition={
           shouldFloat
-            ? { duration: 6, repeat: Infinity, ease: 'easeInOut' }
+            ? { duration: 4.8, repeat: Infinity, ease: 'easeInOut' }
             : undefined
         }
       >

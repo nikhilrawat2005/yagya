@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { useReducedMotion } from 'motion/react';
+import { useInView, useReducedMotion } from 'motion/react';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -38,6 +38,8 @@ export function SplitText({
 }: SplitTextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
+  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+  const shouldReveal = trigger === 'mount' || isInView;
 
   const words = useMemo(() => text.trim().split(/\s+/), [text]);
   const normalizedAccent = accentWord?.trim().toLowerCase();
@@ -54,28 +56,28 @@ export function SplitText({
         return;
       }
 
-      const tweenVars: gsap.TweenVars = {
-        yPercent: 0,
-        opacity: 1,
-        duration,
-        delay,
-        stagger,
-        ease: 'power3.out',
-      };
-
-      if (trigger === 'scroll') {
-        tweenVars.scrollTrigger = {
-          trigger: containerRef.current,
-          start: 'top 86%',
-          once: true,
-        };
+      if (!shouldReveal) {
+        gsap.set(targets, { yPercent: 105, opacity: 0 });
+        return;
       }
 
-      gsap.fromTo(targets, { yPercent: 110, opacity: 0 }, tweenVars);
+      gsap.fromTo(
+        targets,
+        { yPercent: 105, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration,
+          delay,
+          stagger,
+          ease: 'power3.out',
+          overwrite: 'auto',
+        }
+      );
     },
     {
       scope: containerRef,
-      dependencies: [text, splitBy, trigger, delay, stagger, duration, shouldReduceMotion],
+      dependencies: [text, splitBy, trigger, delay, stagger, duration, shouldReduceMotion, shouldReveal],
     }
   );
 

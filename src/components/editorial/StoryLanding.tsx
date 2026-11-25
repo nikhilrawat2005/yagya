@@ -190,31 +190,70 @@ export function StoryLanding() {
         tone={ASSETS.backgrounds.home[1].tone}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Wide Lead Sheet (Right-aligned) */}
+          {/* Wide Lead Sheet (Right-aligned) with real farm harvest photography */}
           <div className="lg:col-span-7 lg:col-start-6 relative">
             <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.home['chapter-02']} />
-            <OatSheet tone="medium" delay={0.08} className="relative z-10 p-7 sm:p-10">
-              <SplitText
-                as="h2"
-                trigger="scroll"
-                text="Rooted in the clarity of the Diya."
-                accentWord="Diya"
-                className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-oat mb-6"
-              />
+            <OatSheet tone="medium" delay={0.08} className="relative z-10 p-6 sm:p-9">
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
+                <div className="sm:col-span-7">
+                  <SplitText
+                    as="h2"
+                    trigger="scroll"
+                    text="Rooted in the clarity of the Diya."
+                    accentWord="Diya"
+                    className="font-display text-3xl sm:text-4xl lg:text-[42px] font-medium tracking-tight text-oat mb-4"
+                  />
 
-              <p className="text-sm sm:text-base text-apricot/95 leading-relaxed max-w-xl">
-                In ancient harvest tradition, a yagya is an offering of what is pure and
-                unadorned. That quiet discipline guides every harvest we source directly
-                from farming households across Madhya Pradesh, Rajasthan, Karnataka,
-                Himachal, and Uttarakhand.
-              </p>
+                  <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">
+                    In ancient harvest tradition, a yagya is an offering of what is pure and
+                    unadorned. That quiet discipline guides every harvest we source directly
+                    from farming households across Madhya Pradesh, Rajasthan, Karnataka,
+                    Himachal, and Uttarakhand.
+                  </p>
+                </div>
+
+                <div className="sm:col-span-5 grid grid-cols-2 sm:grid-cols-1 gap-3">
+                  <Link href="/seeds" className="group block">
+                    <div className="relative aspect-[4/3] w-full rounded-[4px] overflow-hidden border border-white/25 bg-navy/40">
+                      <Image
+                        src={ASSETS.products.seeds.sunflowerSeeds}
+                        alt="Golden raw sunflower kernels sourced directly from plains farms"
+                        fill
+                        sizes="(max-width: 640px) 45vw, 220px"
+                        className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
+                      />
+                    </div>
+                  </Link>
+                  <Link href="/seeds" className="group block">
+                    <div className="relative aspect-[4/3] w-full rounded-[4px] overflow-hidden border border-white/25 bg-navy/40">
+                      <Image
+                        src={ASSETS.products.seeds.pumpkinSeeds}
+                        alt="Sun-warmed green kaddu pumpkin seed kernels in dark ceramic bowl"
+                        fill
+                        sizes="(max-width: 640px) 45vw, 220px"
+                        className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
+                      />
+                    </div>
+                  </Link>
+                </div>
+              </div>
             </OatSheet>
           </div>
 
           {/* Tall Overlapping Pillars Sheet (Left-aligned, staggered upward) */}
-          <div className="lg:col-span-5 lg:col-start-1 lg:-mt-16 relative z-20">
+          <div className="lg:col-span-5 lg:col-start-1 lg:-mt-12 relative z-20">
             <OatSheet tone="warm" delay={0.22} className="p-7 sm:p-8">
-              <div className="flex items-center justify-end mb-6">
+              <div className="flex items-center justify-between gap-4 mb-5">
+                <Doodle
+                  name="seed-bowl-a"
+                  tone="peach"
+                  size={64}
+                  opacity={0.95}
+                  draw
+                  float
+                  hover
+                  inline
+                />
                 <span className="font-annotation text-lg text-apricot/95">
                   Pure from field to table
                 </span>
@@ -267,18 +306,44 @@ export function StoryLanding() {
         tone={ASSETS.backgrounds.home[2].tone}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          {/* Tall Craft Narrative Sheet */}
+          {/* Tall Craft Narrative Sheet with paired berry & seed imagery */}
           <div className="lg:col-span-5 relative">
-            <OatSheet tone="medium" delay={0.08} className="p-7 sm:p-9">
+            <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.home['chapter-03']} />
+            <OatSheet tone="medium" delay={0.08} className="relative z-10 p-6 sm:p-8">
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                <Link href="/berries" className="group block">
+                  <div className="relative aspect-[4/3] w-full rounded-[4px] overflow-hidden border border-white/25 bg-navy/40">
+                    <Image
+                      src={ASSETS.products.berries.seaBuckthorn}
+                      alt="Whole dried Sea Buckthorn berries rich in Omega-7 and Vitamin C"
+                      fill
+                      sizes="(max-width: 640px) 42vw, 210px"
+                      className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
+                    />
+                  </div>
+                </Link>
+                <Link href="/seeds" className="group block">
+                  <div className="relative aspect-[4/3] w-full rounded-[4px] overflow-hidden border border-white/25 bg-navy/40">
+                    <Image
+                      src={ASSETS.products.seeds.flaxSeeds}
+                      alt="Winter Rabi alsi flax seeds in dark ceramic bowl"
+                      fill
+                      sizes="(max-width: 640px) 42vw, 210px"
+                      className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
+                    />
+                  </div>
+                </Link>
+              </div>
+
               <SplitText
                 as="h2"
                 trigger="scroll"
                 text="Gently dried. Naturally dense."
                 accentWord="dense"
-                className="font-display text-3xl sm:text-[44px] font-medium tracking-tight text-oat mb-5"
+                className="font-display text-3xl sm:text-[40px] font-medium tracking-tight text-oat mb-4"
               />
 
-              <p className="text-sm sm:text-base text-apricot/95 leading-relaxed mb-6">
+              <p className="text-sm sm:text-base text-apricot/95 leading-relaxed mb-5">
                 Whole Sea Buckthorn berries keep their nutrient-rich pulp and seed oils
                 intact through gentle dehydration. Cool-season Rabi flax and chia retain
                 crispness, fiber, and plant Omega oils in barrier-sealed pouches.
@@ -288,15 +353,24 @@ export function StoryLanding() {
                 <span className="font-annotation text-xl text-peach">
                   Pulp, seed &amp; crunch intact
                 </span>
+                <Doodle
+                  name="berry-bowl-a"
+                  tone="apricot"
+                  size={52}
+                  opacity={0.92}
+                  draw
+                  float
+                  hover
+                  inline
+                />
               </div>
             </OatSheet>
           </div>
 
-          {/* Overlapping Minimal Nutrition Highlights Sheet */}
-          <div className="lg:col-span-6 lg:col-start-7 lg:mt-10 relative">
-            <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.home['chapter-03']} />
-            <SpotlightCard spotlightColor="rgba(246, 239, 226, 0.10)" className="relative z-10 p-7 sm:p-9">
-              <div className="flex flex-wrap items-center justify-between gap-2 pb-5 border-b border-white/20">
+          {/* Overlapping Minimal Nutrition Highlights Sheet with large animated botanical doodles */}
+          <div className="lg:col-span-6 lg:col-start-7 lg:mt-8 relative">
+            <SpotlightCard spotlightColor="rgba(246, 239, 226, 0.10)" className="relative z-10 p-6 sm:p-8">
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-white/20">
                 <span className="font-ui-label text-[11px] text-oat">
                   Verified Nutrition Highlights
                 </span>
@@ -305,40 +379,42 @@ export function StoryLanding() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:gap-x-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:gap-x-6">
                 {NUTRITION_HIGHLIGHTS.map((item, idx) => {
                   const slug = item.href.replace('/product/', '');
                   const doodleName = HOME_NUTRITION_DOODLES[slug];
-                  const showOn = idx < 2 ? 'all' : idx === 2 ? 'md+' : 'lg+';
                   return (
                     <Link
                       key={item.nutrient}
                       href={item.href}
                       className={`group relative py-5 flex items-start gap-3.5 hover:bg-oat/[0.06] rounded-[4px] transition-colors ${idx < 2 ? 'sm:border-b sm:border-white/15' : ''}`}
                     >
-                      <div className="relative w-11 h-11 rounded-[4px] overflow-hidden border border-white/20 shrink-0 mt-0.5">
+                      <div className="relative w-12 h-12 rounded-[4px] overflow-hidden border border-white/20 shrink-0 mt-0.5">
                         <Image
                           src={item.image}
                           alt={item.source}
                           fill
-                          sizes="44px"
+                          sizes="48px"
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-2">
-                          <span className="font-display text-3xl sm:text-4xl font-semibold text-peach block leading-none mb-1.5 tabular-nums">
+                          <span className="font-display text-2xl sm:text-[28px] font-semibold text-peach whitespace-nowrap block leading-none mb-1.5 tabular-nums">
                             {item.value}
                           </span>
                           {doodleName && (
                             <Doodle
                               name={doodleName}
                               tone="apricot"
-                              size={34}
-                              opacity={0.78}
-                              showOn={showOn}
+                              size={58}
+                              opacity={0.94}
+                              draw
+                              float
+                              hover
+                              delay={0.1 * idx}
                               inline
-                              className="shrink-0"
+                              className="shrink-0 -mt-1"
                             />
                           )}
                         </div>
