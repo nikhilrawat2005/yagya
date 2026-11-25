@@ -12,6 +12,7 @@ import { GlowInput } from '@/components/ui/GlowInput';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { DoodleSVG } from '@/components/editorial/DoodleSVG';
+import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
 import { MOTION_DURATION, MOTION_EASE, VIEWPORT_ONCE } from '@/lib/motion/tokens';
 import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 
@@ -71,25 +72,34 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <FadeInSection className="mb-8 pb-6 border-b border-white/15 flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="relative">
-            <div className="inline-flex items-center gap-2 mb-2">
-              <span className="font-ui-label text-[11px] text-peach">
-                Collection · {products.length} Small-Batch Harvests
-              </span>
-              <DoodleSVG name="star" tone="flame" delay={0.2} className="w-5 h-5" />
+          <div className="relative flex items-center gap-4">
+            <CharcoalDoodle
+              name="blueberry"
+              variant="halo"
+              size="xs"
+              rotate={-5}
+              className="hidden sm:block shrink-0"
+            />
+            <div>
+              <div className="inline-flex items-center gap-2 mb-2">
+                <span className="font-ui-label text-[11px] text-peach">
+                  Collection · {products.length} Small-Batch Harvests
+                </span>
+                <DoodleSVG name="berries" tone="charcoal" delay={0.2} className="w-6 h-6" />
+              </div>
+              <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium">
+                Explore{' '}
+                <span className="relative inline-block italic text-peach">
+                  Yagya
+                  <DoodleSVG
+                    name="underline"
+                    tone="charcoal"
+                    delay={0.2}
+                    className="absolute -bottom-1.5 left-0 w-full h-3"
+                  />
+                </span>
+              </h1>
             </div>
-            <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium">
-              Explore{' '}
-              <span className="relative inline-block italic text-peach">
-                Yagya
-                <DoodleSVG
-                  name="underline"
-                  tone="flame"
-                  delay={0.2}
-                  className="absolute -bottom-1.5 left-0 w-full h-3"
-                />
-              </span>
-            </h1>
           </div>
 
           <div className="w-full md:w-80">

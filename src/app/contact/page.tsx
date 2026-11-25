@@ -9,6 +9,7 @@ import { GlowInput, GlowTextarea } from '@/components/ui/GlowInput';
 import { FadeInSection } from '@/components/motion/FadeInSection';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { DoodleSVG } from '@/components/editorial/DoodleSVG';
+import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
 import { MOTION_DURATION, MOTION_EASE } from '@/lib/motion/tokens';
 
 export default function ContactPage() {
@@ -24,15 +25,17 @@ export default function ContactPage() {
     <div className="min-h-screen bg-aubergine text-oat pt-28 pb-24">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeInSection className="relative text-center max-w-xl mx-auto mb-12">
-          <DoodleSVG
-            name="star"
-            tone="flame"
-            className="hidden sm:block absolute left-6 top-0 w-7 h-7 opacity-85"
+          <CharcoalDoodle
+            name="blackberry"
+            variant="halo"
+            size="sm"
+            rotate={5}
+            className="hidden sm:block absolute -left-12 -top-4"
           />
           <DoodleSVG
             name="swirl"
-            tone="apricot"
-            className="hidden sm:block absolute -right-4 top-2 w-16 h-8 opacity-80"
+            tone="charcoal"
+            className="hidden sm:block absolute -right-6 top-3 w-16 h-8"
           />
           <span className="font-ui-label text-[11px] text-peach block mb-2">
             Care &amp; Inquiries
@@ -43,7 +46,7 @@ export default function ContactPage() {
               Yagya
               <DoodleSVG
                 name="underline"
-                tone="flame"
+                tone="charcoal"
                 delay={0.2}
                 className="absolute -bottom-1.5 left-0 w-full h-2.5"
               />

@@ -8,6 +8,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { BackgroundChapter } from '@/components/editorial/BackgroundChapter';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { DoodleSVG } from '@/components/editorial/DoodleSVG';
+import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
 import { ChapterIndex, type ChapterDefinition } from '@/components/editorial/ChapterIndex';
 import { GlowButton } from '@/components/ui/GlowButton';
 
@@ -75,11 +76,13 @@ export function StoryLanding() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-end">
           {/* Tall Editorial Hero Sheet (left-offset, leaves open blueberry canvas right) */}
           <div className="lg:col-span-6 relative">
-            <DoodleSVG
-              name="flame"
-              tone="flame"
+            <CharcoalDoodle
+              name="blueberry"
+              variant="halo"
+              size="md"
+              rotate={6}
               delay={0.2}
-              className="hidden sm:block absolute -top-10 -right-5 w-12 h-14 z-20"
+              className="hidden sm:block absolute -top-12 -right-8 z-20"
             />
 
             <OatSheet tone="medium" delay={0.05} className="p-6 sm:p-8 lg:p-9">
@@ -131,9 +134,9 @@ export function StoryLanding() {
           <div className="lg:col-span-4 lg:col-start-9 relative">
             <DoodleSVG
               name="swirl"
-              tone="apricot"
+              tone="charcoal"
               delay={0.45}
-              className="hidden lg:block absolute -top-9 -left-16 w-24 h-11 opacity-80"
+              className="hidden lg:block absolute -top-9 -left-16 w-24 h-11"
             />
             <OatSheet tone="subtle" delay={0.22} className="p-5">
               <div className="flex items-start justify-between gap-4">
@@ -147,9 +150,9 @@ export function StoryLanding() {
                 </div>
                 <DoodleSVG
                   name="berries"
-                  tone="apricot"
+                  tone="charcoal"
                   delay={0.35}
-                  className="w-10 h-10 shrink-0"
+                  className="w-12 h-12 shrink-0"
                 />
               </div>
             </OatSheet>
@@ -183,11 +186,13 @@ export function StoryLanding() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Wide Lead Sheet (Right-aligned) */}
           <div className="lg:col-span-7 lg:col-start-6 relative">
-            <DoodleSVG
-              name="leaf"
-              tone="apricot"
-              delay={0.3}
-              className="hidden sm:block absolute -top-10 right-6 w-14 h-14 z-20"
+            <CharcoalDoodle
+              name="olive"
+              variant="halo"
+              size="md"
+              rotate={-5}
+              delay={0.28}
+              className="hidden sm:block absolute -top-12 right-4 z-20"
             />
             <OatSheet tone="medium" delay={0.08} className="p-7 sm:p-10">
               <span className="font-ui-label text-[11px] text-peach block mb-4">
@@ -200,7 +205,7 @@ export function StoryLanding() {
                   Diya
                   <DoodleSVG
                     name="underline"
-                    tone="flame"
+                    tone="charcoal"
                     delay={0.25}
                     className="absolute -bottom-2 left-0 w-full h-3"
                   />
@@ -221,14 +226,14 @@ export function StoryLanding() {
           <div className="lg:col-span-5 lg:col-start-1 lg:-mt-16 relative z-20">
             <DoodleSVG
               name="swirl"
-              tone="peach"
+              tone="charcoal"
               delay={0.35}
               className="hidden lg:block absolute -top-8 -right-12 w-24 h-11 z-20"
             />
 
             <OatSheet tone="warm" delay={0.22} className="p-7 sm:p-8">
               <div className="flex items-center justify-between mb-6">
-                <DoodleSVG name="diya" tone="flame" delay={0.2} className="w-14 h-12" />
+                <DoodleSVG name="leaf" tone="charcoal" delay={0.2} className="w-12 h-12" />
                 <span className="font-annotation text-lg text-apricot/90">
                   Pure from field to table
                 </span>
@@ -302,7 +307,7 @@ export function StoryLanding() {
                 <span className="font-annotation text-xl text-peach">
                   Pulp, seed &amp; crunch intact
                 </span>
-                <DoodleSVG name="seeds" tone="apricot" delay={0.3} className="w-14 h-10 shrink-0" />
+                <DoodleSVG name="seeds" tone="charcoal" delay={0.3} className="w-14 h-10 shrink-0" />
               </div>
             </OatSheet>
           </div>
@@ -311,15 +316,23 @@ export function StoryLanding() {
           <div className="lg:col-span-6 lg:col-start-7 lg:mt-10 relative">
             <DoodleSVG
               name="swirl"
-              tone="apricot"
+              tone="charcoal"
               delay={0.35}
               className="hidden lg:block absolute -top-9 -left-14 w-24 h-11 z-20"
             />
+            <CharcoalDoodle
+              name="seeds"
+              variant="halo"
+              size="md"
+              rotate={-4}
+              delay={0.3}
+              className="hidden sm:block absolute -top-11 -right-4 z-20"
+            />
             <DoodleSVG
-              name="star"
-              tone="flame"
+              name="berries"
+              tone="charcoal"
               delay={0.4}
-              className="hidden sm:block absolute -bottom-6 -right-5 w-9 h-9 z-20"
+              className="hidden sm:block absolute -bottom-7 -right-5 w-11 h-11 z-20"
             />
 
             <OatSheet tone="warm" delay={0.2} className="p-7 sm:p-9">
@@ -392,7 +405,7 @@ export function StoryLanding() {
                   nothing
                   <DoodleSVG
                     name="underline"
-                    tone="flame"
+                    tone="charcoal"
                     delay={0.25}
                     className="absolute -bottom-2 left-0 w-full h-3"
                   />
@@ -410,7 +423,7 @@ export function StoryLanding() {
                 <DoodleSVG
                   name="arrow"
                   direction="down-right"
-                  tone="peach"
+                  tone="charcoal"
                   delay={0.35}
                   className="hidden sm:block absolute -top-9 left-2 w-11 h-9"
                 />
@@ -430,13 +443,13 @@ export function StoryLanding() {
           <div className="lg:col-span-5 lg:col-start-8 lg:mt-20 relative">
             <DoodleSVG
               name="leaf"
-              tone="apricot"
+              tone="charcoal"
               delay={0.35}
               className="hidden sm:block absolute -bottom-8 -right-4 w-12 h-12 z-20"
             />
             <OatSheet as="blockquote" tone="warm" delay={0.22} className="p-7 sm:p-8">
               <div className="flex items-center justify-between mb-4">
-                <DoodleSVG name="flame" tone="flame" delay={0.2} className="w-8 h-9" />
+                <CharcoalDoodle name="blackberry" variant="halo" size="sm" rotate={-4} delay={0.2} />
                 <span className="font-ui-label text-[10px] text-apricot/75">
                   Verified Harvest Note
                 </span>

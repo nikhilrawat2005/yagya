@@ -4,6 +4,7 @@ import { Card3D, Card3DLayer } from '@/components/ui/Card3D';
 import { FadeInSection } from '@/components/motion/FadeInSection';
 import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger';
 import { DoodleSVG } from '@/components/editorial/DoodleSVG';
+import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
 
 export default async function JournalPage() {
   const articles = await getJournalArticles();
@@ -12,15 +13,17 @@ export default async function JournalPage() {
     <div className="min-h-screen bg-purple text-oat pt-28 pb-24">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeInSection className="relative text-center max-w-xl mx-auto mb-12">
-          <DoodleSVG
-            name="leaf"
-            tone="apricot"
-            className="hidden sm:block absolute -left-10 top-1 w-11 h-11 opacity-80"
+          <CharcoalDoodle
+            name="olive"
+            variant="halo"
+            size="sm"
+            rotate={-6}
+            className="hidden sm:block absolute -left-14 -top-4"
           />
           <DoodleSVG
-            name="star"
-            tone="flame"
-            className="hidden sm:block absolute -right-4 top-2 w-7 h-7 opacity-85"
+            name="berries"
+            tone="charcoal"
+            className="hidden sm:block absolute -right-6 top-2 w-10 h-10"
           />
           <span className="font-ui-label text-[11px] text-peach block mb-2">
             Field Chronicle
@@ -31,7 +34,7 @@ export default async function JournalPage() {
               Journal
               <DoodleSVG
                 name="underline"
-                tone="flame"
+                tone="charcoal"
                 delay={0.2}
                 className="absolute -bottom-1.5 left-0 w-full h-2.5"
               />

@@ -14,7 +14,7 @@ export type DoodleName =
   | 'arrow'
   | 'underline';
 
-export type DoodleTone = 'oat' | 'apricot' | 'peach' | 'flame';
+export type DoodleTone = 'charcoal' | 'oat' | 'apricot' | 'peach' | 'flame';
 
 export interface DoodleSVGProps {
   name: DoodleName;
@@ -25,6 +25,8 @@ export interface DoodleSVGProps {
 }
 
 const TONE_COLOR: Record<DoodleTone, string> = {
+  charcoal:
+    'text-[#141418] [filter:drop-shadow(0_0_1px_rgba(246,239,226,0.92))_drop-shadow(0_0_6px_rgba(246,239,226,0.45))]',
   oat: 'text-oat',
   apricot: 'text-apricot',
   peach: 'text-peach',
@@ -33,10 +35,10 @@ const TONE_COLOR: Record<DoodleTone, string> = {
 
 function AnimatedStroke({
   d,
-  strokeWidth = 1.65,
+  strokeWidth = 1.9,
   delay = 0,
   duration = 0.85,
-  opacity = 0.85,
+  opacity = 0.9,
 }: {
   d: string;
   strokeWidth?: number;
@@ -75,12 +77,13 @@ function AnimatedStroke({
 }
 
 /**
- * Hand-drawn Oat/Apricot/Flame editorial line-art doodles animated with
- * scroll-triggered SVG stroke drawing (stroke-dashoffset via Framer Motion pathLength).
+ * Hand-drawn editorial charcoal & botanical line-art doodles animated with
+ * scroll-triggered SVG stroke drawing (defaults to deep charcoal ink strokes with a
+ * subtle Oat halo for high legibility over dark photography and glass sheets).
  */
 export function DoodleSVG({
   name,
-  tone = 'apricot',
+  tone = 'charcoal',
   delay = 0.15,
   direction = 'right',
   className = '',
@@ -214,28 +217,52 @@ export function DoodleSVG({
       return (
         <svg
           aria-hidden="true"
-          viewBox="0 0 72 68"
+          viewBox="0 0 80 72"
           fill="none"
           className={`${colorClass} pointer-events-none select-none ${className}`}
         >
+          {/* Main Blueberry / Blackberry */}
           <AnimatedStroke
-            d="M34 20 C 46 19, 54 28, 52 40 C 50 51, 41 57, 32 56 C 21 55, 14 47, 15 36 C 16 25, 24 20, 34 20 Z"
-            strokeWidth={1.7}
+            d="M34 22 C 46 21, 54 30, 52 42 C 50 53, 41 59, 32 58 C 21 57, 14 49, 15 38 C 16 27, 24 22, 34 22 Z"
+            strokeWidth={2}
             delay={delay}
             duration={0.75}
           />
+          {/* Double charcoal sketch rim & shading strokes */}
           <AnimatedStroke
-            d="M27 19 C 29 13, 33 10, 35 8 C 37 11, 39 15, 42 19 M23 21 L 34 17 L 45 21"
-            strokeWidth={1.55}
+            d="M22 44 C 24 50, 30 54, 37 54 M20 35 C 21 31, 24 27, 29 26"
+            strokeWidth={1.35}
+            delay={delay + 0.2}
+            duration={0.45}
+            opacity={0.75}
+          />
+          {/* Crown calyx + twig */}
+          <AnimatedStroke
+            d="M27 21 C 29 14, 33 11, 35 9 C 37 12, 39 16, 42 21 M23 23 L 34 19 L 45 23 M18 19 C 11 15, 7 22, 14 28 C 20 26, 20 21, 18 19 Z"
+            strokeWidth={1.7}
             delay={delay + 0.28}
+            duration={0.55}
+          />
+          {/* Companion berries */}
+          <AnimatedStroke
+            d="M52 38 C 60 36, 66 42, 65 50 C 63 57, 55 60, 48 56 C 46 54, 46 50, 48 47"
+            strokeWidth={1.8}
+            delay={delay + 0.4}
             duration={0.5}
           />
           <AnimatedStroke
-            d="M52 38 C 58 37, 63 42, 62 49 C 60 55, 53 58, 48 55"
-            strokeWidth={1.5}
-            delay={delay + 0.42}
+            d="M60 22 C 66 22, 70 27, 68 33 C 66 37, 60 39, 55 36 C 53 31, 55 24, 60 22 Z"
+            strokeWidth={1.65}
+            delay={delay + 0.48}
             duration={0.45}
-            opacity={0.8}
+            opacity={0.85}
+          />
+          {/* Stipple charcoal dots */}
+          <AnimatedStroke
+            d="M29 37 L 29.5 37.5 M38 41 L 38.5 41.5 M57 47 L 57.5 47.5 M11 45 L 11.5 45.5"
+            strokeWidth={2.2}
+            delay={delay + 0.55}
+            duration={0.3}
           />
         </svg>
       );

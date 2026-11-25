@@ -3,6 +3,7 @@ import { siteConfig } from '@/lib/data/site';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { DoodleSVG } from '@/components/editorial/DoodleSVG';
+import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
 
 const ABOUT_HARVEST_PREVIEW = [
@@ -43,7 +44,7 @@ export default function AboutPage() {
                 Yagya
                 <DoodleSVG
                   name="underline"
-                  tone="flame"
+                  tone="charcoal"
                   delay={0.2}
                   className="absolute -bottom-1.5 left-0 w-full h-2.5"
                 />
@@ -67,8 +68,8 @@ export default function AboutPage() {
 
           <OatSheet tone="subtle" delay={0.18} className="lg:col-span-5 lg:col-start-8 p-7 sm:p-9 space-y-6">
             <div className="flex items-center justify-between">
-              <DoodleSVG name="diya" tone="flame" className="w-16 h-14" />
-              <DoodleSVG name="leaf" tone="apricot" className="w-12 h-12" />
+              <CharcoalDoodle name="seeds" variant="halo" size="sm" rotate={-4} />
+              <DoodleSVG name="berries" tone="charcoal" className="w-12 h-12" />
             </div>
 
             <div className="grid grid-cols-2 gap-3">

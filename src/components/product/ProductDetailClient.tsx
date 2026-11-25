@@ -112,10 +112,10 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 </Card3DLayer>
               )}
               <DoodleSVG
-                name="star"
-                tone="peach"
+                name="berries"
+                tone="charcoal"
                 delay={0.25}
-                className="absolute top-4 right-4 w-7 h-7 z-20 opacity-80"
+                className="absolute top-4 right-4 w-9 h-9 z-20"
               />
             </Card3D>
           </FadeInSection>
@@ -374,7 +374,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                   Harvests
                   <DoodleSVG
                     name="underline"
-                    tone="flame"
+                    tone="charcoal"
                     delay={0.2}
                     className="absolute -bottom-1.5 left-0 w-full h-2.5"
                   />
