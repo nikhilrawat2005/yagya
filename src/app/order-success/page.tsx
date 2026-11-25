@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import { Check } from 'lucide-react';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { OatSheet } from '@/components/editorial/OatSheet';
-import { DoodleSVG } from '@/components/editorial/DoodleSVG';
 
 function OrderSuccessContent({
   searchParams,
@@ -58,7 +57,6 @@ async function OrderSuccessDetails({
         </OatSheet>
 
         <div className="relative flex flex-col sm:flex-row gap-3 justify-center items-center">
-          <DoodleSVG name="berries" tone="charcoal" className="hidden sm:block w-8 h-8" />
           <GlowButton href="/shop" variant="cta" magnetic>
             Explore More
           </GlowButton>

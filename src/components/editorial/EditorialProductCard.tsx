@@ -4,12 +4,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { OatSheet } from '@/components/editorial/OatSheet';
-import { DoodleSVG, type DoodleName } from '@/components/editorial/DoodleSVG';
 import type { Product } from '@/lib/data/products';
 
 export interface EditorialProductCardProps {
   product: Product;
-  doodle?: DoodleName;
+  doodle?: string;
   size?: 'featured' | 'compact';
   delay?: number;
   className?: string;
@@ -17,11 +16,10 @@ export interface EditorialProductCardProps {
 
 /**
  * Editorial glass card for category showcase chapters: 4:5 product photography,
- * single-line botanical note, doodle accent, and hover-capable lift only.
+ * single-line botanical note, and hover-capable lift only.
  */
 export function EditorialProductCard({
   product,
-  doodle = 'leaf',
   size = 'compact',
   delay = 0.1,
   className = '',
@@ -44,9 +42,6 @@ export function EditorialProductCard({
             sizes={size === 'featured' ? '(max-width: 768px) 90vw, 380px' : '(max-width: 768px) 85vw, 300px'}
             className="object-cover transition-transform duration-500 ease-[var(--ease-smooth)] [@media(hover:hover)]:group-hover:scale-105"
           />
-          <div className="pointer-events-none absolute top-2.5 right-2.5 opacity-80">
-            <DoodleSVG name={doodle} tone="oat" className="w-7 h-7" />
-          </div>
         </div>
 
         <div className="flex items-start justify-between gap-3">

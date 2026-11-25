@@ -3,8 +3,6 @@ import { siteConfig } from '@/lib/data/site';
 import { ASSETS } from '@/lib/assets';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { OatSheet } from '@/components/editorial/OatSheet';
-import { DoodleSVG } from '@/components/editorial/DoodleSVG';
-import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
 
@@ -52,14 +50,8 @@ export default function AboutPage() {
                 </span>
                 <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium leading-tight">
                   The{' '}
-                  <span className="relative inline-block italic text-peach">
+                  <span className="italic text-peach">
                     Yagya
-                    <DoodleSVG
-                      name="underline"
-                      tone="charcoal"
-                      delay={0.2}
-                      className="absolute -bottom-1.5 left-0 w-full h-2.5"
-                    />
                   </span>{' '}
                   Philosophy
                 </h1>
@@ -79,11 +71,6 @@ export default function AboutPage() {
               </OatSheet>
 
               <OatSheet tone="subtle" delay={0.18} className="lg:col-span-5 lg:col-start-8 p-7 sm:p-9 space-y-6">
-                <div className="flex items-center justify-between">
-                  <CharcoalDoodle name="seeds" variant="halo" size="sm" rotate={-4} />
-                  <DoodleSVG name="berries" tone="charcoal" className="w-12 h-12" />
-                </div>
-
                 <div className="grid grid-cols-2 gap-3">
                   {ABOUT_HARVEST_PREVIEW.map((item) => (
                     <Link

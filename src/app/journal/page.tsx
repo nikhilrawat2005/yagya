@@ -3,8 +3,6 @@ import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallba
 import { Card3D, Card3DLayer } from '@/components/ui/Card3D';
 import { FadeInSection } from '@/components/motion/FadeInSection';
 import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger';
-import { DoodleSVG } from '@/components/editorial/DoodleSVG';
-import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { GlowButton } from '@/components/ui/GlowButton';
@@ -25,31 +23,13 @@ export default async function JournalPage() {
           content: (
             <div className="max-w-5xl mx-auto">
               <FadeInSection className="relative text-center max-w-xl mx-auto mb-10">
-                <CharcoalDoodle
-                  name="olive"
-                  variant="halo"
-                  size="sm"
-                  rotate={-6}
-                  className="hidden sm:block absolute -left-14 -top-4"
-                />
-                <DoodleSVG
-                  name="berries"
-                  tone="charcoal"
-                  className="hidden sm:block absolute -right-6 top-2 w-10 h-10"
-                />
                 <span className="font-ui-label text-[11px] text-peach block mb-2">
                   01 · Field Chronicle
                 </span>
                 <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium mb-3">
                   Harvest{' '}
-                  <span className="relative inline-block italic text-peach">
+                  <span className="italic text-peach">
                     Journal
-                    <DoodleSVG
-                      name="underline"
-                      tone="charcoal"
-                      delay={0.2}
-                      className="absolute -bottom-1.5 left-0 w-full h-2.5"
-                    />
                   </span>
                 </h1>
                 <p className="text-sm sm:text-base text-apricot/85">
@@ -115,7 +95,6 @@ export default async function JournalPage() {
                 <span className="font-ui-label text-[11px] text-peach">
                   02 · Orchard &amp; Roastery Notes
                 </span>
-                <DoodleSVG name="leaf" tone="charcoal" className="w-8 h-8" />
               </div>
 
               <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8">

@@ -8,8 +8,6 @@ import { GlowButton } from '@/components/ui/GlowButton';
 import { GlowInput, GlowTextarea } from '@/components/ui/GlowInput';
 import { FadeInSection } from '@/components/motion/FadeInSection';
 import { OatSheet } from '@/components/editorial/OatSheet';
-import { DoodleSVG } from '@/components/editorial/DoodleSVG';
-import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { MOTION_DURATION, MOTION_EASE } from '@/lib/motion/tokens';
 
@@ -33,31 +31,13 @@ export default function ContactPage() {
           content: (
             <div className="max-w-5xl mx-auto">
         <FadeInSection className="relative text-center max-w-xl mx-auto mb-12">
-          <CharcoalDoodle
-            name="blackberry"
-            variant="halo"
-            size="sm"
-            rotate={5}
-            className="hidden sm:block absolute -left-12 -top-4"
-          />
-          <DoodleSVG
-            name="swirl"
-            tone="charcoal"
-            className="hidden sm:block absolute -right-6 top-3 w-16 h-8"
-          />
           <span className="font-ui-label text-[11px] text-peach block mb-2">
             Care &amp; Inquiries
           </span>
           <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium mb-3">
             Write To{' '}
-            <span className="relative inline-block italic text-peach">
+            <span className="italic text-peach">
               Yagya
-              <DoodleSVG
-                name="underline"
-                tone="charcoal"
-                delay={0.2}
-                className="absolute -bottom-1.5 left-0 w-full h-2.5"
-              />
             </span>
           </h1>
           <p className="text-sm sm:text-base text-apricot/85">

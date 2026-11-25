@@ -16,7 +16,6 @@ import { AnimatedTabs, AnimatedTabPanel } from '@/components/ui/AnimatedTabs';
 import { FadeInSection } from '@/components/motion/FadeInSection';
 import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger';
 import { OatSheet } from '@/components/editorial/OatSheet';
-import { DoodleSVG } from '@/components/editorial/DoodleSVG';
 import { MOTION_EASE, MOTION_SPRING } from '@/lib/motion/tokens';
 import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 
@@ -111,12 +110,6 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                   </span>
                 </Card3DLayer>
               )}
-              <DoodleSVG
-                name="berries"
-                tone="charcoal"
-                delay={0.25}
-                className="absolute top-4 right-4 w-9 h-9 z-20"
-              />
             </Card3D>
           </FadeInSection>
 
@@ -370,14 +363,8 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               </span>
               <h2 className="font-display text-3xl text-oat font-medium mb-8">
                 More Farm-Direct{' '}
-                <span className="relative inline-block italic text-peach">
+                <span className="italic text-peach">
                   Harvests
-                  <DoodleSVG
-                    name="underline"
-                    tone="charcoal"
-                    delay={0.2}
-                    className="absolute -bottom-1.5 left-0 w-full h-2.5"
-                  />
                 </span>
               </h2>
             </FadeInSection>

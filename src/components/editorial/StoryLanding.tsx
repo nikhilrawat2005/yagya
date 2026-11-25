@@ -7,8 +7,6 @@ import { ArrowDown, ArrowRight } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { BackgroundChapter } from '@/components/editorial/BackgroundChapter';
 import { OatSheet } from '@/components/editorial/OatSheet';
-import { DoodleSVG } from '@/components/editorial/DoodleSVG';
-import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { ASSETS } from '@/lib/assets';
 
@@ -92,15 +90,6 @@ export function StoryLanding() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-end">
           {/* Tall Editorial Hero Sheet (left-offset, leaves open blueberry canvas right) */}
           <div className="lg:col-span-6 relative">
-            <CharcoalDoodle
-              name="blueberry"
-              variant="halo"
-              size="md"
-              rotate={6}
-              delay={0.2}
-              className="hidden sm:block absolute -top-12 -right-8 z-20"
-            />
-
             <OatSheet tone="medium" delay={0.05} className="p-6 sm:p-8 lg:p-9">
               <div className="flex items-center gap-3.5 mb-5">
                 <div className="relative w-11 h-11 rounded-[4px] overflow-hidden border border-white/25 bg-oat shrink-0">
@@ -148,28 +137,14 @@ export function StoryLanding() {
 
           {/* Asymmetrical Small Overlapping Corner Sheet + Product Peek */}
           <div className="lg:col-span-4 lg:col-start-9 relative space-y-4">
-            <DoodleSVG
-              name="swirl"
-              tone="charcoal"
-              delay={0.45}
-              className="hidden lg:block absolute -top-9 -left-16 w-24 h-11"
-            />
             <OatSheet tone="subtle" delay={0.22} className="p-5">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <span className="font-ui-label text-[10px] text-peach block mb-1">
-                    Farm-To-Pack
-                  </span>
-                  <p className="font-annotation text-xl text-oat">
-                    Small batches from Himalayan valleys &amp; fertile Rabi fields.
-                  </p>
-                </div>
-                <DoodleSVG
-                  name="berries"
-                  tone="charcoal"
-                  delay={0.35}
-                  className="w-12 h-12 shrink-0"
-                />
+              <div>
+                <span className="font-ui-label text-[10px] text-peach block mb-1">
+                  Farm-To-Pack
+                </span>
+                <p className="font-annotation text-xl text-oat">
+                  Small batches from Himalayan valleys &amp; fertile Rabi fields.
+                </p>
               </div>
             </OatSheet>
 
@@ -230,14 +205,6 @@ export function StoryLanding() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Wide Lead Sheet (Right-aligned) */}
           <div className="lg:col-span-7 lg:col-start-6 relative">
-            <CharcoalDoodle
-              name="olive"
-              variant="halo"
-              size="md"
-              rotate={-5}
-              delay={0.28}
-              className="hidden sm:block absolute -top-12 right-4 z-20"
-            />
             <OatSheet tone="medium" delay={0.08} className="p-7 sm:p-10">
               <span className="font-ui-label text-[11px] text-peach block mb-4">
                 02 · The Origin
@@ -245,14 +212,8 @@ export function StoryLanding() {
 
               <h2 className="font-display text-3xl sm:text-5xl font-medium leading-[1.08] tracking-tight text-oat mb-6">
                 Rooted in the clarity of the{' '}
-                <span className="relative inline-block italic text-peach">
+                <span className="italic text-peach">
                   Diya
-                  <DoodleSVG
-                    name="underline"
-                    tone="charcoal"
-                    delay={0.25}
-                    className="absolute -bottom-2 left-0 w-full h-3"
-                  />
                 </span>
                 .
               </h2>
@@ -268,16 +229,8 @@ export function StoryLanding() {
 
           {/* Tall Overlapping Pillars Sheet (Left-aligned, staggered upward) */}
           <div className="lg:col-span-5 lg:col-start-1 lg:-mt-16 relative z-20">
-            <DoodleSVG
-              name="swirl"
-              tone="charcoal"
-              delay={0.35}
-              className="hidden lg:block absolute -top-8 -right-12 w-24 h-11 z-20"
-            />
-
             <OatSheet tone="warm" delay={0.22} className="p-7 sm:p-8">
-              <div className="flex items-center justify-between mb-6">
-                <DoodleSVG name="leaf" tone="charcoal" delay={0.2} className="w-12 h-12" />
+              <div className="flex items-center justify-end mb-6">
                 <span className="font-annotation text-lg text-apricot/90">
                   Pure from field to table
                 </span>
@@ -352,34 +305,12 @@ export function StoryLanding() {
                 <span className="font-annotation text-xl text-peach">
                   Pulp, seed &amp; crunch intact
                 </span>
-                <DoodleSVG name="seeds" tone="charcoal" delay={0.3} className="w-14 h-10 shrink-0" />
               </div>
             </OatSheet>
           </div>
 
           {/* Overlapping Minimal Nutrition Highlights Sheet */}
           <div className="lg:col-span-6 lg:col-start-7 lg:mt-10 relative">
-            <DoodleSVG
-              name="swirl"
-              tone="charcoal"
-              delay={0.35}
-              className="hidden lg:block absolute -top-9 -left-14 w-24 h-11 z-20"
-            />
-            <CharcoalDoodle
-              name="seeds"
-              variant="halo"
-              size="md"
-              rotate={-4}
-              delay={0.3}
-              className="hidden sm:block absolute -top-11 -right-4 z-20"
-            />
-            <DoodleSVG
-              name="berries"
-              tone="charcoal"
-              delay={0.4}
-              className="hidden sm:block absolute -bottom-7 -right-5 w-11 h-11 z-20"
-            />
-
             <OatSheet tone="warm" delay={0.2} className="p-7 sm:p-9">
               <div className="flex flex-wrap items-center justify-between gap-2 pb-5 border-b border-white/20">
                 <span className="font-ui-label text-[11px] text-oat">
@@ -447,14 +378,8 @@ export function StoryLanding() {
 
               <h2 className="font-display text-3xl sm:text-5xl font-medium leading-[1.08] tracking-tight text-oat mb-5">
                 Honest food that asks for{' '}
-                <span className="relative inline-block italic text-peach">
+                <span className="italic text-peach">
                   nothing
-                  <DoodleSVG
-                    name="underline"
-                    tone="charcoal"
-                    delay={0.25}
-                    className="absolute -bottom-2 left-0 w-full h-3"
-                  />
                 </span>{' '}
                 extra.
               </h2>
@@ -466,13 +391,6 @@ export function StoryLanding() {
               </p>
 
               <div className="relative flex flex-wrap items-center gap-4">
-                <DoodleSVG
-                  name="arrow"
-                  direction="down-right"
-                  tone="charcoal"
-                  delay={0.35}
-                  className="hidden sm:block absolute -top-9 left-2 w-11 h-9"
-                />
                 <GlowButton href="/shop" variant="cta" magnetic>
                   <span>Explore Yagya</span>
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -508,15 +426,8 @@ export function StoryLanding() {
                 </Link>
               ))}
             </div>
-            <DoodleSVG
-              name="leaf"
-              tone="charcoal"
-              delay={0.35}
-              className="hidden sm:block absolute -bottom-8 -right-4 w-12 h-12 z-20"
-            />
             <OatSheet as="blockquote" tone="warm" delay={0.22} className="p-7 sm:p-8">
-              <div className="flex items-center justify-between mb-4">
-                <CharcoalDoodle name="blackberry" variant="halo" size="sm" rotate={-4} delay={0.2} />
+              <div className="flex items-center justify-end mb-4">
                 <span className="font-ui-label text-[10px] text-apricot/75">
                   Verified Harvest Note
                 </span>

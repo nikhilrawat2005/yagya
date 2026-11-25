@@ -4,8 +4,6 @@ import React from 'react';
 import { ArrowDown, ArrowRight } from 'lucide-react';
 import { PageBackgroundSet, type PageChapterItem } from '@/components/editorial/PageBackgroundSet';
 import { OatSheet } from '@/components/editorial/OatSheet';
-import { DoodleSVG, type DoodleName } from '@/components/editorial/DoodleSVG';
-import { CharcoalDoodle, type CharcoalDoodleName } from '@/components/editorial/CharcoalDoodle';
 import { EditorialProductCard } from '@/components/editorial/EditorialProductCard';
 import { GlowButton } from '@/components/ui/GlowButton';
 import type { PageBackgroundKey } from '@/lib/assets';
@@ -25,8 +23,8 @@ export interface CategoryStoryConfig {
   craftBody: string;
   promiseTitle: string;
   promiseBody: string;
-  charcoalDoodle: CharcoalDoodleName;
-  accentDoodle: DoodleName;
+  charcoalDoodle?: string;
+  accentDoodle?: string;
   products: Product[];
 }
 
@@ -57,28 +55,14 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
       content: (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
           <div className={`${introAlign[pageKey]} relative`}>
-            <CharcoalDoodle
-              name={config.charcoalDoodle}
-              variant="halo"
-              size="md"
-              rotate={pageKey === 'berries' ? -6 : 5}
-              delay={0.2}
-              className="hidden sm:block absolute -top-12 -right-6 z-20"
-            />
             <OatSheet tone="medium" delay={0.05} className="p-7 sm:p-10">
               <span className="font-ui-label text-[11px] text-peach block mb-3">
                 01 · {config.eyebrow}
               </span>
               <h1 className="font-display text-4xl sm:text-5xl lg:text-[52px] font-medium leading-[1.06] tracking-tight text-oat mb-5">
                 {config.titleLead}{' '}
-                <span className="relative inline-block italic text-peach">
+                <span className="italic text-peach">
                   {config.titleAccent}
-                  <DoodleSVG
-                    name="underline"
-                    tone="charcoal"
-                    delay={0.25}
-                    className="absolute -bottom-2 left-0 w-full h-3"
-                  />
                 </span>
               </h1>
               <p className="text-sm sm:text-base text-apricot/90 leading-relaxed max-w-lg mb-7">
@@ -110,7 +94,6 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
                 <span className="font-ui-label text-[11px] text-peach">
                   02 · Curated Selection
                 </span>
-                <DoodleSVG name={config.accentDoodle} tone="charcoal" className="w-9 h-9" />
               </div>
               <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat leading-tight mb-4">
                 {config.harvestTitle}
