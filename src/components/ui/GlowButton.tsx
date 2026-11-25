@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { MOTION_EASE, MOTION_SPRING } from '@/lib/motion/tokens';
 import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 import { MagneticButton } from '@/components/ui/MagneticButton';
+import { Doodle } from '@/components/doodles';
 
 export type GlowButtonVariant =
   | 'primary'
@@ -143,6 +144,22 @@ export function GlowButton({
 
       <span className="relative z-20 inline-flex items-center justify-center gap-2">
         {children}
+        {variant === 'cta' && enableInteractiveMotion && (
+          <span
+            aria-hidden="true"
+            className="hidden sm:inline-flex opacity-0 [@media(hover:hover)]:group-hover:opacity-95 transition-opacity duration-300"
+          >
+            <Doodle
+              name="star-tiny-sparkle-trio"
+              tone="oat"
+              size={16}
+              opacity={1}
+              draw={false}
+              priority
+              inline
+            />
+          </span>
+        )}
       </span>
     </>
   );

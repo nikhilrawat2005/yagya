@@ -9,6 +9,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { siteConfig } from '@/lib/data/site';
 import { ASSETS } from '@/lib/assets';
 import { useCartStore } from '@/lib/store/cartStore';
+import { Doodle, DoodleUnderline } from '@/components/doodles';
 
 const NAV_LINKS = [
   { href: '/about', label: 'Story' },
@@ -62,6 +63,14 @@ export function Navbar() {
             >
               {siteConfig.name.toUpperCase()}
             </span>
+            <Doodle
+              name="flame-small-a"
+              tone="flame"
+              size={18}
+              priority
+              inline
+              className="shrink-0 opacity-90"
+            />
           </Link>
 
           {/* Right: 4 Minimal Links + Bag Trigger + Mobile Toggle */}
@@ -74,7 +83,7 @@ export function Navbar() {
                     key={item.href}
                     href={item.href}
                     data-active={active ? 'true' : 'false'}
-                    className={`nav-link-underline font-ui-label text-[11px] py-1 transition-colors duration-200 ${
+                    className={`font-ui-label text-[11px] py-1 transition-colors duration-200 ${
                       scrolled
                         ? active
                           ? 'text-flame font-semibold'
@@ -84,7 +93,13 @@ export function Navbar() {
                         : 'text-oat/90 hover:text-oat'
                     }`}
                   >
-                    {item.label}
+                    <DoodleUnderline
+                      variant="tapered"
+                      tone={scrolled ? 'flame' : 'peach'}
+                      active={active}
+                    >
+                      {item.label}
+                    </DoodleUnderline>
                   </Link>
                 );
               })}

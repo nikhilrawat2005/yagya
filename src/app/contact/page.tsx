@@ -9,6 +9,8 @@ import { GlowInput, GlowTextarea } from '@/components/ui/GlowInput';
 import { FadeInSection } from '@/components/motion/FadeInSection';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
+import { ChapterDoodleLayer, DoodleFrame, DoodleUnderline } from '@/components/doodles';
+import { PAGE_CHAPTER_PLACEMENTS } from '@/config/doodle-placements';
 import { MOTION_DURATION, MOTION_EASE } from '@/lib/motion/tokens';
 
 export default function ContactPage() {
@@ -36,9 +38,9 @@ export default function ContactPage() {
           </span>
           <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium mb-3">
             Write To{' '}
-            <span className="italic text-peach">
-              Yagya
-            </span>
+            <DoodleUnderline variant="wobbly" tone="peach" delay={0.2}>
+              <span className="italic text-peach">Yagya</span>
+            </DoodleUnderline>
           </h1>
           <p className="text-sm sm:text-base text-apricot/85">
             Questions about harvest batches, wholesale orders, or delivery schedules.
@@ -88,7 +90,11 @@ export default function ContactPage() {
             </div>
           </OatSheet>
 
-          <OatSheet tone="medium" interactive={false} className="md:col-span-7 p-6 sm:p-8">
+          <div className="md:col-span-7 relative">
+            <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.contact['chapter-01']} priority />
+            <OatSheet tone="medium" interactive={false} className="relative z-10 p-6 sm:p-8">
+              <DoodleFrame variant="flourish" tone="apricot" size={34} opacity={0.45} />
+              <div className="relative z-10">
             <AnimatePresence mode="wait">
               {submitted ? (
                 <motion.div
@@ -168,7 +174,9 @@ export default function ContactPage() {
                 </motion.form>
               )}
             </AnimatePresence>
-          </OatSheet>
+              </div>
+            </OatSheet>
+          </div>
         </div>
             </div>
           ),
@@ -179,7 +187,9 @@ export default function ContactPage() {
           chapterLabel: 'Bulk & Gifting',
           content: (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              <OatSheet tone="warm" className="lg:col-span-6 lg:col-start-4 p-8 sm:p-10 space-y-4">
+              <div className="lg:col-span-6 lg:col-start-4 relative">
+                <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.contact['chapter-02']} />
+                <OatSheet tone="warm" className="relative z-10 p-8 sm:p-10 space-y-4">
                 <span className="font-ui-label text-[11px] text-peach block">
                   02 · Wholesale &amp; Harvest Gifting
                 </span>
@@ -195,7 +205,8 @@ export default function ContactPage() {
                     Browse All Harvests
                   </GlowButton>
                 </div>
-              </OatSheet>
+                </OatSheet>
+              </div>
             </div>
           ),
         },

@@ -6,6 +6,8 @@ import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { GlowButton } from '@/components/ui/GlowButton';
+import { ChapterDoodleLayer, DoodleDivider, DoodleUnderline } from '@/components/doodles';
+import { PAGE_CHAPTER_PLACEMENTS } from '@/config/doodle-placements';
 
 export default async function JournalPage() {
   const articles = await getJournalArticles();
@@ -21,16 +23,17 @@ export default async function JournalPage() {
           chapterNumber: '01',
           chapterLabel: 'Field Chronicle',
           content: (
-            <div className="max-w-5xl mx-auto">
-              <FadeInSection className="relative text-center max-w-xl mx-auto mb-10">
+            <div className="max-w-5xl mx-auto relative">
+              <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.journal['chapter-01']} priority />
+              <FadeInSection className="relative z-10 text-center max-w-xl mx-auto mb-10">
                 <span className="font-ui-label text-[11px] text-peach block mb-2">
                   01 · Field Chronicle
                 </span>
                 <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium mb-3">
                   Harvest{' '}
-                  <span className="italic text-peach">
-                    Journal
-                  </span>
+                  <DoodleUnderline variant="curved" tone="peach" delay={0.2}>
+                    <span className="italic text-peach">Journal</span>
+                  </DoodleUnderline>
                 </h1>
                 <p className="text-sm sm:text-base text-apricot/85">
                   Notes from winter seed belts, cool mountain berry bushes, and farm-direct packing.
@@ -90,7 +93,9 @@ export default async function JournalPage() {
           chapterNumber: '02',
           chapterLabel: 'Orchard & Roastery',
           content: (
-            <div className="max-w-5xl mx-auto space-y-8">
+            <div className="max-w-5xl mx-auto space-y-8 relative">
+              <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.journal['chapter-02']} />
+              <DoodleDivider variant="leaf" tone="apricot" />
               <div className="flex items-center justify-between">
                 <span className="font-ui-label text-[11px] text-peach">
                   02 · Orchard &amp; Roastery Notes
@@ -151,7 +156,9 @@ export default async function JournalPage() {
           chapterLabel: 'Taste the Harvest',
           content: (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              <OatSheet tone="warm" className="lg:col-span-6 lg:col-start-4 p-8 sm:p-10 space-y-5 text-center">
+              <div className="lg:col-span-6 lg:col-start-4 relative">
+                <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.journal['chapter-03']} />
+                <OatSheet tone="warm" className="relative z-10 p-8 sm:p-10 space-y-5 text-center">
                 <span className="font-ui-label text-[11px] text-peach block">
                   03 · From Field Notes to Pantry
                 </span>
@@ -170,7 +177,8 @@ export default async function JournalPage() {
                     Our Story
                   </GlowButton>
                 </div>
-              </OatSheet>
+                </OatSheet>
+              </div>
             </div>
           ),
         },

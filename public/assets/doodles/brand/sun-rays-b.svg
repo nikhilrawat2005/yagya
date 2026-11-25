@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M 130.95 104.46 Q 130.31 108.12 129.07 111.65 Q 127.83 115.17 125.91 118.15 Q 123.99 121.12 120.89 123.63 Q 117.79 126.14 114.44 127.58 Q 111.10 129.02 107.35 130.05 Q 103.59 131.09 99.56 131.09 Q 95.53 131.09 91.93 129.93 Q 88.33 128.77 85.09 127.10 Q 81.86 125.44 78.56 122.31 Q 75.27 119.19 73.49 116.56 Q 71.72 113.93 70.79 110.40 Q 69.86 106.87 69.04 102.99 Q 68.22 99.10 68.85 95.66 Q 69.47 92.23 70.77 88.57 Q 72.07 84.91 74.35 81.85 Q 76.64 78.78 79.54 76.15 Q 82.44 73.52 85.64 72.30 Q 88.83 71.08 92.71 70.04 Q 96.58 69.01 100.16 69.46 Q 103.74 69.92 107.61 70.57 Q 111.48 71.22 114.75 72.77 Q 118.02 74.32 121.27 77.07 Q 124.51 79.82 126.26 83.06 Q 128.01 86.30 129.73 89.81 Q 131.46 93.32 131.53 97.06 Q 131.59 100.79 130.95 104.46 Z" vector-effect="non-scaling-stroke" />
+  <path d="M 140.00 100.00 Q 150.78 100.00 156.01 100.01 Q 161.24 100.01 166.62 100.00 L 172.00 100.00" vector-effect="non-scaling-stroke" />
+  <path d="M 136.96 115.31 L 153.59 122.20" vector-effect="non-scaling-stroke" />
+  <path d="M 128.28 128.28 Q 136.09 135.96 139.86 139.78 Q 143.63 143.60 147.27 147.25 L 150.91 150.91" vector-effect="non-scaling-stroke" />
+  <path d="M 115.31 136.96 L 122.20 153.59" vector-effect="non-scaling-stroke" />
+  <path d="M 100.00 140.00 Q 100.24 150.75 100.31 156.02 Q 100.39 161.29 100.19 166.65 L 100.00 172.00" vector-effect="non-scaling-stroke" />
+  <path d="M 84.69 136.96 L 77.80 153.59" vector-effect="non-scaling-stroke" />
+  <path d="M 71.72 128.28 Q 64.06 135.68 60.48 139.53 Q 56.90 143.38 53.00 147.14 L 49.09 150.91" vector-effect="non-scaling-stroke" />
+  <path d="M 63.04 115.31 L 46.41 122.20" vector-effect="non-scaling-stroke" />
+  <path d="M 60.00 100.00 Q 49.64 99.96 44.27 99.90 Q 38.89 99.84 33.45 99.92 L 28.00 100.00" vector-effect="non-scaling-stroke" />
+  <path d="M 63.04 84.69 L 46.41 77.80" vector-effect="non-scaling-stroke" />
+  <path d="M 71.72 71.72 Q 64.00 64.32 60.14 60.62 Q 56.28 56.92 52.69 53.00 L 49.09 49.09" vector-effect="non-scaling-stroke" />
+  <path d="M 84.69 63.04 L 77.80 46.41" vector-effect="non-scaling-stroke" />
+  <path d="M 100.00 60.00 Q 100.33 49.55 100.14 43.99 Q 99.96 38.44 99.98 33.22 L 100.00 28.00" vector-effect="non-scaling-stroke" />
+  <path d="M 115.31 63.04 L 122.20 46.41" vector-effect="non-scaling-stroke" />
+  <path d="M 128.28 71.72 Q 136.10 64.44 139.83 60.62 Q 143.55 56.80 147.23 52.95 L 150.91 49.09" vector-effect="non-scaling-stroke" />
+  <path d="M 136.96 84.69 L 153.59 77.80" vector-effect="non-scaling-stroke" />
+  </svg>

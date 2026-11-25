@@ -266,12 +266,6 @@ export const ASSETS = {
       spicyMasalaMakhana: '/assets/products/makhana/spicy-masala-makhana.webp',
     },
   },
-  doodles: {
-    charcoalBlueberry: '/assets/doodles/doodle-charcoal-blueberry.webp',
-    charcoalOlive: '/assets/doodles/doodle-charcoal-olive.webp',
-    charcoalSeeds: '/assets/doodles/doodle-charcoal-seeds.webp',
-    charcoalBlackberry: '/assets/doodles/doodle-charcoal-blackberry.webp',
-  },
 } as const;
 
 export const PAGE_BACKGROUND_SETS: Record<PageBackgroundKey, readonly BackgroundAsset[]> = {

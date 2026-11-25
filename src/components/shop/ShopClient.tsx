@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Search, X, Sprout, ArrowRight } from 'lucide-react';
+import { Search, X, ArrowRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Product } from '@/lib/data/products';
 import { Category } from '@/lib/data/categories';
@@ -14,6 +14,8 @@ import { GlowButton } from '@/components/ui/GlowButton';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
+import { ChapterDoodleLayer, Doodle, DoodleDivider, DoodleUnderline } from '@/components/doodles';
+import { PAGE_CHAPTER_PLACEMENTS } from '@/config/doodle-placements';
 import { MOTION_DURATION, MOTION_EASE, VIEWPORT_ONCE } from '@/lib/motion/tokens';
 import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 
@@ -85,8 +87,9 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
           chapterNumber: '01',
           chapterLabel: 'Explore Harvests',
           content: (
-            <div className="space-y-8">
-              <FadeInSection className="pb-6 border-b border-white/15 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="space-y-8 relative">
+              <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.shop['chapter-01']} priority />
+              <FadeInSection className="relative z-10 pb-6 border-b border-white/15 flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div className="relative flex items-center gap-4">
                   <div>
                     <div className="inline-flex items-center gap-2 mb-2">
@@ -96,9 +99,9 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                     </div>
                     <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium">
                       Explore{' '}
-                      <span className="italic text-peach">
-                        Yagya
-                      </span>
+                      <DoodleUnderline variant="wobbly" tone="peach" delay={0.2}>
+                        <span className="italic text-peach">Yagya</span>
+                      </DoodleUnderline>
                     </h1>
                   </div>
                 </div>
@@ -207,8 +210,8 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
               <AnimatePresence mode="wait">
                 {filteredProducts.length === 0 ? (
                   <OatSheet key="empty-state" tone="subtle" className="text-center py-20 px-6">
-                    <div className="w-14 h-14 mx-auto mb-4 rounded-[6px] bg-oat/10 border border-white/25 flex items-center justify-center">
-                      <Sprout className="w-7 h-7 text-peach" />
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-[6px] bg-oat/10 border border-white/25 flex items-center justify-center">
+                      <Doodle name="seed-sprout-b" tone="peach" size={44} float priority inline />
                     </div>
                     <p className="font-display text-2xl font-medium text-oat mb-2">
                       {activeCategoryObj
@@ -276,8 +279,10 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
           chapterNumber: '03',
           chapterLabel: 'By Origin',
           content: (
-            <div className="space-y-6">
-              <OatSheet tone="medium" className="p-6 sm:p-8 max-w-2xl">
+            <div className="space-y-6 relative">
+              <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.shop['chapter-03']} />
+              <DoodleDivider variant="dots" tone="apricot" />
+              <OatSheet tone="medium" className="relative z-10 p-6 sm:p-8 max-w-2xl">
                 <span className="font-ui-label text-[11px] text-peach block mb-2">
                   03 · Story Chapters
                 </span>

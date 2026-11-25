@@ -5,6 +5,8 @@ import { GlowButton } from '@/components/ui/GlowButton';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
+import { ChapterDoodleLayer, DoodleFrame, DoodleUnderline } from '@/components/doodles';
+import { PAGE_CHAPTER_PLACEMENTS } from '@/config/doodle-placements';
 
 const ABOUT_HARVEST_PREVIEW = [
   {
@@ -44,31 +46,35 @@ export default function AboutPage() {
           chapterLabel: 'The Philosophy',
           content: (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <OatSheet tone="medium" className="lg:col-span-6 p-8 sm:p-10 space-y-5">
-                <span className="font-ui-label text-[11px] text-peach block">
-                  01 · Our Story &amp; Soil
-                </span>
-                <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium leading-tight">
-                  The{' '}
-                  <span className="italic text-peach">
-                    Yagya
-                  </span>{' '}
-                  Philosophy
-                </h1>
-                <p className="text-sm sm:text-base text-apricot/90 leading-relaxed">
-                  {siteConfig.description}
-                </p>
-                <p className="text-sm sm:text-base text-oat/85 leading-relaxed">
-                  We partner directly with farming families across Madhya Pradesh, Rajasthan,
-                  Karnataka, Himachal, and Ladakh — skipping long middleman chains and packing
-                  every batch under strict hygiene controls.
-                </p>
-                <div className="pt-2">
-                  <GlowButton href="/shop" variant="cta" magnetic>
-                    Explore Yagya
-                  </GlowButton>
-                </div>
-              </OatSheet>
+              <div className="lg:col-span-6 relative">
+                <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.about['chapter-01']} priority />
+                <OatSheet tone="medium" className="relative z-10 p-8 sm:p-10 space-y-5">
+                  <DoodleFrame variant="flourish" tone="apricot" size={38} opacity={0.45} />
+                  <span className="font-ui-label text-[11px] text-peach block relative z-10">
+                    01 · Our Story &amp; Soil
+                  </span>
+                  <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium leading-tight relative z-10">
+                    The{' '}
+                    <DoodleUnderline variant="wobbly" tone="peach" delay={0.2}>
+                      <span className="italic text-peach">Yagya</span>
+                    </DoodleUnderline>{' '}
+                    Philosophy
+                  </h1>
+                  <p className="text-sm sm:text-base text-apricot/90 leading-relaxed relative z-10">
+                    {siteConfig.description}
+                  </p>
+                  <p className="text-sm sm:text-base text-oat/85 leading-relaxed relative z-10">
+                    We partner directly with farming families across Madhya Pradesh, Rajasthan,
+                    Karnataka, Himachal, and Ladakh — skipping long middleman chains and packing
+                    every batch under strict hygiene controls.
+                  </p>
+                  <div className="pt-2 relative z-10">
+                    <GlowButton href="/shop" variant="cta" magnetic>
+                      Explore Yagya
+                    </GlowButton>
+                  </div>
+                </OatSheet>
+              </div>
 
               <OatSheet tone="subtle" delay={0.18} className="lg:col-span-5 lg:col-start-8 p-7 sm:p-9 space-y-6">
                 <div className="grid grid-cols-2 gap-3">
@@ -109,19 +115,22 @@ export default function AboutPage() {
           chapterLabel: 'Partner Regions',
           content: (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              <OatSheet tone="warm" delay={0.1} className="lg:col-span-7 lg:col-start-6 p-8 sm:p-10 space-y-4">
-                <span className="font-ui-label text-[11px] text-peach block">
-                  02 · From Valley to Plain
-                </span>
-                <h2 className="font-display text-3xl sm:text-4xl text-oat font-medium leading-tight">
-                  Five distinct belts, one honest standard.
-                </h2>
-                <p className="text-sm sm:text-base text-apricot/90 leading-relaxed">
-                  High-altitude sea buckthorn from Ladakh and Himachal, winter Rabi flax from
-                  Madhya Pradesh, sesame and sunflower from Rajasthan and Karnataka, and wetland
-                  lotus puffs roasted in small drums.
-                </p>
-              </OatSheet>
+              <div className="lg:col-span-7 lg:col-start-6 relative">
+                <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.about['chapter-02']} />
+                <OatSheet tone="warm" delay={0.1} className="relative z-10 p-8 sm:p-10 space-y-4">
+                  <span className="font-ui-label text-[11px] text-peach block">
+                    02 · From Valley to Plain
+                  </span>
+                  <h2 className="font-display text-3xl sm:text-4xl text-oat font-medium leading-tight">
+                    Five distinct belts, one honest standard.
+                  </h2>
+                  <p className="text-sm sm:text-base text-apricot/90 leading-relaxed">
+                    High-altitude sea buckthorn from Ladakh and Himachal, winter Rabi flax from
+                    Madhya Pradesh, sesame and sunflower from Rajasthan and Karnataka, and wetland
+                    lotus puffs roasted in small drums.
+                  </p>
+                </OatSheet>
+              </div>
             </div>
           ),
         },
@@ -131,21 +140,24 @@ export default function AboutPage() {
           chapterLabel: 'Zero Shortcuts',
           content: (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              <OatSheet tone="medium" delay={0.1} className="lg:col-span-6 lg:col-start-2 p-8 sm:p-10 space-y-5">
-                <span className="font-ui-label text-[11px] text-peach block">
-                  03 · The Diya Standard
-                </span>
-                <h2 className="font-display text-3xl sm:text-4xl text-oat font-medium leading-tight">
-                  Cleanly sorted, sealed at peak freshness.
-                </h2>
-                <p className="text-sm sm:text-base text-apricot/90 leading-relaxed">
-                  No sulfur bleaching, no sugar-syrup glazing, and no middleman warehousing.
-                  Just whole harvests ready for your daily ritual.
-                </p>
-                <GlowButton href="/contact" variant="secondary">
-                  Write to Us
-                </GlowButton>
-              </OatSheet>
+              <div className="lg:col-span-6 lg:col-start-2 relative">
+                <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.about['chapter-03']} />
+                <OatSheet tone="medium" delay={0.1} className="relative z-10 p-8 sm:p-10 space-y-5">
+                  <span className="font-ui-label text-[11px] text-peach block">
+                    03 · The Diya Standard
+                  </span>
+                  <h2 className="font-display text-3xl sm:text-4xl text-oat font-medium leading-tight">
+                    Cleanly sorted, sealed at peak freshness.
+                  </h2>
+                  <p className="text-sm sm:text-base text-apricot/90 leading-relaxed">
+                    No sulfur bleaching, no sugar-syrup glazing, and no middleman warehousing.
+                    Just whole harvests ready for your daily ritual.
+                  </p>
+                  <GlowButton href="/contact" variant="secondary">
+                    Write to Us
+                  </GlowButton>
+                </OatSheet>
+              </div>
             </div>
           ),
         },
