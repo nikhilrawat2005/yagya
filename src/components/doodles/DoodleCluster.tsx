@@ -1,18 +1,25 @@
 'use client';
 
 import React from 'react';
-import { Doodle, type DoodleShowOn, type DoodleTone } from '@/components/doodles/Doodle';
+import {
+  Doodle,
+  type DoodlePreset,
+  type DoodleShowOn,
+  type DoodleTone,
+} from '@/components/doodles/Doodle';
 import type { DoodleName } from '@/lib/doodles';
 
 export type DoodleClusterLayout = 'corner-peek' | 'edge-trail' | 'side-accent';
 
 export interface DoodleClusterItem {
   name: DoodleName;
+  preset?: DoodlePreset;
   tone?: DoodleTone;
   size?: number | string;
   rotate?: number;
   opacity?: number;
   float?: boolean;
+  hover?: boolean;
   showOn?: DoodleShowOn;
 }
 
@@ -60,19 +67,20 @@ export function DoodleCluster({
       aria-hidden="true"
       className={`pointer-events-none select-none relative z-20 ${className}`}
     >
-      {items.slice(0, 4).map((item, idx) => (
+      {items.slice(0, 2).map((item, idx) => (
         <Doodle
           key={item.name}
           name={item.name}
+          preset={item.preset ?? 'botanical'}
           tone={item.tone ?? 'oat'}
-          size={item.size ?? (idx === 0 ? 148 : 112)}
-          rotate={item.rotate ?? (idx % 2 === 0 ? -8 : 7)}
-          opacity={item.opacity ?? 0.92}
-          float={item.float ?? true}
-          drawDuration={2.2}
+          size={item.size ?? (idx === 0 ? 124 : 96)}
+          rotate={item.rotate ?? (idx % 2 === 0 ? -6 : 6)}
+          opacity={item.opacity ?? 0.45}
+          float={item.float}
+          hover={item.hover}
           priority={priority}
-          delay={idx * 0.2}
-          showOn={item.showOn ?? (idx >= 2 ? 'md+' : 'all')}
+          delay={idx * 0.16}
+          showOn={item.showOn ?? 'md+'}
           className={`absolute ${slots[idx] ?? ''}`}
         />
       ))}

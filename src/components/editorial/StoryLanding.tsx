@@ -11,14 +11,9 @@ import { SplitText } from '@/components/react-bits/SplitText';
 import { SpotlightCard } from '@/components/react-bits/SpotlightCard';
 import { ASSETS } from '@/lib/assets';
 import {
-  ChapterDoodleLayer,
   Doodle,
   DoodleDivider,
 } from '@/components/doodles';
-import {
-  HOME_NUTRITION_DOODLES,
-  PAGE_CHAPTER_PLACEMENTS,
-} from '@/config/doodle-placements';
 
 const NUTRITION_HIGHLIGHTS = [
   {
@@ -99,7 +94,6 @@ export function StoryLanding() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-end">
           {/* Tall Editorial Hero Sheet (left-offset, leaves open blueberry canvas right) */}
           <div className="lg:col-span-6 relative">
-            <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.home['chapter-01']} priority />
             <OatSheet tone="medium" delay={0.05} className="relative z-10 p-6 sm:p-8 lg:p-9">
               <div className="flex items-center gap-3.5 mb-5">
                 <div className="relative w-11 h-11 rounded-[4px] overflow-hidden border border-white/25 bg-oat shrink-0">
@@ -123,6 +117,7 @@ export function StoryLanding() {
                 text="Pure farm harvests, gathered like an offering."
                 accentWord="offering"
                 accentStyle="circle"
+                accentTone="flame"
                 className="font-display text-3xl sm:text-4xl lg:text-[46px] font-medium tracking-tight text-oat mb-5"
               />
 
@@ -141,10 +136,22 @@ export function StoryLanding() {
 
           {/* Asymmetrical Small Overlapping Corner Sheet + Product Peek */}
           <div className="lg:col-span-4 lg:col-start-9 relative space-y-4">
-            <OatSheet tone="subtle" delay={0.22} className="p-5">
-              <p className="font-annotation text-xl text-oat">
-                Small batches from Himalayan valleys &amp; fertile Rabi fields.
-              </p>
+            <OatSheet tone="subtle" delay={0.22} className="p-5 relative">
+              <div className="flex items-start justify-between gap-3">
+                <p className="font-annotation text-xl text-oat">
+                  Small batches from Himalayan valleys &amp; fertile Rabi fields.
+                </p>
+                <Doodle
+                  name="yagya-flame-minimal"
+                  preset="hero"
+                  tone="apricot"
+                  size={36}
+                  opacity={0.9}
+                  showOn="md+"
+                  inline
+                  className="shrink-0 -mt-1"
+                />
+              </div>
             </OatSheet>
 
             <Link
@@ -153,23 +160,25 @@ export function StoryLanding() {
             >
               <SpotlightCard
                 spotlightColor="rgba(223, 127, 37, 0.16)"
-                className="p-3.5 flex items-center gap-3.5 [@media(hover:hover)]:hover:-translate-y-1 transition-transform duration-300"
+                className="p-3.5 flex items-center justify-between gap-3.5 [@media(hover:hover)]:hover:-translate-y-1 transition-transform duration-300"
               >
-                <div className="flex items-center gap-3.5">
-                  <div className="relative w-16 h-20 rounded-[4px] overflow-hidden border border-white/25 shrink-0">
-                    <Image
-                      src={HOME_PEEK_PRODUCTS[0].image}
-                      alt={HOME_PEEK_PRODUCTS[0].alt}
-                      fill
-                      sizes="64px"
-                      className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-display text-base text-oat group-hover:text-peach transition-colors leading-snug">
-                      {HOME_PEEK_PRODUCTS[0].name}
-                    </p>
-                    <p className="text-xs text-apricot/85">{HOME_PEEK_PRODUCTS[0].note}</p>
+                <div className="flex items-center justify-between gap-3.5 w-full">
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <div className="relative w-16 h-20 rounded-[4px] overflow-hidden border border-white/25 shrink-0">
+                      <Image
+                        src={HOME_PEEK_PRODUCTS[0].image}
+                        alt={HOME_PEEK_PRODUCTS[0].alt}
+                        fill
+                        sizes="64px"
+                        className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-display text-base text-oat group-hover:text-peach transition-colors leading-snug">
+                        {HOME_PEEK_PRODUCTS[0].name}
+                      </p>
+                      <p className="text-xs text-apricot/85">{HOME_PEEK_PRODUCTS[0].note}</p>
+                    </div>
                   </div>
                 </div>
               </SpotlightCard>
@@ -193,7 +202,6 @@ export function StoryLanding() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Wide Lead Sheet (Right-aligned) with real farm harvest photography */}
           <div className="lg:col-span-7 lg:col-start-6 relative">
-            <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.home['chapter-02']} />
             <OatSheet tone="medium" delay={0.08} className="relative z-10 p-6 sm:p-9">
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
                 <div className="sm:col-span-7">
@@ -201,8 +209,6 @@ export function StoryLanding() {
                     as="h2"
                     trigger="scroll"
                     text="Rooted in the clarity of the Diya."
-                    accentWord="Diya"
-                    accentStyle="double"
                     className="font-display text-3xl sm:text-4xl lg:text-[42px] font-medium tracking-tight text-oat mb-5"
                   />
 
@@ -244,19 +250,19 @@ export function StoryLanding() {
 
           {/* Tall Overlapping Pillars Sheet (Left-aligned, staggered upward) */}
           <div className="lg:col-span-5 lg:col-start-1 lg:-mt-12 relative z-20">
+            <div className="hidden md:flex justify-end pr-8 pb-2">
+              <Doodle
+                name="trail-dotted-journey"
+                preset="connector"
+                tone="apricot"
+                size={172}
+                opacity={0.85}
+                showOn="md+"
+                inline
+              />
+            </div>
             <OatSheet tone="warm" delay={0.22} className="p-7 sm:p-8">
-              <div className="flex items-center justify-between gap-4 mb-5">
-                <Doodle
-                  name="seed-heap-a"
-                  tone="peach"
-                  size={104}
-                  opacity={0.95}
-                  draw
-                  drawDuration={2.2}
-                  float
-                  hover
-                  inline
-                />
+              <div className="flex items-center justify-end mb-5">
                 <span className="font-annotation text-lg text-apricot/95">
                   Pure from field to table
                 </span>
@@ -294,6 +300,7 @@ export function StoryLanding() {
             </OatSheet>
           </div>
         </div>
+        <DoodleDivider variant="flame" tone="oat" size={200} className="mt-10" />
       </BackgroundChapter>
 
       {/* ================================================================
@@ -308,10 +315,9 @@ export function StoryLanding() {
         imageAlt={ASSETS.backgrounds.home[2].alt}
         tone={ASSETS.backgrounds.home[2].tone}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative">
           {/* Tall Craft Narrative Sheet with paired berry & seed imagery */}
           <div className="lg:col-span-5 relative">
-            <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.home['chapter-03']} />
             <OatSheet tone="medium" delay={0.08} className="relative z-10 p-6 sm:p-8">
               <div className="grid grid-cols-2 gap-3 mb-6">
                 <Link href="/berries" className="group block">
@@ -342,8 +348,6 @@ export function StoryLanding() {
                 as="h2"
                 trigger="scroll"
                 text="Gently dried. Naturally dense."
-                accentWord="dense"
-                accentStyle="circle"
                 className="font-display text-3xl sm:text-[40px] font-medium tracking-tight text-oat mb-5"
               />
 
@@ -353,86 +357,72 @@ export function StoryLanding() {
                 crispness, fiber, and plant Omega oils in barrier-sealed pouches.
               </p>
 
-              <div className="pt-4 border-t border-white/15 flex items-center justify-between gap-4">
+              <div className="pt-4 border-t border-white/15">
                 <span className="font-annotation text-xl text-peach">
                   Pulp, seed &amp; crunch intact
                 </span>
-                <Doodle
-                  name="berry-trio-b"
-                  tone="apricot"
-                  size={88}
-                  opacity={0.94}
-                  draw
-                  drawDuration={2.2}
-                  float
-                  hover
-                  inline
-                />
               </div>
             </OatSheet>
           </div>
 
-          {/* Overlapping Minimal Nutrition Highlights Sheet with large slow-drawing seed & berry doodles */}
+          {/* Overlapping Minimal Nutrition Highlights Sheet */}
           <div className="lg:col-span-6 lg:col-start-7 lg:mt-8 relative">
+            <Doodle
+              name="sprig-sea-buckthorn"
+              preset="botanical"
+              tone="oat"
+              size={112}
+              opacity={0.42}
+              hover
+              showOn="md+"
+              className="hidden md:block absolute -top-16 -right-8 z-20 transition-opacity duration-300 hover:opacity-90"
+            />
             <SpotlightCard spotlightColor="rgba(246, 239, 226, 0.10)" className="relative z-10 p-6 sm:p-8">
               <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-white/20">
                 <span className="font-ui-label text-[11px] text-oat">
                   Verified Nutrition Highlights
                 </span>
-                <span className="font-ui-label text-[10px] text-peach">
-                  Per 100 g Reference
+                <span className="inline-flex items-center gap-1.5 font-ui-label text-[10px] text-peach">
+                  <Doodle
+                    name="star-botanical-asterisk"
+                    preset="accent"
+                    tone="apricot"
+                    size={20}
+                    opacity={0.9}
+                    inline
+                  />
+                  <span>Per 100 g Reference</span>
                 </span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:gap-x-6">
-                {NUTRITION_HIGHLIGHTS.map((item, idx) => {
-                  const slug = item.href.replace('/product/', '');
-                  const doodleName = HOME_NUTRITION_DOODLES[slug];
-                  return (
-                    <Link
-                      key={item.nutrient}
-                      href={item.href}
-                      className={`group relative py-5 flex items-start gap-3.5 hover:bg-oat/[0.06] rounded-[4px] transition-colors ${idx < 2 ? 'sm:border-b sm:border-white/15' : ''}`}
-                    >
-                      <div className="relative w-12 h-12 rounded-[4px] overflow-hidden border border-white/20 shrink-0 mt-0.5">
-                        <Image
-                          src={item.image}
-                          alt={item.source}
-                          fill
-                          sizes="48px"
-                          className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-2">
-                          <span className="font-display text-xl sm:text-[23px] font-semibold text-peach whitespace-nowrap block leading-none mb-1.5 tabular-nums">
-                            {item.value}
-                          </span>
-                          {doodleName && (
-                            <Doodle
-                              name={doodleName}
-                              tone="apricot"
-                              size={64}
-                              opacity={0.95}
-                              draw
-                              drawDuration={2.2}
-                              float
-                              hover
-                              delay={0.18 * idx}
-                              inline
-                              className="shrink-0 -mt-1.5"
-                            />
-                          )}
-                        </div>
-                        <h3 className="text-sm font-semibold text-oat group-hover:text-peach transition-colors mb-1">
-                          {item.nutrient}
-                        </h3>
-                        <p className="text-xs text-apricot/90">{item.source}</p>
-                        <p className="text-[11px] text-oat/80 mt-1">{item.note}</p>
-                      </div>
-                    </Link>
-                  );
-                })}
+                {NUTRITION_HIGHLIGHTS.map((item, idx) => (
+                  <Link
+                    key={item.nutrient}
+                    href={item.href}
+                    className={`group relative py-5 flex items-start gap-3.5 hover:bg-oat/[0.06] rounded-[4px] transition-colors ${idx < 2 ? 'sm:border-b sm:border-white/15' : ''}`}
+                  >
+                    <div className="relative w-12 h-12 rounded-[4px] overflow-hidden border border-white/20 shrink-0 mt-0.5">
+                      <Image
+                        src={item.image}
+                        alt={item.source}
+                        fill
+                        sizes="48px"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <span className="font-display text-xl sm:text-[23px] font-semibold text-peach whitespace-nowrap block leading-none mb-1.5 tabular-nums">
+                        {item.value}
+                      </span>
+                      <h3 className="text-sm font-semibold text-oat group-hover:text-peach transition-colors mb-1">
+                        {item.nutrient}
+                      </h3>
+                      <p className="text-xs text-apricot/90">{item.source}</p>
+                      <p className="text-[11px] text-oat/80 mt-1">{item.note}</p>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </SpotlightCard>
           </div>
@@ -455,14 +445,11 @@ export function StoryLanding() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           {/* Primary Promise & CTA Sheet */}
           <div className="lg:col-span-6 relative">
-            <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.home['chapter-04']} />
             <OatSheet tone="medium" delay={0.08} className="relative z-10 p-7 sm:p-10">
               <SplitText
                 as="h2"
                 trigger="scroll"
                 text="Honest food that asks for nothing extra."
-                accentWord="nothing"
-                accentStyle="double"
                 className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-oat mb-6"
               />
 
@@ -474,14 +461,13 @@ export function StoryLanding() {
 
               <div className="relative flex flex-wrap items-center gap-3">
                 <Doodle
-                  name="arrow-curved-03"
-                  tone="peach"
+                  name="arrow-curved-pointer"
+                  preset="connector"
+                  tone="oat"
                   size={52}
-                  rotate={-6}
-                  opacity={0.92}
-                  draw
-                  drawDuration={1.8}
-                  showOn="sm+"
+                  rotate={-4}
+                  opacity={0.9}
+                  showOn="md+"
                   inline
                   className="-ml-1 shrink-0"
                 />
@@ -524,10 +510,21 @@ export function StoryLanding() {
               ))}
             </div>
             <OatSheet as="blockquote" tone="warm" delay={0.22} className="p-7 sm:p-8">
-              <p className="font-display text-xl sm:text-2xl italic leading-snug text-oat mb-5">
-                &ldquo;Finding whole dried sea buckthorn without added sugar or syrup was
-                rare until Yagya. Clean, vibrant mountain tartness.&rdquo;
-              </p>
+              <div className="relative px-9 py-2 mb-5">
+                <Doodle
+                  name="bracket-editorial-pair"
+                  preset="accent"
+                  tone="apricot"
+                  size="100%"
+                  preserveAspectRatio="none"
+                  opacity={0.58}
+                  className="pointer-events-none absolute inset-0 h-full z-0"
+                />
+                <p className="relative z-10 font-display text-xl sm:text-2xl italic leading-snug text-oat">
+                  &ldquo;Finding whole dried sea buckthorn without added sugar or syrup was
+                  rare until Yagya. Clean, vibrant mountain tartness.&rdquo;
+                </p>
+              </div>
 
               <footer className="pt-4 border-t border-white/15 flex items-center justify-between gap-3">
                 <div>
@@ -545,7 +542,6 @@ export function StoryLanding() {
             </OatSheet>
           </div>
         </div>
-        <DoodleDivider variant="diamond" tone="peach" className="mt-12" />
       </BackgroundChapter>
     </div>
   );

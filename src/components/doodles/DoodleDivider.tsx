@@ -4,7 +4,7 @@ import React from 'react';
 import { Doodle, type DoodleTone } from '@/components/doodles/Doodle';
 import type { DoodleName } from '@/lib/doodles';
 
-export type DoodleDividerVariant = 'leaf' | 'diamond' | 'dots' | 'vine' | 'wave';
+export type DoodleDividerVariant = 'leaf' | 'diamond' | 'dots' | 'vine' | 'wave' | 'star' | 'flame';
 
 const VARIANT_MAP: Record<DoodleDividerVariant, DoodleName> = {
   leaf: 'divider-leaf-center',
@@ -12,6 +12,8 @@ const VARIANT_MAP: Record<DoodleDividerVariant, DoodleName> = {
   dots: 'divider-three-dots',
   vine: 'divider-vine',
   wave: 'divider-wavy',
+  star: 'divider-star-center',
+  flame: 'divider-flame-horizon',
 };
 
 export interface DoodleDividerProps {
@@ -41,6 +43,7 @@ export function DoodleDivider({
       <span className="h-[1px] flex-1 max-w-[140px] bg-white/15" />
       <Doodle
         name={VARIANT_MAP[variant]}
+        preset="accent"
         tone={tone}
         size={size}
         opacity={opacity}

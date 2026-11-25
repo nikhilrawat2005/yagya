@@ -4,20 +4,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { siteConfig } from '@/lib/data/site';
 import { ASSETS } from '@/lib/assets';
-import { Doodle, DoodleDivider } from '@/components/doodles';
+import { Doodle, DoodleUnderline } from '@/components/doodles';
 
 export function Footer() {
   return (
     <footer className="relative z-20 overflow-hidden bg-aubergine/95 backdrop-blur-md border-t border-white/15 text-oat">
-      <Doodle
-        name="corner-flourish-br"
-        tone="apricot"
-        size={48}
-        opacity={0.4}
-        className="hidden sm:block absolute bottom-2 right-3"
-      />
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 pt-4 pb-10">
-        <DoodleDivider variant="vine" tone="apricot" size={160} opacity={0.65} className="mb-6 mt-0" />
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 py-10">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
           {/* Brand Identity */}
           <Link href="/" className="flex items-center gap-3.5 group w-fit">
@@ -34,9 +26,23 @@ export function Footer() {
               <span translate="no" className="font-display text-lg tracking-[0.08em] font-semibold text-oat block leading-none">
                 {siteConfig.name.toUpperCase()}
               </span>
-              <span className="text-xs text-apricot/90 mt-1 flex items-center gap-1.5">
-                <Doodle name="icon-leaf-drop" tone="apricot" size={14} inline opacity={0.85} />
-                <span>Seeds, berries &amp; orchard harvests, straight from soil.</span>
+              <span className="text-xs text-apricot/90 mt-1.5 inline-flex items-center gap-1.5">
+                <Doodle
+                  name="star-botanical-asterisk"
+                  preset="accent"
+                  tone="apricot"
+                  size={16}
+                  showOn="md+"
+                  inline
+                  opacity={0.85}
+                />
+                <span>
+                  100%{' '}
+                  <DoodleUnderline variant="swoosh" tone="flame" delay={0.2}>
+                    <span className="text-oat font-medium">Pure</span>
+                  </DoodleUnderline>{' '}
+                  harvests, zero fillers, dispatched fresh across India.
+                </span>
               </span>
             </div>
           </Link>
@@ -103,15 +109,10 @@ export function Footer() {
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 text-xs text-apricot/90">
             <a
               href={`mailto:${siteConfig.contact.email}`}
-              className="inline-flex items-center gap-1.5 hover:text-oat transition-colors whitespace-nowrap"
+              className="hover:text-oat transition-colors whitespace-nowrap"
             >
-              <Doodle name="icon-heart" tone="peach" size={14} inline opacity={0.9} />
-              <span>{siteConfig.contact.email}</span>
+              {siteConfig.contact.email}
             </a>
-            <span className="hidden sm:inline-flex items-center gap-1 text-apricot/85">
-              <Doodle name="icon-location-pin" tone="apricot" size={14} inline opacity={0.85} />
-              <span>India</span>
-            </span>
             <span className="whitespace-nowrap">© {new Date().getFullYear()} {siteConfig.name}</span>
           </div>
         </div>

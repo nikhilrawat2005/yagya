@@ -9,9 +9,16 @@ import { useCartStore } from '@/lib/store/cartStore';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
 import { SpotlightCard } from '@/components/react-bits/SpotlightCard';
 import { GlowButton } from '@/components/ui/GlowButton';
+import { Doodle } from '@/components/doodles';
 import { MOTION_EASE } from '@/lib/motion/tokens';
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  showSparkle = false,
+}: {
+  product: Product;
+  showSparkle?: boolean;
+}) {
   const [added, setAdded] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
 
@@ -35,10 +42,19 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="flex flex-col justify-between h-full">
         <Link href={`/product/${product.slug}`} className="block focus-visible:outline-none">
           {product.badges.length > 0 && (
-            <div className="mb-3">
+            <div className="mb-3 flex items-center gap-1.5">
               <span className="inline-block font-ui-label text-[10px] px-2.5 py-0.5 rounded-[4px] bg-oat/15 text-peach border border-white/20">
                 {product.badges[0]}
               </span>
+              {showSparkle && (
+                <Doodle
+                  name="sparkle-trio-asymmetric"
+                  preset="accent"
+                  tone="flame"
+                  size={20}
+                  inline
+                />
+              )}
             </div>
           )}
 

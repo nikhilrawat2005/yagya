@@ -4,8 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { SpotlightCard } from '@/components/react-bits/SpotlightCard';
-import { Doodle } from '@/components/doodles';
-import { PRODUCT_CARD_DOODLES } from '@/config/doodle-placements';
 import type { Product } from '@/lib/data/products';
 
 export interface EditorialProductCardProps {
@@ -17,8 +15,7 @@ export interface EditorialProductCardProps {
 
 /**
  * Editorial glass card for category showcase chapters: 4:5 product photography,
- * single-line botanical note, dedicated product doodle peeking behind one corner,
- * and restrained spotlight hover.
+ * single-line botanical note, and restrained spotlight hover.
  */
 export function EditorialProductCard({
   product,
@@ -27,25 +24,9 @@ export function EditorialProductCard({
 }: EditorialProductCardProps) {
   const primary = product.images[0];
   const price = product.variants[0]?.price ?? 0;
-  const doodleName = PRODUCT_CARD_DOODLES[product.slug];
 
   return (
     <div className={`relative group ${className}`}>
-      {doodleName && (
-        <div className="hidden sm:block absolute -top-10 -right-7 z-20 pointer-events-none transition-transform duration-300 ease-[var(--ease-smooth)] [@media(hover:hover)]:group-hover:rotate-[4deg]">
-          <Doodle
-            name={doodleName}
-            tone="peach"
-            size={88}
-            rotate={-6}
-            opacity={0.92}
-            float
-            drawDuration={2.0}
-            inline
-          />
-        </div>
-      )}
-
       <SpotlightCard
         spotlightColor={size === 'featured' ? 'rgba(223, 127, 37, 0.16)' : 'rgba(246, 239, 226, 0.10)'}
         className="relative z-10 overflow-hidden p-4 sm:p-5 bg-[#141C2B]/55 transition-transform duration-300 ease-[var(--ease-smooth)] [@media(hover:hover)]:group-hover:-translate-y-1.5"

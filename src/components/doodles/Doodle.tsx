@@ -11,19 +11,91 @@ import {
 import { DOODLES, type DoodleName } from '@/lib/doodles';
 import { loadDoodleSvg, type ParsedDoodleSvg } from '@/components/doodles/svgLoader';
 
-export type DoodleTone = 'oat' | 'apricot' | 'peach' | 'flame' | 'ink';
+export type DoodleTone = 'oat' | 'flame' | 'apricot' | 'peach' | 'navy' | 'ink';
+export type DoodlePreset = 'hero' | 'accent' | 'connector' | 'botanical';
 export type DoodleShowOn = 'all' | 'sm+' | 'md+' | 'lg+';
 
 export const DOODLE_TONE_HEX: Record<DoodleTone, string> = {
   oat: '#F6EFE2',
+  flame: '#DF7F25',
   apricot: '#FDE6C8',
   peach: '#FBC98A',
-  flame: '#DF7F25',
+  navy: '#141C2B',
   ink: '#1A1410',
+};
+
+interface PresetConfig {
+  mountPriority: boolean;
+  inViewAmount: number;
+  duration: number;
+  stagger: number;
+  ease: [number, number, number, number] | 'easeInOut';
+  float: boolean;
+  floatY: [number, number, number];
+  floatRotate: [number, number, number];
+  floatDuration: number;
+  hoverScale: number;
+  hoverRotateOffset: number;
+}
+
+const DOODLE_PRESETS: Record<DoodlePreset, PresetConfig> = {
+  hero: {
+    mountPriority: true,
+    inViewAmount: 0.15,
+    duration: 1.6,
+    stagger: 0.14,
+    ease: [0.22, 1, 0.36, 1],
+    float: true,
+    floatY: [-3, 3, -3],
+    floatRotate: [-1.5, 1.5, -1.5],
+    floatDuration: 5,
+    hoverScale: 1.05,
+    hoverRotateOffset: 3,
+  },
+  accent: {
+    mountPriority: false,
+    inViewAmount: 0.4,
+    duration: 1.0,
+    stagger: 0.12,
+    ease: [0.22, 1, 0.36, 1],
+    float: false,
+    floatY: [0, 0, 0],
+    floatRotate: [0, 0, 0],
+    floatDuration: 0,
+    hoverScale: 1,
+    hoverRotateOffset: 0,
+  },
+  connector: {
+    mountPriority: false,
+    inViewAmount: 0.3,
+    duration: 1.2,
+    stagger: 0.18,
+    ease: 'easeInOut',
+    float: false,
+    floatY: [0, 0, 0],
+    floatRotate: [0, 0, 0],
+    floatDuration: 0,
+    hoverScale: 1,
+    hoverRotateOffset: 0,
+  },
+  botanical: {
+    mountPriority: false,
+    inViewAmount: 0.25,
+    duration: 2.2,
+    stagger: 0.16,
+    ease: [0.22, 1, 0.36, 1],
+    float: true,
+    floatY: [-4, 4, -4],
+    floatRotate: [-1.5, 1.5, -1.5],
+    floatDuration: 5.4,
+    hoverScale: 1.06,
+    hoverRotateOffset: 4,
+  },
 };
 
 export interface DoodleProps {
   name: DoodleName;
+  preset?: DoodlePreset;
   tone?: DoodleTone;
   size?: number | string;
   draw?: boolean;
@@ -96,23 +168,24 @@ function useMotionEnvironment() {
 
 /**
  * Hand-drawn SVG doodle loaded inline from /public/assets/doodles via the typed registry.
- * Uses currentColor + vector-effect="non-scaling-stroke" for uniform stroke weight,
- * draws slowly on scroll so creation is clearly visible, and supports gentle float & hover.
+ * Uses currentColor + stroke-linecap="round" + preset choreography (hero, accent,
+ * connector, botanical) and honors prefers-reduced-motion.
  */
 export function Doodle({
   name,
+  preset = 'botanical',
   tone = 'oat',
   size,
   draw = true,
   drawDuration,
   drawKey = 0,
-  float = false,
+  float,
   parallax = false,
   hover = false,
   rotate = 0,
   opacity = 0.92,
   delay = 0,
-  priority = false,
+  priority,
   showOn = 'all',
   hideOnMobile = false,
   inline = false,
@@ -121,6 +194,8 @@ export function Doodle({
   style,
 }: DoodleProps) {
   const meta = DOODLES[name];
+  const cfg = DOODLE_PRESETS[preset];
+  const resolvedPriority = priority ?? cfg.mountPriority;
   const containerRef = useRef<HTMLDivElement>(null);
   const { prefersReducedMotion, isLowPower, isMobile, canHover } = useMotionEnvironment();
   const [svgData, setSvgData] = useState<ParsedDoodleSvg | null>(null);
@@ -133,17 +208,17 @@ export function Doodle({
 
   const inDrawView = useInView(containerRef, {
     once: true,
-    amount: 0.2,
+    amount: cfg.inViewAmount,
   });
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end start'],
   });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [-16, 16]);
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [-14, 14]);
 
   useEffect(() => {
-    if (!priority && !nearViewport) return;
+    if (!resolvedPriority && !nearViewport) return;
     let active = true;
     loadDoodleSvg(name).then((parsed) => {
       if (active) setSvgData(parsed);
@@ -151,39 +226,43 @@ export function Doodle({
     return () => {
       active = false;
     };
-  }, [name, priority, nearViewport]);
+  }, [name, resolvedPriority, nearViewport]);
 
   useEffect(() => {
-    if (!priority || !svgData) return;
+    if (!resolvedPriority || !svgData) return;
     const timer = window.setTimeout(() => {
       setPriorityReady(true);
     }, 140);
     return () => window.clearTimeout(timer);
-  }, [priority, svgData, drawKey]);
+  }, [resolvedPriority, svgData, drawKey]);
 
   const effectiveShowOn: DoodleShowOn = hideOnMobile && showOn === 'all' ? 'md+' : showOn;
   const resolvedSize = size ?? meta.defaultSize;
-  const isWide = meta.viewBox.startsWith('0 0 400');
+  const [, , vbW = 200, vbH = 200] = meta.viewBox.split(/\s+/).map(Number);
+  const aspectHeightRatio = vbW > 0 ? vbH / vbW : 1;
 
   const sizeStyle: React.CSSProperties =
     typeof resolvedSize === 'number'
       ? {
           width: `${resolvedSize}px`,
-          height: isWide ? `${Math.round(resolvedSize / 4)}px` : `${resolvedSize}px`,
+          height: `${Math.round(resolvedSize * aspectHeightRatio)}px`,
         }
       : {
           width: resolvedSize,
           ...(preserveAspectRatio === 'none'
             ? {}
-            : { aspectRatio: isWide ? '4 / 1' : '1 / 1' }),
+            : { aspectRatio: `${vbW} / ${vbH}` }),
         };
 
-  const resolvedDuration = drawDuration ?? (isMobile || isLowPower ? 1.6 : 2.15);
+  const resolvedDuration = drawDuration ?? (isMobile || isLowPower ? Math.max(0.8, cfg.duration * 0.85) : cfg.duration);
   const shouldDraw = draw && !prefersReducedMotion;
-  const shouldFloat = float && !prefersReducedMotion && !isLowPower;
+  const shouldFloat = (float ?? cfg.float) && !prefersReducedMotion && !isLowPower;
   const shouldParallax = parallax && !prefersReducedMotion && !isMobile;
   const shouldHover = hover && canHover && !prefersReducedMotion;
-  const visible = prefersReducedMotion || !shouldDraw || (priority ? priorityReady || inDrawView : inDrawView);
+  const visible =
+    prefersReducedMotion ||
+    !shouldDraw ||
+    (resolvedPriority ? priorityReady || inDrawView : inDrawView);
 
   const isPositioned = inline || /\b(absolute|fixed|sticky|relative)\b/.test(className);
   const posClass = isPositioned ? '' : 'relative';
@@ -196,20 +275,25 @@ export function Doodle({
       style={{
         color: DOODLE_TONE_HEX[tone],
         opacity,
+        willChange: 'stroke-dashoffset, transform',
         ...sizeStyle,
         ...style,
         ...(shouldParallax ? { y: parallaxY } : undefined),
       }}
       initial={{ rotate }}
-      whileHover={shouldHover ? { rotate: rotate + 7, scale: 1.1 } : undefined}
+      whileHover={
+        shouldHover
+          ? { scale: cfg.hoverScale, rotate: rotate + cfg.hoverRotateOffset }
+          : undefined
+      }
       transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
     >
       <motion.div
         className="w-full h-full"
-        animate={shouldFloat ? { y: [-5, 5, -5], rotate: [-2, 2, -2] } : undefined}
+        animate={shouldFloat ? { y: cfg.floatY, rotate: cfg.floatRotate } : undefined}
         transition={
           shouldFloat
-            ? { duration: 5.2, repeat: Infinity, ease: 'easeInOut' }
+            ? { duration: cfg.floatDuration, repeat: Infinity, ease: 'easeInOut' }
             : undefined
         }
       >
@@ -220,13 +304,21 @@ export function Doodle({
             preserveAspectRatio={preserveAspectRatio ?? 'xMidYMid meet'}
             fill="none"
             stroke="currentColor"
-            strokeWidth={1.85}
+            strokeWidth={2}
             strokeLinecap="round"
             strokeLinejoin="round"
+            style={{ willChange: 'stroke-dashoffset, transform' }}
             className="w-full h-full overflow-visible"
           >
             {svgData.primitives.map((prim, idx) => {
-              const pathDelay = delay + Math.min(idx * 0.16, 0.8);
+              const pathDelay = delay + Math.min(idx * cfg.stagger, 1.4);
+              const primTransition = shouldDraw
+                ? {
+                    pathLength: { duration: resolvedDuration, delay: pathDelay, ease: cfg.ease },
+                    opacity: { duration: 0.2, delay: pathDelay },
+                  }
+                : { duration: 0 };
+
               if (prim.tag === 'path') {
                 return (
                   <motion.path
@@ -234,21 +326,8 @@ export function Doodle({
                     d={prim.attrs.d}
                     vectorEffect="non-scaling-stroke"
                     initial={shouldDraw ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
-                    animate={
-                      visible
-                        ? { pathLength: 1, opacity: 1 }
-                        : shouldDraw
-                        ? { pathLength: 0, opacity: 0 }
-                        : { pathLength: 1, opacity: 1 }
-                    }
-                    transition={
-                      shouldDraw
-                        ? {
-                            pathLength: { duration: resolvedDuration, delay: pathDelay, ease: [0.22, 1, 0.36, 1] },
-                            opacity: { duration: 0.25, delay: pathDelay },
-                          }
-                        : { duration: 0 }
-                    }
+                    animate={visible ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+                    transition={primTransition}
                   />
                 );
               }
@@ -262,11 +341,7 @@ export function Doodle({
                     vectorEffect="non-scaling-stroke"
                     initial={shouldDraw ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
                     animate={visible ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-                    transition={
-                      shouldDraw
-                        ? { pathLength: { duration: resolvedDuration, delay: pathDelay, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.25, delay: pathDelay } }
-                        : { duration: 0 }
-                    }
+                    transition={primTransition}
                   />
                 );
               }
@@ -281,11 +356,7 @@ export function Doodle({
                     vectorEffect="non-scaling-stroke"
                     initial={shouldDraw ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
                     animate={visible ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-                    transition={
-                      shouldDraw
-                        ? { pathLength: { duration: resolvedDuration, delay: pathDelay, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.25, delay: pathDelay } }
-                        : { duration: 0 }
-                    }
+                    transition={primTransition}
                   />
                 );
               }
@@ -298,11 +369,23 @@ export function Doodle({
                     rx={prim.attrs.rx}
                     ry={prim.attrs.ry}
                     vectorEffect="non-scaling-stroke"
-                    initial={shouldDraw ? { pathLength: 0, opacity: 0, scale: 0.85 } : { pathLength: 1, opacity: 1, scale: 1 }}
-                    animate={visible ? { pathLength: 1, opacity: 1, scale: 1 } : { pathLength: 0, opacity: 0, scale: 0.85 }}
+                    initial={
+                      shouldDraw
+                        ? { pathLength: 0, opacity: 0, scale: 0.9 }
+                        : { pathLength: 1, opacity: 1, scale: 1 }
+                    }
+                    animate={
+                      visible
+                        ? { pathLength: 1, opacity: 1, scale: 1 }
+                        : { pathLength: 0, opacity: 0, scale: 0.9 }
+                    }
                     transition={
                       shouldDraw
-                        ? { duration: resolvedDuration * 0.7, delay: pathDelay, ease: [0.22, 1, 0.36, 1] }
+                        ? {
+                            pathLength: { duration: resolvedDuration * 0.85, delay: pathDelay, ease: cfg.ease },
+                            opacity: { duration: 0.2, delay: pathDelay },
+                            scale: { duration: resolvedDuration * 0.85, delay: pathDelay, ease: cfg.ease },
+                          }
                         : { duration: 0 }
                     }
                   />

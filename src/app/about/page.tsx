@@ -6,8 +6,7 @@ import { OatSheet } from '@/components/editorial/OatSheet';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
 import { SplitText } from '@/components/react-bits/SplitText';
-import { ChapterDoodleLayer, DoodleFrame } from '@/components/doodles';
-import { PAGE_CHAPTER_PLACEMENTS } from '@/config/doodle-placements';
+import { Doodle, DoodleDivider } from '@/components/doodles';
 
 const ABOUT_HARVEST_PREVIEW = [
   {
@@ -48,15 +47,11 @@ export default function AboutPage() {
           content: (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-6 relative">
-                <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.about['chapter-01']} priority />
                 <OatSheet tone="medium" className="relative z-10 p-8 sm:p-10 space-y-5">
-                  <DoodleFrame variant="flourish" tone="apricot" size={38} opacity={0.45} />
                   <SplitText
                     as="h1"
                     trigger="mount"
                     text="The Yagya Philosophy"
-                    accentWord="Yagya"
-                    accentStyle="circle"
                     className="font-display text-4xl sm:text-5xl text-oat font-medium relative z-10"
                   />
                   <p className="text-sm sm:text-base text-apricot/95 leading-relaxed relative z-10">
@@ -101,9 +96,25 @@ export default function AboutPage() {
                 <p className="font-display text-2xl italic text-oat leading-snug">
                   &ldquo;Unhurried harvests, packed cleanly without fillers or disguised sugar.&rdquo;
                 </p>
-                <span className="font-annotation text-xl text-peach block">
-                  Direct from partner farms
-                </span>
+                <div className="flex items-center justify-between gap-4 pt-2 border-t border-white/15">
+                  <span className="font-annotation text-xl text-peach block">
+                    Direct from partner farms
+                  </span>
+                  <div className="relative w-16 h-16 shrink-0 flex items-center justify-center">
+                    <Doodle
+                      name="frame-arch-botanical"
+                      preset="botanical"
+                      tone="oat"
+                      size={64}
+                      opacity={0.75}
+                      hover
+                      className="absolute inset-0 m-auto"
+                    />
+                    <span className="relative z-10 font-ui-label text-[9px] text-oat tracking-wider pt-2">
+                      PURE
+                    </span>
+                  </div>
+                </div>
               </OatSheet>
             </div>
           ),
@@ -113,24 +124,37 @@ export default function AboutPage() {
           chapterNumber: '02',
           chapterLabel: 'Partner Regions',
           content: (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              <div className="lg:col-span-7 lg:col-start-6 relative">
-                <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.about['chapter-02']} />
-                <OatSheet tone="warm" delay={0.1} className="relative z-10 p-8 sm:p-10 space-y-4">
-                  <SplitText
-                    as="h2"
-                    trigger="scroll"
-                    text="Five distinct belts, one honest standard."
-                    accentWord="honest"
-                    className="font-display text-3xl sm:text-4xl text-oat font-medium"
-                  />
-                  <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">
-                    High-altitude sea buckthorn from Ladakh and Himachal, winter Rabi flax from
-                    Madhya Pradesh, sesame and sunflower from Rajasthan and Karnataka, and wetland
-                    lotus puffs roasted in small drums.
-                  </p>
-                </OatSheet>
+            <div className="space-y-8">
+              <div className="hidden md:flex justify-center">
+                <Doodle
+                  name="trail-dotted-journey"
+                  preset="connector"
+                  tone="apricot"
+                  size={168}
+                  rotate={12}
+                  opacity={0.78}
+                  showOn="md+"
+                  inline
+                />
               </div>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <div className="lg:col-span-7 lg:col-start-6 relative">
+                  <OatSheet tone="warm" delay={0.1} className="relative z-10 p-8 sm:p-10 space-y-4">
+                    <SplitText
+                      as="h2"
+                      trigger="scroll"
+                      text="Five distinct belts, one honest standard."
+                      className="font-display text-3xl sm:text-4xl text-oat font-medium"
+                    />
+                    <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">
+                      High-altitude sea buckthorn from Ladakh and Himachal, winter Rabi flax from
+                      Madhya Pradesh, sesame and sunflower from Rajasthan and Karnataka, and wetland
+                      lotus puffs roasted in small drums.
+                    </p>
+                  </OatSheet>
+                </div>
+              </div>
+              <DoodleDivider variant="flame" tone="oat" size={200} />
             </div>
           ),
         },
@@ -141,13 +165,14 @@ export default function AboutPage() {
           content: (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
               <div className="lg:col-span-6 lg:col-start-2 relative">
-                <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.about['chapter-03']} />
                 <OatSheet tone="medium" delay={0.1} className="relative z-10 p-8 sm:p-10 space-y-5">
                   <SplitText
                     as="h2"
                     trigger="scroll"
                     text="Cleanly sorted, sealed at peak freshness."
                     accentWord="freshness"
+                    accentStyle="swoosh"
+                    accentTone="flame"
                     className="font-display text-3xl sm:text-4xl text-oat font-medium"
                   />
                   <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">

@@ -16,8 +16,7 @@ import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
 import { SplitText } from '@/components/react-bits/SplitText';
 import { SpotlightCard } from '@/components/react-bits/SpotlightCard';
-import { ChapterDoodleLayer, Doodle, DoodleDivider } from '@/components/doodles';
-import { PAGE_CHAPTER_PLACEMENTS } from '@/config/doodle-placements';
+import { Doodle } from '@/components/doodles';
 import { MOTION_DURATION, MOTION_EASE, VIEWPORT_ONCE } from '@/lib/motion/tokens';
 import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 
@@ -90,7 +89,6 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
           chapterLabel: 'Explore Harvests',
           content: (
             <div className="space-y-8 relative">
-              <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.shop['chapter-01']} priority />
               <FadeInSection className="relative z-10 pb-6 border-b border-white/15 flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div className="relative">
                   <span className="font-ui-label text-[11px] text-peach block mb-2">
@@ -100,8 +98,6 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                     as="h1"
                     trigger="mount"
                     text="Explore Yagya"
-                    accentWord="Yagya"
-                    accentStyle="double"
                     className="font-display text-4xl sm:text-5xl text-oat font-medium"
                   />
                 </div>
@@ -182,11 +178,20 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                 </div>
               </OatSheet>
 
-              <div className="flex justify-start">
+              <div className="flex items-center gap-3">
                 <GlowButton href="#explore-02" variant="secondary" size="sm">
                   <span className="tabular-nums">View {filteredProducts.length} Matching Harvests</span>
                   <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
                 </GlowButton>
+                <Doodle
+                  name="arrow-short-nudge"
+                  preset="connector"
+                  tone="oat"
+                  size={28}
+                  opacity={0.85}
+                  showOn="md+"
+                  inline
+                />
               </div>
             </div>
           ),
@@ -269,7 +274,7 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                             ease: MOTION_EASE.smooth,
                           }}
                         >
-                          <ProductCard product={p} />
+                          <ProductCard product={p} showSparkle={index === 0} />
                         </motion.div>
                       ))}
                     </AnimatePresence>
@@ -285,18 +290,32 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
           chapterLabel: 'By Origin',
           content: (
             <div className="space-y-6 relative">
-              <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.shop['chapter-03']} />
-              <DoodleDivider variant="dots" tone="apricot" />
               <OatSheet tone="medium" className="relative z-10 p-6 sm:p-8 max-w-2xl">
-                <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat mb-2">
-                  Walk through each harvest belt
-                </h2>
+                <SplitText
+                  as="h2"
+                  trigger="scroll"
+                  text="Our Harvest Belts"
+                  accentWord="Harvest"
+                  accentStyle="double"
+                  accentTone="flame"
+                  className="font-display text-3xl sm:text-4xl font-medium text-oat mb-3"
+                />
                 <p className="text-sm text-apricot/90">
                   Every category has its own dedicated field story, origin notes, and curated selection.
                 </p>
               </OatSheet>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative">
+                <Doodle
+                  name="makhana-puff-trio"
+                  preset="botanical"
+                  tone="oat"
+                  size={112}
+                  opacity={0.42}
+                  hover
+                  showOn="md+"
+                  className="hidden md:block absolute -top-24 right-2 z-20 transition-opacity duration-300 hover:opacity-90"
+                />
                 {categories.map((cat, idx) => (
                   <Link
                     key={cat.id}

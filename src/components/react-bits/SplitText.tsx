@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { useInView, useReducedMotion } from 'motion/react';
-import { DoodleUnderline } from '@/components/doodles';
+import { DoodleUnderline, type DoodleTone } from '@/components/doodles';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -21,7 +21,8 @@ export interface SplitTextProps {
   duration?: number;
   /** Optional single word (case-insensitive) to render in editorial italic accent */
   accentWord?: string;
-  accentStyle?: 'none' | 'circle' | 'double';
+  accentStyle?: 'none' | 'circle' | 'double' | 'swoosh';
+  accentTone?: DoodleTone;
   accentClassName?: string;
   className?: string;
 }
@@ -36,6 +37,7 @@ export function SplitText({
   duration = 0.65,
   accentWord,
   accentStyle = 'none',
+  accentTone = 'flame',
   accentClassName = 'italic text-peach',
   className = '',
 }: SplitTextProps) {
@@ -131,9 +133,9 @@ export function SplitText({
                 <span key={`${word}-${wordIndex}`} className="inline-flex items-baseline">
                   <DoodleUnderline
                     variant={accentStyle}
-                    tone="peach"
-                    delay={0.45}
-                    drawDuration={2.0}
+                    tone={accentTone}
+                    delay={0.35}
+                    drawDuration={accentStyle === 'circle' ? 1.5 : 1.0}
                     priority={trigger === 'mount'}
                   >
                     {renderUnit()}

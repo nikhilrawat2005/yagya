@@ -4,15 +4,16 @@ import React from 'react';
 import { Doodle, type DoodleTone } from '@/components/doodles/Doodle';
 import type { DoodleName } from '@/lib/doodles';
 
-export type DoodleUnderlineVariant = 'wobbly' | 'curved' | 'tapered' | 'wave' | 'double' | 'circle';
+export type DoodleUnderlineVariant = 'wobbly' | 'curved' | 'tapered' | 'wave' | 'double' | 'circle' | 'swoosh';
 
 const UNDERLINE_MAP: Record<DoodleUnderlineVariant, DoodleName> = {
   wobbly: 'underline-hand-wobbly',
   curved: 'underline-curved-smile',
   tapered: 'underline-tapered',
   wave: 'underline-slightly-wavy',
-  double: 'double-line-curved-01',
-  circle: 'frame-oval-frame',
+  double: 'underline-double-sketch',
+  circle: 'highlight-oval-loop',
+  swoosh: 'underline-organic-swoosh',
 };
 
 export interface DoodleUnderlineProps {
@@ -48,25 +49,29 @@ export function DoodleUnderline({
       <span className="relative z-10">{children}</span>
       {active && isCircle && (
         <Doodle
-          name="frame-oval-frame"
+          name="highlight-oval-loop"
+          preset={priority ? 'hero' : 'accent'}
           tone={tone}
-          size="156%"
+          size="144%"
           delay={delay}
           drawDuration={drawDuration}
           priority={priority}
-          opacity={0.92}
+          float={false}
+          opacity={0.94}
           preserveAspectRatio="none"
-          className="pointer-events-none absolute -left-[28%] -right-[28%] -top-[52%] -bottom-[52%] h-[204%] z-20"
+          className="pointer-events-none absolute -left-[22%] -right-[22%] -top-[38%] -bottom-[38%] h-[176%] z-20"
         />
       )}
       {active && !isCircle && (
         <Doodle
           name={UNDERLINE_MAP[variant]}
+          preset={priority ? 'hero' : 'accent'}
           tone={tone}
           size="108%"
           delay={delay}
           drawDuration={drawDuration}
           priority={priority}
+          float={false}
           opacity={0.94}
           preserveAspectRatio={isDouble ? 'none' : undefined}
           className={`pointer-events-none absolute -left-[4%] -right-[4%] z-20 ${

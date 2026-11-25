@@ -17,6 +17,7 @@ import { FadeInSection } from '@/components/motion/FadeInSection';
 import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { SplitText } from '@/components/react-bits/SplitText';
+import { Doodle } from '@/components/doodles';
 import { MOTION_EASE, MOTION_SPRING } from '@/lib/motion/tokens';
 import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 
@@ -112,8 +113,15 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 {product.origin} · {product.provenance}
               </span>
               {product.badges[0] && (
-                <span className="inline-block font-ui-label text-[10px] px-2.5 py-0.5 rounded-[4px] bg-flame text-navy font-semibold whitespace-nowrap">
-                  {product.badges[0]}
+                <span className="inline-flex items-center gap-1.5 font-ui-label text-[10px] px-2.5 py-0.5 rounded-[4px] bg-flame text-navy font-semibold whitespace-nowrap">
+                  <span>{product.badges[0]}</span>
+                  <Doodle
+                    name="sparkle-trio-asymmetric"
+                    preset="accent"
+                    tone="navy"
+                    size={16}
+                    inline
+                  />
                 </span>
               )}
             </div>
@@ -140,7 +148,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             </p>
 
             {/* Price */}
-            <OatSheet tone="subtle" interactive={false} className="p-4 mb-6 flex items-baseline justify-between">
+            <OatSheet tone="subtle" interactive={false} className="p-4 mb-6 flex items-center justify-between gap-4">
               <div className="tabular-nums">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.span
@@ -163,9 +171,23 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                   {selectedVariant.weight} · Free dispatch over ₹499
                 </p>
               </div>
-              <span className="font-ui-label text-[10px] bg-oat/15 text-peach px-3 py-1 rounded-[4px] border border-white/20">
-                In Stock
-              </span>
+              <div className="flex items-center gap-3 shrink-0">
+                <span className="hidden md:inline-flex items-center gap-1.5 text-xs text-apricot/95">
+                  <Doodle
+                    name="leaf-pair-whisper"
+                    preset="botanical"
+                    tone="oat"
+                    size={22}
+                    hover
+                    showOn="md+"
+                    inline
+                  />
+                  <span>100% Pure &amp; Unprocessed</span>
+                </span>
+                <span className="font-ui-label text-[10px] bg-oat/15 text-peach px-3 py-1 rounded-[4px] border border-white/20">
+                  In Stock
+                </span>
+              </div>
             </OatSheet>
 
             {/* Pack Sizes */}
@@ -366,14 +388,26 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <section className="mt-20 pt-12 border-t border-white/15">
+          <section className="mt-20 pt-10 border-t border-white/15">
             <FadeInSection>
-              <h2 className="font-display text-3xl text-oat font-medium mb-8">
-                More Farm-Direct{' '}
-                <span className="italic text-peach">
-                  Harvests
-                </span>
-              </h2>
+              <div className="flex items-center gap-3 mb-8">
+                <SplitText
+                  as="h2"
+                  trigger="scroll"
+                  text="More Farm-Direct Harvests"
+                  className="font-display text-3xl text-oat font-medium"
+                />
+                <Doodle
+                  name="arrow-short-nudge"
+                  preset="connector"
+                  tone="oat"
+                  size={28}
+                  opacity={0.85}
+                  showOn="md+"
+                  inline
+                  className="shrink-0 mt-1"
+                />
+              </div>
             </FadeInSection>
             <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedProducts.map((p) => (

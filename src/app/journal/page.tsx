@@ -31,8 +31,6 @@ export default async function JournalPage() {
                   as="h1"
                   trigger="mount"
                   text="Harvest Journal"
-                  accentWord="Journal"
-                  accentStyle="double"
                   className="font-display text-4xl sm:text-5xl text-oat font-medium mb-3"
                 />
                 <p className="text-sm sm:text-base text-apricot/90">
@@ -96,7 +94,7 @@ export default async function JournalPage() {
           content: (
             <div className="max-w-5xl mx-auto space-y-8 relative">
               <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.journal['chapter-02']} />
-              <DoodleDivider variant="leaf" tone="apricot" />
+              <DoodleDivider variant="flame" tone="oat" size={180} />
 
               <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {secondHalf.map((art) => (

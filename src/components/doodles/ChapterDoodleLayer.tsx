@@ -22,13 +22,15 @@ export function ChapterDoodleLayer({
         <Doodle
           key={`${item.name}-${item.position}`}
           name={item.name}
+          preset={item.preset ?? 'botanical'}
           tone={item.tone}
           size={item.size}
           rotate={item.rotate}
-          opacity={item.opacity ?? 0.92}
+          opacity={item.opacity ?? 0.45}
           float={item.float}
           parallax={item.parallax}
-          drawDuration={item.drawDuration ?? 2.2}
+          hover={item.hover}
+          drawDuration={item.drawDuration}
           delay={item.delay ?? 0}
           showOn={item.showOn}
           priority={priority}

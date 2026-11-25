@@ -3,7 +3,7 @@
 import React from 'react';
 import { Doodle, type DoodleTone } from '@/components/doodles/Doodle';
 
-export type DoodleFrameVariant = 'flourish' | 'vine' | 'leaf';
+export type DoodleFrameVariant = 'flourish' | 'vine' | 'leaf' | 'arch';
 
 export interface DoodleFrameProps {
   variant?: DoodleFrameVariant;
@@ -14,7 +14,7 @@ export interface DoodleFrameProps {
 }
 
 /**
- * Decorative corner flourish set placed behind sheet text and above glass surfaces.
+ * Decorative corner flourish or botanical arch placed behind sheet text and above glass surfaces.
  */
 export function DoodleFrame({
   variant = 'flourish',
@@ -23,6 +23,14 @@ export function DoodleFrame({
   opacity = 0.55,
   className = '',
 }: DoodleFrameProps) {
+  if (variant === 'arch') {
+    return (
+      <div aria-hidden="true" className={`pointer-events-none select-none absolute inset-0 overflow-hidden z-0 flex items-center justify-center ${className}`}>
+        <Doodle name="frame-arch-botanical" preset="botanical" tone={tone} size={size} opacity={opacity} inline />
+      </div>
+    );
+  }
+
   if (variant === 'vine') {
     return (
       <div aria-hidden="true" className={`pointer-events-none select-none absolute inset-0 overflow-hidden z-0 ${className}`}>

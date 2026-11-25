@@ -10,8 +10,7 @@ import { FadeInSection } from '@/components/motion/FadeInSection';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { SplitText } from '@/components/react-bits/SplitText';
-import { ChapterDoodleLayer, DoodleFrame } from '@/components/doodles';
-import { PAGE_CHAPTER_PLACEMENTS } from '@/config/doodle-placements';
+import { Doodle } from '@/components/doodles';
 import { MOTION_DURATION, MOTION_EASE } from '@/lib/motion/tokens';
 
 export default function ContactPage() {
@@ -38,8 +37,6 @@ export default function ContactPage() {
                   as="h1"
                   trigger="mount"
                   text="Write To Yagya"
-                  accentWord="Yagya"
-                  accentStyle="circle"
                   className="font-display text-4xl sm:text-5xl text-oat font-medium mb-3"
                 />
                 <p className="text-sm sm:text-base text-apricot/95">
@@ -91,9 +88,7 @@ export default function ContactPage() {
                 </OatSheet>
 
                 <div className="md:col-span-7 relative">
-                  <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.contact['chapter-01']} priority />
                   <OatSheet tone="medium" interactive={false} className="relative z-10 p-6 sm:p-8">
-                    <DoodleFrame variant="flourish" tone="apricot" size={34} opacity={0.45} />
                     <div className="relative z-10" aria-live="polite">
                       <AnimatePresence mode="wait">
                         {submitted ? (
@@ -194,11 +189,22 @@ export default function ContactPage() {
           content: (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
               <div className="lg:col-span-6 lg:col-start-4 relative">
-                <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.contact['chapter-02']} />
                 <OatSheet tone="warm" className="relative z-10 p-8 sm:p-10 space-y-4">
-                  <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat leading-tight">
-                    Custom festive hampers &amp; pantry refills.
-                  </h2>
+                  <div className="flex items-start justify-between gap-3">
+                    <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat leading-tight">
+                      Custom festive hampers &amp; pantry refills.
+                    </h2>
+                    <Doodle
+                      name="sparkle-trio-asymmetric"
+                      preset="accent"
+                      tone="flame"
+                      size={36}
+                      opacity={0.9}
+                      showOn="md+"
+                      inline
+                      className="shrink-0 mt-1"
+                    />
+                  </div>
                   <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">
                     For corporate gifting, café pantry partnerships, or bulk seasonal orders, share
                     your preferred harvests above and our packing hub will prepare a fresh-batch quote.

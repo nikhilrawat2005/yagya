@@ -11,6 +11,7 @@ import { GlowButton } from '@/components/ui/GlowButton';
 import { GlowInput } from '@/components/ui/GlowInput';
 import { FadeInSection } from '@/components/motion/FadeInSection';
 import { OatSheet } from '@/components/editorial/OatSheet';
+import { Doodle } from '@/components/doodles';
 import { MOTION_EASE, MOTION_SPRING } from '@/lib/motion/tokens';
 import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 
@@ -31,14 +32,16 @@ export function CheckoutClient() {
     paymentMethod: 'upi',
   });
 
-  const [promoCode, setPromoCode] = useState('HARVEST10');
+  const [promoCode, setPromoCode] = useState('PURE15');
   const [promoApplied, setPromoApplied] = useState(true);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const normalizedPromo = promoCode.trim().toUpperCase();
+  const discountRate = normalizedPromo === 'PURE15' ? 0.15 : 0.1;
   const subtotal = getSubtotal();
   const shipping = getShippingFee();
-  const discount = promoApplied ? Math.round(subtotal * 0.1) : 0;
+  const discount = promoApplied ? Math.round(subtotal * discountRate) : 0;
   const grandTotal = Math.max(0, subtotal - discount + shipping);
 
   const validate = () => {
@@ -94,8 +97,19 @@ export function CheckoutClient() {
     return (
       <div className="min-h-[100dvh] bg-navy text-oat pt-24 pb-24 px-4 flex items-center">
         <OatSheet tone="subtle" className="max-w-md mx-auto w-full p-10 text-center">
-          <div className="w-14 h-14 mx-auto mb-4 rounded-[6px] bg-oat/10 border border-white/25 flex items-center justify-center">
-            <ShoppingBag className="w-7 h-7 text-peach" aria-hidden="true" />
+          <div className="relative w-24 h-24 mx-auto mb-3 flex items-center justify-center">
+            <Doodle
+              name="frame-arch-botanical"
+              preset="botanical"
+              tone="oat"
+              size={92}
+              opacity={0.78}
+              priority
+              className="absolute inset-0 m-auto"
+            />
+            <div className="relative z-10 w-11 h-11 rounded-[6px] bg-oat/10 border border-white/25 flex items-center justify-center mt-2">
+              <ShoppingBag className="w-5 h-5 text-peach" aria-hidden="true" />
+            </div>
           </div>
           <h1 className="font-display text-3xl font-medium text-oat mb-2">
             No items to checkout
@@ -182,6 +196,19 @@ export function CheckoutClient() {
                   />
                 </div>
               </OatSheet>
+
+              <div className="hidden md:flex justify-center py-2">
+                <Doodle
+                  name="arrow-loop-delight"
+                  preset="connector"
+                  tone="apricot"
+                  size={58}
+                  rotate={90}
+                  opacity={0.85}
+                  showOn="md+"
+                  inline
+                />
+              </div>
 
               <OatSheet tone="subtle" interactive={false} delay={0.05} className="p-6">
                 <h2 className="font-display text-xl font-medium text-oat mb-4 flex items-center gap-2.5">
@@ -343,6 +370,19 @@ export function CheckoutClient() {
               </div>
 
               <div className="mb-6 pt-4 border-t border-white/15">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-ui-label text-[10px] text-apricot/90">
+                    Promo Code (PURE15 or YAGYA10)
+                  </span>
+                  <Doodle
+                    name="burst-radiating-ticks"
+                    preset="accent"
+                    tone="flame"
+                    size={28}
+                    opacity={0.92}
+                    inline
+                  />
+                </div>
                 <div className="flex gap-2 items-center">
                   <GlowInput
                     name="promoCode"
@@ -351,7 +391,7 @@ export function CheckoutClient() {
                     type="text"
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                    placeholder="PROMO CODE…"
+                    placeholder="PURE15…"
                     aria-label="Promo code"
                     inputClassName="uppercase"
                   />
@@ -359,7 +399,13 @@ export function CheckoutClient() {
                     type="button"
                     variant="submit"
                     size="sm"
-                    onClick={() => setPromoApplied(promoCode === 'HARVEST10')}
+                    onClick={() =>
+                      setPromoApplied(
+                        normalizedPromo === 'PURE15' ||
+                          normalizedPromo === 'YAGYA10' ||
+                          normalizedPromo === 'HARVEST10'
+                      )
+                    }
                     className="py-2.5 px-5 shrink-0"
                   >
                     Apply
@@ -376,7 +422,7 @@ export function CheckoutClient() {
                         className="text-[11px] text-peach font-medium mt-2 flex items-center gap-1.5"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5 text-peach" aria-hidden="true" />
-                        HARVEST10 applied (10% harvest savings)
+                        {normalizedPromo || 'PURE15'} applied ({Math.round(discountRate * 100)}% harvest savings)
                       </motion.p>
                     )}
                   </AnimatePresence>
@@ -396,7 +442,7 @@ export function CheckoutClient() {
                       exit={{ opacity: 0, height: 0 }}
                       className="flex justify-between text-peach overflow-hidden"
                     >
-                      <span>Harvest Discount (10%)</span>
+                      <span>Harvest Discount ({Math.round(discountRate * 100)}%)</span>
                       <span>-₹{discount}</span>
                     </motion.div>
                   )}
