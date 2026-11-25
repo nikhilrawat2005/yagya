@@ -1,0 +1,130 @@
+'use client';
+
+import { useMemo, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { useReducedMotion } from 'motion/react';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span';
+
+export interface SplitTextProps {
+  text: string;
+  as?: HeadingTag;
+  splitBy?: 'words' | 'chars';
+  trigger?: 'mount' | 'scroll';
+  delay?: number;
+  stagger?: number;
+  duration?: number;
+  /** Optional single word (case-insensitive) to render in editorial italic accent */
+  accentWord?: string;
+  accentClassName?: string;
+  className?: string;
+}
+
+export function SplitText({
+  text,
+  as: Component = 'h2',
+  splitBy = 'words',
+  trigger = 'scroll',
+  delay = 0,
+  stagger = 0.045,
+  duration = 0.65,
+  accentWord,
+  accentClassName = 'italic text-peach',
+  className = '',
+}: SplitTextProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  const words = useMemo(() => text.trim().split(/\s+/), [text]);
+  const normalizedAccent = accentWord?.trim().toLowerCase();
+
+  useGSAP(
+    () => {
+      const targets = gsap.utils.toArray<HTMLElement>('.split-unit');
+      if (targets.length === 0) {
+        return;
+      }
+
+      if (shouldReduceMotion) {
+        gsap.set(targets, { yPercent: 0, opacity: 1 });
+        return;
+      }
+
+      const tweenVars: gsap.TweenVars = {
+        yPercent: 0,
+        opacity: 1,
+        duration,
+        delay,
+        stagger,
+        ease: 'power3.out',
+      };
+
+      if (trigger === 'scroll') {
+        tweenVars.scrollTrigger = {
+          trigger: containerRef.current,
+          start: 'top 86%',
+          once: true,
+        };
+      }
+
+      gsap.fromTo(targets, { yPercent: 110, opacity: 0 }, tweenVars);
+    },
+    {
+      scope: containerRef,
+      dependencies: [text, splitBy, trigger, delay, stagger, duration, shouldReduceMotion],
+    }
+  );
+
+  const isAccentMatch = (word: string) => {
+    if (!normalizedAccent) return false;
+    const stripped = word.replace(/[.,!?;:]+$/g, '').toLowerCase();
+    return stripped === normalizedAccent;
+  };
+
+  return (
+    <div ref={containerRef} className="inline-block max-w-full">
+      <Component className={`leading-[1.1] ${className}`}>
+        <span className="sr-only">{text}</span>
+        <span aria-hidden="true" className="inline-flex flex-wrap gap-x-[0.26em]">
+          {words.map((word, wordIndex) => {
+            const match = isAccentMatch(word);
+            const wordClass = match ? accentClassName : '';
+
+            if (splitBy === 'words') {
+              return (
+                <span
+                  key={`${word}-${wordIndex}`}
+                  className="inline-block overflow-hidden pb-[0.12em] -mb-[0.12em]"
+                >
+                  <span className={`split-unit inline-block will-change-transform ${wordClass}`}>
+                    {word}
+                  </span>
+                </span>
+              );
+            }
+
+            return (
+              <span
+                key={`${word}-${wordIndex}`}
+                className={`inline-flex overflow-hidden pb-[0.12em] -mb-[0.12em] ${wordClass}`}
+              >
+                {Array.from(word).map((char, charIndex) => (
+                  <span
+                    key={`${char}-${charIndex}`}
+                    className="split-unit inline-block will-change-transform"
+                  >
+                    {char}
+                  </span>
+                ))}
+              </span>
+            );
+          })}
+        </span>
+      </Component>
+    </div>
+  );
+}

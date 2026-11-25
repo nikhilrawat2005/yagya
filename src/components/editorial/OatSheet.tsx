@@ -15,15 +15,16 @@ export interface OatSheetProps {
 }
 
 const TONE_CLASS: Record<OatSheetTone, string> = {
-  subtle: 'bg-[#F6EFE2]/[0.12]',
-  medium: 'bg-[#F6EFE2]/[0.16]',
-  warm: 'bg-[#F6EFE2]/[0.20]',
+  subtle: 'bg-[#141C2B]/48',
+  medium: 'bg-[#141C2B]/56',
+  warm: 'bg-[#24141F]/58',
 };
 
 /**
- * Translucent Oat White (#F6EFE2) frosted paper sheet laid asymmetrically
- * over full-bleed photography. Uses sharp editorial corners (6px), 1px white/25 border,
- * soft elevation shadow, and calm 700ms ease-out stagger entrance.
+ * Translucent Oat-bordered frosted paper sheet laid asymmetrically over
+ * full-bleed photography. Uses sharp editorial corners (6px), 1px white/25 border,
+ * soft elevation shadow, and dark backdrop tint so text passes WCAG AA (>= 4.5:1)
+ * across every photographic chapter.
  */
 export function OatSheet({
   children,
@@ -45,15 +46,15 @@ export function OatSheet({
 
   return (
     <MotionTag
-      initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-48px' }}
       transition={{
-        duration: prefersReducedMotion ? 0.15 : 0.7,
+        duration: prefersReducedMotion ? 0.01 : 0.65,
         delay: prefersReducedMotion ? 0 : delay,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className={`relative rounded-[6px] border border-white/25 backdrop-blur-[18px] shadow-[var(--sheet-shadow)] text-oat ${
+      className={`oat-sheet-fallback relative rounded-[6px] border border-white/25 backdrop-blur-[18px] shadow-[var(--sheet-shadow)] text-oat ${
         TONE_CLASS[tone]
       } ${interactive ? 'oat-sheet-interactive' : ''} ${className}`}
     >

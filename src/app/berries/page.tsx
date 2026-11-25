@@ -13,7 +13,7 @@ export default async function BerriesPage() {
         titleLead: 'Vibrant Himalayan',
         titleAccent: 'Berries',
         introBody:
-          'Wild sea buckthorn, orchard cranberries, and deep blueberries — gently dehydrated to preserve their tart mountain pulp and seed oils without refined sugar.',
+          'Wild sea buckthorn, orchard cranberries, and deep blueberries, gently dehydrated to preserve their tart mountain pulp and seed oils without refined sugar.',
         originTag: 'Ladakh · Himachal · Uttarakhand',
         harvestTitle: 'Tart pulp, zero disguised sugar.',
         harvestBody:

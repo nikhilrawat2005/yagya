@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
   motion,
   useInView,
@@ -49,19 +49,42 @@ const SHOW_ON_CLASSES: Record<DoodleShowOn, string> = {
   'lg+': 'hidden lg:block',
 };
 
+function subscribeResize(callback: () => void): () => void {
+  if (typeof window === 'undefined') return () => {};
+  window.addEventListener('resize', callback, { passive: true });
+  return () => window.removeEventListener('resize', callback);
+}
+
+const SERVER_ENV = { isLowPower: false, isMobile: false, canHover: false };
+let cachedClientEnv: typeof SERVER_ENV | null = null;
+
+function getClientEnvSnapshot() {
+  if (typeof window === 'undefined') return SERVER_ENV;
+  const isLowPower =
+    typeof navigator !== 'undefined' &&
+    typeof navigator.hardwareConcurrency === 'number' &&
+    navigator.hardwareConcurrency <= 4;
+  const isMobile = window.innerWidth < 640;
+  const canHover = window.matchMedia('(hover: hover)').matches;
+  if (
+    cachedClientEnv &&
+    cachedClientEnv.isLowPower === isLowPower &&
+    cachedClientEnv.isMobile === isMobile &&
+    cachedClientEnv.canHover === canHover
+  ) {
+    return cachedClientEnv;
+  }
+  cachedClientEnv = { isLowPower, isMobile, canHover };
+  return cachedClientEnv;
+}
+
 function useMotionEnvironment() {
   const prefersReducedMotion = useReducedMotion();
-  const [env, setEnv] = useState({ isLowPower: false, isMobile: false, canHover: false });
-
-  useEffect(() => {
-    const isLowPower =
-      typeof navigator !== 'undefined' &&
-      typeof navigator.hardwareConcurrency === 'number' &&
-      navigator.hardwareConcurrency <= 4;
-    const isMobile = window.innerWidth < 640;
-    const canHover = window.matchMedia('(hover: hover)').matches;
-    setEnv({ isLowPower, isMobile, canHover });
-  }, []);
+  const env = useSyncExternalStore(
+    subscribeResize,
+    getClientEnvSnapshot,
+    () => SERVER_ENV
+  );
 
   return {
     prefersReducedMotion: Boolean(prefersReducedMotion),

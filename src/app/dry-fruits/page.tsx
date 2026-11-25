@@ -13,7 +13,7 @@ export default async function DryFruitsPage() {
         titleLead: 'Sun-cured orchard',
         titleAccent: 'Fruits',
         introBody:
-          'Plump Anjeer rings, soft hand-sorted dates, golden pineapple rings, and vibrant kiwi slices — cured slowly without artificial syrups or sulfur glazing.',
+          'Plump Anjeer rings, soft hand-sorted dates, golden pineapple rings, and vibrant kiwi slices, cured slowly without artificial syrups or sulfur glazing.',
         originTag: 'Sun-Cured Orchard Harvests',
         harvestTitle: 'Natural honeyed chew.',
         harvestBody:

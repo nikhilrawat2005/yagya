@@ -51,16 +51,17 @@ export function CartDrawer() {
 
           <div className="fixed inset-y-0 right-0 max-w-full flex pl-8">
             <motion.div
+              data-lenis-prevent
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={prefersReducedMotion ? { duration: 0.12 } : MOTION_SPRING.overlay}
-              className="w-screen max-w-md bg-navy/95 backdrop-blur-xl border-l border-white/25 shadow-[var(--sheet-shadow)] flex flex-col text-oat"
+              className="w-screen max-w-md bg-navy/95 backdrop-blur-xl border-l border-white/25 shadow-[var(--sheet-shadow)] flex flex-col text-oat overscroll-contain"
             >
               {/* Header */}
               <div className="px-6 py-4 border-b border-white/15 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <ShoppingBag className="w-5 h-5 text-flame" />
+                  <ShoppingBag className="w-5 h-5 text-peach" aria-hidden="true" />
                   <h2 className="font-display text-xl font-medium text-oat">
                     Your Harvest Bag
                   </h2>
@@ -68,10 +69,10 @@ export function CartDrawer() {
                 <button
                   type="button"
                   onClick={closeCart}
-                  className="p-2 rounded-[4px] text-oat/80 hover:text-oat hover:bg-oat/10 transition-colors cursor-pointer"
+                  className="p-2 rounded-[4px] text-oat/85 hover:text-oat hover:bg-oat/10 transition-colors cursor-pointer"
                   aria-label="Close bag"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-5 h-5" aria-hidden="true" />
                 </button>
               </div>
 
@@ -81,16 +82,16 @@ export function CartDrawer() {
                   <span>
                     {remainingForFreeShipping === 0 ? (
                       <span className="font-medium text-oat flex items-center gap-1.5">
-                        <CheckCircle2 className="w-4 h-4 text-flame" />
+                        <CheckCircle2 className="w-4 h-4 text-peach" aria-hidden="true" />
                         Free dispatch unlocked
                       </span>
                     ) : (
                       <>
-                        Add <span className="font-semibold text-peach">₹{remainingForFreeShipping}</span> for free dispatch
+                        Add <span className="font-semibold text-peach tabular-nums">₹{remainingForFreeShipping}</span> for free dispatch
                       </>
                     )}
                   </span>
-                  <span className="text-[11px] text-apricot/75">{freeShippingProgress}%</span>
+                  <span className="text-[11px] text-apricot/85 tabular-nums">{freeShippingProgress}%</span>
                 </div>
                 <div className="w-full bg-oat/10 rounded-[2px] h-1.5 overflow-hidden">
                   <motion.div
@@ -103,16 +104,16 @@ export function CartDrawer() {
               </div>
 
               {/* Items List */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              <div data-lenis-prevent className="flex-1 overflow-y-auto overscroll-contain p-6 space-y-4">
                 {items.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center p-6">
                     <div className="w-14 h-14 rounded-[6px] bg-oat/10 border border-white/25 flex items-center justify-center mb-4">
-                      <Sprout className="w-6 h-6 text-peach" />
+                      <Sprout className="w-6 h-6 text-peach" aria-hidden="true" />
                     </div>
                     <p className="font-display text-2xl font-medium text-oat mb-2">
                       Your harvest bag is empty
                     </p>
-                    <p className="text-sm text-apricot/80 max-w-xs mb-6">
+                    <p className="text-sm text-apricot/90 max-w-xs mb-6">
                       Explore our farm-direct seeds and berries packed fresh in small batches.
                     </p>
                     <GlowButton href="/shop" variant="cta" onClick={closeCart}>
@@ -150,7 +151,7 @@ export function CartDrawer() {
 
                         <div className="flex-1 min-w-0 flex flex-col justify-between">
                           <div className="flex items-start justify-between gap-2">
-                            <div>
+                            <div className="min-w-0">
                               <Link
                                 href={`/product/${item.product.slug}`}
                                 onClick={closeCart}
@@ -158,7 +159,7 @@ export function CartDrawer() {
                               >
                                 {item.product.name}
                               </Link>
-                              <span className="text-[11px] text-apricot/75 block mt-0.5">
+                              <span className="text-[11px] text-apricot/85 block mt-0.5">
                                 {item.variant.weight}
                               </span>
                             </div>
@@ -166,9 +167,9 @@ export function CartDrawer() {
                               type="button"
                               onClick={() => removeItem(item.id)}
                               aria-label={`Remove ${item.product.name}`}
-                              className="p-1 text-apricot/70 hover:text-flame transition-colors cursor-pointer"
+                              className="p-1 text-apricot/80 hover:text-peach transition-colors cursor-pointer"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-4 h-4" aria-hidden="true" />
                             </button>
                           </div>
 
@@ -180,9 +181,9 @@ export function CartDrawer() {
                                 aria-label="Decrease quantity"
                                 className="w-7 h-7 flex items-center justify-center text-oat hover:text-peach cursor-pointer"
                               >
-                                <Minus className="w-3 h-3" />
+                                <Minus className="w-3 h-3" aria-hidden="true" />
                               </button>
-                              <span className="w-7 text-center text-xs font-semibold">
+                              <span className="w-7 text-center text-xs font-semibold tabular-nums">
                                 {item.quantity}
                               </span>
                               <button
@@ -191,11 +192,11 @@ export function CartDrawer() {
                                 aria-label="Increase quantity"
                                 className="w-7 h-7 flex items-center justify-center text-oat hover:text-peach cursor-pointer"
                               >
-                                <Plus className="w-3 h-3" />
+                                <Plus className="w-3 h-3" aria-hidden="true" />
                               </button>
                             </div>
 
-                            <span className="text-sm font-semibold text-peach">
+                            <span className="text-sm font-semibold text-peach tabular-nums">
                               ₹{item.variant.price * item.quantity}
                             </span>
                           </div>
@@ -209,7 +210,7 @@ export function CartDrawer() {
               {/* Footer */}
               {items.length > 0 && (
                 <div className="p-6 bg-oat/[0.08] border-t border-white/15 space-y-4">
-                  <div className="space-y-1.5 text-xs text-apricot/85">
+                  <div className="space-y-1.5 text-xs text-apricot/90 tabular-nums">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
                       <span className="font-semibold text-oat">₹{subtotal}</span>

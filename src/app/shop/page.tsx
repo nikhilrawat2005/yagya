@@ -25,7 +25,7 @@ export default function ShopPage({
   searchParams: Promise<{ category?: string }>;
 }) {
   return (
-    <Suspense fallback={<div className="text-center py-20 text-xs">Loading harvest catalog...</div>}>
+    <Suspense fallback={<div className="text-center py-20 text-xs">Loading harvest catalog…</div>}>
       <ShopContent searchParams={searchParams} />
     </Suspense>
   );

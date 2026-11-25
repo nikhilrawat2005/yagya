@@ -6,11 +6,11 @@ import { PageBackgroundSet, type PageChapterItem } from '@/components/editorial/
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { EditorialProductCard } from '@/components/editorial/EditorialProductCard';
 import { GlowButton } from '@/components/ui/GlowButton';
+import { SplitText } from '@/components/react-bits/SplitText';
 import {
   ChapterDoodleLayer,
   DoodleCluster,
   DoodleDivider,
-  DoodleUnderline,
 } from '@/components/doodles';
 import {
   CATEGORY_DIVIDERS,
@@ -70,27 +70,25 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
               items={CATEGORY_INTRO_CLUSTERS[pageKey]}
               priority
             />
-            <OatSheet tone="medium" delay={0.05} className="relative z-10 p-7 sm:p-10">
+            <OatSheet tone="medium" delay={0.05} className="relative z-10 p-7 sm:p-9">
               <span className="font-ui-label text-[11px] text-peach block mb-3">
-                01 · {config.eyebrow}
+                {config.eyebrow}
               </span>
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-[52px] font-medium leading-[1.06] tracking-tight text-oat mb-5">
-                {config.titleLead}{' '}
-                <DoodleUnderline variant="wobbly" tone="peach" delay={0.2}>
-                  <span className="italic text-peach">{config.titleAccent}</span>
-                </DoodleUnderline>
-              </h1>
-              <p className="text-sm sm:text-base text-apricot/90 leading-relaxed max-w-lg mb-7">
+              <SplitText
+                as="h1"
+                trigger="mount"
+                text={`${config.titleLead} ${config.titleAccent}`}
+                accentWord={config.titleAccent}
+                className="font-display text-4xl sm:text-5xl lg:text-[52px] font-medium tracking-tight text-oat mb-5"
+              />
+              <p className="text-sm sm:text-base text-apricot/95 leading-relaxed max-w-lg mb-7">
                 {config.introBody}
               </p>
               <div className="flex flex-wrap items-center gap-5">
                 <GlowButton href={`#${pageKey}-chapter-02`} variant="cta" magnetic>
                   <span>Explore Harvests</span>
-                  <ArrowDown className="w-4 h-4" />
+                  <ArrowDown className="w-4 h-4" aria-hidden="true" />
                 </GlowButton>
-                <span className="font-annotation text-xl text-peach/90">
-                  {config.originTag}
-                </span>
               </div>
             </OatSheet>
           </div>
@@ -107,13 +105,13 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
             <div className={`relative ${pageKey === 'berries' || pageKey === 'makhana' ? 'lg:col-span-5 lg:col-start-8 lg:order-2' : 'lg:col-span-5 lg:col-start-1'}`}>
               <ChapterDoodleLayer placements={placements['chapter-02']} />
               <OatSheet tone="subtle" delay={0.08} className="relative z-10 p-7 sm:p-8">
-                <span className="font-ui-label text-[11px] text-peach block mb-4">
-                  02 · Curated Selection
-                </span>
-                <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat leading-tight mb-4">
-                  {config.harvestTitle}
-                </h2>
-                <p className="text-sm sm:text-base text-apricot/90 leading-relaxed">
+                <SplitText
+                  as="h2"
+                  trigger="scroll"
+                  text={config.harvestTitle}
+                  className="font-display text-3xl sm:text-4xl font-medium text-oat mb-4"
+                />
+                <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">
                   {config.harvestBody}
                 </p>
               </OatSheet>
@@ -160,13 +158,10 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
               <div className="lg:col-span-4 relative">
                 <ChapterDoodleLayer placements={placements['chapter-03']} />
                 <OatSheet tone="warm" delay={0.2} className="relative z-10 p-7 sm:p-8">
-                  <span className="font-ui-label text-[11px] text-peach block mb-3">
-                    03 · Craft &amp; Purity
-                  </span>
                   <h2 className="font-display text-2xl sm:text-3xl font-medium text-oat mb-3">
                     {config.craftTitle}
                   </h2>
-                  <p className="text-sm text-apricot/90 leading-relaxed">
+                  <p className="text-sm text-apricot/95 leading-relaxed">
                     {config.craftBody}
                   </p>
                 </OatSheet>
@@ -176,13 +171,10 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
             <div className="lg:col-span-6 lg:col-start-4 relative">
               <ChapterDoodleLayer placements={placements['chapter-03']} />
               <OatSheet tone="warm" delay={0.12} className="relative z-10 p-8 sm:p-10">
-                <span className="font-ui-label text-[11px] text-peach block mb-3">
-                  03 · Craft &amp; Purity
-                </span>
                 <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat mb-4">
                   {config.craftTitle}
                 </h2>
-                <p className="text-sm sm:text-base text-apricot/90 leading-relaxed">
+                <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">
                   {config.craftBody}
                 </p>
               </OatSheet>
@@ -200,22 +192,19 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
           <div className={`relative ${pageKey === 'nuts' ? 'lg:col-span-6 lg:col-start-7' : 'lg:col-span-6 lg:col-start-2'}`}>
             <ChapterDoodleLayer placements={placements['chapter-04']} />
             <OatSheet tone="medium" delay={0.1} className="relative z-10 p-7 sm:p-10">
-              <span className="font-ui-label text-[11px] text-peach block mb-3">
-                04 · Sealed Fresh
-              </span>
               <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat mb-4">
                 {config.promiseTitle}
               </h2>
-              <p className="text-sm sm:text-base text-apricot/90 leading-relaxed mb-7">
+              <p className="text-sm sm:text-base text-apricot/95 leading-relaxed mb-7">
                 {config.promiseBody}
               </p>
               <div className="flex flex-wrap items-center gap-4">
                 <GlowButton href={`/shop?category=${config.categorySlug}`} variant="cta" magnetic>
-                  <span>Shop All {config.eyebrow}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span>Shop {config.eyebrow}</span>
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </GlowButton>
-                <GlowButton href="/shop" variant="secondary">
-                  Full Collection
+                <GlowButton href="/journal" variant="secondary">
+                  Read Journal
                 </GlowButton>
               </div>
             </OatSheet>

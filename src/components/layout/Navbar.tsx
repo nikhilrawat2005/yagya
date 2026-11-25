@@ -1,11 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ShoppingBag } from 'lucide-react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+} from 'motion/react';
 import { siteConfig } from '@/lib/data/site';
 import { ASSETS } from '@/lib/assets';
 import { useCartStore } from '@/lib/store/cartStore';
@@ -23,29 +29,30 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const next = latest > 56;
+    if (next !== scrolled) {
+      setScrolled(next);
+    }
+  });
 
   const totalItems = useCartStore((s) => s.getTotalItems());
   const openCart = useCartStore((s) => s.openCart);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 56);
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <div className="fixed top-4 left-4 right-4 z-50 pointer-events-none">
       <header
         className={`pointer-events-auto max-w-6xl mx-auto rounded-[6px] border transition-[background-color,border-color,color,box-shadow,backdrop-filter] duration-300 ease-[var(--ease-smooth)] ${
           scrolled
-            ? 'bg-[#F6EFE2]/[0.88] backdrop-blur-[22px] border-[#F6EFE2]/60 text-navy shadow-[0_14px_40px_-10px_rgba(10,12,18,0.45)]'
-            : 'bg-[#F6EFE2]/[0.14] backdrop-blur-[18px] border-white/25 text-oat shadow-[0_12px_36px_-14px_rgba(10,12,18,0.35)]'
+            ? 'bg-[#F6EFE2]/[0.92] backdrop-blur-[22px] border-[#F6EFE2]/70 text-navy shadow-[0_14px_40px_-10px_rgba(10,12,18,0.45)]'
+            : 'bg-[#141C2B]/[0.58] backdrop-blur-[18px] border-white/25 text-oat shadow-[0_12px_36px_-14px_rgba(10,12,18,0.35)]'
         }`}
       >
         <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
           {/* Left: Logo + Wordmark */}
-          <Link href="/" className="flex items-center gap-3 group shrink-0">
+          <Link href="/" className="flex items-center gap-3 group shrink-0 whitespace-nowrap">
             <div className="relative w-9 h-9 rounded-[4px] overflow-hidden border border-white/25 bg-oat shrink-0">
               <Image
                 src={ASSETS.brand.logoPrimary}
@@ -57,6 +64,7 @@ export function Navbar() {
               />
             </div>
             <span
+              translate="no"
               className={`font-display text-xl tracking-[0.08em] font-semibold leading-none transition-colors duration-200 ${
                 scrolled ? 'text-navy' : 'text-oat'
               }`}
@@ -66,7 +74,7 @@ export function Navbar() {
           </Link>
 
           {/* Right: 4 Minimal Links + Bag Trigger + Mobile Toggle */}
-          <div className="flex items-center gap-5 sm:gap-7">
+          <div className="flex items-center gap-4 sm:gap-6">
             <nav aria-label="Main navigation" className="hidden md:flex items-center gap-7">
               {NAV_LINKS.map((item) => {
                 const active = pathname === item.href;
@@ -75,14 +83,14 @@ export function Navbar() {
                     key={item.href}
                     href={item.href}
                     data-active={active ? 'true' : 'false'}
-                    className={`font-ui-label text-[11px] py-1 transition-colors duration-200 ${
+                    className={`font-ui-label text-[11px] py-1 whitespace-nowrap transition-colors duration-200 ${
                       scrolled
                         ? active
-                          ? 'text-flame font-semibold'
-                          : 'text-navy/85 hover:text-navy'
+                          ? 'text-[#9A4906] font-semibold'
+                          : 'text-navy/90 hover:text-navy'
                         : active
                         ? 'text-peach font-semibold'
-                        : 'text-oat/90 hover:text-oat'
+                        : 'text-oat/95 hover:text-oat'
                     }`}
                   >
                     <DoodleUnderline
@@ -101,14 +109,14 @@ export function Navbar() {
               type="button"
               onClick={openCart}
               aria-label={`Open harvest bag, ${totalItems} items`}
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-[4px] border text-[11px] font-ui-label transition-colors duration-200 cursor-pointer ${
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-[4px] border text-[11px] font-ui-label whitespace-nowrap transition-colors duration-200 cursor-pointer ${
                 scrolled
-                  ? 'border-navy/25 bg-navy/10 text-navy hover:bg-flame hover:text-oat hover:border-flame'
-                  : 'border-white/25 bg-oat/10 text-oat hover:bg-flame hover:border-flame'
+                  ? 'border-navy/30 bg-navy/10 text-navy hover:bg-flame hover:text-navy hover:border-flame'
+                  : 'border-white/30 bg-oat/15 text-oat hover:bg-flame hover:text-navy hover:border-flame'
               }`}
             >
-              <ShoppingBag className="w-3.5 h-3.5" />
-              <span>{totalItems}</span>
+              <ShoppingBag className="w-3.5 h-3.5" aria-hidden="true" />
+              <span className="tabular-nums">{totalItems}</span>
             </button>
 
             <button
@@ -120,7 +128,11 @@ export function Navbar() {
                 scrolled ? 'text-navy hover:bg-navy/10' : 'text-oat hover:bg-oat/15'
               }`}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5" aria-hidden="true" />
+              ) : (
+                <Menu className="w-5 h-5" aria-hidden="true" />
+              )}
             </button>
           </div>
         </div>
@@ -144,7 +156,7 @@ export function Navbar() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`font-ui-label text-[11px] py-1 ${
+                    className={`font-ui-label text-[11px] py-1 whitespace-nowrap ${
                       scrolled ? 'text-navy' : 'text-oat'
                     }`}
                   >

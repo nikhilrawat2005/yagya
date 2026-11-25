@@ -14,7 +14,9 @@ import { GlowButton } from '@/components/ui/GlowButton';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
-import { ChapterDoodleLayer, Doodle, DoodleDivider, DoodleUnderline } from '@/components/doodles';
+import { SplitText } from '@/components/react-bits/SplitText';
+import { SpotlightCard } from '@/components/react-bits/SpotlightCard';
+import { ChapterDoodleLayer, Doodle, DoodleDivider } from '@/components/doodles';
 import { PAGE_CHAPTER_PLACEMENTS } from '@/config/doodle-placements';
 import { MOTION_DURATION, MOTION_EASE, VIEWPORT_ONCE } from '@/lib/motion/tokens';
 import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
@@ -90,28 +92,28 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
             <div className="space-y-8 relative">
               <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.shop['chapter-01']} priority />
               <FadeInSection className="relative z-10 pb-6 border-b border-white/15 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div className="relative flex items-center gap-4">
-                  <div>
-                    <div className="inline-flex items-center gap-2 mb-2">
-                      <span className="font-ui-label text-[11px] text-peach">
-                        Collection · {products.length} Small-Batch Harvests
-                      </span>
-                    </div>
-                    <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium">
-                      Explore{' '}
-                      <DoodleUnderline variant="wobbly" tone="peach" delay={0.2}>
-                        <span className="italic text-peach">Yagya</span>
-                      </DoodleUnderline>
-                    </h1>
-                  </div>
+                <div className="relative">
+                  <span className="font-ui-label text-[11px] text-peach block mb-2">
+                    Collection · {products.length} Small-Batch Harvests
+                  </span>
+                  <SplitText
+                    as="h1"
+                    trigger="mount"
+                    text="Explore Yagya"
+                    accentWord="Yagya"
+                    className="font-display text-4xl sm:text-5xl text-oat font-medium"
+                  />
                 </div>
 
                 <div className="w-full md:w-80">
                   <GlowInput
+                    name="search"
+                    autoComplete="off"
+                    spellCheck={false}
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search seeds, berries, nuts, or makhana..."
+                    placeholder="Search seeds, berries, nuts, or makhana…"
                     aria-label="Search harvest"
                     leadingIcon={<Search className="w-4 h-4" />}
                     trailingSlot={
@@ -125,9 +127,9 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                             transition={{ duration: 0.14 }}
                             onClick={() => setSearchQuery('')}
                             aria-label="Clear search"
-                            className="p-1 rounded-[4px] text-apricot/70 hover:text-oat hover:bg-oat/15 transition-colors cursor-pointer"
+                            className="p-1 rounded-[4px] text-apricot/80 hover:text-oat hover:bg-oat/15 transition-colors cursor-pointer"
                           >
-                            <X className="w-3.5 h-3.5" />
+                            <X className="w-3.5 h-3.5" aria-hidden="true" />
                           </motion.button>
                         )}
                       </AnimatePresence>
@@ -146,12 +148,13 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                   />
 
                   <div className="flex flex-wrap items-center gap-4 text-xs text-oat">
-                    <div className="flex items-center gap-2.5 bg-oat/[0.12] border border-white/25 rounded-[4px] px-3 py-2">
-                      <label htmlFor="max-price" className="whitespace-nowrap text-apricot">
+                    <div className="flex items-center gap-2.5 bg-[#141C2B]/65 border border-white/25 rounded-[4px] px-3 py-2">
+                      <label htmlFor="max-price" className="whitespace-nowrap text-apricot tabular-nums">
                         Max ₹{maxPrice}
                       </label>
                       <input
                         id="max-price"
+                        name="maxPrice"
                         type="range"
                         min="150"
                         max="1000"
@@ -163,10 +166,11 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                     </div>
 
                     <select
+                      name="sort"
                       value={selectedSort}
                       onChange={(e) => setSelectedSort(e.target.value)}
                       aria-label="Sort products"
-                      className="glow-input bg-navy border border-white/25 rounded-[4px] px-3 py-2 text-xs text-oat cursor-pointer"
+                      className="glow-input bg-[#141C2B] border border-white/25 rounded-[4px] px-3 py-2 text-xs text-oat cursor-pointer"
                     >
                       <option value="featured">Featured Harvest</option>
                       <option value="price-low">Price: Low to High</option>
@@ -179,8 +183,8 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
 
               <div className="flex justify-start">
                 <GlowButton href="#explore-02" variant="secondary" size="sm">
-                  <span>View {filteredProducts.length} Matching Harvests</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span className="tabular-nums">View {filteredProducts.length} Matching Harvests</span>
+                  <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
                 </GlowButton>
               </div>
             </div>
@@ -193,14 +197,14 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
           content: (
             <div className="space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="font-ui-label text-[11px] text-peach">
-                  02 · {activeCategoryObj ? activeCategoryObj.name : 'All Harvests'} ({filteredProducts.length})
-                </span>
+                <h2 className="font-display text-2xl sm:text-3xl font-medium text-oat tabular-nums">
+                  {activeCategoryObj ? activeCategoryObj.name : 'All Harvests'} ({filteredProducts.length})
+                </h2>
                 {selectedCategory !== 'all' && (
                   <button
                     type="button"
                     onClick={() => setSelectedCategory('all')}
-                    className="font-ui-label text-[11px] text-apricot/80 hover:text-oat underline underline-offset-4 cursor-pointer"
+                    className="font-ui-label text-[11px] text-apricot hover:text-oat underline underline-offset-4 cursor-pointer"
                   >
                     Show All Categories
                   </button>
@@ -215,10 +219,10 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                     </div>
                     <p className="font-display text-2xl font-medium text-oat mb-2">
                       {activeCategoryObj
-                        ? `${activeCategoryObj.name} — Harvest Arriving Soon`
+                        ? `${activeCategoryObj.name} Harvest Arriving Soon`
                         : 'No superfoods match your filter'}
                     </p>
-                    <p className="text-sm text-apricot/80 max-w-md mx-auto mb-6">
+                    <p className="text-sm text-apricot/90 max-w-md mx-auto mb-6">
                       {activeCategoryObj
                         ? activeCategoryObj.description
                         : 'Try adjusting your price ceiling or search query to view our active harvests.'}
@@ -283,13 +287,10 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
               <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.shop['chapter-03']} />
               <DoodleDivider variant="dots" tone="apricot" />
               <OatSheet tone="medium" className="relative z-10 p-6 sm:p-8 max-w-2xl">
-                <span className="font-ui-label text-[11px] text-peach block mb-2">
-                  03 · Story Chapters
-                </span>
                 <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat mb-2">
                   Walk through each harvest belt
                 </h2>
-                <p className="text-sm text-apricot/85">
+                <p className="text-sm text-apricot/90">
                   Every category has its own dedicated field story, origin notes, and curated selection.
                 </p>
               </OatSheet>
@@ -301,10 +302,9 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                     href={CATEGORY_ROUTES[cat.slug] || `/shop?category=${cat.slug}`}
                     className={`group block ${idx % 2 === 1 ? 'lg:mt-6' : ''}`}
                   >
-                    <OatSheet
-                      tone="warm"
-                      delay={0.08 * idx}
-                      className="p-3.5 h-full [@media(hover:hover)]:hover:-translate-y-1 transition-transform duration-300"
+                    <SpotlightCard
+                      spotlightColor="rgba(223, 127, 37, 0.14)"
+                      className="p-3.5 h-full bg-[#141C2B]/55 [@media(hover:hover)]:hover:-translate-y-1 transition-transform duration-300"
                     >
                       <div className="relative aspect-[4/5] w-full rounded-[4px] overflow-hidden border border-white/20 mb-3">
                         <ProductImageWithFallback
@@ -320,7 +320,7 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                       <h3 className="font-display text-lg text-oat group-hover:text-peach transition-colors">
                         {cat.name}
                       </h3>
-                    </OatSheet>
+                    </SpotlightCard>
                   </Link>
                 ))}
               </div>

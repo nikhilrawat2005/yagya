@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, type PointerEvent } from 'react';
 import { motion, useMotionValue, useSpring } from 'motion/react';
-import { MOTION_SPRING } from '@/lib/motion/tokens';
 import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 
 export interface MagneticButtonProps {
@@ -17,12 +16,13 @@ export interface MagneticButtonProps {
 
 /**
  * Subtle cursor-following magnetic pull wrapper for primary CTAs.
- * Automatically disables itself on touch screens and when reduced motion is enabled.
+ * Uses MotionValues + spring physics (zero React state on pointer move) and
+ * disables automatically on touch devices or reduced motion.
  */
 export function MagneticButton({
   children,
-  strength = 0.24,
-  maxDistance = 9,
+  strength = 0.22,
+  maxDistance = 8,
   disabled = false,
   className = '',
 }: MagneticButtonProps) {
@@ -31,13 +31,13 @@ export function MagneticButton({
 
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
-  const x = useSpring(rawX, MOTION_SPRING.magnetic);
-  const y = useSpring(rawY, MOTION_SPRING.magnetic);
+  const x = useSpring(rawX, { stiffness: 240, damping: 18, mass: 0.4 });
+  const y = useSpring(rawY, { stiffness: 240, damping: 18, mass: 0.4 });
 
   const active = enableInteractiveMotion && !disabled;
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!active || !ref.current) return;
+  const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    if (!active || e.pointerType !== 'mouse' || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const offsetX = e.clientX - (rect.left + rect.width / 2);
     const offsetY = e.clientY - (rect.top + rect.height / 2);
@@ -47,21 +47,17 @@ export function MagneticButton({
     rawY.set(clamp(offsetY * strength));
   };
 
-  const handleMouseLeave = () => {
+  const handlePointerLeave = () => {
     rawX.set(0);
     rawY.set(0);
   };
 
-  if (!active) {
-    return <div className={`inline-flex ${className}`}>{children}</div>;
-  }
-
   return (
     <motion.div
       ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ x, y }}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      style={active ? { x, y } : undefined}
       className={`inline-flex ${className}`}
     >
       {children}

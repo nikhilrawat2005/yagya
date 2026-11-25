@@ -17,7 +17,7 @@ export default async function MakhanaPage() {
         originTag: 'Five Artisan Spice Blends',
         harvestTitle: 'Airy crunch, whole spices.',
         harvestBody:
-          'Roasted slowly without palm oil or artificial dustings — only honest ground herbs, rock salt, and whole chilies.',
+          'Roasted slowly without palm oil or artificial dustings, using only honest ground herbs, rock salt, and whole chilies.',
         craftTitle: 'Small-drum roasting.',
         craftBody:
           'Each lotus puff stays crisp and light, making it an effortless mid-afternoon ritual alongside chai or black coffee.',

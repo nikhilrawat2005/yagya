@@ -63,14 +63,12 @@ export function ChapterIndex({ chapters }: ChapterIndexProps) {
       aria-label="Story chapter progress"
       className="hidden lg:flex fixed right-6 xl:right-9 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-4 select-none"
     >
-      {/* Current Readout e.g. 01 / 04 */}
-      <div className="flex flex-col items-center text-[11px] font-ui-label tracking-[0.18em] text-oat/85">
-        <span className="text-flame font-semibold">{activeChapter.number}</span>
-        <span className="text-oat/35 my-0.5">/</span>
-        <span className="text-oat/55">0{chapters.length}</span>
+      <div className="flex flex-col items-center text-[11px] font-ui-label text-oat/90 tabular-nums">
+        <span className="text-peach font-semibold">{activeChapter.number}</span>
+        <span className="text-oat/45 my-0.5">/</span>
+        <span className="text-oat/70">0{chapters.length}</span>
       </div>
 
-      {/* Thin vertical progress line */}
       <div className="relative w-[1.5px] h-28 bg-oat/20 rounded-full overflow-hidden">
         <motion.div
           style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
@@ -78,7 +76,6 @@ export function ChapterIndex({ chapters }: ChapterIndexProps) {
         />
       </div>
 
-      {/* Chapter navigation dots */}
       <nav aria-label="Jump to story chapter" className="flex flex-col items-center gap-2.5">
         {chapters.map((chapter, idx) => {
           const isActive = idx === activeIndex;
@@ -89,13 +86,13 @@ export function ChapterIndex({ chapters }: ChapterIndexProps) {
               onClick={() => scrollToChapter(chapter.id)}
               aria-label={`Jump to chapter ${chapter.number}: ${chapter.label}`}
               title={`${chapter.number} · ${chapter.label}`}
-              className="group relative p-1.5 cursor-pointer"
+              className="group relative p-1.5 cursor-pointer rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat"
             >
               <span
-                className={`block rounded-full transition-all duration-300 ${
+                className={`block rounded-full transition-[width,height,background-color,transform] duration-300 ${
                   isActive
-                    ? 'w-2.5 h-2.5 bg-flame shadow-[0_0_12px_rgba(223,127,37,0.8)]'
-                    : 'w-1.5 h-1.5 bg-oat/40 group-hover:bg-apricot group-hover:scale-125'
+                    ? 'w-2.5 h-2.5 bg-flame'
+                    : 'w-1.5 h-1.5 bg-oat/45 group-hover:bg-apricot group-hover:scale-125'
                 }`}
               />
             </button>

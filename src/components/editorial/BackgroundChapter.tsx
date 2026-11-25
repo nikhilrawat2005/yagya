@@ -10,6 +10,7 @@ import {
   useTransform,
 } from 'motion/react';
 import type { ChapterTone } from '@/lib/assets';
+import { VantaBackground } from '@/components/webgl/VantaBackground';
 
 export type { ChapterTone };
 
@@ -23,6 +24,7 @@ export interface BackgroundChapterProps {
   tone: ChapterTone;
   isHero?: boolean;
   isLast?: boolean;
+  enableVanta?: boolean;
   children: React.ReactNode;
   className?: string;
 }
@@ -43,19 +45,19 @@ const TONE_BLUR_DATA_URL: Record<ChapterTone, string> = {
 
 const TONE_VIGNETTE: Record<ChapterTone, string> = {
   navy:
-    'linear-gradient(180deg, rgba(20,28,43,0.44) 0%, rgba(20,28,43,0.16) 46%, rgba(20,28,43,0.58) 100%)',
+    'linear-gradient(180deg, rgba(20,28,43,0.48) 0%, rgba(20,28,43,0.22) 46%, rgba(20,28,43,0.62) 100%)',
   olive:
-    'linear-gradient(180deg, rgba(37,41,5,0.46) 0%, rgba(75,81,10,0.18) 46%, rgba(37,41,5,0.62) 100%)',
+    'linear-gradient(180deg, rgba(37,41,5,0.48) 0%, rgba(75,81,10,0.22) 46%, rgba(37,41,5,0.64) 100%)',
   purple:
-    'linear-gradient(180deg, rgba(56,27,49,0.44) 0%, rgba(56,27,49,0.16) 46%, rgba(56,27,49,0.62) 100%)',
+    'linear-gradient(180deg, rgba(56,27,49,0.48) 0%, rgba(56,27,49,0.22) 46%, rgba(56,27,49,0.64) 100%)',
   aubergine:
-    'linear-gradient(180deg, rgba(36,20,31,0.42) 0%, rgba(36,20,31,0.18) 46%, rgba(22,12,19,0.68) 100%)',
+    'linear-gradient(180deg, rgba(36,20,31,0.46) 0%, rgba(36,20,31,0.22) 46%, rgba(22,12,19,0.70) 100%)',
 };
 
 /**
  * Full-bleed photographic story chapter (min-h-[100dvh]) with smooth scroll-linked
  * cross-dissolve, desktop-only subtle vertical parallax, responsive 9:16 mobile / 16:9
- * desktop art direction, and a dark vignette tailored to the chapter's base tone.
+ * desktop art direction, optional single hero Vanta FOG atmosphere, and a dark vignette.
  */
 export function BackgroundChapter({
   id,
@@ -67,6 +69,7 @@ export function BackgroundChapter({
   tone,
   isHero = false,
   isLast = false,
+  enableVanta = false,
   children,
   className = '',
 }: BackgroundChapterProps) {
@@ -128,7 +131,7 @@ export function BackgroundChapter({
       ref={sectionRef}
       data-chapter={chapterNumber}
       aria-label={`Chapter ${chapterNumber}: ${chapterLabel}`}
-      className={`relative min-h-[100dvh] w-full overflow-x-clip flex items-center pt-24 pb-12 sm:pt-28 sm:pb-16 ${className}`}
+      className={`relative min-h-[100dvh] w-full overflow-x-clip flex items-center pt-20 sm:pt-24 pb-12 sm:pb-14 ${className}`}
     >
       {/* Cross-dissolving fixed photographic backdrop */}
       <motion.div
@@ -154,26 +157,36 @@ export function BackgroundChapter({
           </motion.div>
         )}
 
+        {isHero && enableVanta && (
+          <VantaBackground
+            effect="FOG"
+            interactive={false}
+            speed={0.55}
+            zoom={1.1}
+            className="z-[1] opacity-30 mix-blend-screen"
+          />
+        )}
+
         {/* Editorial Dark Vignette + Soft Radial Edge Depth */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 z-[2]"
           style={{
             background: TONE_VIGNETTE[tone],
           }}
         />
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 z-[2]"
           style={{
             background:
-              'radial-gradient(ellipse at center, transparent 32%, rgba(12, 10, 18, 0.44) 100%)',
+              'radial-gradient(ellipse at center, transparent 32%, rgba(12, 10, 18, 0.48) 100%)',
           }}
         />
       </motion.div>
 
       {/* Chapter Foreground Content (Oat-Sheet panels & doodles) */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 lg:px-12">
-        <div className="lg:hidden flex items-center gap-3 mb-6 text-[11px] font-ui-label text-apricot/90">
-          <span className="text-flame font-semibold">{chapterNumber}</span>
+        <div className="lg:hidden flex items-center gap-3 mb-5 text-[11px] font-ui-label text-apricot/95">
+          <span className="text-peach font-semibold">{chapterNumber}</span>
           <span className="w-6 h-[1px] bg-oat/40" aria-hidden="true" />
           <span>{chapterLabel}</span>
         </div>

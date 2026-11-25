@@ -6,16 +6,16 @@
      ========================================================= */
 
   /* 4 Chapter Dark Bases (matched to /background photography) */
-  --color-navy: #141C2B;       /* Neon Navy (20-0142) — Chapter 01 Blueberries */
-  --color-olive: #4B510A;      /* Olive Green (#4B510A) — Chapter 02 Olives */
+  --color-navy: #141C2B;       /* Neon Navy (20-0142) - Chapter 01 Blueberries */
+  --color-olive: #4B510A;      /* Olive Green (#4B510A) - Chapter 02 Olives */
   --color-olive-deep: #252905; /* Deep Olive shadow tone */
-  --color-purple: #381B31;     /* Potent Purple (19-2520) — Chapter 03 Plums */
-  --color-aubergine: #24141F;  /* Aubergine Gleam (20-0124) — Chapter 04 Blackberries */
+  --color-purple: #381B31;     /* Potent Purple (19-2520) - Chapter 03 Plums */
+  --color-aubergine: #24141F;  /* Aubergine Gleam (20-0124) - Chapter 04 Blackberries */
 
   /* Light Palette */
-  --color-oat: #F6EFE2;        /* Oat White — primary text, sheets, line art */
-  --color-apricot: #FDE6C8;    /* Apricot Mist — warm secondary text, strokes */
-  --color-peach: #FBC98A;      /* Peach Glow — subtle highlights & numerals */
+  --color-oat: #F6EFE2;        /* Oat White - primary text, sheets, line art */
+  --color-apricot: #FDE6C8;    /* Apricot Mist - warm secondary text, strokes */
+  --color-peach: #FBC98A;      /* Peach Glow - subtle highlights & numerals */
 
   /* Brand Accent (from attached Diya Flame logo, used sparingly) */
   --color-flame: #DF7F25;      /* Yagya Flame Orange */
@@ -52,15 +52,15 @@
   --sheet-border: rgba(255, 255, 255, 0.25);
   --sheet-border-hover: rgba(253, 230, 200, 0.42);
   --sheet-shadow: 0 24px 60px -18px rgba(10, 12, 18, 0.48), 0 4px 18px -4px rgba(10, 12, 18, 0.24);
-  --sheet-shadow-hover: 0 32px 72px -18px rgba(10, 12, 18, 0.56), 0 0 28px -6px rgba(223, 127, 37, 0.22);
+  --sheet-shadow-hover: 0 28px 64px -18px rgba(10, 12, 18, 0.56), 0 4px 18px -6px rgba(223, 127, 37, 0.16);
 
-  --glow-flame: rgba(223, 127, 37, 0.34);
-  --glow-oat: rgba(246, 239, 226, 0.24);
-  --glow-soft: rgba(251, 201, 138, 0.26);
+  --glow-flame: rgba(223, 127, 37, 0.24);
+  --glow-oat: rgba(246, 239, 226, 0.20);
+  --glow-soft: rgba(251, 201, 138, 0.22);
 
-  --glow-level-1: 0 6px 20px -4px rgba(10, 12, 18, 0.32), 0 0 18px -4px var(--glow-oat);
-  --glow-level-2: 0 12px 32px -6px rgba(10, 12, 18, 0.42), 0 0 26px -2px var(--glow-flame);
-  --shadow-glow-focus: 0 0 0 2px #141C2B, 0 0 0 4px #F6EFE2, 0 0 18px 2px var(--glow-flame);
+  --glow-level-1: 0 6px 20px -4px rgba(10, 12, 18, 0.32), 0 1px 0 0 rgba(253, 230, 200, 0.16);
+  --glow-level-2: 0 12px 28px -6px rgba(10, 12, 18, 0.42), 0 2px 12px -2px rgba(223, 127, 37, 0.22);
+  --shadow-glow-focus: 0 0 0 2px #141C2B, 0 0 0 4px #F6EFE2;
 
   --duration-fast: 180ms;
   --duration-base: 320ms;
@@ -75,7 +75,15 @@
   html {
     background-color: var(--color-navy);
     color: var(--color-oat);
-    scroll-behavior: smooth;
+    color-scheme: dark;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(223, 127, 37, 0.2);
+  }
+
+  @media (pointer: fine) {
+    html {
+      overscroll-behavior: none;
+    }
   }
 
   body {
@@ -85,16 +93,23 @@
     overflow-x: hidden;
   }
 
+  h1,
+  h2,
+  h3,
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-oat);
     outline-offset: 3px;
-    box-shadow: 0 0 18px 2px var(--glow-flame);
   }
 }
 
 /* Typography Role Utilities */
 .font-display {
   font-family: var(--font-display);
+  text-wrap: balance;
 }
 
 .font-annotation {
@@ -124,9 +139,18 @@
     box-shadow var(--transition-base);
 }
 
+@media (prefers-reduced-transparency: reduce) {
+  .oat-sheet,
+  .oat-sheet-fallback {
+    background-color: rgba(20, 28, 43, 0.94);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .oat-sheet-interactive:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     background-color: var(--sheet-bg-hover);
     border-color: var(--sheet-border-hover);
     box-shadow: var(--sheet-shadow-hover);
@@ -182,7 +206,7 @@
 
   .group:hover .icon-hover-pop,
   .icon-hover-pop:hover {
-    transform: scale(1.1) rotate(-4deg);
+    transform: scale(1.08) rotate(-4deg);
   }
 }
 
@@ -196,12 +220,12 @@
 .glow-input:focus {
   outline: none;
   border-color: var(--color-peach);
-  box-shadow: 0 0 0 2px rgba(246, 239, 226, 0.16), 0 0 18px -2px var(--glow-flame);
+  box-shadow: 0 0 0 2px rgba(246, 239, 226, 0.2);
 }
 
 .glow-input[aria-invalid="true"]:focus {
-  border-color: var(--color-flame);
-  box-shadow: 0 0 0 2px rgba(223, 127, 37, 0.3);
+  border-color: var(--color-peach);
+  box-shadow: 0 0 0 2px rgba(223, 127, 37, 0.35);
 }
 
 @media (prefers-reduced-motion: reduce) {

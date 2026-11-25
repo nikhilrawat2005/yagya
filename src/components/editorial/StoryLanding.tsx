@@ -3,17 +3,17 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowDown, ArrowRight } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
 import { BackgroundChapter } from '@/components/editorial/BackgroundChapter';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { GlowButton } from '@/components/ui/GlowButton';
+import { SplitText } from '@/components/react-bits/SplitText';
+import { SpotlightCard } from '@/components/react-bits/SpotlightCard';
 import { ASSETS } from '@/lib/assets';
 import {
   ChapterDoodleLayer,
   Doodle,
   DoodleDivider,
-  DoodleUnderline,
 } from '@/components/doodles';
 import {
   HOME_NUTRITION_DOODLES,
@@ -80,12 +80,10 @@ const HOME_PEEK_PRODUCTS = [
 ] as const;
 
 export function StoryLanding() {
-  const prefersReducedMotion = useReducedMotion();
-
   return (
     <div className="relative w-full text-oat">
       {/* ================================================================
-          CHAPTER 01 — NEON NAVY / BLUEBERRIES — HERO
+          CHAPTER 01 - NEON NAVY / BLUEBERRIES - HERO
          ================================================================ */}
       <BackgroundChapter
         id="chapter-01"
@@ -96,6 +94,7 @@ export function StoryLanding() {
         imageAlt={ASSETS.backgrounds.home[0].alt}
         tone={ASSETS.backgrounds.home[0].tone}
         isHero
+        enableVanta
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-end">
           {/* Tall Editorial Hero Sheet (left-offset, leaves open blueberry canvas right) */}
@@ -113,38 +112,28 @@ export function StoryLanding() {
                     className="object-cover"
                   />
                 </div>
-                <div>
-                  <span className="font-display text-xl sm:text-2xl tracking-[0.08em] text-oat font-semibold block leading-none">
-                    YAGYA
-                  </span>
-                  <span className="font-ui-label text-[10px] text-apricot/80 mt-1 block">
-                    01 · Seeds &amp; Berries
-                  </span>
-                </div>
+                <span translate="no" className="font-display text-xl sm:text-2xl tracking-[0.08em] text-oat font-semibold block leading-none">
+                  YAGYA
+                </span>
               </div>
 
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-[48px] font-medium leading-[1.06] tracking-tight text-oat mb-4">
-                Pure farm harvests, gathered like an{' '}
-                <DoodleUnderline variant="wobbly" tone="peach" delay={0.2}>
-                  <span className="italic text-peach">offering</span>
-                </DoodleUnderline>
-                .
-              </h1>
+              <SplitText
+                as="h1"
+                trigger="mount"
+                text="Pure farm harvests, gathered like an offering."
+                accentWord="offering"
+                className="font-display text-3xl sm:text-4xl lg:text-[46px] font-medium tracking-tight text-oat mb-4"
+              />
 
-              <p className="text-sm sm:text-base text-apricot/90 leading-relaxed max-w-md mb-6">
-                Mountain berries and crisp farm seeds sourced straight from partner
-                growers — packed under strict hygiene with zero shortcuts.
+              <p className="text-sm sm:text-base text-apricot/95 leading-relaxed max-w-md mb-6">
+                Mountain berries and crisp farm seeds sourced straight from partner growers, packed cleanly with zero shortcuts.
               </p>
 
-              <div className="flex flex-wrap items-center gap-5">
+              <div className="flex flex-wrap items-center gap-4">
                 <GlowButton href="#chapter-02" variant="cta" magnetic>
-                  <span>Begin the Story</span>
-                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  <span>Begin Reading</span>
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
                 </GlowButton>
-
-                <span className="font-annotation text-xl text-peach/90">
-                  Zero added sugar
-                </span>
               </div>
             </OatSheet>
           </div>
@@ -152,60 +141,44 @@ export function StoryLanding() {
           {/* Asymmetrical Small Overlapping Corner Sheet + Product Peek */}
           <div className="lg:col-span-4 lg:col-start-9 relative space-y-4">
             <OatSheet tone="subtle" delay={0.22} className="p-5">
-              <div>
-                <span className="font-ui-label text-[10px] text-peach block mb-1">
-                  Farm-To-Pack
-                </span>
-                <p className="font-annotation text-xl text-oat">
-                  Small batches from Himalayan valleys &amp; fertile Rabi fields.
-                </p>
-              </div>
+              <p className="font-annotation text-xl text-oat">
+                Small batches from Himalayan valleys &amp; fertile Rabi fields.
+              </p>
             </OatSheet>
 
-            {/* Floating Product Peek beside Chapter 01 */}
             <Link
               href={HOME_PEEK_PRODUCTS[0].href}
               className="group block sm:ml-6"
             >
-              <OatSheet tone="warm" delay={0.32} className="p-3.5 flex items-center gap-3.5 [@media(hover:hover)]:hover:-translate-y-1 transition-transform duration-300">
-                <div className="relative w-16 h-20 rounded-[4px] overflow-hidden border border-white/25 shrink-0">
-                  <Image
-                    src={HOME_PEEK_PRODUCTS[0].image}
-                    alt={HOME_PEEK_PRODUCTS[0].alt}
-                    fill
-                    sizes="64px"
-                    className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
-                  />
+              <SpotlightCard
+                spotlightColor="rgba(223, 127, 37, 0.16)"
+                className="p-3.5 flex items-center gap-3.5 [@media(hover:hover)]:hover:-translate-y-1 transition-transform duration-300"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="relative w-16 h-20 rounded-[4px] overflow-hidden border border-white/25 shrink-0">
+                    <Image
+                      src={HOME_PEEK_PRODUCTS[0].image}
+                      alt={HOME_PEEK_PRODUCTS[0].alt}
+                      fill
+                      sizes="64px"
+                      className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-display text-base text-oat group-hover:text-peach transition-colors leading-snug">
+                      {HOME_PEEK_PRODUCTS[0].name}
+                    </p>
+                    <p className="text-xs text-apricot/85">{HOME_PEEK_PRODUCTS[0].note}</p>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <span className="font-ui-label text-[9px] text-peach block mb-0.5">
-                    Harvest Peek
-                  </span>
-                  <p className="font-display text-base text-oat group-hover:text-peach transition-colors leading-snug">
-                    {HOME_PEEK_PRODUCTS[0].name}
-                  </p>
-                  <p className="text-xs text-apricot/80">{HOME_PEEK_PRODUCTS[0].note}</p>
-                </div>
-              </OatSheet>
+              </SpotlightCard>
             </Link>
           </div>
         </div>
-
-        {/* Quiet Scroll Cue */}
-        <motion.a
-          href="#chapter-02"
-          aria-label="Scroll to Chapter 2: The Origin"
-          animate={prefersReducedMotion ? undefined : { y: [0, 5, 0] }}
-          transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
-          className="mt-7 lg:mt-8 inline-flex items-center gap-2.5 text-[11px] font-ui-label text-apricot/85 hover:text-oat transition-colors"
-        >
-          <ArrowDown className="w-3.5 h-3.5 text-flame" />
-          <span>Scroll to read</span>
-        </motion.a>
       </BackgroundChapter>
 
       {/* ================================================================
-          CHAPTER 02 — OLIVE GREEN / OLIVES — THE ORIGIN
+          CHAPTER 02 - OLIVE GREEN / OLIVES - THE ORIGIN
          ================================================================ */}
       <BackgroundChapter
         id="chapter-02"
@@ -221,19 +194,15 @@ export function StoryLanding() {
           <div className="lg:col-span-7 lg:col-start-6 relative">
             <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.home['chapter-02']} />
             <OatSheet tone="medium" delay={0.08} className="relative z-10 p-7 sm:p-10">
-              <span className="font-ui-label text-[11px] text-peach block mb-4">
-                02 · The Origin
-              </span>
+              <SplitText
+                as="h2"
+                trigger="scroll"
+                text="Rooted in the clarity of the Diya."
+                accentWord="Diya"
+                className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-oat mb-6"
+              />
 
-              <h2 className="font-display text-3xl sm:text-5xl font-medium leading-[1.08] tracking-tight text-oat mb-6">
-                Rooted in the clarity of the{' '}
-                <DoodleUnderline variant="curved" tone="peach" delay={0.2}>
-                  <span className="italic text-peach">Diya</span>
-                </DoodleUnderline>
-                .
-              </h2>
-
-              <p className="text-sm sm:text-base text-apricot/90 leading-relaxed max-w-xl">
+              <p className="text-sm sm:text-base text-apricot/95 leading-relaxed max-w-xl">
                 In ancient harvest tradition, a yagya is an offering of what is pure and
                 unadorned. That quiet discipline guides every harvest we source directly
                 from farming households across Madhya Pradesh, Rajasthan, Karnataka,
@@ -246,36 +215,36 @@ export function StoryLanding() {
           <div className="lg:col-span-5 lg:col-start-1 lg:-mt-16 relative z-20">
             <OatSheet tone="warm" delay={0.22} className="p-7 sm:p-8">
               <div className="flex items-center justify-end mb-6">
-                <span className="font-annotation text-lg text-apricot/90">
+                <span className="font-annotation text-lg text-apricot/95">
                   Pure from field to table
                 </span>
               </div>
 
               <ul className="divide-y divide-white/15">
                 <li className="pb-4">
-                  <span className="font-ui-label text-[10px] text-peach block mb-1">
+                  <h3 className="font-ui-label text-[10px] text-peach block mb-1">
                     Grower-Direct Soil
-                  </span>
+                  </h3>
                   <p className="text-sm text-oat/90 leading-relaxed">
                     Skipping long middleman chains to preserve fresh harvest character and
                     support rural livelihoods.
                   </p>
                 </li>
                 <li className="py-4">
-                  <span className="font-ui-label text-[10px] text-peach block mb-1">
+                  <h3 className="font-ui-label text-[10px] text-peach block mb-1">
                     Strict Hygiene Sorting
-                  </span>
+                  </h3>
                   <p className="text-sm text-oat/90 leading-relaxed">
                     Every batch is cleaned to keep out dust, stones, and moisture without
                     bleaching or masking flavor.
                   </p>
                 </li>
                 <li className="pt-4">
-                  <span className="font-ui-label text-[10px] text-peach block mb-1">
+                  <h3 className="font-ui-label text-[10px] text-peach block mb-1">
                     Honest Tradition
-                  </span>
+                  </h3>
                   <p className="text-sm text-oat/90 leading-relaxed">
-                    Traditional crops — alsi, kaddu pepitas, chia, and mountain berries — kept
+                    Traditional crops like alsi, kaddu pepitas, chia, and mountain berries, kept
                     whole and authentic.
                   </p>
                 </li>
@@ -286,7 +255,7 @@ export function StoryLanding() {
       </BackgroundChapter>
 
       {/* ================================================================
-          CHAPTER 03 — POTENT PURPLE / PLUMS — THE CRAFT & WHAT'S INSIDE
+          CHAPTER 03 - POTENT PURPLE / PLUMS - THE CRAFT & WHAT'S INSIDE
          ================================================================ */}
       <BackgroundChapter
         id="chapter-03"
@@ -301,16 +270,15 @@ export function StoryLanding() {
           {/* Tall Craft Narrative Sheet */}
           <div className="lg:col-span-5 relative">
             <OatSheet tone="medium" delay={0.08} className="p-7 sm:p-9">
-              <span className="font-ui-label text-[11px] text-peach block mb-4">
-                03 · The Craft &amp; What&apos;s Inside
-              </span>
+              <SplitText
+                as="h2"
+                trigger="scroll"
+                text="Gently dried. Naturally dense."
+                accentWord="dense"
+                className="font-display text-3xl sm:text-[44px] font-medium tracking-tight text-oat mb-5"
+              />
 
-              <h2 className="font-display text-3xl sm:text-[44px] font-medium leading-[1.08] tracking-tight text-oat mb-5">
-                Gently dried. <br />
-                <span className="italic text-apricot">Naturally dense.</span>
-              </h2>
-
-              <p className="text-sm sm:text-base text-apricot/90 leading-relaxed mb-6">
+              <p className="text-sm sm:text-base text-apricot/95 leading-relaxed mb-6">
                 Whole Sea Buckthorn berries keep their nutrient-rich pulp and seed oils
                 intact through gentle dehydration. Cool-season Rabi flax and chia retain
                 crispness, fiber, and plant Omega oils in barrier-sealed pouches.
@@ -327,7 +295,7 @@ export function StoryLanding() {
           {/* Overlapping Minimal Nutrition Highlights Sheet */}
           <div className="lg:col-span-6 lg:col-start-7 lg:mt-10 relative">
             <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.home['chapter-03']} />
-            <OatSheet tone="warm" delay={0.2} className="relative z-10 p-7 sm:p-9">
+            <SpotlightCard spotlightColor="rgba(246, 239, 226, 0.10)" className="relative z-10 p-7 sm:p-9">
               <div className="flex flex-wrap items-center justify-between gap-2 pb-5 border-b border-white/20">
                 <span className="font-ui-label text-[11px] text-oat">
                   Verified Nutrition Highlights
@@ -346,7 +314,7 @@ export function StoryLanding() {
                     <Link
                       key={item.nutrient}
                       href={item.href}
-                      className={`group relative py-5 flex items-start gap-3.5 hover:bg-oat/[0.04] rounded-[4px] transition-colors ${idx < 2 ? 'sm:border-b sm:border-white/15' : ''}`}
+                      className={`group relative py-5 flex items-start gap-3.5 hover:bg-oat/[0.06] rounded-[4px] transition-colors ${idx < 2 ? 'sm:border-b sm:border-white/15' : ''}`}
                     >
                       <div className="relative w-11 h-11 rounded-[4px] overflow-hidden border border-white/20 shrink-0 mt-0.5">
                         <Image
@@ -354,12 +322,12 @@ export function StoryLanding() {
                           alt={item.source}
                           fill
                           sizes="44px"
-                          className="object-cover transition-transform duration-300 group-hover:scale-106"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-2">
-                          <span className="font-display text-3xl sm:text-4xl font-semibold text-peach block leading-none mb-1.5">
+                          <span className="font-display text-3xl sm:text-4xl font-semibold text-peach block leading-none mb-1.5 tabular-nums">
                             {item.value}
                           </span>
                           {doodleName && (
@@ -377,20 +345,20 @@ export function StoryLanding() {
                         <h3 className="text-sm font-semibold text-oat group-hover:text-peach transition-colors mb-1">
                           {item.nutrient}
                         </h3>
-                        <p className="text-xs text-apricot/85">{item.source}</p>
-                        <p className="text-[11px] text-oat/65 mt-1">{item.note}</p>
+                        <p className="text-xs text-apricot/90">{item.source}</p>
+                        <p className="text-[11px] text-oat/80 mt-1">{item.note}</p>
                       </div>
                     </Link>
                   );
                 })}
               </div>
-            </OatSheet>
+            </SpotlightCard>
           </div>
         </div>
       </BackgroundChapter>
 
       {/* ================================================================
-          CHAPTER 04 — AUBERGINE GLEAM / BLACKBERRIES — THE PROMISE + CTA
+          CHAPTER 04 - AUBERGINE GLEAM / BLACKBERRIES - THE PROMISE + CTA
          ================================================================ */}
       <BackgroundChapter
         id="chapter-04"
@@ -407,32 +375,28 @@ export function StoryLanding() {
           <div className="lg:col-span-6 relative">
             <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.home['chapter-04']} />
             <OatSheet tone="medium" delay={0.08} className="relative z-10 p-7 sm:p-10">
-              <span className="font-ui-label text-[11px] text-peach block mb-4">
-                04 · The Promise
-              </span>
+              <SplitText
+                as="h2"
+                trigger="scroll"
+                text="Honest food that asks for nothing extra."
+                accentWord="nothing"
+                className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-oat mb-5"
+              />
 
-              <h2 className="font-display text-3xl sm:text-5xl font-medium leading-[1.08] tracking-tight text-oat mb-5">
-                Honest food that asks for{' '}
-                <DoodleUnderline variant="tapered" tone="peach" delay={0.2}>
-                  <span className="italic text-peach">nothing</span>
-                </DoodleUnderline>{' '}
-                extra.
-              </h2>
-
-              <p className="text-sm sm:text-base text-apricot/90 leading-relaxed max-w-lg mb-8">
+              <p className="text-sm sm:text-base text-apricot/95 leading-relaxed max-w-lg mb-8">
                 Steep whole sea buckthorn berries in warm water, fold crisp alsi into
-                morning dough, or sprinkle pumpkin kernels over bowls — unhurried daily
-                nourishment rooted in honest living soil.
+                morning dough, or sprinkle pumpkin kernels over bowls for unhurried daily
+                nourishment rooted in living soil.
               </p>
 
               <div className="relative flex flex-wrap items-center gap-4">
                 <GlowButton href="/shop" variant="cta" magnetic>
-                  <span>Explore Yagya</span>
-                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  <span>Explore Collection</span>
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
                 </GlowButton>
 
                 <GlowButton href="/about" variant="secondary">
-                  Our Story
+                  Our Philosophy
                 </GlowButton>
               </div>
             </OatSheet>
@@ -443,7 +407,10 @@ export function StoryLanding() {
             <div className="grid grid-cols-2 gap-3">
               {HOME_PEEK_PRODUCTS.slice(1).map((peek) => (
                 <Link key={peek.name} href={peek.href} className="group block">
-                  <OatSheet tone="subtle" delay={0.18} className="p-3 [@media(hover:hover)]:hover:-translate-y-1 transition-transform duration-300">
+                  <SpotlightCard
+                    spotlightColor="rgba(223, 127, 37, 0.14)"
+                    className="p-3 [@media(hover:hover)]:hover:-translate-y-1 transition-transform duration-300"
+                  >
                     <div className="relative aspect-[4/5] w-full rounded-[4px] overflow-hidden border border-white/20 mb-2.5">
                       <Image
                         src={peek.image}
@@ -456,18 +423,12 @@ export function StoryLanding() {
                     <p className="font-display text-sm text-oat group-hover:text-peach transition-colors leading-snug">
                       {peek.name}
                     </p>
-                    <p className="text-[11px] text-apricot/75">{peek.note}</p>
-                  </OatSheet>
+                    <p className="text-[11px] text-apricot/85">{peek.note}</p>
+                  </SpotlightCard>
                 </Link>
               ))}
             </div>
             <OatSheet as="blockquote" tone="warm" delay={0.22} className="p-7 sm:p-8">
-              <div className="flex items-center justify-end mb-4">
-                <span className="font-ui-label text-[10px] text-apricot/75">
-                  Verified Harvest Note
-                </span>
-              </div>
-
               <p className="font-display text-xl sm:text-2xl italic leading-snug text-oat mb-5">
                 &ldquo;Finding whole dried sea buckthorn without added sugar or syrup was
                 rare until Yagya. Clean, vibrant mountain tartness.&rdquo;
@@ -478,7 +439,7 @@ export function StoryLanding() {
                   <cite className="not-italic text-xs font-semibold text-oat block">
                     Arundhati Roy
                   </cite>
-                  <span className="text-[11px] text-apricot/75">
+                  <span className="text-[11px] text-apricot/85">
                     Dehradun, Uttarakhand
                   </span>
                 </div>

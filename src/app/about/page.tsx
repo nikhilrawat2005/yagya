@@ -5,7 +5,8 @@ import { GlowButton } from '@/components/ui/GlowButton';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
-import { ChapterDoodleLayer, DoodleFrame, DoodleUnderline } from '@/components/doodles';
+import { SplitText } from '@/components/react-bits/SplitText';
+import { ChapterDoodleLayer, DoodleFrame } from '@/components/doodles';
 import { PAGE_CHAPTER_PLACEMENTS } from '@/config/doodle-placements';
 
 const ABOUT_HARVEST_PREVIEW = [
@@ -50,27 +51,24 @@ export default function AboutPage() {
                 <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.about['chapter-01']} priority />
                 <OatSheet tone="medium" className="relative z-10 p-8 sm:p-10 space-y-5">
                   <DoodleFrame variant="flourish" tone="apricot" size={38} opacity={0.45} />
-                  <span className="font-ui-label text-[11px] text-peach block relative z-10">
-                    01 · Our Story &amp; Soil
-                  </span>
-                  <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium leading-tight relative z-10">
-                    The{' '}
-                    <DoodleUnderline variant="wobbly" tone="peach" delay={0.2}>
-                      <span className="italic text-peach">Yagya</span>
-                    </DoodleUnderline>{' '}
-                    Philosophy
-                  </h1>
-                  <p className="text-sm sm:text-base text-apricot/90 leading-relaxed relative z-10">
+                  <SplitText
+                    as="h1"
+                    trigger="mount"
+                    text="The Yagya Philosophy"
+                    accentWord="Yagya"
+                    className="font-display text-4xl sm:text-5xl text-oat font-medium relative z-10"
+                  />
+                  <p className="text-sm sm:text-base text-apricot/95 leading-relaxed relative z-10">
                     {siteConfig.description}
                   </p>
-                  <p className="text-sm sm:text-base text-oat/85 leading-relaxed relative z-10">
+                  <p className="text-sm sm:text-base text-oat/90 leading-relaxed relative z-10">
                     We partner directly with farming families across Madhya Pradesh, Rajasthan,
-                    Karnataka, Himachal, and Ladakh — skipping long middleman chains and packing
+                    Karnataka, Himachal, and Ladakh, skipping long middleman chains and packing
                     every batch under strict hygiene controls.
                   </p>
                   <div className="pt-2 relative z-10">
                     <GlowButton href="/shop" variant="cta" magnetic>
-                      Explore Yagya
+                      Explore Collection
                     </GlowButton>
                   </div>
                 </OatSheet>
@@ -82,19 +80,19 @@ export default function AboutPage() {
                     <Link
                       key={item.label}
                       href={item.href}
-                      className="group relative aspect-[4/5] rounded-[4px] overflow-hidden border border-white/20"
+                      className="group block"
                     >
-                      <ProductImageWithFallback
-                        src={item.src}
-                        alt={item.alt}
-                        fill
-                        className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-106"
-                      />
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/90 via-navy/45 to-transparent px-2.5 py-2">
-                        <span className="font-ui-label text-[10px] text-oat block">
-                          {item.label}
-                        </span>
+                      <div className="relative aspect-[4/5] rounded-[4px] overflow-hidden border border-white/20 mb-2">
+                        <ProductImageWithFallback
+                          src={item.src}
+                          alt={item.alt}
+                          fill
+                          className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
+                        />
                       </div>
+                      <span className="font-ui-label text-[10px] text-oat group-hover:text-peach transition-colors block">
+                        {item.label}
+                      </span>
                     </Link>
                   ))}
                 </div>
@@ -118,13 +116,14 @@ export default function AboutPage() {
               <div className="lg:col-span-7 lg:col-start-6 relative">
                 <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.about['chapter-02']} />
                 <OatSheet tone="warm" delay={0.1} className="relative z-10 p-8 sm:p-10 space-y-4">
-                  <span className="font-ui-label text-[11px] text-peach block">
-                    02 · From Valley to Plain
-                  </span>
-                  <h2 className="font-display text-3xl sm:text-4xl text-oat font-medium leading-tight">
-                    Five distinct belts, one honest standard.
-                  </h2>
-                  <p className="text-sm sm:text-base text-apricot/90 leading-relaxed">
+                  <SplitText
+                    as="h2"
+                    trigger="scroll"
+                    text="Five distinct belts, one honest standard."
+                    accentWord="honest"
+                    className="font-display text-3xl sm:text-4xl text-oat font-medium"
+                  />
+                  <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">
                     High-altitude sea buckthorn from Ladakh and Himachal, winter Rabi flax from
                     Madhya Pradesh, sesame and sunflower from Rajasthan and Karnataka, and wetland
                     lotus puffs roasted in small drums.
@@ -143,13 +142,14 @@ export default function AboutPage() {
               <div className="lg:col-span-6 lg:col-start-2 relative">
                 <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.about['chapter-03']} />
                 <OatSheet tone="medium" delay={0.1} className="relative z-10 p-8 sm:p-10 space-y-5">
-                  <span className="font-ui-label text-[11px] text-peach block">
-                    03 · The Diya Standard
-                  </span>
-                  <h2 className="font-display text-3xl sm:text-4xl text-oat font-medium leading-tight">
-                    Cleanly sorted, sealed at peak freshness.
-                  </h2>
-                  <p className="text-sm sm:text-base text-apricot/90 leading-relaxed">
+                  <SplitText
+                    as="h2"
+                    trigger="scroll"
+                    text="Cleanly sorted, sealed at peak freshness."
+                    accentWord="freshness"
+                    className="font-display text-3xl sm:text-4xl text-oat font-medium"
+                  />
+                  <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">
                     No sulfur bleaching, no sugar-syrup glazing, and no middleman warehousing.
                     Just whole harvests ready for your daily ritual.
                   </p>

@@ -50,7 +50,7 @@ export function GlowInput({
         <label
           htmlFor={inputId}
           className={`block font-ui-label text-[10px] mb-1.5 transition-colors duration-200 ${
-            error ? 'text-flame' : focused ? 'text-peach' : 'text-apricot/85'
+            error ? 'text-peach' : focused ? 'text-peach' : 'text-apricot/95'
           }`}
         >
           {label}
@@ -58,18 +58,19 @@ export function GlowInput({
       )}
 
       <div
-        className={`relative rounded-[6px] border transition-[border-color,box-shadow,background-color] duration-300 ease-[var(--ease-smooth)] bg-[#F6EFE2]/[0.10] backdrop-blur-md ${
+        className={`relative rounded-[6px] border transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-smooth)] bg-[#141C2B]/65 backdrop-blur-md ${
           error
-            ? 'border-flame shadow-[0_0_0_2px_rgba(223,127,37,0.28)]'
+            ? 'border-peach shadow-[0_0_0_2px_rgba(251,201,138,0.28)]'
             : focused
-            ? 'border-peach shadow-[0_0_0_2px_rgba(246,239,226,0.16),0_0_18px_-2px_var(--glow-flame)]'
-            : 'border-white/25 hover:border-apricot/45'
+            ? 'border-peach shadow-[0_0_0_2px_rgba(246,239,226,0.22)]'
+            : 'border-white/30 hover:border-apricot/60'
         }`}
       >
         {leadingIcon && (
           <span
+            aria-hidden="true"
             className={`pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors duration-200 ${
-              focused ? 'text-peach' : 'text-oat/65'
+              focused ? 'text-peach' : 'text-apricot/80'
             }`}
           >
             {leadingIcon}
@@ -79,13 +80,13 @@ export function GlowInput({
         {label && floatingLabel && (
           <label
             htmlFor={inputId}
-            className={`pointer-events-none absolute transition-all duration-200 ease-[var(--ease-smooth)] origin-left ${
+            className={`pointer-events-none absolute transition-[top,font-size,color,transform] duration-200 ease-[var(--ease-smooth)] origin-left ${
               leadingIcon ? 'left-10' : 'left-3.5'
             } ${
               labelFloated
-                ? 'top-1.5 text-[10px] font-ui-label tracking-[0.08em]'
+                ? 'top-1.5 text-[10px] font-ui-label'
                 : 'top-1/2 -translate-y-1/2 text-xs font-sans'
-            } ${error ? 'text-flame' : focused ? 'text-peach' : 'text-apricot/75'}`}
+            } ${error ? 'text-peach' : focused ? 'text-peach' : 'text-apricot/90'}`}
           >
             {label}
           </label>
@@ -106,7 +107,7 @@ export function GlowInput({
             setFocused(false);
             onBlur?.(e);
           }}
-          className={`w-full bg-transparent text-oat placeholder:text-apricot/50 focus:outline-none rounded-[inherit] ${
+          className={`w-full bg-transparent text-oat placeholder:text-apricot/70 focus-visible:outline-none rounded-[inherit] ${
             floatingLabel ? 'pt-5 pb-2' : 'py-2.5'
           } ${leadingIcon ? 'pl-10' : 'px-3.5'} ${trailingSlot ? 'pr-9' : 'pr-3.5'} text-xs ${inputClassName}`}
           {...rest}
@@ -119,32 +120,34 @@ export function GlowInput({
         )}
       </div>
 
-      <AnimatePresence mode="wait">
-        {error ? (
-          <motion.p
-            id={errorId}
-            key="error"
-            role="alert"
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: MOTION_DURATION.fast, ease: MOTION_EASE.smooth }}
-            className="text-flame text-[11px] font-sans font-medium mt-1.5"
-          >
-            {error}
-          </motion.p>
-        ) : helperText ? (
-          <motion.p
-            key="helper"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="text-apricot/70 text-[11px] font-sans mt-1.5"
-          >
-            {helperText}
-          </motion.p>
-        ) : null}
-      </AnimatePresence>
+      <div aria-live="polite">
+        <AnimatePresence mode="wait">
+          {error ? (
+            <motion.p
+              id={errorId}
+              key="error"
+              role="alert"
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: MOTION_DURATION.fast, ease: MOTION_EASE.smooth }}
+              className="text-peach text-[11px] font-sans font-medium mt-1.5"
+            >
+              {error}
+            </motion.p>
+          ) : helperText ? (
+            <motion.p
+              key="helper"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-apricot/85 text-[11px] font-sans mt-1.5"
+            >
+              {helperText}
+            </motion.p>
+          ) : null}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
@@ -187,7 +190,7 @@ export function GlowTextarea({
         <label
           htmlFor={inputId}
           className={`block font-ui-label text-[10px] mb-1.5 transition-colors duration-200 ${
-            error ? 'text-flame' : focused ? 'text-peach' : 'text-apricot/85'
+            error ? 'text-peach' : focused ? 'text-peach' : 'text-apricot/95'
           }`}
         >
           {label}
@@ -195,22 +198,22 @@ export function GlowTextarea({
       )}
 
       <div
-        className={`relative rounded-[6px] border transition-[border-color,box-shadow,background-color] duration-300 ease-[var(--ease-smooth)] bg-[#F6EFE2]/[0.10] backdrop-blur-md ${
+        className={`relative rounded-[6px] border transition-[border-color,box-shadow,background-color] duration-200 ease-[var(--ease-smooth)] bg-[#141C2B]/65 backdrop-blur-md ${
           error
-            ? 'border-flame shadow-[0_0_0_2px_rgba(223,127,37,0.28)]'
+            ? 'border-peach shadow-[0_0_0_2px_rgba(251,201,138,0.28)]'
             : focused
-            ? 'border-peach shadow-[0_0_0_2px_rgba(246,239,226,0.16),0_0_18px_-2px_var(--glow-flame)]'
-            : 'border-white/25 hover:border-apricot/45'
+            ? 'border-peach shadow-[0_0_0_2px_rgba(246,239,226,0.22)]'
+            : 'border-white/30 hover:border-apricot/60'
         }`}
       >
         {label && floatingLabel && (
           <label
             htmlFor={inputId}
-            className={`pointer-events-none absolute left-4 transition-all duration-200 ease-[var(--ease-smooth)] ${
+            className={`pointer-events-none absolute left-4 transition-[top,font-size,color] duration-200 ease-[var(--ease-smooth)] ${
               labelFloated
-                ? 'top-2 text-[10px] font-ui-label tracking-[0.08em]'
+                ? 'top-2 text-[10px] font-ui-label'
                 : 'top-3.5 text-xs font-sans'
-            } ${error ? 'text-flame' : focused ? 'text-peach' : 'text-apricot/75'}`}
+            } ${error ? 'text-peach' : focused ? 'text-peach' : 'text-apricot/90'}`}
           >
             {label}
           </label>
@@ -231,29 +234,31 @@ export function GlowTextarea({
             setFocused(false);
             onBlur?.(e);
           }}
-          className={`w-full bg-transparent text-sm text-oat placeholder:text-apricot/50 focus:outline-none rounded-[inherit] px-4 ${
+          className={`w-full bg-transparent text-sm text-oat placeholder:text-apricot/70 focus-visible:outline-none rounded-[inherit] px-4 ${
             floatingLabel ? 'pt-6 pb-3' : 'py-3'
           } ${className}`}
           {...rest}
         />
       </div>
 
-      <AnimatePresence mode="wait">
-        {error && (
-          <motion.p
-            id={errorId}
-            key="error"
-            role="alert"
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: MOTION_DURATION.fast, ease: MOTION_EASE.smooth }}
-            className="text-flame text-[11px] font-sans font-medium mt-1.5"
-          >
-            {error}
-          </motion.p>
-        )}
-      </AnimatePresence>
+      <div aria-live="polite">
+        <AnimatePresence mode="wait">
+          {error && (
+            <motion.p
+              id={errorId}
+              key="error"
+              role="alert"
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: MOTION_DURATION.fast, ease: MOTION_EASE.smooth }}
+              className="text-peach text-[11px] font-sans font-medium mt-1.5"
+            >
+              {error}
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

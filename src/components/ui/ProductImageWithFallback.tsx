@@ -30,8 +30,8 @@ export function ProductImageWithFallback({
       <div
         className={`bg-oat/10 flex flex-col items-center justify-center text-oat p-4 border border-white/20 rounded-[6px] ${className}`}
       >
-        <Sprout className="w-6 h-6 mb-1.5 text-peach" />
-        <span className="text-[11px] uppercase tracking-[0.12em] font-sans font-medium text-apricot">
+        <Sprout className="w-6 h-6 mb-1.5 text-peach" aria-hidden="true" />
+        <span className="text-[11px] font-ui-label text-apricot">
           Yagya Harvest
         </span>
       </div>

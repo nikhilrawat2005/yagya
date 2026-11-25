@@ -75,10 +75,10 @@ export function AnimatedTabs<T extends string>({
             aria-selected={active}
             whileTap={prefersReducedMotion ? undefined : { scale: 0.97 }}
             onClick={() => onChange(tab.id)}
-            className={`relative overflow-hidden px-4 py-2 rounded-[4px] font-ui-label text-[11px] border transition-colors duration-200 cursor-pointer ${
+            className={`relative overflow-hidden px-4 py-2 rounded-[4px] font-ui-label text-[11px] whitespace-nowrap border transition-colors duration-200 cursor-pointer ${
               active
-                ? 'text-oat border-flame'
-                : 'bg-[#F6EFE2]/[0.12] text-apricot/90 border-white/20 hover:border-apricot/45 hover:text-oat'
+                ? 'text-navy font-semibold border-flame'
+                : 'bg-[#141C2B]/65 text-apricot/95 border-white/25 hover:border-apricot/55 hover:text-oat'
             }`}
           >
             {active && (

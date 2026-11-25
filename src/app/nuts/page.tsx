@@ -13,7 +13,7 @@ export default async function NutsPage() {
         titleLead: 'Single-origin',
         titleAccent: 'Nuts',
         introBody:
-          'Rare Himalayan chilgoza pine nuts, crisp whole almonds, creamy cashews, and fragrant hazelnuts — graded for size, crunch, and natural oil density.',
+          'Rare Himalayan chilgoza pine nuts, crisp whole almonds, creamy cashews, and fragrant hazelnuts, graded for size, crunch, and natural oil density.',
         originTag: 'Orchard & Cedar Forest Groves',
         harvestTitle: 'Graded for crispness.',
         harvestBody:

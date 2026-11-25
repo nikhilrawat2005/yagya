@@ -13,7 +13,7 @@ export default async function SeedsPage() {
         titleLead: 'Sun-ripened',
         titleAccent: 'Seeds',
         introBody:
-          'Cool-season Rabi flax, high-fiber chia, crisp pumpkin pepitas, and golden sunflower kernels — cleaned directly at partner farms with zero bleaching or coatings.',
+          'Cool-season Rabi flax, high-fiber chia, crisp pumpkin pepitas, and golden sunflower kernels, cleaned directly at partner farms with zero bleaching or coatings.',
         originTag: 'Madhya Pradesh · Rajasthan · Karnataka',
         harvestTitle: 'Crispness locked in small batches.',
         harvestBody:

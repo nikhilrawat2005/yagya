@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'motion/react';
-import { MOTION_EASE, MOTION_SPRING } from '@/lib/motion/tokens';
+import { motion } from 'motion/react';
+import { MOTION_SPRING } from '@/lib/motion/tokens';
 import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 import { MagneticButton } from '@/components/ui/MagneticButton';
-import { Doodle } from '@/components/doodles';
 
 export type GlowButtonVariant =
   | 'primary'
@@ -17,13 +16,6 @@ export type GlowButtonVariant =
   | 'submit';
 
 export type GlowButtonSize = 'sm' | 'md' | 'lg' | 'icon';
-
-interface RippleItem {
-  id: number;
-  x: number;
-  y: number;
-  size: number;
-}
 
 interface GlowButtonBaseProps {
   variant?: GlowButtonVariant;
@@ -61,22 +53,22 @@ const SIZE_CLASSES: Record<GlowButtonSize, string> = {
 
 const VARIANT_CLASSES: Record<GlowButtonVariant, string> = {
   primary:
-    'bg-flame text-oat border border-flame hover:bg-flame-soft hover:shadow-[var(--glow-level-2)] focus-visible:shadow-[var(--shadow-glow-focus)]',
+    'bg-flame text-navy font-semibold border border-flame hover:bg-flame-soft shadow-[var(--sheet-shadow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat',
   cta:
-    'bg-flame text-oat border border-flame hover:bg-flame-soft shadow-[var(--glow-level-1)] hover:shadow-[var(--glow-level-2)] focus-visible:shadow-[var(--shadow-glow-focus)]',
+    'bg-flame text-navy font-semibold border border-flame hover:bg-flame-soft shadow-[var(--sheet-shadow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat',
   submit:
-    'bg-flame text-oat border border-flame hover:bg-flame-soft shadow-[var(--glow-level-1)] hover:shadow-[var(--glow-level-2)] focus-visible:shadow-[var(--shadow-glow-focus)]',
+    'bg-flame text-navy font-semibold border border-flame hover:bg-flame-soft shadow-[var(--sheet-shadow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat',
   secondary:
-    'bg-[#F6EFE2]/[0.14] text-oat border border-white/25 backdrop-blur-md hover:bg-[#F6EFE2]/[0.24] hover:border-apricot/45 hover:shadow-[var(--glow-level-1)] focus-visible:shadow-[var(--shadow-glow-focus)]',
+    'bg-[#141C2B]/55 text-oat border border-white/30 backdrop-blur-md hover:bg-[#141C2B]/75 hover:border-apricot/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat',
   outline:
-    'bg-transparent text-oat border border-white/25 hover:bg-[#F6EFE2]/[0.14] hover:border-apricot/45 focus-visible:shadow-[var(--shadow-glow-focus)]',
+    'bg-transparent text-oat border border-white/30 hover:bg-[#F6EFE2]/[0.14] hover:border-apricot/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat',
   icon:
-    'bg-[#F6EFE2]/[0.14] text-oat border border-white/25 hover:bg-flame hover:border-flame focus-visible:shadow-[var(--shadow-glow-focus)]',
+    'bg-[#141C2B]/55 text-oat border border-white/30 hover:bg-flame hover:text-navy hover:border-flame focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat',
 };
 
 /**
- * Editorial Yagya button/CTA using sharp 4px corners, Flame Orange accent for primary actions,
- * and translucent Oat Glass for secondary actions.
+ * Editorial Yagya button/CTA using sharp 4px corners, high-contrast Flame Orange
+ * accent for primary actions (5.81:1 contrast), and translucent backdrop-scrimmed secondary actions.
  */
 export function GlowButton({
   variant = 'primary',
@@ -87,85 +79,24 @@ export function GlowButton({
   ...rest
 }: GlowButtonProps) {
   const { enableInteractiveMotion, prefersReducedMotion } = useInteractiveCapabilities();
-  const [ripples, setRipples] = useState<RippleItem[]>([]);
-  const nextId = useRef(0);
 
   const resolvedSize: GlowButtonSize = size ?? (variant === 'icon' ? 'icon' : 'md');
   const isMagnetic = magnetic ?? variant === 'cta';
   const isDisabled = 'disabled' in rest && Boolean(rest.disabled);
 
-  const spawnRipple = (clientX: number, clientY: number, currentTarget: HTMLElement) => {
-    if (prefersReducedMotion || isDisabled) return;
-    const rect = currentTarget.getBoundingClientRect();
-    const maxDim = Math.max(rect.width, rect.height);
-    const x = clientX ? clientX - rect.left : rect.width / 2;
-    const y = clientY ? clientY - rect.top : rect.height / 2;
-    const id = ++nextId.current;
-
-    setRipples((prev) => [...prev.slice(-3), { id, x, y, size: maxDim * 2.1 }]);
-    setTimeout(() => {
-      setRipples((prev) => prev.filter((item) => item.id !== id));
-    }, 550);
-  };
-
   const baseStyles =
-    'group relative overflow-hidden inline-flex items-center justify-center gap-2 rounded-[4px] font-sans font-medium uppercase tracking-[0.12em] select-none transition-[background-color,border-color,color,box-shadow] duration-300 ease-[var(--ease-smooth)] cursor-pointer disabled:opacity-55 disabled:cursor-not-allowed';
+    'group relative overflow-hidden inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[4px] font-ui-label select-none transition-[background-color,border-color,color,box-shadow] duration-200 ease-[var(--ease-smooth)] cursor-pointer disabled:opacity-55 disabled:cursor-not-allowed';
 
   const combinedClasses = `${baseStyles} ${SIZE_CLASSES[resolvedSize]} ${VARIANT_CLASSES[variant]} ${className}`;
 
   const innerContent = (
-    <>
-      {enableInteractiveMotion && (
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-apricot/25 to-transparent translate-x-0 group-hover:translate-x-[360%] transition-transform duration-700 ease-[var(--ease-smooth)]"
-        />
-      )}
-
-      <AnimatePresence>
-        {ripples.map((r) => (
-          <motion.span
-            key={r.id}
-            aria-hidden="true"
-            initial={{ scale: 0, opacity: 0.45 }}
-            animate={{ scale: 1, opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: MOTION_EASE.smooth }}
-            style={{
-              left: r.x - r.size / 2,
-              top: r.y - r.size / 2,
-              width: r.size,
-              height: r.size,
-            }}
-            className="pointer-events-none absolute rounded-full bg-oat/35 z-10"
-          />
-        ))}
-      </AnimatePresence>
-
-      <span className="relative z-20 inline-flex items-center justify-center gap-2">
-        {children}
-        {variant === 'cta' && enableInteractiveMotion && (
-          <span
-            aria-hidden="true"
-            className="hidden sm:inline-flex opacity-0 [@media(hover:hover)]:group-hover:opacity-95 transition-opacity duration-300"
-          >
-            <Doodle
-              name="star-tiny-sparkle-trio"
-              tone="oat"
-              size={16}
-              opacity={1}
-              draw={false}
-              priority
-              inline
-            />
-          </span>
-        )}
-      </span>
-    </>
+    <span className="relative z-10 inline-flex items-center justify-center gap-2 whitespace-nowrap">
+      {children}
+    </span>
   );
 
-  const hoverScale = enableInteractiveMotion && !isDisabled ? { y: -2 } : undefined;
-  const tapScale = prefersReducedMotion || isDisabled ? undefined : { scale: 0.98 };
+  const hoverState = enableInteractiveMotion && !isDisabled ? { y: -1 } : undefined;
+  const tapState = prefersReducedMotion || isDisabled ? undefined : { scale: 0.98 };
   const isFullWidth = className.includes('w-full');
 
   let element: React.ReactNode;
@@ -174,18 +105,15 @@ export function GlowButton({
     const { href, onClick, 'aria-label': ariaLabel } = rest;
     element = (
       <motion.div
-        whileHover={hoverScale}
-        whileTap={tapScale}
+        whileHover={hoverState}
+        whileTap={tapState}
         transition={MOTION_SPRING.tactile}
         className={isFullWidth ? 'flex w-full' : 'inline-flex'}
       >
         <Link
           href={href}
           aria-label={ariaLabel}
-          onClick={(e) => {
-            spawnRipple(e.clientX, e.clientY, e.currentTarget);
-            onClick?.(e);
-          }}
+          onClick={onClick}
           className={combinedClasses}
         >
           {innerContent}
@@ -209,13 +137,10 @@ export function GlowButton({
         aria-label={ariaLabel}
         aria-expanded={ariaExpanded}
         aria-pressed={ariaPressed}
-        whileHover={hoverScale}
-        whileTap={tapScale}
+        whileHover={hoverState}
+        whileTap={tapState}
         transition={MOTION_SPRING.tactile}
-        onClick={(e) => {
-          spawnRipple(e.clientX, e.clientY, e.currentTarget);
-          onClick?.(e);
-        }}
+        onClick={onClick}
         className={combinedClasses}
       >
         {innerContent}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'motion/react';
 import { ShoppingBag, Lock, CheckCircle2 } from 'lucide-react';
@@ -16,6 +16,7 @@ import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilit
 
 export function CheckoutClient() {
   const router = useRouter();
+  const formRef = useRef<HTMLFormElement>(null);
   const { items, getSubtotal, getShippingFee, clearCart } = useCartStore();
   const { prefersReducedMotion } = useInteractiveCapabilities();
 
@@ -42,12 +43,19 @@ export function CheckoutClient() {
 
   const validate = () => {
     const errs: Record<string, string> = {};
-    if (!formData.name.trim()) errs.name = 'Full name is required';
-    if (!formData.email.trim() || !formData.email.includes('@')) errs.email = 'Valid email required';
-    if (!formData.phone.trim() || !/^\d{10}$/.test(formData.phone.trim())) errs.phone = '10-digit mobile required';
-    if (!formData.address.trim()) errs.address = 'Delivery address required';
-    if (!formData.pincode.trim() || !/^\d{6}$/.test(formData.pincode.trim())) errs.pincode = '6-digit postal PIN required';
+    if (!formData.name.trim()) errs.name = 'Enter your full name to continue.';
+    if (!formData.email.trim() || !formData.email.includes('@')) errs.email = 'Enter a valid email address.';
+    if (!formData.phone.trim() || !/^\d{10}$/.test(formData.phone.trim())) errs.phone = 'Enter a 10-digit mobile number.';
+    if (!formData.address.trim()) errs.address = 'Enter your street delivery address.';
+    if (!formData.pincode.trim() || !/^\d{6}$/.test(formData.pincode.trim())) errs.pincode = 'Enter a 6-digit postal PIN.';
     setErrors(errs);
+
+    const firstErrorKey = Object.keys(errs)[0];
+    if (firstErrorKey && formRef.current) {
+      const target = formRef.current.querySelector<HTMLInputElement>(`[name="${firstErrorKey}"]`);
+      target?.focus();
+    }
+
     return Object.keys(errs).length === 0;
   };
 
@@ -84,15 +92,15 @@ export function CheckoutClient() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-navy text-oat pt-32 pb-24 px-4">
-        <OatSheet tone="subtle" className="max-w-md mx-auto p-10 text-center">
+      <div className="min-h-[100dvh] bg-navy text-oat pt-24 pb-24 px-4 flex items-center">
+        <OatSheet tone="subtle" className="max-w-md mx-auto w-full p-10 text-center">
           <div className="w-14 h-14 mx-auto mb-4 rounded-[6px] bg-oat/10 border border-white/25 flex items-center justify-center">
-            <ShoppingBag className="w-7 h-7 text-peach" />
+            <ShoppingBag className="w-7 h-7 text-peach" aria-hidden="true" />
           </div>
           <h1 className="font-display text-3xl font-medium text-oat mb-2">
             No items to checkout
           </h1>
-          <p className="text-sm text-apricot/80 mb-6">
+          <p className="text-sm text-apricot/90 mb-6">
             Your harvest bag is currently empty. Explore our small-batch seeds and berries first.
           </p>
           <GlowButton href="/shop" variant="cta" magnetic>
@@ -104,7 +112,7 @@ export function CheckoutClient() {
   }
 
   return (
-    <div className="min-h-screen bg-navy text-oat pt-28 pb-24">
+    <div className="min-h-[100dvh] bg-navy text-oat pt-24 pb-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeInSection className="mb-8">
           <span className="font-ui-label text-[11px] text-peach block mb-1.5">
@@ -117,16 +125,18 @@ export function CheckoutClient() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           <div className="lg:col-span-7">
-            <form onSubmit={handlePlaceOrder} noValidate className="space-y-6">
+            <form ref={formRef} onSubmit={handlePlaceOrder} noValidate className="space-y-6">
               <OatSheet tone="subtle" interactive={false} className="p-6">
                 <h2 className="font-display text-xl font-medium text-oat mb-4 flex items-center gap-2.5">
-                  <span className="w-6 h-6 rounded-[4px] bg-flame text-oat text-xs flex items-center justify-center font-sans font-semibold">
+                  <span className="w-6 h-6 rounded-[4px] bg-flame text-navy text-xs flex items-center justify-center font-sans font-semibold tabular-nums">
                     1
                   </span>
                   Contact Details
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                   <GlowInput
+                    name="name"
+                    autoComplete="name"
                     label="Full Name *"
                     floatingLabel
                     type="text"
@@ -136,9 +146,12 @@ export function CheckoutClient() {
                       setFormData({ ...formData, name: e.target.value });
                       if (errors.name) setErrors({ ...errors, name: '' });
                     }}
-                    placeholder="Aarav Singh"
+                    placeholder="Aarav Singh…"
                   />
                   <GlowInput
+                    name="email"
+                    autoComplete="email"
+                    spellCheck={false}
                     label="Email *"
                     floatingLabel
                     type="email"
@@ -148,9 +161,12 @@ export function CheckoutClient() {
                       setFormData({ ...formData, email: e.target.value });
                       if (errors.email) setErrors({ ...errors, email: '' });
                     }}
-                    placeholder="aarav@example.com"
+                    placeholder="aarav@example.com…"
                   />
                   <GlowInput
+                    name="phone"
+                    autoComplete="tel"
+                    inputMode="tel"
                     label="Mobile *"
                     floatingLabel
                     type="tel"
@@ -161,7 +177,7 @@ export function CheckoutClient() {
                       setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '') });
                       if (errors.phone) setErrors({ ...errors, phone: '' });
                     }}
-                    placeholder="9876543210"
+                    placeholder="9876543210…"
                     containerClassName="sm:col-span-2"
                   />
                 </div>
@@ -169,13 +185,15 @@ export function CheckoutClient() {
 
               <OatSheet tone="subtle" interactive={false} delay={0.05} className="p-6">
                 <h2 className="font-display text-xl font-medium text-oat mb-4 flex items-center gap-2.5">
-                  <span className="w-6 h-6 rounded-[4px] bg-flame text-oat text-xs flex items-center justify-center font-sans font-semibold">
+                  <span className="w-6 h-6 rounded-[4px] bg-flame text-navy text-xs flex items-center justify-center font-sans font-semibold tabular-nums">
                     2
                   </span>
                   Shipping Address
                 </h2>
                 <div className="space-y-4 text-xs">
                   <GlowInput
+                    name="address"
+                    autoComplete="street-address"
                     label="Street Address *"
                     floatingLabel
                     type="text"
@@ -185,19 +203,23 @@ export function CheckoutClient() {
                       setFormData({ ...formData, address: e.target.value });
                       if (errors.address) setErrors({ ...errors, address: '' });
                     }}
-                    placeholder="House 42, Sector 15"
+                    placeholder="House 42, Sector 15…"
                   />
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <GlowInput
+                      name="city"
+                      autoComplete="address-level2"
                       label="City"
                       floatingLabel
                       type="text"
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      placeholder="Gurugram"
+                      placeholder="Gurugram…"
                     />
                     <GlowInput
+                      name="state"
+                      autoComplete="address-level1"
                       label="State"
                       floatingLabel
                       type="text"
@@ -205,6 +227,10 @@ export function CheckoutClient() {
                       onChange={(e) => setFormData({ ...formData, state: e.target.value })}
                     />
                     <GlowInput
+                      name="pincode"
+                      autoComplete="postal-code"
+                      inputMode="numeric"
+                      spellCheck={false}
                       label="Pincode *"
                       floatingLabel
                       type="text"
@@ -215,7 +241,7 @@ export function CheckoutClient() {
                         setFormData({ ...formData, pincode: e.target.value.replace(/\D/g, '') });
                         if (errors.pincode) setErrors({ ...errors, pincode: '' });
                       }}
-                      placeholder="122001"
+                      placeholder="122001…"
                     />
                   </div>
                 </div>
@@ -223,7 +249,7 @@ export function CheckoutClient() {
 
               <OatSheet tone="subtle" interactive={false} delay={0.1} className="p-6">
                 <h2 className="font-display text-xl font-medium text-oat mb-4 flex items-center gap-2.5">
-                  <span className="w-6 h-6 rounded-[4px] bg-flame text-oat text-xs flex items-center justify-center font-sans font-semibold">
+                  <span className="w-6 h-6 rounded-[4px] bg-flame text-navy text-xs flex items-center justify-center font-sans font-semibold tabular-nums">
                     3
                   </span>
                   Payment Option
@@ -240,10 +266,10 @@ export function CheckoutClient() {
                         key={m.id}
                         whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
                         transition={MOTION_SPRING.tactile}
-                        className={`flex items-start gap-3 p-3.5 rounded-[6px] border cursor-pointer transition-all duration-200 ${
+                        className={`flex items-start gap-3 p-3.5 rounded-[6px] border cursor-pointer transition-[border-color,background-color] duration-200 ${
                           selected
                             ? 'border-flame bg-oat/[0.18]'
-                            : 'border-white/20 bg-oat/[0.08] hover:border-apricot/45'
+                            : 'border-white/25 bg-oat/[0.08] hover:border-apricot/55'
                         }`}
                       >
                         <input
@@ -255,7 +281,7 @@ export function CheckoutClient() {
                         />
                         <div>
                           <p className="text-xs font-semibold text-oat">{m.label}</p>
-                          <p className="text-[11px] text-apricot/75">{m.desc}</p>
+                          <p className="text-[11px] text-apricot/85">{m.desc}</p>
                         </div>
                       </motion.label>
                     );
@@ -271,11 +297,11 @@ export function CheckoutClient() {
                 className="w-full py-4"
               >
                 {loading ? (
-                  <span>Confirming harvest batch...</span>
+                  <span>Confirming harvest batch…</span>
                 ) : (
                   <>
-                    <Lock className="w-4 h-4" />
-                    <span>Confirm Order · ₹{grandTotal}</span>
+                    <Lock className="w-4 h-4" aria-hidden="true" />
+                    <span className="tabular-nums">Confirm Order · ₹{grandTotal}</span>
                   </>
                 )}
               </GlowButton>
@@ -284,11 +310,11 @@ export function CheckoutClient() {
 
           <div className="lg:col-span-5">
             <OatSheet tone="medium" interactive={false} className="p-6 sticky top-24">
-              <h3 className="font-display text-xl font-medium text-oat mb-4">
+              <h2 className="font-display text-xl font-medium text-oat mb-4">
                 Order Summary
-              </h3>
+              </h2>
 
-              <div className="divide-y divide-white/15 mb-6 max-h-72 overflow-y-auto">
+              <div data-lenis-prevent className="divide-y divide-white/15 mb-6 max-h-72 overflow-y-auto overscroll-contain">
                 {items.map((i) => (
                   <div key={i.id} className="py-3 flex gap-3 items-center">
                     <div className="w-12 h-12 rounded-[4px] bg-oat/[0.12] border border-white/20 relative overflow-hidden shrink-0">
@@ -305,11 +331,11 @@ export function CheckoutClient() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-medium text-oat line-clamp-1">{i.product.name}</p>
-                      <p className="text-[11px] text-apricot/75">
+                      <p className="text-[11px] text-apricot/85 tabular-nums">
                         {i.variant.weight} × {i.quantity}
                       </p>
                     </div>
-                    <span className="text-xs font-semibold text-peach">
+                    <span className="text-xs font-semibold text-peach tabular-nums">
                       ₹{i.variant.price * i.quantity}
                     </span>
                   </div>
@@ -319,10 +345,13 @@ export function CheckoutClient() {
               <div className="mb-6 pt-4 border-t border-white/15">
                 <div className="flex gap-2 items-center">
                   <GlowInput
+                    name="promoCode"
+                    autoComplete="off"
+                    spellCheck={false}
                     type="text"
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                    placeholder="PROMO CODE"
+                    placeholder="PROMO CODE…"
                     aria-label="Promo code"
                     inputClassName="uppercase"
                   />
@@ -336,23 +365,25 @@ export function CheckoutClient() {
                     Apply
                   </GlowButton>
                 </div>
-                <AnimatePresence>
-                  {promoApplied && (
-                    <motion.p
-                      initial={{ opacity: 0, y: -4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.18, ease: MOTION_EASE.smooth }}
-                      className="text-[11px] text-peach font-medium mt-2 flex items-center gap-1.5"
-                    >
-                      <CheckCircle2 className="w-3.5 h-3.5 text-flame" />
-                      HARVEST10 applied (10% harvest savings)
-                    </motion.p>
-                  )}
-                </AnimatePresence>
+                <div aria-live="polite">
+                  <AnimatePresence>
+                    {promoApplied && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: 0.18, ease: MOTION_EASE.smooth }}
+                        className="text-[11px] text-peach font-medium mt-2 flex items-center gap-1.5"
+                      >
+                        <CheckCircle2 className="w-3.5 h-3.5 text-peach" aria-hidden="true" />
+                        HARVEST10 applied (10% harvest savings)
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
 
-              <div className="space-y-2 text-xs text-apricot/85 pb-4 border-b border-white/15">
+              <div className="space-y-2 text-xs text-apricot/90 pb-4 border-b border-white/15 tabular-nums">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span className="font-semibold text-oat">₹{subtotal}</span>
@@ -378,7 +409,7 @@ export function CheckoutClient() {
                 </div>
               </div>
 
-              <div className="pt-4 flex justify-between items-baseline">
+              <div className="pt-4 flex justify-between items-baseline tabular-nums">
                 <span className="text-base font-medium text-oat">Total</span>
                 <span className="font-display text-2xl font-semibold text-peach">₹{grandTotal}</span>
               </div>

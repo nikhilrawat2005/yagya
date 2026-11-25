@@ -37,7 +37,7 @@ export function DoodlePreviewClient() {
 
   return (
     <div
-      className={`min-h-screen pt-28 pb-20 px-4 sm:px-8 transition-colors ${
+      className={`min-h-[100dvh] pt-24 pb-20 px-4 sm:px-8 transition-colors ${
         surface === 'navy' ? 'bg-navy text-oat' : 'bg-[#F6EFE2] text-[#1A1410]'
       }`}
     >
