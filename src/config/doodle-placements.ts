@@ -30,9 +30,9 @@ export type PagePlacementKey =
   | 'shop';
 
 /**
- * Curated Yagya doodle placements: strictly berries, seeds, flowers, and purposeful CTA arrows.
- * Zero random mountains, wheat fields, or cluttered corners; placed in breathing space at z-20
- * with slow self-drawing strokes (2.1s - 2.4s).
+ * Unique, non-repeating botanical doodle placements across all pages.
+ * Strictly berries, seeds, blossoms, orchard fruits, nuts, and spices.
+ * Anchored in outer margins so headlines and body text stay unobstructed.
  */
 export const PAGE_CHAPTER_PLACEMENTS: Record<
   PagePlacementKey,
@@ -43,8 +43,8 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
       {
         name: 'blueberry-cluster-a',
         tone: 'peach',
-        size: 'clamp(140px, 16vw, 208px)',
-        position: '-top-20 -right-10 sm:-top-24 sm:-right-12 z-20',
+        size: 'clamp(144px, 16vw, 208px)',
+        position: '-top-24 -right-10 sm:-top-28 sm:-right-12 z-20',
         rotate: 8,
         showOn: 'all',
         opacity: 0.94,
@@ -53,12 +53,24 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
         delay: 0.25,
         drawDuration: 2.3,
       },
+      {
+        name: 'seed-circle-ring-a',
+        tone: 'apricot',
+        size: 132,
+        position: '-bottom-20 -right-12 z-20',
+        rotate: -6,
+        showOn: 'md+',
+        opacity: 0.88,
+        float: true,
+        delay: 0.45,
+        drawDuration: 2.4,
+      },
     ],
     'chapter-02': [
       {
         name: 'sunflower-head-a',
         tone: 'peach',
-        size: 'clamp(148px, 17vw, 220px)',
+        size: 'clamp(148px, 17vw, 212px)',
         position: '-top-28 -right-12 z-20',
         rotate: 8,
         showOn: 'md+',
@@ -71,7 +83,7 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
       {
         name: 'pumpkin-seeds-pile-a',
         tone: 'apricot',
-        size: 152,
+        size: 148,
         position: '-bottom-20 -right-10 z-20',
         rotate: 6,
         showOn: 'md+',
@@ -83,10 +95,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-03': [
       {
-        name: 'sea-buckthorn-berry-cluster-a',
+        name: 'sea-buckthorn-berry-cluster-b',
         tone: 'peach',
         size: 164,
-        position: '-top-20 -right-10 z-20',
+        position: '-top-24 -right-10 z-20',
         rotate: -6,
         showOn: 'md+',
         opacity: 0.94,
@@ -97,10 +109,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-04': [
       {
-        name: 'lotus-flower-a',
+        name: 'berry-heart-wreath-a',
         tone: 'peach',
-        size: 'clamp(156px, 18vw, 232px)',
-        position: '-top-24 -right-10 z-20',
+        size: 'clamp(152px, 17vw, 216px)',
+        position: '-top-28 -right-12 z-20',
         rotate: 6,
         showOn: 'all',
         opacity: 0.94,
@@ -110,13 +122,13 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
         drawDuration: 2.4,
       },
       {
-        name: 'blackberry-a',
+        name: 'raspberry-a',
         tone: 'apricot',
-        size: 128,
+        size: 132,
         position: '-bottom-24 -left-12 z-20',
         rotate: -8,
         showOn: 'md+',
-        opacity: 0.9,
+        opacity: 0.92,
         float: true,
         delay: 0.3,
         drawDuration: 2.2,
@@ -126,11 +138,11 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
   seeds: {
     'chapter-02': [
       {
-        name: 'seed-bowl-a',
+        name: 'seed-scoop-a',
         tone: 'peach',
-        size: 'clamp(140px, 15vw, 196px)',
-        position: '-bottom-20 -left-10 z-20',
-        rotate: -6,
+        size: 'clamp(140px, 15vw, 192px)',
+        position: '-bottom-20 -left-12 z-20',
+        rotate: -8,
         showOn: 'md+',
         opacity: 0.92,
         float: true,
@@ -140,10 +152,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-03': [
       {
-        name: 'sunflower-head-a',
+        name: 'flax-plant-stem-b',
         tone: 'peach',
-        size: 152,
-        position: '-top-20 -right-8 z-20',
+        size: 156,
+        position: '-top-24 -right-10 z-20',
         rotate: 8,
         showOn: 'all',
         opacity: 0.92,
@@ -154,10 +166,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-04': [
       {
-        name: 'flax-pod-a',
+        name: 'sunflower-seed-b',
         tone: 'apricot',
-        size: 'clamp(144px, 15vw, 196px)',
-        position: '-top-20 -right-8 z-20',
+        size: 'clamp(136px, 14vw, 184px)',
+        position: '-top-22 -right-10 z-20',
         rotate: 6,
         showOn: 'all',
         opacity: 0.92,
@@ -170,9 +182,9 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
   berries: {
     'chapter-02': [
       {
-        name: 'berry-bowl-a',
+        name: 'berry-crown-top-a',
         tone: 'peach',
-        size: 'clamp(140px, 15vw, 196px)',
+        size: 'clamp(144px, 15vw, 196px)',
         position: '-bottom-20 -right-10 z-20',
         rotate: 6,
         showOn: 'md+',
@@ -184,10 +196,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-03': [
       {
-        name: 'sea-buckthorn-berry-cluster-a',
+        name: 'cranberry-sprig-a',
         tone: 'peach',
         size: 156,
-        position: '-top-20 -right-8 z-20',
+        position: '-top-24 -right-10 z-20',
         rotate: -8,
         showOn: 'all',
         opacity: 0.92,
@@ -198,10 +210,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-04': [
       {
-        name: 'blueberry-cluster-a',
+        name: 'blueberry-branch-a',
         tone: 'apricot',
         size: 'clamp(144px, 15vw, 196px)',
-        position: '-top-20 -right-8 z-20',
+        position: '-top-24 -right-10 z-20',
         rotate: -5,
         showOn: 'all',
         opacity: 0.92,
@@ -214,10 +226,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
   'dry-fruits': {
     'chapter-02': [
       {
-        name: 'fig-halved-a',
+        name: 'apricot-halved-a',
         tone: 'peach',
         size: 'clamp(136px, 14vw, 184px)',
-        position: '-bottom-18 -left-10 z-20',
+        position: '-bottom-20 -left-10 z-20',
         rotate: -5,
         showOn: 'md+',
         opacity: 0.92,
@@ -228,10 +240,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-03': [
       {
-        name: 'berry-trio-a',
+        name: 'kiwi-halved-a',
         tone: 'apricot',
         size: 144,
-        position: '-bottom-16 -left-8 z-20',
+        position: '-bottom-20 -left-10 z-20',
         rotate: -10,
         showOn: 'md+',
         opacity: 0.9,
@@ -242,10 +254,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-04': [
       {
-        name: 'almond-blossom-a',
+        name: 'dried-fruit-bowl-b',
         tone: 'apricot',
         size: 'clamp(144px, 15vw, 196px)',
-        position: '-top-20 -right-8 z-20',
+        position: '-top-24 -right-10 z-20',
         rotate: 4,
         showOn: 'all',
         opacity: 0.92,
@@ -258,9 +270,9 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
   nuts: {
     'chapter-02': [
       {
-        name: 'almond-blossom-a',
+        name: 'nut-bowl-b',
         tone: 'peach',
-        size: 'clamp(140px, 15vw, 196px)',
+        size: 'clamp(140px, 15vw, 192px)',
         position: '-bottom-20 -left-10 z-20',
         rotate: -6,
         showOn: 'md+',
@@ -272,10 +284,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-03': [
       {
-        name: 'pine-nuts-scatter-a',
+        name: 'cashew-apple-a',
         tone: 'peach',
-        size: 148,
-        position: '-top-18 -right-8 z-20',
+        size: 152,
+        position: '-top-22 -right-10 z-20',
         rotate: -7,
         showOn: 'all',
         opacity: 0.92,
@@ -286,10 +298,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-04': [
       {
-        name: 'sunflower-petals-a',
+        name: 'walnut-halved-a',
         tone: 'apricot',
-        size: 'clamp(140px, 15vw, 192px)',
-        position: '-top-20 -left-8 z-20',
+        size: 'clamp(140px, 15vw, 188px)',
+        position: '-top-24 -right-10 z-20',
         rotate: -6,
         showOn: 'all',
         opacity: 0.92,
@@ -302,9 +314,9 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
   makhana: {
     'chapter-02': [
       {
-        name: 'lotus-flower-a',
+        name: 'makhana-bowl-b',
         tone: 'peach',
-        size: 'clamp(148px, 16vw, 204px)',
+        size: 'clamp(148px, 16vw, 200px)',
         position: '-bottom-20 -right-10 z-20',
         rotate: 6,
         showOn: 'md+',
@@ -316,10 +328,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-03': [
       {
-        name: 'lotus-bud-a',
+        name: 'mint-sprig-b',
         tone: 'apricot',
         size: 144,
-        position: '-top-18 -right-8 z-20',
+        position: '-top-22 -right-10 z-20',
         rotate: 10,
         showOn: 'all',
         opacity: 0.92,
@@ -330,10 +342,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-04': [
       {
-        name: 'makhana-puffs-heap-a',
+        name: 'pepper-plant-vine-a',
         tone: 'apricot',
         size: 'clamp(144px, 15vw, 196px)',
-        position: '-top-20 -right-8 z-20',
+        position: '-top-24 -right-10 z-20',
         rotate: 6,
         showOn: 'all',
         opacity: 0.92,
@@ -346,11 +358,11 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
   about: {
     'chapter-01': [
       {
-        name: 'lotus-flower-a',
+        name: 'almond-blossom-b',
         tone: 'peach',
-        size: 'clamp(136px, 14vw, 188px)',
-        position: '-top-20 -left-10 z-20',
-        rotate: -7,
+        size: 'clamp(140px, 15vw, 192px)',
+        position: '-top-24 -right-12 z-20',
+        rotate: 8,
         showOn: 'all',
         opacity: 0.92,
         float: true,
@@ -360,10 +372,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-02': [
       {
-        name: 'sunflower-head-a',
+        name: 'goji-sprig-a',
         tone: 'peach',
         size: 152,
-        position: '-top-18 -right-8 z-20',
+        position: '-top-24 -right-10 z-20',
         rotate: 8,
         showOn: 'all',
         opacity: 0.92,
@@ -374,10 +386,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-03': [
       {
-        name: 'blueberry-cluster-a',
+        name: 'berry-scatter-a',
         tone: 'apricot',
         size: 'clamp(136px, 14vw, 184px)',
-        position: '-top-20 -right-8 z-20',
+        position: '-bottom-20 -right-10 z-20',
         rotate: 6,
         showOn: 'all',
         opacity: 0.92,
@@ -390,10 +402,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
   contact: {
     'chapter-01': [
       {
-        name: 'almond-blossom-a',
+        name: 'sesame-pod-a',
         tone: 'peach',
-        size: 140,
-        position: '-top-16 -right-8 z-20',
+        size: 144,
+        position: '-top-22 -right-10 z-20',
         rotate: 8,
         showOn: 'md+',
         opacity: 0.9,
@@ -404,10 +416,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-02': [
       {
-        name: 'berry-bowl-a',
+        name: 'fruit-slice-trio-a',
         tone: 'peach',
         size: 'clamp(136px, 14vw, 184px)',
-        position: '-top-18 -right-8 z-20',
+        position: '-top-22 -right-10 z-20',
         rotate: -6,
         showOn: 'all',
         opacity: 0.92,
@@ -420,10 +432,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
   journal: {
     'chapter-01': [
       {
-        name: 'sunflower-head-a',
+        name: 'sunflower-petals-b',
         tone: 'peach',
         size: 'clamp(136px, 14vw, 184px)',
-        position: '-top-14 -left-8 z-20',
+        position: '-top-12 -left-10 z-20',
         rotate: -6,
         showOn: 'sm+',
         opacity: 0.9,
@@ -434,10 +446,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-02': [
       {
-        name: 'sea-buckthorn-berry-cluster-a',
+        name: 'mulberry-a',
         tone: 'peach',
         size: 148,
-        position: '-top-16 -right-6 z-20',
+        position: '-top-20 -right-8 z-20',
         rotate: 5,
         showOn: 'md+',
         opacity: 0.92,
@@ -448,11 +460,11 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-03': [
       {
-        name: 'lotus-flower-a',
+        name: 'frame-round-berry-wreath',
         tone: 'apricot',
         size: 'clamp(140px, 14vw, 188px)',
-        position: '-top-18 -left-8 z-20',
-        rotate: -4,
+        position: '-top-24 -right-12 z-20',
+        rotate: 6,
         showOn: 'all',
         opacity: 0.92,
         float: true,
@@ -464,10 +476,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
   shop: {
     'chapter-01': [
       {
-        name: 'sunflower-head-a',
+        name: 'sunflower-head-b',
         tone: 'peach',
         size: 'clamp(132px, 14vw, 180px)',
-        position: '-top-16 -right-8 z-20',
+        position: '-top-20 -right-8 z-20',
         rotate: 6,
         showOn: 'sm+',
         opacity: 0.9,
@@ -478,10 +490,10 @@ export const PAGE_CHAPTER_PLACEMENTS: Record<
     ],
     'chapter-03': [
       {
-        name: 'cranberry-cluster-a',
+        name: 'pistachio-open-a',
         tone: 'peach',
         size: 144,
-        position: '-top-16 -right-8 z-20',
+        position: '-top-20 -right-10 z-20',
         rotate: -8,
         showOn: 'md+',
         opacity: 0.92,
@@ -498,24 +510,24 @@ export const CATEGORY_INTRO_CLUSTERS: Record<
   readonly DoodleClusterItem[]
 > = {
   seeds: [
-    { name: 'flax-pod-a', tone: 'oat', size: 'clamp(132px, 15vw, 196px)', rotate: -6, float: true, showOn: 'all' },
-    { name: 'sunflower-head-a', tone: 'peach', size: 128, rotate: 9, float: true, showOn: 'sm+' },
+    { name: 'flax-pod-a', tone: 'oat', size: 'clamp(136px, 15vw, 196px)', rotate: -6, float: true, showOn: 'all' },
+    { name: 'chia-sprig-a', tone: 'peach', size: 128, rotate: 9, float: true, showOn: 'sm+' },
   ],
   berries: [
-    { name: 'sea-buckthorn-berry-cluster-a', tone: 'peach', size: 'clamp(132px, 15vw, 196px)', rotate: 6, float: true, showOn: 'all' },
-    { name: 'blueberry-cluster-a', tone: 'oat', size: 124, rotate: -8, float: true, showOn: 'sm+' },
+    { name: 'sea-buckthorn-berry-cluster-a', tone: 'peach', size: 'clamp(136px, 15vw, 196px)', rotate: 6, float: true, showOn: 'all' },
+    { name: 'blackberry-b', tone: 'oat', size: 124, rotate: -8, float: true, showOn: 'sm+' },
   ],
   'dry-fruits': [
-    { name: 'fig-halved-a', tone: 'oat', size: 'clamp(132px, 15vw, 196px)', rotate: -5, float: true, showOn: 'all' },
-    { name: 'almond-blossom-a', tone: 'peach', size: 120, rotate: 8, float: true, showOn: 'sm+' },
+    { name: 'fig-halved-a', tone: 'oat', size: 'clamp(136px, 15vw, 196px)', rotate: -5, float: true, showOn: 'all' },
+    { name: 'raisin-bunch-a', tone: 'peach', size: 120, rotate: 8, float: true, showOn: 'sm+' },
   ],
   nuts: [
-    { name: 'almond-blossom-a', tone: 'oat', size: 'clamp(132px, 15vw, 196px)', rotate: 5, float: true, showOn: 'all' },
-    { name: 'pine-nuts-scatter-a', tone: 'peach', size: 124, rotate: -9, float: true, showOn: 'sm+' },
+    { name: 'almond-blossom-a', tone: 'oat', size: 'clamp(136px, 15vw, 196px)', rotate: 5, float: true, showOn: 'all' },
+    { name: 'pine-cone-a', tone: 'peach', size: 124, rotate: -9, float: true, showOn: 'sm+' },
   ],
   makhana: [
-    { name: 'lotus-flower-a', tone: 'oat', size: 'clamp(136px, 15vw, 204px)', rotate: -6, float: true, showOn: 'all' },
-    { name: 'makhana-puffs-heap-a', tone: 'peach', size: 124, rotate: 8, float: true, showOn: 'sm+' },
+    { name: 'makhana-puffs-heap-a', tone: 'oat', size: 'clamp(136px, 15vw, 200px)', rotate: -6, float: true, showOn: 'all' },
+    { name: 'cumin-seeds-a', tone: 'peach', size: 124, rotate: 8, float: true, showOn: 'sm+' },
   ],
 };
 
@@ -531,7 +543,7 @@ export const CATEGORY_DIVIDERS: Record<
 };
 
 export const HOME_NUTRITION_DOODLES: Record<string, DoodleName> = {
-  'dried-sea-buckthorn-berries': 'sea-buckthorn-berry-cluster-a',
+  'dried-sea-buckthorn-berries': 'sea-buckthorn-branch-a',
   'chia-seeds': 'chia-sprig-b',
   'pumpkin-seeds': 'pumpkin-seed-a',
   'flax-seeds': 'flax-pod-b',
@@ -541,21 +553,21 @@ export const PRODUCT_CARD_DOODLES: Record<string, DoodleName> = {
   'dried-sea-buckthorn-berries': 'sea-buckthorn-berry-cluster-a',
   'dried-blueberries': 'blueberry-single-a',
   'dried-cranberries': 'cranberry-cluster-a',
-  'flax-seeds': 'flax-pod-a',
-  'pumpkin-seeds': 'pumpkin-seeds-pile-a',
+  'flax-seeds': 'flax-seeds-scatter-a',
+  'pumpkin-seeds': 'pumpkin-seeds-pile-b',
   'chia-seeds': 'chia-seeds-scatter-a',
-  'sunflower-seeds': 'sunflower-head-a',
+  'sunflower-seeds': 'sunflower-seed-a',
   'dried-anjeer-figs': 'fig-whole-a',
   dates: 'date-bunch-a',
   'dried-pineapple': 'pineapple-ring-a',
   'dried-kiwi': 'kiwi-slice-a',
   'pine-nuts': 'pine-nuts-scatter-a',
-  almonds: 'almond-blossom-a',
+  almonds: 'almond-single-a',
   cashews: 'cashew-pair-a',
   hazelnuts: 'hazelnut-cluster-a',
-  'mint-makhana': 'lotus-flower-a',
-  'black-salt-makhana': 'lotus-bud-a',
+  'mint-makhana': 'mint-sprig-a',
+  'black-salt-makhana': 'black-salt-crystals-a',
   'peri-peri-makhana': 'chilli-pair-a',
   'black-pepper-makhana': 'peppercorns-a',
-  'spicy-masala-makhana': 'lotus-flower-b',
+  'spicy-masala-makhana': 'coriander-seeds-a',
 };

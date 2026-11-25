@@ -25,10 +25,10 @@ export interface DoodleClusterProps {
 
 const PRESET_SLOTS: Record<DoodleClusterLayout, readonly string[]> = {
   'corner-peek': [
-    '-top-16 -right-8',
-    '-top-14 right-24',
-    'top-8 -right-12',
-    '-top-6 right-32',
+    '-top-24 -right-10',
+    '-top-22 right-28',
+    'top-8 -right-14',
+    '-top-8 right-36',
   ],
   'edge-trail': [
     '-top-10 left-4',

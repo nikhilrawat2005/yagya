@@ -247,7 +247,7 @@ export function StoryLanding() {
             <OatSheet tone="warm" delay={0.22} className="p-7 sm:p-8">
               <div className="flex items-center justify-between gap-4 mb-5">
                 <Doodle
-                  name="seed-bowl-a"
+                  name="seed-heap-a"
                   tone="peach"
                   size={104}
                   opacity={0.95}
@@ -358,7 +358,7 @@ export function StoryLanding() {
                   Pulp, seed &amp; crunch intact
                 </span>
                 <Doodle
-                  name="berry-bowl-a"
+                  name="berry-trio-b"
                   tone="apricot"
                   size={88}
                   opacity={0.94}
@@ -545,7 +545,7 @@ export function StoryLanding() {
             </OatSheet>
           </div>
         </div>
-        <DoodleDivider variant="leaf" tone="peach" className="mt-12" />
+        <DoodleDivider variant="diamond" tone="peach" className="mt-12" />
       </BackgroundChapter>
     </div>
   );
