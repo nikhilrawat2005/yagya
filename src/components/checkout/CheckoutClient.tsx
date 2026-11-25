@@ -297,7 +297,7 @@ export function CheckoutClient() {
                         alt={i.product.name}
                         fill
                         className={
-                          i.product.images[0]?.src?.includes('/images/products/')
+                          i.product.images[0]?.src?.includes('/assets/products/')
                             ? 'object-cover'
                             : 'object-contain p-1'
                         }

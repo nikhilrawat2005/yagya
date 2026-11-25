@@ -5,13 +5,22 @@ import { FadeInSection } from '@/components/motion/FadeInSection';
 import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger';
 import { DoodleSVG } from '@/components/editorial/DoodleSVG';
 import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
+import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 
 export default async function JournalPage() {
   const articles = await getJournalArticles();
 
   return (
-    <div className="min-h-screen bg-purple text-oat pt-28 pb-24">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <PageBackgroundSet
+      page="signature"
+      showIndex={false}
+      chapters={[
+        {
+          id: 'journal-01',
+          chapterNumber: '01',
+          chapterLabel: 'Field Chronicle',
+          content: (
+            <div className="max-w-5xl mx-auto">
         <FadeInSection className="relative text-center max-w-xl mx-auto mb-12">
           <CharcoalDoodle
             name="olive"
@@ -61,7 +70,7 @@ export default async function JournalPage() {
                       alt={art.title}
                       fill
                       className={
-                        art.image.includes('/images/products/')
+                        art.image.includes('/assets/products/')
                           ? 'object-cover transition-transform duration-500 ease-[var(--ease-smooth)] group-hover:scale-105'
                           : 'object-contain p-4 transition-transform duration-500 ease-[var(--ease-smooth)] group-hover:scale-105'
                       }
@@ -90,7 +99,10 @@ export default async function JournalPage() {
             </StaggerItem>
           ))}
         </StaggerContainer>
-      </div>
-    </div>
+            </div>
+          ),
+        },
+      ]}
+    />
   );
 }

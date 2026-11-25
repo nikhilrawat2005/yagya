@@ -1,3 +1,5 @@
+import { ASSETS } from '@/lib/assets';
+
 export interface JournalArticle {
   id: string;
   slug: string;
@@ -22,7 +24,7 @@ export const journalArticles: JournalArticle[] = [
     content:
       'Known traditionally as Alsi and Jawas, flax thrives in cool winter soils. Direct farm partnerships ensure every seed batch is cleaned and packed hygienically without middleman delays.',
     category: 'Harvest Stories',
-    image: '/images/products/flax-seeds.webp',
+    image: ASSETS.products.seeds.flaxSeeds,
   },
   {
     id: 'art-2',
@@ -35,7 +37,7 @@ export const journalArticles: JournalArticle[] = [
     content:
       'Unlike heavily sweetened dried fruit snacks, whole dried sea buckthorn berries retain their nutrient-rich pulp and seeds for daily oatmeal, yogurt, and warm infusions.',
     category: 'Farm Craft',
-    image: '/images/products/dried-sea-buckthorn-berries.webp',
+    image: ASSETS.products.berries.seaBuckthorn,
   },
   {
     id: 'art-3',
@@ -48,7 +50,7 @@ export const journalArticles: JournalArticle[] = [
     content:
       'From soaked morning figs to stuffed pre-run dates, unglazed orchard fruit offers clean, steady energy straight from warm groves.',
     category: 'Orchard Notes',
-    image: '/images/products/dried-anjeer-figs.webp',
+    image: ASSETS.products.dryFruits.anjeer,
   },
   {
     id: 'art-4',
@@ -61,6 +63,6 @@ export const journalArticles: JournalArticle[] = [
     content:
       'Picked from tranquil wetland ponds and crisp-roasted in small batches, our five seasoned makhana harvests pair light crunch with honest pantry botanicals.',
     category: 'Roastery Craft',
-    image: '/images/products/mint-makhana.webp',
+    image: ASSETS.products.makhana.mintMakhana,
   },
 ];

@@ -49,7 +49,7 @@ export function ProductCard({ product }: { product: Product }) {
               alt={primaryImage?.alt || product.name}
               fill
               className={
-                primaryImage?.src?.includes('/images/products/')
+                primaryImage?.src?.includes('/assets/products/')
                   ? 'object-cover transition-transform duration-500 ease-[var(--ease-smooth)] group-hover:scale-106'
                   : 'object-contain p-5 transition-transform duration-500 ease-[var(--ease-smooth)] group-hover:scale-106'
               }

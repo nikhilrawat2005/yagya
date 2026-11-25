@@ -6,6 +6,7 @@ import {
 } from 'next/font/google';
 import './globals.css';
 import { siteConfig } from '@/lib/data/site';
+import { ASSETS } from '@/lib/assets';
 import { SmoothScrollProvider } from '@/components/motion/SmoothScrollProvider';
 import { PageTransition } from '@/components/motion/PageTransition';
 import { CartDrawer } from '@/components/cart/CartDrawer';
@@ -33,6 +34,9 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   title: `${siteConfig.name} — Seeds & Berries, Straight From The Farm`,
   description: siteConfig.description,
+  icons: {
+    icon: ASSETS.brand.logoPrimary,
+  },
 };
 
 export default function RootLayout({

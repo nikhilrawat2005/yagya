@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'motion/react';
+import { ASSETS } from '@/lib/assets';
 
 export type CharcoalDoodleName = 'blueberry' | 'olive' | 'seeds' | 'blackberry';
 export type CharcoalDoodleVariant = 'stamp' | 'halo';
@@ -19,19 +20,19 @@ export interface CharcoalDoodleProps {
 
 const ASSET_MAP: Record<CharcoalDoodleName, { src: string; alt: string }> = {
   blueberry: {
-    src: '/images/doodles/charcoal-blueberry.webp',
+    src: ASSETS.doodles.charcoalBlueberry,
     alt: 'Hand-drawn black charcoal botanical sketch of fresh blueberries on a twig',
   },
   olive: {
-    src: '/images/doodles/charcoal-olive.webp',
+    src: ASSETS.doodles.charcoalOlive,
     alt: 'Hand-drawn black charcoal botanical sketch of an olive branch sprig',
   },
   seeds: {
-    src: '/images/doodles/charcoal-seeds.webp',
+    src: ASSETS.doodles.charcoalSeeds,
     alt: 'Hand-drawn black charcoal sketch of sea buckthorn berries, almonds, and farm seeds',
   },
   blackberry: {
-    src: '/images/doodles/charcoal-blackberry.webp',
+    src: ASSETS.doodles.charcoalBlackberry,
     alt: 'Hand-drawn black charcoal botanical sketch of wild blackberries and orchard plums',
   },
 };

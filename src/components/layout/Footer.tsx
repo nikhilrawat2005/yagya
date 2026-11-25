@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { siteConfig } from '@/lib/data/site';
+import { ASSETS } from '@/lib/assets';
 
 export function Footer() {
   return (
@@ -12,7 +13,7 @@ export function Footer() {
         <Link href="/" className="flex items-center gap-3.5 group w-fit">
           <div className="relative w-10 h-10 rounded-[4px] overflow-hidden border border-white/25 bg-oat shrink-0">
             <Image
-              src="/yagya-logo.png"
+              src={ASSETS.brand.logoPrimary}
               alt="Yagya Logo"
               fill
               sizes="40px"
@@ -30,12 +31,42 @@ export function Footer() {
         </Link>
 
         {/* Minimal Editorial Links */}
-        <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-6">
+        <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-5">
+          <Link
+            href="/seeds"
+            className="nav-link-underline font-ui-label text-[11px] text-apricot/85 hover:text-oat py-0.5"
+          >
+            Seeds
+          </Link>
+          <Link
+            href="/berries"
+            className="nav-link-underline font-ui-label text-[11px] text-apricot/85 hover:text-oat py-0.5"
+          >
+            Berries
+          </Link>
+          <Link
+            href="/dry-fruits"
+            className="nav-link-underline font-ui-label text-[11px] text-apricot/85 hover:text-oat py-0.5"
+          >
+            Dry Fruits
+          </Link>
+          <Link
+            href="/nuts"
+            className="nav-link-underline font-ui-label text-[11px] text-apricot/85 hover:text-oat py-0.5"
+          >
+            Nuts
+          </Link>
+          <Link
+            href="/makhana"
+            className="nav-link-underline font-ui-label text-[11px] text-apricot/85 hover:text-oat py-0.5"
+          >
+            Makhana
+          </Link>
           <Link
             href="/about"
             className="nav-link-underline font-ui-label text-[11px] text-apricot/85 hover:text-oat py-0.5"
           >
-            Our Story
+            Story
           </Link>
           <Link
             href="/journal"

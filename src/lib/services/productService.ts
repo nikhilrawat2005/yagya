@@ -36,6 +36,10 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
   return products.find((p) => p.slug === slug);
 }
 
+export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
+  return products.filter((p) => p.categorySlug === categorySlug);
+}
+
 export async function getFeaturedProducts(): Promise<Product[]> {
   return products.filter((p) => p.isFeatured || p.isBestseller);
 }

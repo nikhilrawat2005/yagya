@@ -11,6 +11,7 @@ import { DoodleSVG } from '@/components/editorial/DoodleSVG';
 import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
 import { ChapterIndex, type ChapterDefinition } from '@/components/editorial/ChapterIndex';
 import { GlowButton } from '@/components/ui/GlowButton';
+import { ASSETS } from '@/lib/assets';
 
 const CHAPTERS: ReadonlyArray<ChapterDefinition> = [
   { id: 'chapter-01', number: '01', label: 'The Offering' },
@@ -25,7 +26,7 @@ const NUTRITION_HIGHLIGHTS = [
     nutrient: 'Vitamin C',
     source: 'Dried Sea Buckthorn Berries',
     note: '81.3% RDA per 10 g serve · 0.0 g added sugars',
-    image: '/images/products/dried-sea-buckthorn-berries.webp',
+    image: ASSETS.products.berries.seaBuckthorn,
     href: '/product/dried-sea-buckthorn-berries',
   },
   {
@@ -33,7 +34,7 @@ const NUTRITION_HIGHLIGHTS = [
     nutrient: 'Dietary Fiber',
     source: 'Central & Southern Chia Seeds',
     note: '17.8 g Omega-3 ALA · zero added sugars',
-    image: '/images/products/chia-seeds.webp',
+    image: ASSETS.products.seeds.chiaSeeds,
     href: '/product/chia-seeds',
   },
   {
@@ -41,7 +42,7 @@ const NUTRITION_HIGHLIGHTS = [
     nutrient: 'Plant Protein',
     source: 'Sun-Warmed Kaddu Kernels',
     note: 'Plump, sun-warmed plains harvest',
-    image: '/images/products/pumpkin-seeds.webp',
+    image: ASSETS.products.seeds.pumpkinSeeds,
     href: '/product/pumpkin-seeds',
   },
   {
@@ -49,8 +50,32 @@ const NUTRITION_HIGHLIGHTS = [
     nutrient: 'Omega-3 ALA',
     source: 'Winter Rabi Alsi Flax Seeds',
     note: '27.3 g dietary fiber · earthy nutty aroma',
-    image: '/images/products/flax-seeds.webp',
+    image: ASSETS.products.seeds.flaxSeeds,
     href: '/product/flax-seeds',
+  },
+] as const;
+
+const HOME_PEEK_PRODUCTS = [
+  {
+    name: 'Pine Nuts (Chilgoza)',
+    note: 'Cedar forest harvest',
+    image: ASSETS.products.nuts.pineNuts,
+    alt: 'Wild Himalayan chilgoza pine nuts in a dark ceramic dish',
+    href: '/nuts',
+  },
+  {
+    name: 'Dried Anjeer (Figs)',
+    note: 'Sun-cured, zero glaze',
+    image: ASSETS.products.dryFruits.anjeer,
+    alt: 'Plump sun-cured dried anjeer figs arranged on dark slate',
+    href: '/dry-fruits',
+  },
+  {
+    name: 'Garden Mint Makhana',
+    note: 'Slow-roasted lotus puffs',
+    image: ASSETS.products.makhana.mintMakhana,
+    alt: 'Crisp roasted mint makhana fox nuts with whole dried mint leaves',
+    href: '/makhana',
   },
 ] as const;
 
@@ -68,9 +93,10 @@ export function StoryLanding() {
         id="chapter-01"
         chapterNumber="01"
         chapterLabel="The Offering"
-        imageSrc="/background/1.png"
-        imageAlt="Fresh dark blueberries glistening with water droplets in deep Neon Navy light"
-        tone="navy"
+        desktopSrc={ASSETS.backgrounds.home[0].desktop}
+        mobileSrc={ASSETS.backgrounds.home[0].mobile}
+        imageAlt={ASSETS.backgrounds.home[0].alt}
+        tone={ASSETS.backgrounds.home[0].tone}
         isHero
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-end">
@@ -89,7 +115,7 @@ export function StoryLanding() {
               <div className="flex items-center gap-3.5 mb-5">
                 <div className="relative w-11 h-11 rounded-[4px] overflow-hidden border border-white/25 bg-oat shrink-0">
                   <Image
-                    src="/yagya-logo.png"
+                    src={ASSETS.brand.logoPrimary}
                     alt="Yagya"
                     fill
                     sizes="44px"
@@ -130,8 +156,8 @@ export function StoryLanding() {
             </OatSheet>
           </div>
 
-          {/* Asymmetrical Small Overlapping Corner Sheet */}
-          <div className="lg:col-span-4 lg:col-start-9 relative">
+          {/* Asymmetrical Small Overlapping Corner Sheet + Product Peek */}
+          <div className="lg:col-span-4 lg:col-start-9 relative space-y-4">
             <DoodleSVG
               name="swirl"
               tone="charcoal"
@@ -156,6 +182,33 @@ export function StoryLanding() {
                 />
               </div>
             </OatSheet>
+
+            {/* Floating Product Peek beside Chapter 01 */}
+            <Link
+              href={HOME_PEEK_PRODUCTS[0].href}
+              className="group block sm:ml-6"
+            >
+              <OatSheet tone="warm" delay={0.32} className="p-3.5 flex items-center gap-3.5 [@media(hover:hover)]:hover:-translate-y-1 transition-transform duration-300">
+                <div className="relative w-16 h-20 rounded-[4px] overflow-hidden border border-white/25 shrink-0">
+                  <Image
+                    src={HOME_PEEK_PRODUCTS[0].image}
+                    alt={HOME_PEEK_PRODUCTS[0].alt}
+                    fill
+                    sizes="64px"
+                    className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <span className="font-ui-label text-[9px] text-peach block mb-0.5">
+                    Harvest Peek
+                  </span>
+                  <p className="font-display text-base text-oat group-hover:text-peach transition-colors leading-snug">
+                    {HOME_PEEK_PRODUCTS[0].name}
+                  </p>
+                  <p className="text-xs text-apricot/80">{HOME_PEEK_PRODUCTS[0].note}</p>
+                </div>
+              </OatSheet>
+            </Link>
           </div>
         </div>
 
@@ -179,9 +232,10 @@ export function StoryLanding() {
         id="chapter-02"
         chapterNumber="02"
         chapterLabel="The Origin"
-        imageSrc="/background/3.png"
-        imageAlt="Glistening green olives bathed in natural oil against deep Olive Green shadow"
-        tone="olive"
+        desktopSrc={ASSETS.backgrounds.home[1].desktop}
+        mobileSrc={ASSETS.backgrounds.home[1].mobile}
+        imageAlt={ASSETS.backgrounds.home[1].alt}
+        tone={ASSETS.backgrounds.home[1].tone}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Wide Lead Sheet (Right-aligned) */}
@@ -280,9 +334,10 @@ export function StoryLanding() {
         id="chapter-03"
         chapterNumber="03"
         chapterLabel="Craft & Inside"
-        imageSrc="/background/2.png"
-        imageAlt="Deep Potent Purple plums covered in fine water droplets"
-        tone="purple"
+        desktopSrc={ASSETS.backgrounds.home[2].desktop}
+        mobileSrc={ASSETS.backgrounds.home[2].mobile}
+        imageAlt={ASSETS.backgrounds.home[2].alt}
+        tone={ASSETS.backgrounds.home[2].tone}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           {/* Tall Craft Narrative Sheet */}
@@ -386,9 +441,10 @@ export function StoryLanding() {
         id="chapter-04"
         chapterNumber="04"
         chapterLabel="The Promise"
-        imageSrc="/background/4.png"
-        imageAlt="Deep Aubergine Gleam blackberries glistening with moisture"
-        tone="aubergine"
+        desktopSrc={ASSETS.backgrounds.home[3].desktop}
+        mobileSrc={ASSETS.backgrounds.home[3].mobile}
+        imageAlt={ASSETS.backgrounds.home[3].alt}
+        tone={ASSETS.backgrounds.home[3].tone}
         isLast
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
@@ -439,8 +495,29 @@ export function StoryLanding() {
             </OatSheet>
           </div>
 
-          {/* Overlapping Testimonial Sheet */}
-          <div className="lg:col-span-5 lg:col-start-8 lg:mt-20 relative">
+          {/* Overlapping Testimonial Sheet + Harvest Peek Cards */}
+          <div className="lg:col-span-5 lg:col-start-8 lg:mt-14 relative space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              {HOME_PEEK_PRODUCTS.slice(1).map((peek) => (
+                <Link key={peek.name} href={peek.href} className="group block">
+                  <OatSheet tone="subtle" delay={0.18} className="p-3 [@media(hover:hover)]:hover:-translate-y-1 transition-transform duration-300">
+                    <div className="relative aspect-[4/5] w-full rounded-[4px] overflow-hidden border border-white/20 mb-2.5">
+                      <Image
+                        src={peek.image}
+                        alt={peek.alt}
+                        fill
+                        sizes="180px"
+                        className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
+                      />
+                    </div>
+                    <p className="font-display text-sm text-oat group-hover:text-peach transition-colors leading-snug">
+                      {peek.name}
+                    </p>
+                    <p className="text-[11px] text-apricot/75">{peek.note}</p>
+                  </OatSheet>
+                </Link>
+              ))}
+            </div>
             <DoodleSVG
               name="leaf"
               tone="charcoal"

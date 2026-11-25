@@ -27,7 +27,7 @@ interface ProductDetailClientProps {
 
 export function ProductDetailClient({ product, relatedProducts }: ProductDetailClientProps) {
   const hasNutrition = product.nutritionFacts.length > 0;
-  const isStudioPhoto = product.images[0]?.src?.includes('/images/products/');
+  const isStudioPhoto = product.images[0]?.src?.includes('/assets/products/');
 
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(product.variants[0]);
   const [quantity, setQuantity] = useState(1);

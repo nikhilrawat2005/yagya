@@ -1,3 +1,5 @@
+import { ASSETS } from '@/lib/assets';
+
 import type { CategorySlug } from './categories';
 
 export interface ProductVariant {
@@ -70,7 +72,7 @@ export const products: Product[] = [
     origin: 'Himalayan Valleys',
     images: [
       {
-        src: '/images/products/dried-sea-buckthorn-berries.webp',
+        src: ASSETS.products.berries.seaBuckthorn,
         alt: 'Bowl of amber Dried Sea Buckthorn Berries with leafy stem on dark slate',
       },
     ],
@@ -134,7 +136,7 @@ export const products: Product[] = [
     origin: 'Winter Rabi Belt',
     images: [
       {
-        src: '/images/products/flax-seeds.webp',
+        src: ASSETS.products.seeds.flaxSeeds,
         alt: 'Wooden scoop pouring amber-brown Flax Seeds with dried flax pods on slate',
       },
     ],
@@ -189,7 +191,7 @@ export const products: Product[] = [
     origin: 'Sun-Drenched Plains',
     images: [
       {
-        src: '/images/products/pumpkin-seeds.webp',
+        src: ASSETS.products.seeds.pumpkinSeeds,
         alt: 'Dark bowl of plump green Pumpkin Seeds beside sliced gourd on slate',
       },
     ],
@@ -241,7 +243,7 @@ export const products: Product[] = [
     origin: 'Central & Southern Belt',
     images: [
       {
-        src: '/images/products/chia-seeds.webp',
+        src: ASSETS.products.seeds.chiaSeeds,
         alt: 'Glass jar of Chia Seeds with wooden spoon and soaked chia drink on slate',
       },
     ],
@@ -295,7 +297,7 @@ export const products: Product[] = [
     origin: 'Karnataka & Maharashtra',
     images: [
       {
-        src: '/images/products/sunflower-seeds.webp',
+        src: ASSETS.products.seeds.sunflowerSeeds,
         alt: 'Cream bowl of hulled Sunflower Seeds beside dried sunflower head on slate',
       },
     ],
@@ -353,7 +355,7 @@ export const products: Product[] = [
     origin: 'Himachal & Nilgiris',
     images: [
       {
-        src: '/images/3d/berry-blueberry-01.webp',
+        src: ASSETS.products.berries.blueberry,
         alt: '3D clay render of whole indigo Dried Blueberries',
       },
     ],
@@ -414,7 +416,7 @@ export const products: Product[] = [
     origin: 'Cool-Climate Orchards',
     images: [
       {
-        src: '/images/products/dried-cranberries.webp',
+        src: ASSETS.products.berries.cranberry,
         alt: 'Speckled bowl of ruby-red Dried Cranberries with fresh berries on dark slate',
       },
     ],
@@ -478,7 +480,7 @@ export const products: Product[] = [
     origin: 'Sun-Cured Orchard Belt',
     images: [
       {
-        src: '/images/products/dried-anjeer-figs.webp',
+        src: ASSETS.products.dryFruits.anjeer,
         alt: 'Whole and halved Dried Anjeer figs with fig leaf on dark slate',
       },
     ],
@@ -520,7 +522,7 @@ export const products: Product[] = [
     origin: 'Warm Palm Orchards',
     images: [
       {
-        src: '/images/products/dates.webp',
+        src: ASSETS.products.dryFruits.dates,
         alt: 'Stacked glossy Dates with halved fruit and brass spoon',
       },
     ],
@@ -561,7 +563,7 @@ export const products: Product[] = [
     origin: 'Foothill Tropical Groves',
     images: [
       {
-        src: '/images/products/dried-pineapple.webp',
+        src: ASSETS.products.dryFruits.driedPineapple,
         alt: 'Stacked golden Dried Pineapple Rings on deep navy slate',
       },
     ],
@@ -602,7 +604,7 @@ export const products: Product[] = [
     origin: 'Cool Highland Orchards',
     images: [
       {
-        src: '/images/products/dried-kiwi.webp',
+        src: ASSETS.products.dryFruits.driedKiwi,
         alt: 'Translucent green Dried Kiwi slices arranged beside fresh kiwi on olive slate',
       },
     ],
@@ -644,7 +646,7 @@ export const products: Product[] = [
     origin: 'High-Altitude Cedar Forests',
     images: [
       {
-        src: '/images/products/pine-nuts.webp',
+        src: ASSETS.products.nuts.pineNuts,
         alt: 'Dark bowl of shelled Pine Nuts with pine needles and pinecone',
       },
     ],
@@ -686,7 +688,7 @@ export const products: Product[] = [
     origin: 'Northern Valley Orchards',
     images: [
       {
-        src: '/images/products/almonds.webp',
+        src: ASSETS.products.nuts.almonds,
         alt: 'Wooden bowl of whole skin-on Almonds with almond blossoms',
       },
     ],
@@ -728,7 +730,7 @@ export const products: Product[] = [
     origin: 'Coastal Grove Farms',
     images: [
       {
-        src: '/images/products/cashews.webp',
+        src: ASSETS.products.nuts.cashews,
         alt: 'Cream ceramic bowl of Whole Cashews on olive slate',
       },
     ],
@@ -770,7 +772,7 @@ export const products: Product[] = [
     origin: 'Temperate Hill Groves',
     images: [
       {
-        src: '/images/products/hazelnuts.webp',
+        src: ASSETS.products.nuts.hazelnuts,
         alt: 'Wooden bowl of Whole Hazelnuts with cracked shells and green leaves',
       },
     ],
@@ -812,7 +814,7 @@ export const products: Product[] = [
     origin: 'Wetland Pond Harvest',
     images: [
       {
-        src: '/images/products/mint-makhana.webp',
+        src: ASSETS.products.makhana.mintMakhana,
         alt: 'Matte black bowl of Mint Makhana with fresh green mint leaves',
       },
     ],
@@ -852,7 +854,7 @@ export const products: Product[] = [
     origin: 'Wetland Pond Harvest',
     images: [
       {
-        src: '/images/products/black-salt-makhana.webp',
+        src: ASSETS.products.makhana.blackSaltMakhana,
         alt: 'Speckled bowl of Black Salt Makhana beside brass spoon of pink kala namak',
       },
     ],
@@ -892,7 +894,7 @@ export const products: Product[] = [
     origin: 'Wetland Pond Harvest',
     images: [
       {
-        src: '/images/products/peri-peri-makhana.webp',
+        src: ASSETS.products.makhana.periPeriMakhana,
         alt: 'Dark matte bowl of Peri Peri Makhana surrounded by dried red chilies',
       },
     ],
@@ -932,7 +934,7 @@ export const products: Product[] = [
     origin: 'Wetland Pond Harvest',
     images: [
       {
-        src: '/images/products/black-pepper-makhana.webp',
+        src: ASSETS.products.makhana.blackPepperMakhana,
         alt: 'Cream ceramic bowl of Black Pepper Makhana next to pepper mill and peppercorns',
       },
     ],
@@ -972,7 +974,7 @@ export const products: Product[] = [
     origin: 'Wetland Pond Harvest',
     images: [
       {
-        src: '/images/products/spicy-masala-makhana.webp',
+        src: ASSETS.products.makhana.spicyMasalaMakhana,
         alt: 'Dark bowl of Spicy Masala Makhana with cumin seeds, coriander seeds, and chilies',
       },
     ],

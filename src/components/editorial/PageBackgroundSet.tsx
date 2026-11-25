@@ -1,0 +1,63 @@
+'use client';
+
+import React from 'react';
+import { BackgroundChapter } from '@/components/editorial/BackgroundChapter';
+import { ChapterIndex, type ChapterDefinition } from '@/components/editorial/ChapterIndex';
+import { PAGE_BACKGROUND_SETS, type PageBackgroundKey } from '@/lib/assets';
+
+export interface PageChapterItem {
+  id: string;
+  chapterNumber: string;
+  chapterLabel: string;
+  content: React.ReactNode;
+  className?: string;
+}
+
+export interface PageBackgroundSetProps {
+  page: PageBackgroundKey;
+  chapters: readonly PageChapterItem[];
+  showIndex?: boolean;
+}
+
+/**
+ * Renders a 3-4 chapter full-bleed photographic story page using the dedicated
+ * background set for `page` from ASSETS, with automatic desktop/mobile art direction.
+ */
+export function PageBackgroundSet({
+  page,
+  chapters,
+  showIndex = true,
+}: PageBackgroundSetProps) {
+  const backgrounds = PAGE_BACKGROUND_SETS[page];
+  const indexDefs: ChapterDefinition[] = chapters.map((ch) => ({
+    id: ch.id,
+    number: ch.chapterNumber,
+    label: ch.chapterLabel,
+  }));
+
+  return (
+    <div className="relative w-full text-oat">
+      {showIndex && indexDefs.length > 1 && <ChapterIndex chapters={indexDefs} />}
+      {chapters.map((chapter, idx) => {
+        const bg = backgrounds[idx % backgrounds.length];
+        return (
+          <BackgroundChapter
+            key={chapter.id}
+            id={chapter.id}
+            chapterNumber={chapter.chapterNumber}
+            chapterLabel={chapter.chapterLabel}
+            desktopSrc={bg.desktop}
+            mobileSrc={bg.mobile}
+            imageAlt={bg.alt}
+            tone={bg.tone}
+            isHero={idx === 0}
+            isLast={idx === chapters.length - 1}
+            className={chapter.className}
+          >
+            {chapter.content}
+          </BackgroundChapter>
+        );
+      })}
+    </div>
+  );
+}

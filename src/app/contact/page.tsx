@@ -10,6 +10,7 @@ import { FadeInSection } from '@/components/motion/FadeInSection';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { DoodleSVG } from '@/components/editorial/DoodleSVG';
 import { CharcoalDoodle } from '@/components/editorial/CharcoalDoodle';
+import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { MOTION_DURATION, MOTION_EASE } from '@/lib/motion/tokens';
 
 export default function ContactPage() {
@@ -22,8 +23,16 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-aubergine text-oat pt-28 pb-24">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <PageBackgroundSet
+      page="signature"
+      showIndex={false}
+      chapters={[
+        {
+          id: 'contact-01',
+          chapterNumber: '01',
+          chapterLabel: 'Write To Yagya',
+          content: (
+            <div className="max-w-5xl mx-auto">
         <FadeInSection className="relative text-center max-w-xl mx-auto mb-12">
           <CharcoalDoodle
             name="blackberry"
@@ -182,7 +191,10 @@ export default function ContactPage() {
             </AnimatePresence>
           </OatSheet>
         </div>
-      </div>
-    </div>
+            </div>
+          ),
+        },
+      ]}
+    />
   );
 }

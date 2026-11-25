@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { Menu, X, ShoppingBag } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { siteConfig } from '@/lib/data/site';
+import { ASSETS } from '@/lib/assets';
 import { useCartStore } from '@/lib/store/cartStore';
 
 const NAV_LINKS = [
@@ -46,7 +47,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-3 group shrink-0">
             <div className="relative w-9 h-9 rounded-[4px] overflow-hidden border border-white/25 bg-oat shrink-0">
               <Image
-                src="/yagya-logo.png"
+                src={ASSETS.brand.logoPrimary}
                 alt="Yagya"
                 fill
                 sizes="36px"

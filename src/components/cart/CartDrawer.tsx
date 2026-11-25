@@ -141,7 +141,7 @@ export function CartDrawer() {
                             alt={item.product.name}
                             fill
                             className={
-                              item.product.images[0]?.src?.includes('/images/products/')
+                              item.product.images[0]?.src?.includes('/assets/products/')
                                 ? 'object-cover transition-transform duration-300 group-hover:scale-105'
                                 : 'object-contain p-1.5 transition-transform duration-300 group-hover:scale-105'
                             }
