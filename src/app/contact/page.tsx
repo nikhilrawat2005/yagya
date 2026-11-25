@@ -25,7 +25,6 @@ export default function ContactPage() {
   return (
     <PageBackgroundSet
       page="signature"
-      showIndex={false}
       chapters={[
         {
           id: 'contact-01',
@@ -191,6 +190,32 @@ export default function ContactPage() {
             </AnimatePresence>
           </OatSheet>
         </div>
+            </div>
+          ),
+        },
+        {
+          id: 'contact-02',
+          chapterNumber: '02',
+          chapterLabel: 'Bulk & Gifting',
+          content: (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+              <OatSheet tone="warm" className="lg:col-span-6 lg:col-start-4 p-8 sm:p-10 space-y-4">
+                <span className="font-ui-label text-[11px] text-peach block">
+                  02 · Wholesale &amp; Harvest Gifting
+                </span>
+                <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat leading-tight">
+                  Custom festive hampers &amp; pantry refills.
+                </h2>
+                <p className="text-sm sm:text-base text-apricot/90 leading-relaxed">
+                  For corporate gifting, café pantry partnerships, or bulk seasonal orders, share
+                  your preferred harvests above and our packing hub will prepare a fresh-batch quote.
+                </p>
+                <div className="pt-2">
+                  <GlowButton href="/shop" variant="secondary">
+                    Browse All Harvests
+                  </GlowButton>
+                </div>
+              </OatSheet>
             </div>
           ),
         },
