@@ -67,8 +67,8 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
   );
 
   return (
-    <div className="min-h-screen bg-navy text-oat pt-28 pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-dvh bg-navy text-oat pt-[calc(5.5rem+var(--safe-top))] pb-20 md:pt-28 md:pb-24">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-14 pl-[max(1rem,var(--safe-left))] pr-[max(1rem,var(--safe-right))]">
         {/* Header */}
         <FadeInSection className="mb-8 pb-6 border-b border-white/15 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="relative">
@@ -78,7 +78,7 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
               </span>
               <DoodleSVG name="star" tone="flame" delay={0.2} className="w-5 h-5" />
             </div>
-            <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium">
+            <h1 className="font-display text-fluid-h2 text-oat font-medium">
               Explore{' '}
               <span className="relative inline-block italic text-peach">
                 Yagya
@@ -111,9 +111,9 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                       transition={{ duration: 0.14 }}
                       onClick={() => setSearchQuery('')}
                       aria-label="Clear search"
-                      className="p-1 rounded-[4px] text-apricot/70 hover:text-oat hover:bg-oat/15 transition-colors cursor-pointer"
+                      className="min-w-[44px] min-h-[44px] -mr-2 flex items-center justify-center rounded-[4px] text-apricot/70 hover:text-oat hover:bg-oat/15 transition-colors cursor-pointer"
                     >
-                      <X className="w-3.5 h-3.5" />
+                      <X className="w-4 h-4" />
                     </motion.button>
                   )}
                 </AnimatePresence>
@@ -123,7 +123,7 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
         </FadeInSection>
 
         {/* Category Filter Tabs & Sort */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
           <AnimatedTabs
             tabs={categoryTabs}
             activeTab={selectedCategory}
@@ -131,9 +131,9 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
             layoutId="shop-category-tabs"
           />
 
-          <div className="flex items-center gap-4 text-xs text-oat">
-            <div className="flex items-center gap-2.5 bg-oat/[0.12] border border-white/25 rounded-[4px] px-3 py-2">
-              <label htmlFor="max-price" className="whitespace-nowrap text-apricot">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 text-xs text-oat">
+            <div className="min-h-[44px] flex items-center justify-between sm:justify-start gap-3 bg-oat/[0.12] border border-white/25 rounded-[4px] px-3.5 py-2">
+              <label htmlFor="max-price" className="whitespace-nowrap text-apricot text-xs">
                 Max ₹{maxPrice}
               </label>
               <input
@@ -144,7 +144,7 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                 step="50"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="accent-flame cursor-pointer w-24"
+                className="accent-flame cursor-pointer w-28 sm:w-24 min-h-[24px]"
               />
             </div>
 
@@ -152,7 +152,7 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
               value={selectedSort}
               onChange={(e) => setSelectedSort(e.target.value)}
               aria-label="Sort products"
-              className="glow-input bg-navy border border-white/25 rounded-[4px] px-3 py-2 text-xs text-oat cursor-pointer"
+              className="glow-input min-h-[44px] bg-navy border border-white/25 rounded-[4px] px-3.5 py-2 text-base md:text-xs text-oat cursor-pointer"
             >
               <option value="featured">Featured Harvest</option>
               <option value="price-low">Price: Low to High</option>

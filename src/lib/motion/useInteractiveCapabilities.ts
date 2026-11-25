@@ -1,7 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
-import { useReducedMotion } from 'motion/react';
+import { useBreakpoint } from './useBreakpoint';
 
 const HOVER_MEDIA_QUERY = '(hover: hover) and (pointer: fine)';
 
@@ -22,8 +22,9 @@ function getHoverMediaSnapshot(): boolean {
 }
 
 /**
- * Hydration-safe capability detector for pointer hover/tilt/magnetic/cursor effects.
- * Returns `false` on SSR and touch devices, and automatically respects `prefers-reduced-motion`.
+ * Hydration-safe capability detector for pointer hover/tilt/magnetic/parallax/low-power effects.
+ * Returns `false` on SSR and touch devices, and respects both `prefers-reduced-motion`
+ * and low-power CPUs (`hardwareConcurrency <= 4`).
  */
 export function useInteractiveCapabilities() {
   const canHover = useSyncExternalStore(
@@ -31,11 +32,26 @@ export function useInteractiveCapabilities() {
     getHoverMediaSnapshot,
     () => false
   );
-  const prefersReducedMotion = Boolean(useReducedMotion());
+  const {
+    prefersReducedMotion,
+    isLowPowerDevice,
+    isDesktop,
+    isMobile,
+    isTablet,
+    isLandscapePhone,
+    simplifyMotion,
+  } = useBreakpoint();
 
   return {
     canHover,
     prefersReducedMotion,
+    isLowPowerDevice,
+    isDesktop,
+    isMobile,
+    isTablet,
+    isLandscapePhone,
+    simplifyMotion,
     enableInteractiveMotion: canHover && !prefersReducedMotion,
+    enableParallax: isDesktop && canHover && !simplifyMotion,
   };
 }

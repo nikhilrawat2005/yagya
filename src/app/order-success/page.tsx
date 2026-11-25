@@ -57,12 +57,12 @@ async function OrderSuccessDetails({
           </div>
         </OatSheet>
 
-        <div className="relative flex flex-col sm:flex-row gap-3 justify-center items-center">
-          <DoodleSVG name="star" tone="flame" className="hidden sm:block w-6 h-6" />
-          <GlowButton href="/shop" variant="cta" magnetic>
+        <div className="relative flex flex-col sm:flex-row gap-3 justify-center items-stretch sm:items-center">
+          <DoodleSVG name="star" tone="flame" visibility="tablet-up" className="w-6 h-6" />
+          <GlowButton href="/shop" variant="cta" magnetic className="w-full sm:w-auto min-h-[48px]">
             Explore More
           </GlowButton>
-          <GlowButton href="/" variant="secondary">
+          <GlowButton href="/" variant="secondary" className="w-full sm:w-auto min-h-[48px]">
             Return Home
           </GlowButton>
         </div>

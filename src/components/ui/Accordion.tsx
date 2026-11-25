@@ -39,7 +39,7 @@ export function Accordion({ items, defaultOpenId, className = '' }: AccordionPro
               type="button"
               aria-expanded={isOpen}
               onClick={() => setOpenId(isOpen ? null : item.id)}
-              className="w-full px-5 py-4 flex items-center justify-between gap-4 text-left cursor-pointer group"
+              className="w-full min-h-[48px] px-4 sm:px-5 py-3.5 sm:py-4 flex items-center justify-between gap-4 text-left cursor-pointer group"
             >
               <span className="font-sans text-sm sm:text-base font-medium text-oat group-hover:text-peach transition-colors">
                 {item.title}
@@ -47,7 +47,7 @@ export function Accordion({ items, defaultOpenId, className = '' }: AccordionPro
               <motion.span
                 animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={prefersReducedMotion ? { duration: 0.01 } : MOTION_SPRING.tactile}
-                className="w-7 h-7 rounded-[4px] bg-oat/10 border border-white/20 flex items-center justify-center text-oat shrink-0"
+                className="w-9 h-9 rounded-[4px] bg-oat/10 border border-white/20 flex items-center justify-center text-oat shrink-0"
               >
                 <ChevronDown className="w-4 h-4" />
               </motion.span>

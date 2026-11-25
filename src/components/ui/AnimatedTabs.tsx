@@ -44,7 +44,7 @@ export function AnimatedTabs<T extends string>({
               type="button"
               aria-selected={active}
               onClick={() => onChange(tab.id)}
-              className={`relative pb-2.5 transition-colors duration-200 cursor-pointer ${
+              className={`relative min-h-[44px] inline-flex items-center pb-2 transition-colors duration-200 cursor-pointer ${
                 active ? 'text-oat' : 'text-apricot/65 hover:text-oat'
               }`}
             >
@@ -75,7 +75,7 @@ export function AnimatedTabs<T extends string>({
             aria-selected={active}
             whileTap={prefersReducedMotion ? undefined : { scale: 0.97 }}
             onClick={() => onChange(tab.id)}
-            className={`relative overflow-hidden px-4 py-2 rounded-[4px] font-ui-label text-[11px] border transition-colors duration-200 cursor-pointer ${
+            className={`relative overflow-hidden min-h-[44px] px-4 py-2.5 rounded-[4px] font-ui-label text-[11px] border transition-colors duration-200 cursor-pointer inline-flex items-center ${
               active
                 ? 'text-oat border-flame'
                 : 'bg-[#F6EFE2]/[0.12] text-apricot/90 border-white/20 hover:border-apricot/45 hover:text-oat'

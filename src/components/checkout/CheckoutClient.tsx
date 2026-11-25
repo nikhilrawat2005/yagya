@@ -84,8 +84,8 @@ export function CheckoutClient() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-navy text-oat pt-32 pb-24 px-4">
-        <OatSheet tone="subtle" className="max-w-md mx-auto p-10 text-center">
+      <div className="min-h-dvh bg-navy text-oat pt-32 pb-24 px-4">
+        <OatSheet tone="subtle" className="max-w-md mx-auto p-6 sm:p-10 text-center">
           <div className="w-14 h-14 mx-auto mb-4 rounded-[6px] bg-oat/10 border border-white/25 flex items-center justify-center">
             <ShoppingBag className="w-7 h-7 text-peach" />
           </div>
@@ -95,7 +95,7 @@ export function CheckoutClient() {
           <p className="text-sm text-apricot/80 mb-6">
             Your harvest bag is currently empty. Explore our small-batch seeds and berries first.
           </p>
-          <GlowButton href="/shop" variant="cta" magnetic>
+          <GlowButton href="/shop" variant="cta" magnetic className="w-full sm:w-auto min-h-[48px]">
             Explore Collection
           </GlowButton>
         </OatSheet>
@@ -104,32 +104,33 @@ export function CheckoutClient() {
   }
 
   return (
-    <div className="min-h-screen bg-navy text-oat pt-28 pb-24">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-dvh bg-navy text-oat pt-[calc(5.5rem+var(--safe-top))] pb-[calc(6rem+var(--safe-bottom))] md:pt-28 md:pb-24">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-14 pl-[max(1rem,var(--safe-left))] pr-[max(1rem,var(--safe-right))]">
         <FadeInSection className="mb-8">
           <span className="font-ui-label text-[11px] text-peach block mb-1.5">
             Order Review
           </span>
-          <h1 className="font-display text-4xl text-oat font-medium">
+          <h1 className="font-display text-fluid-h2 text-oat font-medium">
             Express Checkout
           </h1>
         </FadeInSection>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
           <div className="lg:col-span-7">
-            <form onSubmit={handlePlaceOrder} noValidate className="space-y-6">
-              <OatSheet tone="subtle" interactive={false} className="p-6">
+            <form onSubmit={handlePlaceOrder} noValidate className="space-y-6 scroll-mb-24">
+              <OatSheet tone="subtle" interactive={false} padding="compact">
                 <h2 className="font-display text-xl font-medium text-oat mb-4 flex items-center gap-2.5">
                   <span className="w-6 h-6 rounded-[4px] bg-flame text-oat text-xs flex items-center justify-center font-sans font-semibold">
                     1
                   </span>
                   Contact Details
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <GlowInput
                     label="Full Name *"
                     floatingLabel
                     type="text"
+                    autoComplete="name"
                     value={formData.name}
                     error={errors.name}
                     onChange={(e) => {
@@ -142,6 +143,7 @@ export function CheckoutClient() {
                     label="Email *"
                     floatingLabel
                     type="email"
+                    autoComplete="email"
                     value={formData.email}
                     error={errors.email}
                     onChange={(e) => {
@@ -154,6 +156,8 @@ export function CheckoutClient() {
                     label="Mobile *"
                     floatingLabel
                     type="tel"
+                    inputMode="numeric"
+                    autoComplete="tel-national"
                     maxLength={10}
                     value={formData.phone}
                     error={errors.phone}
@@ -167,18 +171,19 @@ export function CheckoutClient() {
                 </div>
               </OatSheet>
 
-              <OatSheet tone="subtle" interactive={false} delay={0.05} className="p-6">
+              <OatSheet tone="subtle" interactive={false} delay={0.05} padding="compact">
                 <h2 className="font-display text-xl font-medium text-oat mb-4 flex items-center gap-2.5">
                   <span className="w-6 h-6 rounded-[4px] bg-flame text-oat text-xs flex items-center justify-center font-sans font-semibold">
                     2
                   </span>
                   Shipping Address
                 </h2>
-                <div className="space-y-4 text-xs">
+                <div className="space-y-4">
                   <GlowInput
                     label="Street Address *"
                     floatingLabel
                     type="text"
+                    autoComplete="street-address"
                     value={formData.address}
                     error={errors.address}
                     onChange={(e) => {
@@ -193,6 +198,7 @@ export function CheckoutClient() {
                       label="City"
                       floatingLabel
                       type="text"
+                      autoComplete="address-level2"
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                       placeholder="Gurugram"
@@ -201,6 +207,7 @@ export function CheckoutClient() {
                       label="State"
                       floatingLabel
                       type="text"
+                      autoComplete="address-level1"
                       value={formData.state}
                       onChange={(e) => setFormData({ ...formData, state: e.target.value })}
                     />
@@ -208,6 +215,8 @@ export function CheckoutClient() {
                       label="Pincode *"
                       floatingLabel
                       type="text"
+                      inputMode="numeric"
+                      autoComplete="postal-code"
                       maxLength={6}
                       value={formData.pincode}
                       error={errors.pincode}
@@ -268,7 +277,7 @@ export function CheckoutClient() {
                 variant="cta"
                 magnetic
                 disabled={loading}
-                className="w-full py-4"
+                className="w-full min-h-[48px] py-4"
               >
                 {loading ? (
                   <span>Confirming harvest batch...</span>

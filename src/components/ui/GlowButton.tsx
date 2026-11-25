@@ -52,10 +52,10 @@ interface GlowButtonActionProps extends GlowButtonBaseProps {
 export type GlowButtonProps = GlowButtonLinkProps | GlowButtonActionProps;
 
 const SIZE_CLASSES: Record<GlowButtonSize, string> = {
-  sm: 'px-4 py-2 text-[11px]',
-  md: 'px-6 py-3 text-xs',
-  lg: 'px-8 py-4 text-xs',
-  icon: 'p-2.5 w-10 h-10',
+  sm: 'px-4 py-2.5 min-h-[44px] text-xs',
+  md: 'px-6 py-3 min-h-[46px] text-xs',
+  lg: 'px-8 py-4 min-h-[50px] text-xs',
+  icon: 'p-2.5 min-w-[44px] min-h-[44px]',
 };
 
 const VARIANT_CLASSES: Record<GlowButtonVariant, string> = {
