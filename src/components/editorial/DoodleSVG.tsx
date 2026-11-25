@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'motion/react';
-import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
+import { motion, useReducedMotion } from 'motion/react';
 
 export type DoodleName =
   | 'flame'
@@ -22,7 +21,6 @@ export interface DoodleSVGProps {
   tone?: DoodleTone;
   delay?: number;
   direction?: 'right' | 'down-left' | 'down-right';
-  visibility?: 'all' | 'tablet-up' | 'desktop-only';
   className?: string;
 }
 
@@ -32,12 +30,6 @@ const TONE_COLOR: Record<DoodleTone, string> = {
   peach: 'text-peach',
   flame: 'text-flame',
 };
-
-const VISIBILITY_CLASS = {
-  all: '',
-  'tablet-up': 'hidden md:block',
-  'desktop-only': 'hidden lg:block',
-} as const;
 
 function AnimatedStroke({
   d,
@@ -52,10 +44,7 @@ function AnimatedStroke({
   duration?: number;
   opacity?: number;
 }) {
-  const { prefersReducedMotion, simplifyMotion } = useInteractiveCapabilities();
-
-  const resolvedDuration = prefersReducedMotion ? 0.01 : simplifyMotion ? duration * 0.45 : duration;
-  const resolvedDelay = prefersReducedMotion ? 0 : simplifyMotion ? delay * 0.4 : delay;
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <motion.path
@@ -72,14 +61,14 @@ function AnimatedStroke({
           : { pathLength: 0, opacity: 0 }
       }
       whileInView={{ pathLength: 1, opacity }}
-      viewport={{ once: true, amount: 0.25 }}
+      viewport={{ once: true, amount: 0.3 }}
       transition={{
         pathLength: {
-          duration: resolvedDuration,
-          delay: resolvedDelay,
+          duration: prefersReducedMotion ? 0.01 : duration,
+          delay: prefersReducedMotion ? 0 : delay,
           ease: [0.22, 1, 0.36, 1],
         },
-        opacity: { duration: 0.16, delay: resolvedDelay },
+        opacity: { duration: 0.18, delay: prefersReducedMotion ? 0 : delay },
       }}
     />
   );
@@ -87,17 +76,16 @@ function AnimatedStroke({
 
 /**
  * Hand-drawn Oat/Apricot/Flame editorial line-art doodles animated with
- * scroll-triggered SVG stroke drawing and responsive visibility controls.
+ * scroll-triggered SVG stroke drawing (stroke-dashoffset via Framer Motion pathLength).
  */
 export function DoodleSVG({
   name,
   tone = 'apricot',
   delay = 0.15,
   direction = 'right',
-  visibility = 'all',
   className = '',
 }: DoodleSVGProps) {
-  const colorClass = `${TONE_COLOR[tone]} ${VISIBILITY_CLASS[visibility]}`;
+  const colorClass = TONE_COLOR[tone];
 
   switch (name) {
     case 'flame':

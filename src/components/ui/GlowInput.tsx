@@ -58,7 +58,7 @@ export function GlowInput({
       )}
 
       <div
-        className={`relative rounded-[6px] border transition-[border-color,box-shadow,background-color] duration-300 ease-[var(--ease-smooth)] bg-[#F6EFE2]/[0.10] oat-sheet-blur ${
+        className={`relative rounded-[6px] border transition-[border-color,box-shadow,background-color] duration-300 ease-[var(--ease-smooth)] bg-[#F6EFE2]/[0.10] backdrop-blur-md ${
           error
             ? 'border-flame shadow-[0_0_0_2px_rgba(223,127,37,0.28)]'
             : focused
@@ -84,7 +84,7 @@ export function GlowInput({
             } ${
               labelFloated
                 ? 'top-1.5 text-[10px] font-ui-label tracking-[0.08em]'
-                : 'top-1/2 -translate-y-1/2 text-base md:text-sm font-sans'
+                : 'top-1/2 -translate-y-1/2 text-xs font-sans'
             } ${error ? 'text-flame' : focused ? 'text-peach' : 'text-apricot/75'}`}
           >
             {label}
@@ -106,9 +106,9 @@ export function GlowInput({
             setFocused(false);
             onBlur?.(e);
           }}
-          className={`w-full min-h-[48px] bg-transparent text-oat placeholder:text-apricot/50 focus:outline-none rounded-[inherit] ${
-            floatingLabel ? 'pt-6 pb-2' : 'py-2.5'
-          } ${leadingIcon ? 'pl-10' : 'px-3.5'} ${trailingSlot ? 'pr-11' : 'pr-3.5'} text-base md:text-sm ${inputClassName}`}
+          className={`w-full bg-transparent text-oat placeholder:text-apricot/50 focus:outline-none rounded-[inherit] ${
+            floatingLabel ? 'pt-5 pb-2' : 'py-2.5'
+          } ${leadingIcon ? 'pl-10' : 'px-3.5'} ${trailingSlot ? 'pr-9' : 'pr-3.5'} text-xs ${inputClassName}`}
           {...rest}
         />
 
@@ -195,7 +195,7 @@ export function GlowTextarea({
       )}
 
       <div
-        className={`relative rounded-[6px] border transition-[border-color,box-shadow,background-color] duration-300 ease-[var(--ease-smooth)] bg-[#F6EFE2]/[0.10] oat-sheet-blur ${
+        className={`relative rounded-[6px] border transition-[border-color,box-shadow,background-color] duration-300 ease-[var(--ease-smooth)] bg-[#F6EFE2]/[0.10] backdrop-blur-md ${
           error
             ? 'border-flame shadow-[0_0_0_2px_rgba(223,127,37,0.28)]'
             : focused
@@ -209,7 +209,7 @@ export function GlowTextarea({
             className={`pointer-events-none absolute left-4 transition-all duration-200 ease-[var(--ease-smooth)] ${
               labelFloated
                 ? 'top-2 text-[10px] font-ui-label tracking-[0.08em]'
-                : 'top-3.5 text-base md:text-sm font-sans'
+                : 'top-3.5 text-xs font-sans'
             } ${error ? 'text-flame' : focused ? 'text-peach' : 'text-apricot/75'}`}
           >
             {label}
@@ -231,7 +231,7 @@ export function GlowTextarea({
             setFocused(false);
             onBlur?.(e);
           }}
-          className={`w-full bg-transparent text-base md:text-sm text-oat placeholder:text-apricot/50 focus:outline-none rounded-[inherit] px-4 ${
+          className={`w-full bg-transparent text-sm text-oat placeholder:text-apricot/50 focus:outline-none rounded-[inherit] px-4 ${
             floatingLabel ? 'pt-6 pb-3' : 'py-3'
           } ${className}`}
           {...rest}

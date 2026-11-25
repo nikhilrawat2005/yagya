@@ -30,14 +30,14 @@ const ABOUT_HARVEST_PREVIEW = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-dvh bg-olive-deep text-oat pt-[calc(5.5rem+var(--safe-top))] pb-20 md:pt-28 md:pb-24">
-      <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-14 pl-[max(1rem,var(--safe-left))] pr-[max(1rem,var(--safe-right))]">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-center">
-          <OatSheet tone="medium" padding="spacious" className="lg:col-span-6 space-y-5">
+    <div className="min-h-screen bg-olive-deep text-oat pt-28 pb-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <OatSheet tone="medium" className="lg:col-span-6 p-8 sm:p-10 space-y-5">
             <span className="font-ui-label text-[11px] text-peach block">
               Our Story &amp; Soil
             </span>
-            <h1 className="font-display text-fluid-h2 text-oat font-medium">
+            <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium leading-tight">
               The{' '}
               <span className="relative inline-block italic text-peach">
                 Yagya
@@ -50,22 +50,22 @@ export default function AboutPage() {
               </span>{' '}
               Philosophy
             </h1>
-            <p className="text-fluid-body text-apricot/90">
+            <p className="text-sm sm:text-base text-apricot/90 leading-relaxed">
               {siteConfig.description}
             </p>
-            <p className="text-fluid-body text-oat/85">
+            <p className="text-sm sm:text-base text-oat/85 leading-relaxed">
               We partner directly with farming families across Madhya Pradesh, Rajasthan,
               Karnataka, Himachal, and Ladakh — skipping long middleman chains and packing
               every batch under strict hygiene controls.
             </p>
             <div className="pt-2">
-              <GlowButton href="/shop" variant="cta" magnetic className="w-full sm:w-auto min-h-[48px]">
+              <GlowButton href="/shop" variant="cta" magnetic>
                 Explore Yagya
               </GlowButton>
             </div>
           </OatSheet>
 
-          <OatSheet tone="subtle" padding="default" delay={0.18} className="lg:col-span-5 lg:col-start-8 space-y-6">
+          <OatSheet tone="subtle" delay={0.18} className="lg:col-span-5 lg:col-start-8 p-7 sm:p-9 space-y-6">
             <div className="flex items-center justify-between">
               <DoodleSVG name="diya" tone="flame" className="w-16 h-14" />
               <DoodleSVG name="leaf" tone="apricot" className="w-12 h-12" />

@@ -5,10 +5,10 @@ import Image from 'next/image';
 import {
   motion,
   useInView,
+  useReducedMotion,
   useScroll,
   useTransform,
 } from 'motion/react';
-import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 
 export type ChapterTone = 'navy' | 'olive' | 'purple' | 'aubergine';
 
@@ -18,7 +18,6 @@ export interface BackgroundChapterProps {
   chapterLabel: string;
   imageSrc: '/background/1.png' | '/background/2.png' | '/background/3.png' | '/background/4.png';
   imageAlt: string;
-  objectPositionClass?: string;
   tone: ChapterTone;
   isHero?: boolean;
   isLast?: boolean;
@@ -35,19 +34,19 @@ const TONE_BASE_BG: Record<ChapterTone, string> = {
 
 const TONE_VIGNETTE: Record<ChapterTone, string> = {
   navy:
-    'linear-gradient(180deg, rgba(20,28,43,0.32) 0%, rgba(20,28,43,0.12) 48%, rgba(20,28,43,0.54) 100%)',
+    'linear-gradient(180deg, rgba(20,28,43,0.44) 0%, rgba(20,28,43,0.16) 46%, rgba(20,28,43,0.58) 100%)',
   olive:
-    'linear-gradient(180deg, rgba(37,41,5,0.34) 0%, rgba(75,81,10,0.14) 48%, rgba(37,41,5,0.56) 100%)',
+    'linear-gradient(180deg, rgba(37,41,5,0.46) 0%, rgba(75,81,10,0.18) 46%, rgba(37,41,5,0.62) 100%)',
   purple:
-    'linear-gradient(180deg, rgba(56,27,49,0.32) 0%, rgba(56,27,49,0.12) 48%, rgba(56,27,49,0.56) 100%)',
+    'linear-gradient(180deg, rgba(56,27,49,0.44) 0%, rgba(56,27,49,0.16) 46%, rgba(56,27,49,0.62) 100%)',
   aubergine:
-    'linear-gradient(180deg, rgba(36,20,31,0.32) 0%, rgba(36,20,31,0.14) 48%, rgba(22,12,19,0.62) 100%)',
+    'linear-gradient(180deg, rgba(36,20,31,0.42) 0%, rgba(36,20,31,0.18) 46%, rgba(22,12,19,0.68) 100%)',
 };
 
 /**
- * Full-bleed photographic story chapter using `min-h-dvh`, responsive object positioning,
- * transform-only subtle desktop parallax (capped at ±20px), low-power/touch safeguards,
- * and a 1440px-capped foreground grid inside a full-bleed background canvas.
+ * Full-bleed photographic story chapter with smooth scroll-linked cross-dissolve,
+ * subtle vertical parallax, lazy image mounting below the fold, and a dark vignette
+ * tailored to the chapter's base tone for accessible Oat White typography.
  */
 export function BackgroundChapter({
   id,
@@ -55,7 +54,6 @@ export function BackgroundChapter({
   chapterLabel,
   imageSrc,
   imageAlt,
-  objectPositionClass = 'object-center',
   tone,
   isHero = false,
   isLast = false,
@@ -63,11 +61,11 @@ export function BackgroundChapter({
   className = '',
 }: BackgroundChapterProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const { enableParallax, isMobile } = useInteractiveCapabilities();
+  const prefersReducedMotion = useReducedMotion();
 
   const shouldLoadImage = useInView(sectionRef, {
     once: true,
-    margin: '550px 0px',
+    margin: '750px 0px',
   });
 
   const { scrollYProgress } = useScroll({
@@ -81,7 +79,7 @@ export function BackgroundChapter({
   const lastOpacity = useTransform(scrollYProgress, [0.1, 0.44, 1], [0, 1, 1]);
 
   const layerOpacity = isHero ? heroOpacity : isLast ? lastOpacity : midOpacity;
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ['-3.5%', '3.5%']);
 
   const imageReady = isHero || shouldLoadImage;
 
@@ -91,9 +89,9 @@ export function BackgroundChapter({
       ref={sectionRef}
       data-chapter={chapterNumber}
       aria-label={`Chapter ${chapterNumber}: ${chapterLabel}`}
-      className={`relative min-h-dvh w-full overflow-x-clip flex items-center pt-[calc(5.25rem+var(--safe-top))] pb-24 md:py-24 lg:py-28 landscape-phone:pt-20 landscape-phone:pb-12 ${className}`}
+      className={`relative min-h-screen w-full overflow-x-clip flex items-center pt-24 pb-12 sm:pt-28 sm:pb-16 ${className}`}
     >
-      {/* Cross-dissolving fixed photographic backdrop (never uses background-attachment: fixed) */}
+      {/* Cross-dissolving fixed photographic backdrop */}
       <motion.div
         aria-hidden="true"
         style={{
@@ -105,21 +103,21 @@ export function BackgroundChapter({
         {imageReady && (
           <motion.div
             style={
-              enableParallax
-                ? { y: parallaxY, scale: 1.06 }
-                : undefined
+              prefersReducedMotion
+                ? undefined
+                : { y: parallaxY, scale: 1.09 }
             }
-            className="absolute inset-0"
+            className="absolute inset-0 will-change-transform"
           >
             <Image
               src={imageSrc}
               alt={imageAlt}
               fill
               sizes="100vw"
-              quality={isMobile ? 75 : 85}
+              quality={85}
               preload={isHero}
               loading={isHero ? 'eager' : 'lazy'}
-              className={`object-cover ${objectPositionClass}`}
+              className="object-cover object-center"
             />
           </motion.div>
         )}
@@ -135,13 +133,20 @@ export function BackgroundChapter({
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse at center, transparent 32%, rgba(12, 10, 18, 0.46) 100%)',
+              'radial-gradient(ellipse at center, transparent 32%, rgba(12, 10, 18, 0.44) 100%)',
           }}
         />
       </motion.div>
 
-      {/* Chapter Foreground Content (capped at 1440px on ultra-wide, 16px side gutters on mobile) */}
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 md:px-8 lg:px-14 pl-[max(1rem,var(--safe-left))] pr-[max(1rem,var(--safe-right))]">
+      {/* Chapter Foreground Content (Oat-Sheet panels & doodles) */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 lg:px-12">
+        {/* Compact inline chapter marker for mobile/tablet where side index hides */}
+        <div className="lg:hidden flex items-center gap-3 mb-6 text-[11px] font-ui-label text-apricot/90">
+          <span className="text-flame font-semibold">{chapterNumber}</span>
+          <span className="w-6 h-[1px] bg-oat/40" aria-hidden="true" />
+          <span>{chapterLabel}</span>
+        </div>
+
         {children}
       </div>
     </section>

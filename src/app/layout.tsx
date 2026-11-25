@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import {
   Playfair_Display,
   DM_Sans,
@@ -16,29 +16,19 @@ const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair',
   display: 'swap',
-  adjustFontFallback: true,
 });
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
   variable: '--font-dm-sans',
   display: 'swap',
-  adjustFontFallback: true,
 });
 
 const caveat = Caveat({
   subsets: ['latin'],
   variable: '--font-caveat',
   display: 'swap',
-  adjustFontFallback: true,
 });
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  viewportFit: 'cover',
-  themeColor: '#141C2B',
-};
 
 export const metadata: Metadata = {
   title: `${siteConfig.name} — Seeds & Berries, Straight From The Farm`,

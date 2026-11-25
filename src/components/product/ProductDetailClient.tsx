@@ -66,15 +66,15 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
   ];
 
   return (
-    <div className="min-h-dvh bg-navy text-oat pt-[calc(5.5rem+var(--safe-top))] pb-20 md:pt-28 md:pb-24">
-      <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-14 pl-[max(1rem,var(--safe-left))] pr-[max(1rem,var(--safe-right))]">
+    <div className="min-h-screen bg-navy text-oat pt-28 pb-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb" className="text-xs text-apricot/75 mb-6 flex flex-wrap items-center gap-2">
-          <Link href="/" className="nav-link-underline min-h-[44px] hover:text-oat">Home</Link>
+          <Link href="/" className="nav-link-underline hover:text-oat">Home</Link>
           <span>/</span>
-          <Link href="/shop" className="nav-link-underline min-h-[44px] hover:text-oat">Collection</Link>
+          <Link href="/shop" className="nav-link-underline hover:text-oat">Collection</Link>
           <span>/</span>
-          <Link href={`/shop?category=${product.categorySlug}`} className="nav-link-underline min-h-[44px] hover:text-oat">
+          <Link href={`/shop?category=${product.categorySlug}`} className="nav-link-underline hover:text-oat">
             {product.category}
           </Link>
           <span>/</span>
@@ -82,13 +82,12 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
         </nav>
 
         {/* Main Grid */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 landscape-phone:grid-cols-12 gap-8 lg:gap-10 landscape-phone:gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Left: Frosted Oat Sheet Frame */}
-          <FadeInSection direction="right" className="lg:col-span-6 landscape-phone:col-span-5">
+          <FadeInSection direction="right" className="lg:col-span-6">
             <Card3D
               maxTilt={5}
-              className="max-w-[440px] lg:max-w-none landscape-phone:max-w-[260px] mx-auto w-full"
-              surfaceClassName={`group bg-[#F6EFE2]/[0.14] oat-sheet-blur border border-white/25 flex items-center justify-center overflow-hidden aspect-square ${
+              surfaceClassName={`group bg-[#F6EFE2]/[0.14] backdrop-blur-[18px] border border-white/25 flex items-center justify-center overflow-hidden aspect-square ${
                 isStudioPhoto ? 'p-3 sm:p-4' : 'p-8'
               }`}
             >
@@ -122,11 +121,11 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
           </FadeInSection>
 
           {/* Right: Buy Box */}
-          <FadeInSection direction="left" className="lg:col-span-6 landscape-phone:col-span-7 flex flex-col">
+          <FadeInSection direction="left" className="lg:col-span-6 flex flex-col">
             <span className="font-ui-label text-[11px] text-peach mb-2">
               {product.origin} · {product.provenance}
             </span>
-            <h1 className="font-display text-fluid-h2 text-oat font-medium mb-3">
+            <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium leading-tight mb-3">
               {product.name}
             </h1>
 
@@ -141,12 +140,12 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               <span className="text-xs text-apricot/75">({product.reviewCount} reviews)</span>
             </div>
 
-            <p className="text-fluid-body text-apricot/90 mb-6">
+            <p className="text-sm sm:text-base text-apricot/90 leading-relaxed mb-6">
               {product.description}
             </p>
 
             {/* Price */}
-            <OatSheet tone="subtle" interactive={false} padding="compact" className="mb-6 flex items-baseline justify-between">
+            <OatSheet tone="subtle" interactive={false} className="p-4 mb-6 flex items-baseline justify-between">
               <div>
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.span
@@ -165,7 +164,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                     ₹{selectedVariant.mrp}
                   </span>
                 )}
-                <p className="text-xs text-apricot/75 mt-1">
+                <p className="text-[11px] text-apricot/75 mt-1">
                   {selectedVariant.weight} · Free dispatch over ₹499
                 </p>
               </div>
@@ -189,14 +188,14 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                       whileTap={prefersReducedMotion ? undefined : { scale: 0.97 }}
                       transition={MOTION_SPRING.tactile}
                       onClick={() => setSelectedVariant(v)}
-                      className={`min-h-[44px] min-w-[76px] px-4 py-2 rounded-[4px] border text-left transition-all duration-200 cursor-pointer ${
+                      className={`px-4 py-2.5 rounded-[4px] border text-left transition-all duration-200 cursor-pointer ${
                         isSelected
                           ? 'border-flame bg-flame text-oat shadow-[var(--glow-level-1)]'
                           : 'border-white/25 bg-oat/[0.10] text-oat hover:border-apricot/50 hover:bg-oat/[0.18]'
                       }`}
                     >
                       <p className="text-xs font-semibold">{v.weight}</p>
-                      <p className="text-xs opacity-85">₹{v.price}</p>
+                      <p className="text-[11px] opacity-85">₹{v.price}</p>
                     </motion.button>
                   );
                 })}
@@ -204,24 +203,24 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             </div>
 
             {/* Quantity & CTA */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-6">
-              <div className="inline-flex items-center justify-between sm:justify-start border border-white/25 rounded-[4px] bg-oat/[0.12] px-1">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center border border-white/25 rounded-[4px] bg-oat/[0.12] px-2 py-1.5">
                 <button
                   type="button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   aria-label="Decrease quantity"
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center text-oat hover:text-peach cursor-pointer"
+                  className="w-7 h-7 flex items-center justify-center text-oat hover:text-peach cursor-pointer"
                 >
-                  <Minus className="w-4 h-4" />
+                  <Minus className="w-3.5 h-3.5" />
                 </button>
                 <span className="px-4 text-sm font-semibold">{quantity}</span>
                 <button
                   type="button"
                   onClick={() => setQuantity(quantity + 1)}
                   aria-label="Increase quantity"
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center text-oat hover:text-peach cursor-pointer"
+                  className="w-7 h-7 flex items-center justify-center text-oat hover:text-peach cursor-pointer"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-3.5 h-3.5" />
                 </button>
               </div>
 
@@ -230,7 +229,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 variant={added ? 'secondary' : 'cta'}
                 magnetic
                 onClick={handleAddToCart}
-                className="flex-1 min-h-[48px]"
+                className="flex-1 py-3.5"
               >
                 <AnimatePresence mode="wait" initial={false}>
                   {added ? (
@@ -263,23 +262,21 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             </div>
 
             {/* PIN Checker */}
-            <OatSheet tone="subtle" interactive={false} padding="compact" className="mb-8">
+            <OatSheet tone="subtle" interactive={false} className="p-4 mb-8">
               <span className="font-ui-label text-[10px] text-peach block mb-2">
                 Check Delivery PIN Code
               </span>
-              <form onSubmit={handlePincodeCheck} className="flex flex-col sm:flex-row items-stretch sm:items-start gap-2.5">
+              <form onSubmit={handlePincodeCheck} className="flex items-start gap-2">
                 <GlowInput
                   type="text"
-                  inputMode="numeric"
-                  autoComplete="postal-code"
                   maxLength={6}
                   value={pincode}
                   onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
                   placeholder="6-digit PIN"
                   aria-label="6-digit delivery PIN code"
-                  containerClassName="w-full sm:w-44"
+                  containerClassName="w-40"
                 />
-                <GlowButton type="submit" variant="submit" size="sm" className="w-full sm:w-auto min-h-[48px] px-5 shrink-0">
+                <GlowButton type="submit" variant="submit" size="sm" className="py-2.5 px-5">
                   Verify
                 </GlowButton>
               </form>
@@ -315,8 +312,8 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                     <p className="text-xs text-apricot/80">
                       Serving Size: {product.servingSize}
                     </p>
-                    <OatSheet tone="subtle" interactive={false} className="overflow-x-auto">
-                      <table className="w-full min-w-[300px] text-left text-xs">
+                    <OatSheet tone="subtle" interactive={false} className="overflow-hidden">
+                      <table className="w-full text-left text-xs">
                         <thead className="bg-oat/10 border-b border-white/15 font-ui-label text-[10px] text-peach">
                           <tr>
                             <th className="px-3.5 py-2.5">Nutrient</th>

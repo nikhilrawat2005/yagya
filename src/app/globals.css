@@ -1,20 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant landscape-phone (@media (orientation: landscape) and (max-height: 500px));
-@custom-variant tablet-portrait (@media (min-width: 640px) and (max-width: 1023px) and (orientation: portrait));
-@custom-variant tablet-landscape (@media (min-width: 640px) and (max-width: 1023px) and (orientation: landscape));
-
 @theme {
-  /* =========================================================
-     RESPONSIVE BREAKPOINTS (Mobile-First)
-     Base: 320-479 | sm: 480-639 | md: 640-1023 | lg: 1024-1279 | xl: 1280-1535 | 2xl: 1536+
-     ========================================================= */
-  --breakpoint-sm: 30rem;
-  --breakpoint-md: 40rem;
-  --breakpoint-lg: 64rem;
-  --breakpoint-xl: 80rem;
-  --breakpoint-2xl: 96rem;
-
   /* =========================================================
      YAGYA EDITORIAL PALETTE (Strictly 4 Dark Bases + 3 Lights + Flame Accent)
      ========================================================= */
@@ -60,22 +46,6 @@
 }
 
 :root {
-  color-scheme: dark;
-
-  /* Fluid Type Scale */
-  --text-hero: clamp(2.2rem, 4.4vw + 1.05rem, 5.25rem);
-  --text-h2: clamp(1.7rem, 3.2vw + 0.8rem, 3.5rem);
-  --text-body: clamp(1rem, 0.35vw + 0.89rem, 1.125rem);
-
-  /* Fluid Layout & Sheet Padding Tokens */
-  --container-max: 1440px;
-  --sheet-pad-x: clamp(1.25rem, 2.2vw, 2.5rem);
-  --sheet-pad-y: clamp(1.25rem, 2.2vw, 2.5rem);
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-left: env(safe-area-inset-left, 0px);
-  --safe-right: env(safe-area-inset-right, 0px);
-
   --sheet-bg: rgba(246, 239, 226, 0.14);
   --sheet-bg-hover: rgba(246, 239, 226, 0.21);
   --sheet-bg-strong: rgba(246, 239, 226, 0.19);
@@ -90,7 +60,7 @@
 
   --glow-level-1: 0 6px 20px -4px rgba(10, 12, 18, 0.32), 0 0 18px -4px var(--glow-oat);
   --glow-level-2: 0 12px 32px -6px rgba(10, 12, 18, 0.42), 0 0 26px -2px var(--glow-flame);
-  --shadow-glow-focus: 0 0 0 2px #141C2B, 0 0 0 4px #FBC98A, 0 0 18px 2px var(--glow-flame);
+  --shadow-glow-focus: 0 0 0 2px #141C2B, 0 0 0 4px #F6EFE2, 0 0 18px 2px var(--glow-flame);
 
   --duration-fast: 180ms;
   --duration-base: 320ms;
@@ -103,26 +73,22 @@
 
 @layer base {
   html {
-    font-size: 16px;
     background-color: var(--color-navy);
     color: var(--color-oat);
     scroll-behavior: smooth;
-    overflow-x: hidden;
   }
 
   body {
     background-color: var(--color-navy);
     color: var(--color-oat);
     font-family: var(--font-sans);
-    font-size: var(--text-body);
-    line-height: 1.6;
     overflow-x: hidden;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-peach);
+    outline: 2px solid var(--color-oat);
     outline-offset: 3px;
-    box-shadow: 0 0 16px 2px var(--glow-flame);
+    box-shadow: 0 0 18px 2px var(--glow-flame);
   }
 }
 
@@ -143,42 +109,11 @@
   letter-spacing: 0.14em;
 }
 
-.text-fluid-hero {
-  font-size: var(--text-hero);
-  line-height: 1.06;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-}
-
-.text-fluid-h2 {
-  font-size: var(--text-h2);
-  line-height: 1.08;
-  letter-spacing: -0.015em;
-  text-wrap: balance;
-}
-
-.text-fluid-body {
-  font-size: var(--text-body);
-  line-height: 1.6;
-}
-
-/* Signature Oat-Sheet Frosted Paper Utility (Mobile GPU-friendly 12px blur, 18px desktop) */
-.oat-sheet-blur {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-@media (min-width: 640px) {
-  .oat-sheet-blur {
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-  }
-}
-
+/* Signature Oat-Sheet Frosted Paper Utility */
 .oat-sheet {
   background-color: var(--sheet-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border: 1px solid var(--sheet-border);
   border-radius: 6px;
   box-shadow: var(--sheet-shadow);
@@ -189,26 +124,12 @@
     box-shadow var(--transition-base);
 }
 
-@media (min-width: 640px) {
-  .oat-sheet {
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-  }
-}
-
 @media (hover: hover) and (pointer: fine) {
   .oat-sheet-interactive:hover {
     transform: translateY(-4px);
     background-color: var(--sheet-bg-hover);
     border-color: var(--sheet-border-hover);
     box-shadow: var(--sheet-shadow-hover);
-  }
-}
-
-@media (hover: none) {
-  .oat-sheet-interactive:active {
-    background-color: var(--sheet-bg-hover);
-    border-color: var(--sheet-border-hover);
   }
 }
 

@@ -21,25 +21,23 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-dvh bg-aubergine text-oat pt-[calc(5.5rem+var(--safe-top))] pb-[calc(6rem+var(--safe-bottom))] md:pt-28 md:pb-24">
-      <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-14 pl-[max(1rem,var(--safe-left))] pr-[max(1rem,var(--safe-right))]">
-        <FadeInSection className="relative text-center max-w-xl mx-auto mb-10 md:mb-12">
+    <div className="min-h-screen bg-aubergine text-oat pt-28 pb-24">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeInSection className="relative text-center max-w-xl mx-auto mb-12">
           <DoodleSVG
             name="star"
             tone="flame"
-            visibility="tablet-up"
-            className="absolute left-6 top-0 w-7 h-7 opacity-85"
+            className="hidden sm:block absolute left-6 top-0 w-7 h-7 opacity-85"
           />
           <DoodleSVG
             name="swirl"
             tone="apricot"
-            visibility="tablet-up"
-            className="absolute -right-4 top-2 w-16 h-8 opacity-80"
+            className="hidden sm:block absolute -right-4 top-2 w-16 h-8 opacity-80"
           />
           <span className="font-ui-label text-[11px] text-peach block mb-2">
             Care &amp; Inquiries
           </span>
-          <h1 className="font-display text-fluid-h2 text-oat font-medium mb-3">
+          <h1 className="font-display text-4xl sm:text-5xl text-oat font-medium mb-3">
             Write To{' '}
             <span className="relative inline-block italic text-peach">
               Yagya
@@ -51,13 +49,13 @@ export default function ContactPage() {
               />
             </span>
           </h1>
-          <p className="text-fluid-body text-apricot/85">
+          <p className="text-sm sm:text-base text-apricot/85">
             Questions about harvest batches, wholesale orders, or delivery schedules.
           </p>
         </FadeInSection>
 
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
-          <OatSheet tone="subtle" padding="compact" className="md:col-span-5 text-sm text-oat space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+          <OatSheet tone="subtle" className="md:col-span-5 p-6 text-xs text-oat space-y-6">
             <div>
               <h2 className="font-display text-lg font-medium text-oat mb-2 flex items-center gap-2">
                 <Mail className="w-4 h-4 text-flame" />
@@ -66,16 +64,16 @@ export default function ContactPage() {
               <p>
                 <a
                   href={`mailto:${siteConfig.contact.email}`}
-                  className="nav-link-underline min-h-[44px] text-apricot hover:text-oat"
+                  className="nav-link-underline text-apricot hover:text-oat"
                 >
                   {siteConfig.contact.email}
                 </a>
               </p>
-              <p className="mt-1 flex items-center gap-2">
+              <p className="mt-2 flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5 text-flame" />
                 <a
                   href={`tel:${siteConfig.contact.phone.replace(/\s+/g, '')}`}
-                  className="nav-link-underline min-h-[44px] text-apricot hover:text-oat"
+                  className="nav-link-underline text-apricot hover:text-oat"
                 >
                   {siteConfig.contact.phone}
                 </a>
@@ -99,7 +97,7 @@ export default function ContactPage() {
             </div>
           </OatSheet>
 
-          <OatSheet tone="medium" interactive={false} padding="default" className="md:col-span-7">
+          <OatSheet tone="medium" interactive={false} className="md:col-span-7 p-6 sm:p-8">
             <AnimatePresence mode="wait">
               {submitted ? (
                 <motion.div
@@ -123,7 +121,6 @@ export default function ContactPage() {
                     type="button"
                     variant="secondary"
                     size="sm"
-                    className="w-full sm:w-auto min-h-[44px]"
                     onClick={() => {
                       setSubmitted(false);
                       setFormData({ name: '', email: '', message: '' });
@@ -139,14 +136,13 @@ export default function ContactPage() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onSubmit={handleSubmit}
-                  className="space-y-4 scroll-mb-24"
+                  className="space-y-4 text-xs"
                 >
                   <GlowInput
                     id="contact-name"
                     label="Your Name"
                     floatingLabel
                     type="text"
-                    autoComplete="name"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -158,7 +154,6 @@ export default function ContactPage() {
                     label="Email Address"
                     floatingLabel
                     type="email"
-                    autoComplete="email"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -176,7 +171,7 @@ export default function ContactPage() {
                     placeholder="Ask about batch details or bulk packs..."
                   />
 
-                  <GlowButton type="submit" variant="cta" magnetic className="w-full min-h-[48px]">
+                  <GlowButton type="submit" variant="cta" magnetic className="w-full">
                     Send Message
                   </GlowButton>
                 </motion.form>

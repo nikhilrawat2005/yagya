@@ -2,12 +2,11 @@
 
 import { ReactNode, useEffect } from 'react';
 import Lenis from 'lenis';
-import { MotionConfig } from 'motion/react';
+import { MotionConfig, useReducedMotion } from 'motion/react';
 import { useCartStore } from '@/lib/store/cartStore';
-import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 
 export function SmoothScrollProvider({ children }: { children: ReactNode }) {
-  const { canHover, simplifyMotion } = useInteractiveCapabilities();
+  const shouldReduceMotion = useReducedMotion();
   const isCartOpen = useCartStore((s) => s.isOpen);
 
   useEffect(() => {
@@ -15,12 +14,11 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // Keep native swipe momentum scrolling untouched on mobile/touch or low-power devices
-    if (!canHover || simplifyMotion) return;
+    if (shouldReduceMotion) return;
 
     const lenis = new Lenis({
       lerp: 0.1,
-      duration: 1.1,
+      duration: 1.2,
       smoothWheel: true,
     });
 
@@ -41,7 +39,7 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };
-  }, [canHover, simplifyMotion, isCartOpen]);
+  }, [shouldReduceMotion, isCartOpen]);
 
   return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }
