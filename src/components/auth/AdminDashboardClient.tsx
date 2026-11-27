@@ -346,7 +346,7 @@ export function AdminDashboardClient({ products, categories }: AdminDashboardCli
                                   </span>
                                 </td>
                                 <td className="py-3 pr-4 tabular-nums">{u.age || '—'}</td>
-                                <td className="py-3 pr-4 tabular-nums text-sand">{u.phone || 'Optional'}</td>
+                                <td className="py-3 pr-4 tabular-nums text-sand">{u.phone || '—'}</td>
                                 <td className="py-3 text-[11px] text-peach">
                                   {u.authProviders?.join(' + ') || '—'}
                                 </td>

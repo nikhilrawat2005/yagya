@@ -11,6 +11,7 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updatePassword,
   updateProfile,
   type User,
 } from 'firebase/auth';
@@ -196,8 +197,26 @@ function GoogleOnboardingForm({
           if (code === 'auth/requires-recent-login') {
             await reauthenticateWithPopup(activeUser, createGoogleProvider());
             await linkWithCredential(activeUser, emailCredential);
-          } else if (code !== 'auth/provider-already-linked') {
+          } else if (code === 'auth/provider-already-linked') {
+            await updatePassword(activeUser, password);
+          } else {
             throw linkErr;
+          }
+        }
+      } else {
+        // Ensure retrying Step 2 applies the password entered now
+        try {
+          await updatePassword(activeUser, password);
+        } catch (pwErr: unknown) {
+          const code =
+            typeof pwErr === 'object' && pwErr !== null && 'code' in pwErr
+              ? String((pwErr as { code?: string }).code)
+              : '';
+          if (code === 'auth/requires-recent-login') {
+            await reauthenticateWithPopup(activeUser, createGoogleProvider());
+            await updatePassword(activeUser, password);
+          } else {
+            throw pwErr;
           }
         }
       }

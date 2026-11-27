@@ -5,15 +5,28 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   CheckCircle2,
+  Eye,
+  EyeOff,
   KeyRound,
+  Lock,
   LogOut,
+  Mail,
   Shield,
   ShoppingBag,
   Sparkles,
   User as UserIcon,
 } from 'lucide-react';
-import { updateProfile, type User } from 'firebase/auth';
+import {
+  EmailAuthProvider,
+  linkWithCredential,
+  reauthenticateWithPopup,
+  sendPasswordResetEmail,
+  updatePassword,
+  updateProfile,
+  type User,
+} from 'firebase/auth';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { createGoogleProvider, getFirebaseAuth } from '@/lib/firebase/config';
 import { saveUserProfile, splitFullName, type UserProfile } from '@/lib/firebase/users';
 import { useCartStore } from '@/lib/store/cartStore';
 import { siteConfig } from '@/lib/data/site';
@@ -73,16 +86,16 @@ function ProfileSettingsForm({
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         displayName,
-        phone: cleanedPhone || undefined,
+        phone: cleanedPhone || null,
         age: ageNum,
         authProviders: providerIds,
-        photoURL: user.photoURL || undefined,
+        photoURL: user.photoURL || null,
         profileCompleted: true,
         createdAt: profile?.createdAt || now,
         updatedAt: now,
       });
       await refreshProfile();
-      setFeedback({ type: 'success', text: 'Your profile has been updated.' });
+      setFeedback({ type: 'success', text: 'Your profile details (including phone & age) have been updated.' });
     } catch (err) {
       setFeedback({
         type: 'error',
@@ -95,9 +108,12 @@ function ProfileSettingsForm({
 
   return (
     <OatSheet tone="subtle" interactive={false} className="p-6 sm:p-7">
-      <h2 className="font-display text-2xl text-oat font-medium mb-4">
+      <h2 className="font-display text-2xl text-oat font-medium mb-1">
         Account Details
       </h2>
+      <p className="text-xs text-sand mb-5">
+        Update your personal details and contact number anytime.
+      </p>
 
       {feedback && (
         <div
@@ -161,6 +177,225 @@ function ProfileSettingsForm({
         <GlowButton type="submit" variant="cta" disabled={saving}>
           <span>{saving ? 'Saving…' : 'Save Profile Changes'}</span>
         </GlowButton>
+      </form>
+    </OatSheet>
+  );
+}
+
+function PasswordSecurityCard({
+  user,
+  profile,
+  hasGoogle,
+  hasPassword,
+  refreshProfile,
+}: {
+  user: User;
+  profile: UserProfile | null;
+  hasGoogle: boolean;
+  hasPassword: boolean;
+  refreshProfile: () => Promise<void>;
+}) {
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [resetSending, setResetSending] = useState(false);
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const handleSetOrUpdatePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus(null);
+    if (!user.email) return;
+
+    if (newPassword.length < 8) {
+      setStatus({ type: 'error', text: 'New password must be at least 8 characters.' });
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setStatus({ type: 'error', text: 'Passwords do not match.' });
+      return;
+    }
+
+    setUpdating(true);
+    try {
+      const applyChange = async () => {
+        if (hasPassword) {
+          await updatePassword(user, newPassword);
+        } else {
+          const cred = EmailAuthProvider.credential(user.email!, newPassword);
+          await linkWithCredential(user, cred);
+        }
+      };
+
+      try {
+        await applyChange();
+      } catch (err: unknown) {
+        const code =
+          typeof err === 'object' && err !== null && 'code' in err
+            ? String((err as { code?: string }).code)
+            : '';
+        if (code === 'auth/requires-recent-login' && hasGoogle) {
+          await reauthenticateWithPopup(user, createGoogleProvider());
+          await applyChange();
+        } else if (code === 'auth/requires-recent-login') {
+          setStatus({
+            type: 'error',
+            text: 'For your security, please use "Send Password Reset Email" below or sign out and sign back in first.',
+          });
+          setUpdating(false);
+          return;
+        } else {
+          throw err;
+        }
+      }
+
+      const updatedProviders = Array.from(
+        new Set(user.providerData.map((p) => p.providerId).concat('password'))
+      );
+      if (profile) {
+        await saveUserProfile({
+          ...profile,
+          authProviders: updatedProviders,
+          updatedAt: new Date().toISOString(),
+        });
+      }
+      await refreshProfile();
+      setNewPassword('');
+      setConfirmPassword('');
+      setStatus({
+        type: 'success',
+        text: 'Password updated! You can now sign in with your email and this new password anytime.',
+      });
+    } catch (err) {
+      setStatus({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Could not update password.',
+      });
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const handleSendResetEmail = async () => {
+    setStatus(null);
+    const auth = getFirebaseAuth();
+    if (!auth || !user.email) return;
+
+    setResetSending(true);
+    try {
+      await sendPasswordResetEmail(auth, user.email);
+      setStatus({
+        type: 'success',
+        text: `Password reset link sent to ${user.email}. Check your inbox (and spam folder).`,
+      });
+    } catch (err) {
+      setStatus({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Unable to send reset email.',
+      });
+    } finally {
+      setResetSending(false);
+    }
+  };
+
+  return (
+    <OatSheet tone="warm" interactive={false} className="p-6 space-y-4">
+      <div className="flex items-center gap-2 text-peach">
+        <KeyRound className="w-4 h-4" aria-hidden="true" />
+        <h2 className="font-display text-xl text-oat font-medium">
+          Sign-In &amp; Password Security
+        </h2>
+      </div>
+
+      <div className="space-y-2 text-xs">
+        <div className="flex items-center justify-between p-3 rounded-[6px] bg-oat/[0.08] border border-white/15">
+          <span className="text-oat font-medium">Google Account</span>
+          <span className={hasGoogle ? 'text-sage font-semibold' : 'text-sand/75'}>
+            {hasGoogle ? 'Connected' : 'Not Linked'}
+          </span>
+        </div>
+        <div className="flex items-center justify-between p-3 rounded-[6px] bg-oat/[0.08] border border-white/15">
+          <span className="text-oat font-medium">Email &amp; Password</span>
+          <span className={hasPassword ? 'text-sage font-semibold inline-flex items-center gap-1' : 'text-peach'}>
+            {hasPassword ? (
+              <>
+                <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
+                Active
+              </>
+            ) : (
+              'Not Set'
+            )}
+          </span>
+        </div>
+      </div>
+
+      {status && (
+        <div
+          role={status.type === 'error' ? 'alert' : 'status'}
+          className={`p-3 rounded-[6px] border text-xs ${
+            status.type === 'success'
+              ? 'border-sage/50 bg-[#252905]/80 text-oat'
+              : 'border-flame/60 bg-flame/20 text-oat'
+          }`}
+        >
+          {status.text}
+        </div>
+      )}
+
+      <form onSubmit={handleSetOrUpdatePassword} className="space-y-3 pt-2 border-t border-white/15">
+        <p className="text-xs text-sand">
+          {hasPassword
+            ? 'Forgot or want to change your login password? Set a fresh password below:'
+            : 'Set a password to enable direct email & password sign-in:'}
+        </p>
+
+        <GlowInput
+          name="newPassword"
+          label="New Password"
+          type={showPassword ? 'text' : 'password'}
+          autoComplete="new-password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          placeholder="Min 8 characters"
+          leadingIcon={<Lock className="w-4 h-4" />}
+          trailingSlot={
+            <button
+              type="button"
+              onClick={() => setShowPassword((p) => !p)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              className="p-1 text-sand hover:text-oat cursor-pointer"
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          }
+        />
+
+        <GlowInput
+          name="confirmNewPassword"
+          label="Confirm New Password"
+          type={showPassword ? 'text' : 'password'}
+          autoComplete="new-password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder="Repeat new password"
+          leadingIcon={<Lock className="w-4 h-4" />}
+        />
+
+        <div className="flex flex-wrap gap-2 pt-1">
+          <GlowButton type="submit" variant="primary" size="sm" disabled={updating} className="flex-1">
+            {updating ? 'Updating…' : hasPassword ? 'Update Password' : 'Set Password'}
+          </GlowButton>
+          <GlowButton
+            type="button"
+            variant="secondary"
+            size="sm"
+            disabled={resetSending}
+            onClick={handleSendResetEmail}
+          >
+            <Mail className="w-3.5 h-3.5" aria-hidden="true" />
+            <span>{resetSending ? 'Sending…' : 'Email Reset Link'}</span>
+          </GlowButton>
+        </div>
       </form>
     </OatSheet>
   );
@@ -265,44 +500,15 @@ export function UserDashboardClient() {
                   />
                 </div>
 
-                {/* Right Column: Login Methods + Bag Summary */}
+                {/* Right Column: Password Security + Bag Summary */}
                 <div className="lg:col-span-5 space-y-5">
-                  <OatSheet tone="warm" interactive={false} className="p-6 space-y-4">
-                    <div className="flex items-center gap-2 text-peach">
-                      <KeyRound className="w-4 h-4" aria-hidden="true" />
-                      <h2 className="font-display text-xl text-oat font-medium">
-                        Connected Sign-In Methods
-                      </h2>
-                    </div>
-
-                    <div className="space-y-2.5 text-xs">
-                      <div className="flex items-center justify-between p-3 rounded-[6px] bg-oat/[0.08] border border-white/15">
-                        <span className="text-oat font-medium">Google Account</span>
-                        <span className={hasGoogle ? 'text-sage font-semibold' : 'text-sand/75'}>
-                          {hasGoogle ? 'Connected' : 'Not Linked'}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between p-3 rounded-[6px] bg-oat/[0.08] border border-white/15">
-                        <span className="text-oat font-medium">Email &amp; Password</span>
-                        <span className={hasPassword ? 'text-sage font-semibold inline-flex items-center gap-1' : 'text-peach'}>
-                          {hasPassword ? (
-                            <>
-                              <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
-                              Active
-                            </>
-                          ) : (
-                            'Pending Setup'
-                          )}
-                        </span>
-                      </div>
-                    </div>
-
-                    {!hasPassword && (
-                      <GlowButton href="/login?complete=1" variant="primary" size="sm" className="w-full">
-                        Set Password for Email Login
-                      </GlowButton>
-                    )}
-                  </OatSheet>
+                  <PasswordSecurityCard
+                    user={user}
+                    profile={profile}
+                    hasGoogle={hasGoogle}
+                    hasPassword={hasPassword}
+                    refreshProfile={refreshProfile}
+                  />
 
                   <OatSheet tone="subtle" interactive={false} className="p-6 space-y-4">
                     <div className="flex items-center justify-between">
