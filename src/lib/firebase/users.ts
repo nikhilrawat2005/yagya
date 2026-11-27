@@ -3,8 +3,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  orderBy,
-  query,
   setDoc,
 } from 'firebase/firestore';
 import { getFirebaseDb } from '@/lib/firebase/config';
@@ -86,14 +84,15 @@ export async function getAllUserProfiles(): Promise<UserProfile[]> {
     throw new Error('Firebase Firestore is not configured yet.');
   }
 
-  const q = query(collection(db, USERS_COLLECTION), orderBy('createdAt', 'desc'));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => {
-    const data = d.data() as UserProfile;
-    return {
-      ...data,
-      uid: d.id,
-      role: getUserRole(data.email),
-    };
-  });
+  const snapshot = await getDocs(collection(db, USERS_COLLECTION));
+  return snapshot.docs
+    .map((d) => {
+      const data = d.data() as UserProfile;
+      return {
+        ...data,
+        uid: d.id,
+        role: getUserRole(data.email),
+      };
+    })
+    .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
 }
