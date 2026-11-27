@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   AlertCircle,
+  ArrowLeft,
   ArrowRight,
   CheckCircle2,
   Database,
@@ -12,6 +13,7 @@ import {
   LogOut,
   Minus,
   Package,
+  Pencil,
   Plus,
   Receipt,
   RefreshCw,
@@ -33,13 +35,14 @@ import {
   type StoredOrder,
 } from '@/lib/firebase/catalog';
 import type { Product } from '@/lib/data/products';
-import type { Category } from '@/lib/data/categories';
+import type { Category, CategorySlug } from '@/lib/data/categories';
 import { siteConfig } from '@/lib/data/site';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { GlowInput } from '@/components/ui/GlowInput';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
 import { AdminAddProductModal } from '@/components/auth/AdminAddProductModal';
 
 interface AdminDashboardClientProps {
@@ -81,13 +84,17 @@ export function AdminDashboardClient({
   const [roleFilter, setRoleFilter] = useState<RoleFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Catalog section drill-down ('all' shows all flat, null shows category section cards, CategorySlug shows that section)
+  const [selectedSection, setSelectedSection] = useState<CategorySlug | 'all' | null>(null);
+
   // Live catalog & stock drafts
   const [catalogProducts, setCatalogProducts] = useState<Product[]>(initialProducts);
   const [stockDrafts, setStockDrafts] = useState<Record<string, number>>({});
   const [savingVariantKey, setSavingVariantKey] = useState<string | null>(null);
   const [catalogMessage, setCatalogMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [seedingCatalog, setSeedingCatalog] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [showProductModal, setShowProductModal] = useState(false);
 
   const [usersState, setUsersState] = useState<{
     loading: boolean;
@@ -231,16 +238,56 @@ export function AdminDashboardClient({
     });
   }, [usersList, roleFilter, searchQuery]);
 
+  // Per-category summary cards (photo, product count, variant count, total stock, low-stock alert)
+  const sectionSummaries = useMemo(() => {
+    return categories.map((cat) => {
+      const items = catalogProducts.filter((p) => p.categorySlug === cat.slug);
+      const variantCount = items.reduce((sum, p) => sum + p.variants.length, 0);
+      const totalStock = items.reduce(
+        (sum, p) => sum + p.variants.reduce((s, v) => s + v.stock, 0),
+        0
+      );
+      const outOfStockCount = items.reduce(
+        (sum, p) => sum + p.variants.filter((v) => v.stock <= 0).length,
+        0
+      );
+      const lowStockCount = items.reduce(
+        (sum, p) => sum + p.variants.filter((v) => v.stock > 0 && v.stock <= 10).length,
+        0
+      );
+      return {
+        category: cat,
+        productCount: items.length,
+        variantCount,
+        totalStock,
+        outOfStockCount,
+        lowStockCount,
+      };
+    });
+  }, [categories, catalogProducts]);
+
+  const activeSectionCategory = useMemo(
+    () =>
+      selectedSection && selectedSection !== 'all'
+        ? categories.find((c) => c.slug === selectedSection) ?? null
+        : null,
+    [categories, selectedSection]
+  );
+
   const filteredProducts = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    if (!q) return catalogProducts;
-    return catalogProducts.filter(
-      (p) =>
+    return catalogProducts.filter((p) => {
+      if (selectedSection && selectedSection !== 'all' && p.categorySlug !== selectedSection) {
+        return false;
+      }
+      if (!q) return true;
+      return (
         p.name.toLowerCase().includes(q) ||
         p.category.toLowerCase().includes(q) ||
         p.variants.some((v) => v.sku.toLowerCase().includes(q))
-    );
-  }, [catalogProducts, searchQuery]);
+      );
+    });
+  }, [catalogProducts, selectedSection, searchQuery]);
 
   const totalStockUnits = useMemo(
     () => catalogProducts.reduce((sum, p) => sum + p.variants.reduce((s, v) => s + v.stock, 0), 0),
@@ -367,18 +414,37 @@ export function AdminDashboardClient({
     { id: 'security', label: 'Admin Roles', icon: Shield },
   ];
 
+  const showSectionGrid =
+    activePanel === 'catalog' && selectedSection === null && searchQuery.trim().length === 0;
+
   return (
     <>
-      {showAddModal && (
+      {showProductModal && (
         <AdminAddProductModal
           categories={categories}
-          onClose={() => setShowAddModal(false)}
-          onCreated={(created) => {
-            setCatalogProducts((prev) => [created, ...prev.filter((p) => p.id !== created.id)]);
-            setShowAddModal(false);
+          initialProduct={editingProduct}
+          defaultCategorySlug={
+            selectedSection && selectedSection !== 'all' ? selectedSection : undefined
+          }
+          onClose={() => {
+            setShowProductModal(false);
+            setEditingProduct(null);
+          }}
+          onSaved={(saved, isEdit) => {
+            setCatalogProducts((prev) => {
+              const exists = prev.some((p) => p.id === saved.id);
+              if (exists) {
+                return prev.map((p) => (p.id === saved.id ? saved : p));
+              }
+              return [saved, ...prev];
+            });
+            setShowProductModal(false);
+            setEditingProduct(null);
             setCatalogMessage({
               type: 'success',
-              text: `"${created.name}" published to the live store catalog!`,
+              text: isEdit
+                ? `Saved changes to "${saved.name}".`
+                : `"${saved.name}" published to the live store catalog!`,
             });
           }}
         />
@@ -421,6 +487,9 @@ export function AdminDashboardClient({
                               onClick={() => {
                                 setActivePanel(item.id);
                                 setSearchQuery('');
+                                if (item.id === 'catalog') {
+                                  setSelectedSection(null);
+                                }
                               }}
                               aria-current={active ? 'page' : undefined}
                               className={`flex items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-[6px] text-xs font-medium transition-colors whitespace-nowrap cursor-pointer shrink-0 lg:w-full ${
@@ -521,7 +590,7 @@ export function AdminDashboardClient({
                               {catalogProducts.length}
                             </span>
                             <span className="text-[11px] text-sand block mt-1">
-                              Across {categories.length} belts
+                              Across {categories.length} sections
                             </span>
                           </OatSheet>
 
@@ -785,13 +854,34 @@ export function AdminDashboardClient({
 
                     {activePanel === 'catalog' && (
                       <OatSheet tone="subtle" interactive={false} className="p-5 sm:p-6 space-y-5">
+                        {/* Header Bar */}
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-white/15">
                           <div>
-                            <span className="font-ui-label text-[10px] text-peach block mb-0.5">
-                              Live Inventory &amp; Products
-                            </span>
+                            <div className="flex items-center gap-2 mb-1">
+                              {activeSectionCategory || selectedSection === 'all' ? (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedSection(null);
+                                    setSearchQuery('');
+                                  }}
+                                  className="inline-flex items-center gap-1 font-ui-label text-[10px] text-peach hover:text-oat cursor-pointer"
+                                >
+                                  <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
+                                  <span>All Sections</span>
+                                </button>
+                              ) : (
+                                <span className="font-ui-label text-[10px] text-peach">
+                                  Catalog By Section
+                                </span>
+                              )}
+                            </div>
                             <h1 className="font-display text-3xl text-oat font-medium leading-none">
-                              Catalog ({filteredProducts.length})
+                              {activeSectionCategory
+                                ? `${activeSectionCategory.name} (${filteredProducts.length})`
+                                : selectedSection === 'all'
+                                ? `All Harvests (${filteredProducts.length})`
+                                : `Pantry Sections (${categories.length})`}
                             </h1>
                           </div>
 
@@ -810,7 +900,10 @@ export function AdminDashboardClient({
                               type="button"
                               variant="cta"
                               size="sm"
-                              onClick={() => setShowAddModal(true)}
+                              onClick={() => {
+                                setEditingProduct(null);
+                                setShowProductModal(true);
+                              }}
                             >
                               <Plus className="w-3.5 h-3.5" aria-hidden="true" />
                               <span>Add New Product</span>
@@ -818,16 +911,30 @@ export function AdminDashboardClient({
                           </div>
                         </div>
 
+                        {/* Filter / Search Row */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                          <p className="text-xs text-sand">
-                            Adjust stock per pack size and click <strong className="text-oat">Save</strong>. Placed orders auto-subtract stock in Firestore.
-                          </p>
+                          <div className="flex flex-wrap items-center gap-2">
+                            {showSectionGrid ? (
+                              <button
+                                type="button"
+                                onClick={() => setSelectedSection('all')}
+                                className="font-ui-label text-[10px] px-3 py-1.5 rounded-[4px] border border-white/25 bg-oat/10 text-oat hover:border-peach/60 cursor-pointer"
+                              >
+                                View All {catalogProducts.length} Flat
+                              </button>
+                            ) : (
+                              <p className="text-xs text-sand">
+                                Edit variant stock directly or click <strong className="text-oat">Edit</strong> to update price, specs &amp; details.
+                              </p>
+                            )}
+                          </div>
+
                           <div className="w-full sm:w-72">
                             <GlowInput
                               name="catalogSearch"
                               value={searchQuery}
                               onChange={(e) => setSearchQuery(e.target.value)}
-                              placeholder="Search harvest, category, SKU…"
+                              placeholder="Search any harvest or SKU…"
                               leadingIcon={<Search className="w-4 h-4" />}
                             />
                           </div>
@@ -846,108 +953,207 @@ export function AdminDashboardClient({
                           </div>
                         )}
 
-                        <div className="space-y-3">
-                          {filteredProducts.map((p) => (
-                            <div
-                              key={p.id}
-                              className="p-4 rounded-[6px] bg-oat/[0.06] border border-white/15 space-y-3"
-                            >
-                              <div className="flex flex-wrap items-center justify-between gap-2">
-                                <div>
-                                  <div className="flex flex-wrap items-center gap-2">
-                                    <h2 className="font-display text-xl text-oat font-medium">
-                                      {p.name}
+                        {showSectionGrid ? (
+                          /* Section Cards Grid (Seeds, Berries, Dried Fruits, Nuts, Makhana) */
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {sectionSummaries.map((sec) => (
+                              <button
+                                key={sec.category.id}
+                                type="button"
+                                onClick={() => setSelectedSection(sec.category.slug)}
+                                className="group text-left rounded-[8px] border border-white/20 bg-[#141C2B]/75 hover:bg-[#141C2B]/95 hover:border-peach/55 overflow-hidden transition-colors cursor-pointer flex flex-col"
+                              >
+                                <div className="relative aspect-[16/10] w-full bg-[#1C2638] overflow-hidden border-b border-white/15">
+                                  <ProductImageWithFallback
+                                    src={sec.category.image}
+                                    alt={sec.category.name}
+                                    fill
+                                    sizes="(max-width: 640px) 92vw, (max-width: 1024px) 44vw, 280px"
+                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                  />
+                                  <div className="absolute top-2.5 right-2.5 flex gap-1.5">
+                                    {sec.outOfStockCount > 0 && (
+                                      <span className="font-ui-label text-[9px] px-2 py-0.5 rounded-[4px] bg-flame text-navy font-semibold">
+                                        {sec.outOfStockCount} Out
+                                      </span>
+                                    )}
+                                    {sec.lowStockCount > 0 && (
+                                      <span className="font-ui-label text-[9px] px-2 py-0.5 rounded-[4px] bg-[#141C2B]/85 text-peach border border-peach/40">
+                                        {sec.lowStockCount} Low
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+
+                                <div className="p-4 flex-1 flex flex-col justify-between gap-3 w-full">
+                                  <div>
+                                    <span className="font-ui-label text-[9px] text-peach block mb-1 truncate">
+                                      {sec.category.originNote}
+                                    </span>
+                                    <h2 className="font-display text-2xl text-oat group-hover:text-peach transition-colors leading-snug">
+                                      {sec.category.name}
                                     </h2>
-                                    <span className="font-ui-label text-[9px] px-2 py-0.5 rounded-[4px] bg-oat/15 text-peach border border-white/15">
-                                      {p.category}
+                                    <p className="text-xs text-sand line-clamp-2 mt-1">
+                                      {sec.category.description}
+                                    </p>
+                                  </div>
+
+                                  <div className="pt-3 border-t border-white/15 flex items-center justify-between gap-2 text-xs tabular-nums">
+                                    <div className="space-y-0.5">
+                                      <span className="text-oat font-semibold block">
+                                        {sec.productCount} Items · {sec.variantCount} Packs
+                                      </span>
+                                      <span className="text-[11px] text-sage font-medium block">
+                                        Stock: {sec.totalStock} units
+                                      </span>
+                                    </div>
+                                    <span className="inline-flex items-center gap-1 font-ui-label text-[10px] text-peach group-hover:translate-x-0.5 transition-transform">
+                                      <span>Open</span>
+                                      <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
                                     </span>
                                   </div>
-                                  <p className="text-[11px] text-sand">{p.origin} · {p.provenance}</p>
                                 </div>
-                                <Link
-                                  href={`/product/${p.slug}`}
-                                  className="font-ui-label text-[10px] text-peach hover:text-oat underline underline-offset-4"
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          /* Filtered Product List Inside Clicked Section (or Search/All) */
+                          <div className="space-y-3">
+                            {filteredProducts.length === 0 ? (
+                              <p className="text-sm text-sand py-8 text-center">
+                                No harvests found in this section yet. Click &ldquo;Add New Product&rdquo; to add one.
+                              </p>
+                            ) : (
+                              filteredProducts.map((p) => (
+                                <div
+                                  key={p.id}
+                                  className="p-4 rounded-[6px] bg-oat/[0.06] border border-white/15 space-y-3"
                                 >
-                                  View Product
-                                </Link>
-                              </div>
-
-                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                                {p.variants.map((v) => {
-                                  const key = `${p.id}:${v.id}`;
-                                  const draft = getDraftStock(p.id, v.id, v.stock);
-                                  const isSaving = savingVariantKey === key;
-                                  const isDirty = draft !== v.stock;
-                                  return (
-                                    <div
-                                      key={v.id}
-                                      className="p-3 rounded-[6px] bg-[#141C2B]/75 border border-white/15 flex flex-col gap-2 text-xs"
-                                    >
-                                      <div className="flex items-center justify-between gap-2 tabular-nums">
-                                        <span className="font-semibold text-oat">
-                                          {v.weight} · {siteConfig.currencySymbol}{v.price}
-                                        </span>
-                                        <span
-                                          className={`font-ui-label text-[9px] px-1.5 py-0.5 rounded-[3px] ${
-                                            v.stock <= 0
-                                              ? 'bg-flame/25 text-peach'
-                                              : v.stock <= 10
-                                              ? 'bg-flame/15 text-peach'
-                                              : 'bg-[#252905]/80 text-sage'
-                                          }`}
-                                        >
-                                          {v.stock <= 0 ? 'Out of stock' : `${v.stock} in stock`}
-                                        </span>
-                                      </div>
-                                      <span className="text-[10px] text-sand/85">{v.sku}</span>
-
-                                      <div className="flex items-center gap-1.5 pt-1">
-                                        <button
-                                          type="button"
-                                          aria-label={`Decrease ${p.name} ${v.weight} stock`}
-                                          onClick={() => setDraftStock(p.id, v.id, draft - 1)}
-                                          className="w-8 h-8 rounded-[4px] border border-white/20 bg-oat/10 flex items-center justify-center text-oat hover:text-peach cursor-pointer"
-                                        >
-                                          <Minus className="w-3.5 h-3.5" aria-hidden="true" />
-                                        </button>
-                                        <input
-                                          type="number"
-                                          min={0}
-                                          aria-label={`${p.name} ${v.weight} stock count`}
-                                          value={draft}
-                                          onChange={(e) => setDraftStock(p.id, v.id, Number(e.target.value))}
-                                          className="w-16 h-8 text-center rounded-[4px] border border-white/25 bg-[#141C2B] text-oat text-xs tabular-nums"
+                                  <div className="flex flex-wrap items-start justify-between gap-3">
+                                    <div className="flex items-center gap-3.5">
+                                      <div className="relative w-14 h-16 rounded-[4px] overflow-hidden border border-white/20 bg-[#1C2638] shrink-0">
+                                        <ProductImageWithFallback
+                                          src={p.images[0]?.src || ''}
+                                          alt={p.name}
+                                          fill
+                                          sizes="56px"
+                                          className="object-cover"
                                         />
-                                        <button
-                                          type="button"
-                                          aria-label={`Increase ${p.name} ${v.weight} stock`}
-                                          onClick={() => setDraftStock(p.id, v.id, draft + 1)}
-                                          className="w-8 h-8 rounded-[4px] border border-white/20 bg-oat/10 flex items-center justify-center text-oat hover:text-peach cursor-pointer"
-                                        >
-                                          <Plus className="w-3.5 h-3.5" aria-hidden="true" />
-                                        </button>
-
-                                        <button
-                                          type="button"
-                                          disabled={isSaving || !isDirty}
-                                          onClick={() => handleSaveVariantStock(p, v.id, v.stock)}
-                                          className={`ml-auto inline-flex items-center gap-1 px-2.5 h-8 rounded-[4px] font-ui-label text-[10px] transition-colors cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed ${
-                                            isDirty
-                                              ? 'bg-flame text-navy font-semibold'
-                                              : 'bg-oat/15 text-oat border border-white/20'
-                                          }`}
-                                        >
-                                          <Save className="w-3 h-3" aria-hidden="true" />
-                                          <span>{isSaving ? '…' : 'Save'}</span>
-                                        </button>
+                                      </div>
+                                      <div>
+                                        <div className="flex flex-wrap items-center gap-2">
+                                          <h2 className="font-display text-xl text-oat font-medium">
+                                            {p.name}
+                                          </h2>
+                                          <span className="font-ui-label text-[9px] px-2 py-0.5 rounded-[4px] bg-oat/15 text-peach border border-white/15">
+                                            {p.category}
+                                          </span>
+                                        </div>
+                                        <p className="text-[11px] text-sand mt-0.5">
+                                          {p.origin} · {p.provenance}
+                                        </p>
                                       </div>
                                     </div>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
+
+                                    <div className="flex items-center gap-2">
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setEditingProduct(p);
+                                          setShowProductModal(true);
+                                        }}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] border border-white/25 bg-oat/10 hover:bg-flame hover:text-navy hover:border-flame text-oat font-ui-label text-[10px] transition-colors cursor-pointer"
+                                      >
+                                        <Pencil className="w-3 h-3" aria-hidden="true" />
+                                        <span>Edit Product</span>
+                                      </button>
+                                      <Link
+                                        href={`/product/${p.slug}`}
+                                        className="font-ui-label text-[10px] text-peach hover:text-oat underline underline-offset-4 px-1"
+                                      >
+                                        Store View
+                                      </Link>
+                                    </div>
+                                  </div>
+
+                                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                                    {p.variants.map((v) => {
+                                      const key = `${p.id}:${v.id}`;
+                                      const draft = getDraftStock(p.id, v.id, v.stock);
+                                      const isSaving = savingVariantKey === key;
+                                      const isDirty = draft !== v.stock;
+                                      return (
+                                        <div
+                                          key={v.id}
+                                          className="p-3 rounded-[6px] bg-[#141C2B]/75 border border-white/15 flex flex-col gap-2 text-xs"
+                                        >
+                                          <div className="flex items-center justify-between gap-2 tabular-nums">
+                                            <span className="font-semibold text-oat">
+                                              {v.weight} · {siteConfig.currencySymbol}{v.price}
+                                            </span>
+                                            <span
+                                              className={`font-ui-label text-[9px] px-1.5 py-0.5 rounded-[3px] ${
+                                                v.stock <= 0
+                                                  ? 'bg-flame/25 text-peach'
+                                                  : v.stock <= 10
+                                                  ? 'bg-flame/15 text-peach'
+                                                  : 'bg-[#252905]/80 text-sage'
+                                              }`}
+                                            >
+                                              {v.stock <= 0 ? 'Out of stock' : `${v.stock} in stock`}
+                                            </span>
+                                          </div>
+                                          <span className="text-[10px] text-sand/85">{v.sku}</span>
+
+                                          <div className="flex items-center gap-1.5 pt-1">
+                                            <button
+                                              type="button"
+                                              aria-label={`Decrease ${p.name} ${v.weight} stock`}
+                                              onClick={() => setDraftStock(p.id, v.id, draft - 1)}
+                                              className="w-8 h-8 rounded-[4px] border border-white/20 bg-oat/10 flex items-center justify-center text-oat hover:text-peach cursor-pointer"
+                                            >
+                                              <Minus className="w-3.5 h-3.5" aria-hidden="true" />
+                                            </button>
+                                            <input
+                                              type="number"
+                                              min={0}
+                                              aria-label={`${p.name} ${v.weight} stock count`}
+                                              value={draft}
+                                              onChange={(e) => setDraftStock(p.id, v.id, Number(e.target.value))}
+                                              className="w-16 h-8 text-center rounded-[4px] border border-white/25 bg-[#141C2B] text-oat text-xs tabular-nums"
+                                            />
+                                            <button
+                                              type="button"
+                                              aria-label={`Increase ${p.name} ${v.weight} stock`}
+                                              onClick={() => setDraftStock(p.id, v.id, draft + 1)}
+                                              className="w-8 h-8 rounded-[4px] border border-white/20 bg-oat/10 flex items-center justify-center text-oat hover:text-peach cursor-pointer"
+                                            >
+                                              <Plus className="w-3.5 h-3.5" aria-hidden="true" />
+                                            </button>
+
+                                            <button
+                                              type="button"
+                                              disabled={isSaving || !isDirty}
+                                              onClick={() => handleSaveVariantStock(p, v.id, v.stock)}
+                                              className={`ml-auto inline-flex items-center gap-1 px-2.5 h-8 rounded-[4px] font-ui-label text-[10px] transition-colors cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed ${
+                                                isDirty
+                                                  ? 'bg-flame text-navy font-semibold'
+                                                  : 'bg-oat/15 text-oat border border-white/20'
+                                              }`}
+                                            >
+                                              <Save className="w-3 h-3" aria-hidden="true" />
+                                              <span>{isSaving ? '…' : 'Save'}</span>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        )}
                       </OatSheet>
                     )}
 

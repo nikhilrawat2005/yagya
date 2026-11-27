@@ -13,8 +13,10 @@ import { GlowButton } from '@/components/ui/GlowButton';
 
 interface AdminAddProductModalProps {
   categories: Category[];
+  initialProduct?: Product | null;
+  defaultCategorySlug?: CategorySlug;
   onClose: () => void;
-  onCreated: (product: Product) => void;
+  onSaved: (product: Product, isEdit: boolean) => void;
 }
 
 const PRESET_PRODUCT_IMAGES: Array<{ label: string; src: string }> = [
@@ -50,54 +52,72 @@ function slugify(value: string): string {
 
 export function AdminAddProductModal({
   categories,
+  initialProduct = null,
+  defaultCategorySlug,
   onClose,
-  onCreated,
+  onSaved,
 }: AdminAddProductModalProps) {
+  const isEdit = Boolean(initialProduct);
   const defaultCat = categories[0];
-  const [name, setName] = useState('');
-  const [slug, setSlug] = useState('');
-  const [slugEdited, setSlugEdited] = useState(false);
+
+  const [name, setName] = useState(initialProduct?.name ?? '');
+  const [slug, setSlug] = useState(initialProduct?.slug ?? '');
+  const [slugEdited, setSlugEdited] = useState(Boolean(initialProduct));
   const [categorySlug, setCategorySlug] = useState<CategorySlug>(
-    defaultCat?.slug ?? 'seeds-and-grains'
+    initialProduct?.categorySlug ?? defaultCategorySlug ?? defaultCat?.slug ?? 'seeds-and-grains'
   );
-  const [origin, setOrigin] = useState('');
-  const [provenance, setProvenance] = useState('');
-  const [shortDescription, setShortDescription] = useState('');
-  const [description, setDescription] = useState('');
-  const [imageSrc, setImageSrc] = useState<string>(PRESET_PRODUCT_IMAGES[0].src);
-  const [imageAlt, setImageAlt] = useState('');
-  const [badgesText, setBadgesText] = useState('100% Natural, Small Batch');
-  const [tagsText, setTagsText] = useState('');
-  const [servingSize, setServingSize] = useState('25 g');
-  const [ingredients, setIngredients] = useState('');
+  const [origin, setOrigin] = useState(initialProduct?.origin ?? '');
+  const [provenance, setProvenance] = useState(initialProduct?.provenance ?? '');
+  const [shortDescription, setShortDescription] = useState(initialProduct?.shortDescription ?? '');
+  const [description, setDescription] = useState(initialProduct?.description ?? '');
+  const [imageSrc, setImageSrc] = useState<string>(
+    initialProduct?.images[0]?.src ?? PRESET_PRODUCT_IMAGES[0].src
+  );
+  const [imageAlt, setImageAlt] = useState(initialProduct?.images[0]?.alt ?? '');
+  const [badgesText, setBadgesText] = useState(
+    initialProduct ? initialProduct.badges.join(', ') : '100% Natural, Small Batch'
+  );
+  const [tagsText, setTagsText] = useState(initialProduct ? initialProduct.tags.join(', ') : '');
+  const [servingSize, setServingSize] = useState(initialProduct?.servingSize ?? '25 g');
+  const [ingredients, setIngredients] = useState(initialProduct?.ingredients ?? '');
   const [allergenAdvice, setAllergenAdvice] = useState(
-    'Packed in a facility that handles tree nuts, peanuts, and seeds.'
+    initialProduct?.allergenAdvice ??
+      'Packed in a facility that handles tree nuts, peanuts, and seeds.'
   );
   const [howToUseText, setHowToUseText] = useState(
-    'Enjoy a handful straight from the pack.\nFold into morning oats, smoothies, or salads.'
+    initialProduct
+      ? initialProduct.howToUse.join('\n')
+      : 'Enjoy a handful straight from the pack.\nFold into morning oats, smoothies, or salads.'
   );
   const [storage, setStorage] = useState(
-    'Store in a cool, dry place away from direct sunlight. Reseal tightly after use.'
+    initialProduct?.storage ??
+      'Store in a cool, dry place away from direct sunlight. Reseal tightly after use.'
   );
   const [nutritionFootnote, setNutritionFootnote] = useState(
-    'Small-batch packed under clean hygiene standards.'
+    initialProduct?.nutritionFootnote ?? 'Small-batch packed under clean hygiene standards.'
   );
-  const [isFeatured, setIsFeatured] = useState(true);
-  const [isBestseller, setIsBestseller] = useState(false);
+  const [isFeatured, setIsFeatured] = useState(initialProduct?.isFeatured ?? true);
+  const [isBestseller, setIsBestseller] = useState(initialProduct?.isBestseller ?? false);
 
-  const [variants, setVariants] = useState<ProductVariant[]>([
-    {
-      id: 'var-100',
-      label: '100g',
-      weight: '100g',
-      price: 249,
-      mrp: 299,
-      sku: 'YAG-NEW-100',
-      stock: 50,
-    },
-  ]);
+  const [variants, setVariants] = useState<ProductVariant[]>(
+    initialProduct?.variants.length
+      ? initialProduct.variants
+      : [
+          {
+            id: 'var-100',
+            label: '100g',
+            weight: '100g',
+            price: 249,
+            mrp: 299,
+            sku: 'YAG-NEW-100',
+            stock: 50,
+          },
+        ]
+  );
 
-  const [nutritionRows, setNutritionRows] = useState<NutritionFact[]>([]);
+  const [nutritionRows, setNutritionRows] = useState<NutritionFact[]>(
+    initialProduct?.nutritionFacts ?? []
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -176,7 +196,7 @@ export function AdminAddProductModal({
 
     const catObj = categories.find((c) => c.slug === categorySlug);
     const product: Product = {
-      id: `prod-${cleanSlug}`,
+      id: initialProduct?.id ?? `prod-${cleanSlug}`,
       slug: cleanSlug,
       name: name.trim(),
       category: catObj?.name || 'Seeds & Grains',
@@ -190,6 +210,7 @@ export function AdminAddProductModal({
           src: imageSrc.trim(),
           alt: imageAlt.trim() || `${name.trim()} harvest pack`,
         },
+        ...(initialProduct?.images.slice(1) ?? []),
       ],
       variants: variants.map((v) => ({
         ...v,
@@ -204,8 +225,8 @@ export function AdminAddProductModal({
         .split(',')
         .map((b) => b.trim())
         .filter(Boolean),
-      rating: 4.9,
-      reviewCount: 1,
+      rating: initialProduct?.rating ?? 4.9,
+      reviewCount: initialProduct?.reviewCount ?? 1,
       servingSize: servingSize.trim() || '25 g',
       nutritionFacts: nutritionRows.filter((r) => r.nutrient.trim() && r.per100g.trim()),
       nutritionFootnote: nutritionFootnote.trim(),
@@ -222,13 +243,13 @@ export function AdminAddProductModal({
         .filter(Boolean),
       isFeatured,
       isBestseller,
-      relatedSlugs: [],
+      relatedSlugs: initialProduct?.relatedSlugs ?? [],
     };
 
     setSaving(true);
     try {
       const saved = await upsertCatalogProduct(product);
-      onCreated(saved);
+      onSaved(saved, isEdit);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to save product to Firestore.');
     } finally {
@@ -240,7 +261,7 @@ export function AdminAddProductModal({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Add New Harvest Product"
+      aria-label={isEdit ? `Edit ${initialProduct?.name}` : 'Add New Harvest Product'}
       className="fixed inset-0 z-[70] bg-navy/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
     >
       <div className="w-full max-w-3xl my-auto">
@@ -251,13 +272,13 @@ export function AdminAddProductModal({
                 {siteConfig.name} Catalog Schema
               </span>
               <h2 className="font-display text-2xl sm:text-3xl text-oat font-medium">
-                Add New Harvest Product
+                {isEdit ? `Edit ${initialProduct?.name}` : 'Add New Harvest Product'}
               </h2>
             </div>
             <button
               type="button"
               onClick={onClose}
-              aria-label="Close add product modal"
+              aria-label="Close product modal"
               className="p-2 rounded-[4px] text-sand hover:text-oat hover:bg-oat/10 cursor-pointer"
             >
               <X className="w-5 h-5" aria-hidden="true" />
@@ -283,6 +304,8 @@ export function AdminAddProductModal({
                 name="slug"
                 label="URL Slug *"
                 value={slug}
+                readOnly={isEdit}
+                inputClassName={isEdit ? 'opacity-75 cursor-not-allowed' : ''}
                 onChange={(e) => {
                   setSlugEdited(true);
                   setSlug(e.target.value);
@@ -501,7 +524,6 @@ export function AdminAddProductModal({
               />
             </div>
 
-            {/* Optional Nutrition Facts */}
             <div className="p-3.5 rounded-[6px] bg-oat/[0.06] border border-white/15 space-y-2.5">
               <div className="flex items-center justify-between">
                 <span className="font-ui-label text-[10px] text-peach">
@@ -590,7 +612,13 @@ export function AdminAddProductModal({
                 Cancel
               </GlowButton>
               <GlowButton type="submit" variant="cta" size="sm" disabled={saving}>
-                {saving ? 'Publishing Product…' : 'Publish to Store Catalog'}
+                {saving
+                  ? isEdit
+                    ? 'Saving Changes…'
+                    : 'Publishing Product…'
+                  : isEdit
+                  ? 'Save Product Changes'
+                  : 'Publish to Store Catalog'}
               </GlowButton>
             </div>
           </form>
