@@ -138,12 +138,18 @@ export function ProductCard({ product }: { product: Product }) {
             variant={added ? 'secondary' : 'primary'}
             size="sm"
             onClick={handleAdd}
-            disabled={added}
-            aria-label={`Add ${product.name} (${defaultVariant?.weight}) to bag`}
+            disabled={added || (defaultVariant?.stock ?? 0) <= 0}
+            aria-label={
+              (defaultVariant?.stock ?? 0) <= 0
+                ? `${product.name} is out of stock`
+                : `Add ${product.name} (${defaultVariant?.weight}) to bag`
+            }
             className="min-h-[36px] sm:min-h-[40px] px-2.5 sm:px-3.5 text-[10px] sm:text-[11px]"
           >
             <AnimatePresence mode="wait" initial={false}>
-              {added ? (
+              {(defaultVariant?.stock ?? 0) <= 0 ? (
+                <span className="inline-flex items-center">Out of Stock</span>
+              ) : added ? (
                 <motion.span
                   key="added"
                   initial={{ opacity: 0, scale: 0.85 }}

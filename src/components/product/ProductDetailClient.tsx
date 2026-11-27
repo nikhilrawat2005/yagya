@@ -168,8 +168,20 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 <span className="hidden md:inline-block text-xs text-apricot/95">
                   100% Pure &amp; Unprocessed
                 </span>
-                <span className="font-ui-label text-[10px] bg-oat/15 text-peach px-3 py-1 rounded-[4px] border border-white/20">
-                  In Stock
+                <span
+                  className={`font-ui-label text-[10px] px-3 py-1 rounded-[4px] border ${
+                    selectedVariant.stock <= 0
+                      ? 'bg-flame/20 text-peach border-flame/45'
+                      : selectedVariant.stock <= 5
+                      ? 'bg-flame/15 text-peach border-flame/40'
+                      : 'bg-oat/15 text-peach border-white/20'
+                  }`}
+                >
+                  {selectedVariant.stock <= 0
+                    ? 'Out of Stock'
+                    : selectedVariant.stock <= 5
+                    ? `Only ${selectedVariant.stock} Left`
+                    : 'In Stock'}
                 </span>
               </div>
             </OatSheet>
@@ -189,7 +201,10 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                       aria-pressed={isSelected}
                       whileTap={prefersReducedMotion ? undefined : { scale: 0.97 }}
                       transition={MOTION_SPRING.tactile}
-                      onClick={() => setSelectedVariant(v)}
+                      onClick={() => {
+                        setSelectedVariant(v);
+                        setQuantity(1);
+                      }}
                       className={`px-4 py-2.5 rounded-[4px] border text-left transition-[background-color,border-color,color,box-shadow] duration-200 cursor-pointer tabular-nums ${
                         isSelected
                           ? 'border-flame bg-flame text-navy font-semibold shadow-[var(--sheet-shadow)]'
@@ -218,7 +233,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 <span className="px-4 text-sm font-semibold tabular-nums">{quantity}</span>
                 <button
                   type="button"
-                  onClick={() => setQuantity(quantity + 1)}
+                  onClick={() => setQuantity(Math.min(Math.max(1, selectedVariant.stock), quantity + 1))}
                   aria-label="Increase quantity"
                   className="w-7 h-7 flex items-center justify-center text-oat hover:text-peach cursor-pointer"
                 >
@@ -230,11 +245,14 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 type="button"
                 variant={added ? 'secondary' : 'cta'}
                 magnetic
+                disabled={selectedVariant.stock <= 0}
                 onClick={handleAddToCart}
                 className="flex-1 py-3.5"
               >
                 <AnimatePresence mode="wait" initial={false}>
-                  {added ? (
+                  {selectedVariant.stock <= 0 ? (
+                    <span className="inline-flex items-center gap-2">Out of Stock</span>
+                  ) : added ? (
                     <motion.span
                       key="added"
                       initial={{ opacity: 0, y: 4 }}

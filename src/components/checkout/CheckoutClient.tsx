@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'motion/react';
 import { ShoppingBag, Lock, CheckCircle2 } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cartStore';
+import { useAuth } from '@/components/auth/AuthProvider';
 import { createOrder } from '@/lib/services/productService';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
 import { GlowButton } from '@/components/ui/GlowButton';
@@ -19,6 +20,7 @@ export function CheckoutClient() {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const { items, getSubtotal, getShippingFee, clearCart } = useCartStore();
+  const { user } = useAuth();
   const { prefersReducedMotion } = useInteractiveCapabilities();
 
   const [formData, setFormData] = useState({
@@ -35,6 +37,7 @@ export function CheckoutClient() {
   const [promoCode, setPromoCode] = useState('PURE15');
   const [promoApplied, setPromoApplied] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const normalizedPromo = promoCode.trim().toUpperCase();
@@ -67,8 +70,10 @@ export function CheckoutClient() {
     if (!validate() || items.length === 0) return;
 
     setLoading(true);
+    setSubmitError(null);
     try {
       const order = await createOrder({
+        userId: user?.uid || null,
         customerName: formData.name,
         email: formData.email,
         phone: formData.phone,
@@ -88,7 +93,12 @@ export function CheckoutClient() {
 
       clearCart();
       router.push(`/order-success?orderId=${order.orderId}&total=${grandTotal}`);
-    } catch {
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : 'Unable to confirm order right now. Please try again.'
+      );
       setLoading(false);
     }
   };
@@ -304,6 +314,15 @@ export function CheckoutClient() {
                   })}
                 </div>
               </OatSheet>
+
+              {submitError && (
+                <div
+                  role="alert"
+                  className="p-3.5 rounded-[6px] border border-flame/60 bg-flame/20 text-xs text-oat"
+                >
+                  {submitError}
+                </div>
+              )}
 
               <GlowButton
                 type="submit"

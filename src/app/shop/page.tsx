@@ -3,6 +3,8 @@ import { getProducts, getCategories } from '@/lib/services/productService';
 import { ShopClient } from '@/components/shop/ShopClient';
 import { ProductCardSkeleton, Skeleton } from '@/components/ui/Skeleton';
 
+export const dynamic = 'force-dynamic';
+
 async function ShopContent({
   searchParams,
 }: {

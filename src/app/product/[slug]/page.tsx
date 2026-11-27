@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import { getProductBySlug, getProducts } from '@/lib/services/productService';
 import { ProductDetailClient } from '@/components/product/ProductDetailClient';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateStaticParams() {
   const allProducts = await getProducts();
   return allProducts.map((p) => ({

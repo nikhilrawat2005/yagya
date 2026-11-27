@@ -1,9 +1,15 @@
-import { products, Product } from '@/lib/data/products';
+import { Product } from '@/lib/data/products';
 import { categories, Category } from '@/lib/data/categories';
 import { reviews, Review } from '@/lib/data/reviews';
 import { journalArticles, JournalArticle } from '@/lib/data/journal';
+import {
+  fetchLiveCatalog,
+  recordOrderAndSubtractStock,
+} from '@/lib/firebase/catalog';
+import { isFirebaseConfigured } from '@/lib/firebase/config';
 
 export interface OrderInput {
+  userId?: string | null;
   customerName: string;
   email: string;
   phone: string;
@@ -29,19 +35,22 @@ export interface OrderResult {
 }
 
 export async function getProducts(): Promise<Product[]> {
-  return [...products];
+  return fetchLiveCatalog();
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | undefined> {
-  return products.find((p) => p.slug === slug);
+  const all = await fetchLiveCatalog();
+  return all.find((p) => p.slug === slug);
 }
 
 export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
-  return products.filter((p) => p.categorySlug === categorySlug);
+  const all = await fetchLiveCatalog();
+  return all.filter((p) => p.categorySlug === categorySlug);
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {
-  return products.filter((p) => p.isFeatured || p.isBestseller);
+  const all = await fetchLiveCatalog();
+  return all.filter((p) => p.isFeatured || p.isBestseller);
 }
 
 export async function getCategories(): Promise<Category[]> {
@@ -69,12 +78,37 @@ export async function checkPincodeDelivery(pincode: string): Promise<{ serviceab
 }
 
 export async function createOrder(input: OrderInput): Promise<OrderResult> {
-  await new Promise((res) => setTimeout(res, 500));
   const randomSuffix = Math.floor(100000 + Math.random() * 900000);
+  const orderId = `YAG-${input.items.length > 0 ? randomSuffix : '000000'}`;
+  const trackingNumber = `EXP-IN-${randomSuffix}`;
+  const timestamp = new Date().toISOString();
+
+  if (isFirebaseConfigured && input.items.length > 0) {
+    await recordOrderAndSubtractStock({
+      orderId,
+      trackingNumber,
+      userId: input.userId || null,
+      customerName: input.customerName,
+      email: input.email,
+      phone: input.phone,
+      address: input.address,
+      city: input.city,
+      pincode: input.pincode,
+      state: input.state,
+      paymentMethod: input.paymentMethod,
+      items: input.items,
+      total: input.total,
+      status: 'confirmed',
+      createdAt: timestamp,
+    });
+  } else {
+    await new Promise((res) => setTimeout(res, 400));
+  }
+
   return {
-    orderId: `BP-${input.items.length > 0 ? randomSuffix : '000000'}`,
+    orderId,
     success: true,
-    timestamp: new Date().toISOString(),
-    trackingNumber: `EXP-IN-${randomSuffix}`,
+    timestamp,
+    trackingNumber,
   };
 }
