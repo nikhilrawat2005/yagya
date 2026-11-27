@@ -97,19 +97,8 @@ export function CheckoutClient() {
     return (
       <div className="min-h-[100dvh] bg-navy text-oat pt-24 pb-24 px-4 flex items-center">
         <OatSheet tone="subtle" className="max-w-md mx-auto w-full p-10 text-center">
-          <div className="relative w-24 h-24 mx-auto mb-3 flex items-center justify-center">
-            <Doodle
-              name="frame-arch-botanical"
-              preset="botanical"
-              tone="oat"
-              size={92}
-              opacity={0.78}
-              priority
-              className="absolute inset-0 m-auto"
-            />
-            <div className="relative z-10 w-11 h-11 rounded-[6px] bg-oat/10 border border-white/25 flex items-center justify-center mt-2">
-              <ShoppingBag className="w-5 h-5 text-peach" aria-hidden="true" />
-            </div>
+          <div className="w-14 h-14 mx-auto mb-4 rounded-[6px] bg-oat/10 border border-white/25 flex items-center justify-center">
+            <ShoppingBag className="w-7 h-7 text-peach" aria-hidden="true" />
           </div>
           <h1 className="font-display text-3xl font-medium text-oat mb-2">
             No items to checkout
@@ -374,14 +363,6 @@ export function CheckoutClient() {
                   <span className="font-ui-label text-[10px] text-apricot/90">
                     Promo Code (PURE15 or YAGYA10)
                   </span>
-                  <Doodle
-                    name="burst-radiating-ticks"
-                    preset="accent"
-                    tone="flame"
-                    size={28}
-                    opacity={0.92}
-                    inline
-                  />
                 </div>
                 <div className="flex gap-2 items-center">
                   <GlowInput

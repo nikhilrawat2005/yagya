@@ -8,6 +8,7 @@ export interface PageChapterItem {
   id: string;
   chapterNumber: string;
   chapterLabel: string;
+  compact?: boolean;
   content: React.ReactNode;
   className?: string;
 }
@@ -44,6 +45,7 @@ export function PageBackgroundSet({
             tone={bg.tone}
             isHero={idx === 0}
             isLast={idx === chapters.length - 1}
+            compact={chapter.compact}
             className={chapter.className}
           >
             {chapter.content}

@@ -21,7 +21,7 @@ export interface SplitTextProps {
   duration?: number;
   /** Optional single word (case-insensitive) to render in editorial italic accent */
   accentWord?: string;
-  accentStyle?: 'none' | 'circle' | 'double' | 'swoosh';
+  accentStyle?: 'none' | 'circle';
   accentTone?: DoodleTone;
   accentClassName?: string;
   className?: string;

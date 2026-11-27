@@ -7,16 +7,6 @@ import { OatSheet } from '@/components/editorial/OatSheet';
 import { EditorialProductCard } from '@/components/editorial/EditorialProductCard';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { SplitText } from '@/components/react-bits/SplitText';
-import {
-  ChapterDoodleLayer,
-  DoodleCluster,
-  DoodleDivider,
-} from '@/components/doodles';
-import {
-  CATEGORY_DIVIDERS,
-  CATEGORY_INTRO_CLUSTERS,
-  PAGE_CHAPTER_PLACEMENTS,
-} from '@/config/doodle-placements';
 import type { PageBackgroundKey } from '@/lib/assets';
 import type { Product } from '@/lib/data/products';
 
@@ -40,14 +30,12 @@ export interface CategoryStoryConfig {
 }
 
 /**
- * 4-chapter editorial category experience with per-page sheet positioning,
- * category-specific doodle clusters, product-matched corner doodles, and dividers.
+ * 4-chapter editorial category experience with per-page sheet positioning and spotlight cards.
  */
 export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
   const { pageKey, products } = config;
   const leadProducts = products.slice(0, 2);
   const restProducts = products.slice(2);
-  const placements = PAGE_CHAPTER_PLACEMENTS[pageKey];
 
   const introAlign: Record<CategoryStoryConfig['pageKey'], string> = {
     seeds: 'lg:col-span-6 lg:col-start-1',
@@ -65,11 +53,6 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
       content: (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
           <div className={`${introAlign[pageKey]} relative`}>
-            <DoodleCluster
-              layout="corner-peek"
-              items={CATEGORY_INTRO_CLUSTERS[pageKey]}
-              priority
-            />
             <OatSheet tone="medium" delay={0.05} className="relative z-10 p-7 sm:p-9">
               <span className="font-ui-label text-[11px] text-peach block mb-3">
                 {config.eyebrow}
@@ -78,9 +61,6 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
                 as="h1"
                 trigger="mount"
                 text={`${config.titleLead} ${config.titleAccent}`}
-                accentWord={config.titleAccent}
-                accentStyle="double"
-                accentTone="flame"
                 className="font-display text-4xl sm:text-5xl lg:text-[52px] font-medium tracking-tight text-oat mb-5"
               />
               <p className="text-sm sm:text-base text-apricot/95 leading-relaxed max-w-lg mb-7">
@@ -105,7 +85,6 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
         <div className="space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             <div className={`relative ${pageKey === 'berries' || pageKey === 'makhana' ? 'lg:col-span-5 lg:col-start-8 lg:order-2' : 'lg:col-span-5 lg:col-start-1'}`}>
-              <ChapterDoodleLayer placements={placements['chapter-02']} />
               <OatSheet tone="subtle" delay={0.08} className="relative z-10 p-7 sm:p-8">
                 <SplitText
                   as="h2"
@@ -133,8 +112,6 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
               </div>
             </div>
           </div>
-
-          <DoodleDivider variant={CATEGORY_DIVIDERS[pageKey]} tone="apricot" />
         </div>
       ),
     },
@@ -158,7 +135,6 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
                 ))}
               </div>
               <div className="lg:col-span-4 relative">
-                <ChapterDoodleLayer placements={placements['chapter-03']} />
                 <OatSheet tone="warm" delay={0.2} className="relative z-10 p-7 sm:p-8">
                   <h2 className="font-display text-2xl sm:text-3xl font-medium text-oat mb-3">
                     {config.craftTitle}
@@ -171,7 +147,6 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
             </>
           ) : (
             <div className="lg:col-span-6 lg:col-start-4 relative">
-              <ChapterDoodleLayer placements={placements['chapter-03']} />
               <OatSheet tone="warm" delay={0.12} className="relative z-10 p-8 sm:p-10">
                 <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat mb-4">
                   {config.craftTitle}
@@ -192,7 +167,6 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
       content: (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           <div className={`relative ${pageKey === 'nuts' ? 'lg:col-span-6 lg:col-start-7' : 'lg:col-span-6 lg:col-start-2'}`}>
-            <ChapterDoodleLayer placements={placements['chapter-04']} />
             <OatSheet tone="medium" delay={0.1} className="relative z-10 p-7 sm:p-10">
               <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat mb-4">
                 {config.promiseTitle}

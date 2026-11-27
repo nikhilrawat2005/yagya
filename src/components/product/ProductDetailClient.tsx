@@ -113,15 +113,8 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 {product.origin} · {product.provenance}
               </span>
               {product.badges[0] && (
-                <span className="inline-flex items-center gap-1.5 font-ui-label text-[10px] px-2.5 py-0.5 rounded-[4px] bg-flame text-navy font-semibold whitespace-nowrap">
-                  <span>{product.badges[0]}</span>
-                  <Doodle
-                    name="sparkle-trio-asymmetric"
-                    preset="accent"
-                    tone="navy"
-                    size={16}
-                    inline
-                  />
+                <span className="inline-block font-ui-label text-[10px] px-2.5 py-0.5 rounded-[4px] bg-flame text-navy font-semibold whitespace-nowrap">
+                  {product.badges[0]}
                 </span>
               )}
             </div>
@@ -172,17 +165,8 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 </p>
               </div>
               <div className="flex items-center gap-3 shrink-0">
-                <span className="hidden md:inline-flex items-center gap-1.5 text-xs text-apricot/95">
-                  <Doodle
-                    name="leaf-pair-whisper"
-                    preset="botanical"
-                    tone="oat"
-                    size={22}
-                    hover
-                    showOn="md+"
-                    inline
-                  />
-                  <span>100% Pure &amp; Unprocessed</span>
+                <span className="hidden md:inline-block text-xs text-apricot/95">
+                  100% Pure &amp; Unprocessed
                 </span>
                 <span className="font-ui-label text-[10px] bg-oat/15 text-peach px-3 py-1 rounded-[4px] border border-white/20">
                   In Stock

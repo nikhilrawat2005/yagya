@@ -12,10 +12,13 @@
   --color-purple: #381B31;     /* Potent Purple (19-2520) - Chapter 03 Plums */
   --color-aubergine: #24141F;  /* Aubergine Gleam (20-0124) - Chapter 04 Blackberries */
 
-  /* Light Palette */
+  /* Light & Warm Sand Palette (WCAG AA/AAA calibrated on dark botanical bases) */
   --color-oat: #F6EFE2;        /* Oat White - primary text, sheets, line art */
+  --color-ivory: #FAF5EA;      /* Soft Ivory - elevated highlights */
   --color-apricot: #FDE6C8;    /* Apricot Mist - warm secondary text, strokes */
+  --color-sand: #E9D7BC;       /* Warm Sand - accessible muted text (>= 7.5:1) */
   --color-peach: #FBC98A;      /* Peach Glow - subtle highlights & numerals */
+  --color-sage: #8FB382;       /* Botanical Sage - verified & free-shipping badges */
 
   /* Brand Accent (from attached Diya Flame logo, used sparingly) */
   --color-flame: #DF7F25;      /* Yagya Flame Orange */
@@ -30,8 +33,8 @@
   /* =========================================================
      EDITORIAL TYPOGRAPHY TOKENS (Google Fonts via next/font/google)
      ========================================================= */
-  --font-display: var(--font-playfair), Georgia, serif;
-  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-display: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
   --font-annotation: var(--font-caveat), cursive;
 
   /* =========================================================
@@ -127,16 +130,23 @@
 /* Signature Oat-Sheet Frosted Paper Utility */
 .oat-sheet {
   background-color: var(--sheet-bg);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--sheet-border);
-  border-radius: 6px;
+  border-radius: 8px;
   box-shadow: var(--sheet-shadow);
   transition:
     transform var(--transition-base),
     background-color var(--transition-base),
     border-color var(--transition-base),
     box-shadow var(--transition-base);
+}
+
+@media (min-width: 768px) {
+  .oat-sheet {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
 }
 
 @media (prefers-reduced-transparency: reduce) {

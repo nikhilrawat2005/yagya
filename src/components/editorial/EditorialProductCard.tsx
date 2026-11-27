@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { SpotlightCard } from '@/components/react-bits/SpotlightCard';
+import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
 import type { Product } from '@/lib/data/products';
 
 export interface EditorialProductCardProps {
@@ -33,7 +33,7 @@ export function EditorialProductCard({
       >
         <Link href={`/product/${product.slug}`} className="block focus-visible:outline-none">
           <div className="relative aspect-[4/5] w-full rounded-[6px] overflow-hidden border border-white/20 bg-navy/30 mb-4">
-            <Image
+            <ProductImageWithFallback
               src={primary?.src || ''}
               alt={primary?.alt || `${product.name} harvest pack`}
               fill

@@ -7,8 +7,6 @@ import { StaggerContainer, StaggerItem } from '@/components/motion/Stagger';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { GlowButton } from '@/components/ui/GlowButton';
-import { ChapterDoodleLayer, DoodleDivider } from '@/components/doodles';
-import { PAGE_CHAPTER_PLACEMENTS } from '@/config/doodle-placements';
 
 export default async function JournalPage() {
   const articles = await getJournalArticles();
@@ -25,7 +23,6 @@ export default async function JournalPage() {
           chapterLabel: 'Field Chronicle',
           content: (
             <div className="max-w-5xl mx-auto relative">
-              <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.journal['chapter-01']} priority />
               <FadeInSection className="relative z-10 text-center max-w-xl mx-auto mb-10">
                 <SplitText
                   as="h1"
@@ -93,9 +90,6 @@ export default async function JournalPage() {
           chapterLabel: 'Orchard & Roastery',
           content: (
             <div className="max-w-5xl mx-auto space-y-8 relative">
-              <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.journal['chapter-02']} />
-              <DoodleDivider variant="flame" tone="oat" size={180} />
-
               <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {secondHalf.map((art) => (
                   <StaggerItem key={art.id}>
@@ -152,7 +146,6 @@ export default async function JournalPage() {
           content: (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
               <div className="lg:col-span-6 lg:col-start-4 relative">
-                <ChapterDoodleLayer placements={PAGE_CHAPTER_PLACEMENTS.journal['chapter-03']} />
                 <OatSheet tone="warm" className="relative z-10 p-8 sm:p-10 space-y-5 text-center">
                   <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat leading-tight">
                     Every harvest written here is packed in small batches.

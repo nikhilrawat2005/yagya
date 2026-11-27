@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import {
-  Playfair_Display,
-  DM_Sans,
+  Cormorant_Garamond,
+  Plus_Jakarta_Sans,
   Caveat,
 } from 'next/font/google';
 import './globals.css';
@@ -13,26 +13,30 @@ import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  variable: '--font-playfair',
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
   display: 'swap',
 });
 
-const dmSans = DM_Sans({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-dm-sans',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-jakarta',
   display: 'swap',
 });
 
 const caveat = Caveat({
   subsets: ['latin'],
+  weight: ['400', '600'],
   variable: '--font-caveat',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} - Seeds & Berries, Straight From The Farm`,
+  title: `${siteConfig.name} — ${siteConfig.tagline}`,
   description: siteConfig.description,
   icons: {
     icon: ASSETS.brand.logoPrimary,
@@ -52,8 +56,8 @@ export default function RootLayout({
     <html
       lang="en"
       className={[
-        playfair.variable,
-        dmSans.variable,
+        cormorant.variable,
+        jakarta.variable,
         caveat.variable,
       ].join(' ')}
     >

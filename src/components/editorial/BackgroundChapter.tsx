@@ -10,7 +10,6 @@ import {
   useTransform,
 } from 'motion/react';
 import type { ChapterTone } from '@/lib/assets';
-import { VantaBackground } from '@/components/webgl/VantaBackground';
 
 export type { ChapterTone };
 
@@ -25,6 +24,7 @@ export interface BackgroundChapterProps {
   isHero?: boolean;
   isLast?: boolean;
   enableVanta?: boolean;
+  compact?: boolean;
   children: React.ReactNode;
   className?: string;
 }
@@ -70,6 +70,7 @@ export function BackgroundChapter({
   isHero = false,
   isLast = false,
   enableVanta = false,
+  compact = false,
   children,
   className = '',
 }: BackgroundChapterProps) {
@@ -95,12 +96,13 @@ export function BackgroundChapter({
     offset: ['start end', 'end start'],
   });
 
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.85, 1], [1, 1, 1]);
-  const midOpacity = useTransform(scrollYProgress, [0.1, 0.44, 0.94, 1], [0, 1, 1, 0]);
-  const lastOpacity = useTransform(scrollYProgress, [0.1, 0.44, 1], [0, 1, 1]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.72, 1], [1, 1, 0.12]);
+  const midOpacity = useTransform(scrollYProgress, [0, 0.24, 0.76, 1], [0, 1, 1, 0]);
+  const lastOpacity = useTransform(scrollYProgress, [0, 0.24, 1], [0, 1, 1]);
 
   const layerOpacity = isHero ? heroOpacity : isLast ? lastOpacity : midOpacity;
-  const parallaxY = useTransform(scrollYProgress, [0, 1], ['-3.5%', '3.5%']);
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ['-3%', '3%']);
+  const breathScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1.04, 1.08]);
 
   const imageReady = isHero || shouldLoadImage;
   const enableParallax = isDesktop && !prefersReducedMotion;
@@ -109,7 +111,7 @@ export function BackgroundChapter({
     alt: imageAlt,
     fill: true,
     sizes: '100vw',
-    quality: 85,
+    quality: 80,
     priority: isHero,
     loading: isHero ? ('eager' as const) : ('lazy' as const),
     placeholder: 'blur' as const,
@@ -131,7 +133,15 @@ export function BackgroundChapter({
       ref={sectionRef}
       data-chapter={chapterNumber}
       aria-label={`Chapter ${chapterNumber}: ${chapterLabel}`}
-      className={`relative min-h-[100dvh] w-full overflow-x-clip flex items-center pt-20 sm:pt-24 pb-12 sm:pb-14 ${className}`}
+      className={`relative w-full overflow-x-clip flex ${
+        compact
+          ? isHero
+            ? 'items-start pt-24 sm:pt-28 pb-10 sm:pb-12'
+            : 'items-start py-10 sm:py-14'
+          : isHero
+          ? 'min-h-[84dvh] items-start pt-24 sm:pt-30 pb-10 sm:pb-14'
+          : 'min-h-[78dvh] items-center py-12 sm:py-16'
+      } ${className}`}
     >
       {/* Cross-dissolving fixed photographic backdrop */}
       <motion.div
@@ -144,7 +154,7 @@ export function BackgroundChapter({
       >
         {imageReady && (
           <motion.div
-            style={enableParallax ? { y: parallaxY, scale: 1.09 } : undefined}
+            style={enableParallax ? { y: parallaxY, scale: breathScale } : undefined}
             className="absolute inset-0 will-change-transform"
           >
             <picture className="block w-full h-full">
@@ -152,18 +162,23 @@ export function BackgroundChapter({
                 <source media="(max-width: 639px)" srcSet={mobileSrcSet} />
               )}
               <source media="(min-width: 640px)" srcSet={desktopSrcSet} />
-              <img {...desktopImgProps} alt={imageAlt} />
+              <img
+                {...desktopImgProps}
+                alt={imageAlt}
+                fetchPriority={isHero ? 'high' : 'auto'}
+              />
             </picture>
           </motion.div>
         )}
 
         {isHero && enableVanta && (
-          <VantaBackground
-            effect="FOG"
-            interactive={false}
-            speed={0.55}
-            zoom={1.1}
-            className="z-[1] opacity-30 mix-blend-screen"
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 z-[1] pointer-events-none opacity-45"
+            style={{
+              background:
+                'radial-gradient(60% 55% at 18% 28%, rgba(223, 127, 37, 0.22) 0%, transparent 70%), radial-gradient(45% 45% at 84% 72%, rgba(251, 201, 138, 0.14) 0%, transparent 72%)',
+            }}
           />
         )}
 

@@ -12,7 +12,7 @@ import { DOODLES, type DoodleName } from '@/lib/doodles';
 import { loadDoodleSvg, type ParsedDoodleSvg } from '@/components/doodles/svgLoader';
 
 export type DoodleTone = 'oat' | 'flame' | 'apricot' | 'peach' | 'navy' | 'ink';
-export type DoodlePreset = 'hero' | 'accent' | 'connector' | 'botanical';
+export type DoodlePreset = 'hero' | 'accent' | 'connector';
 export type DoodleShowOn = 'all' | 'sm+' | 'md+' | 'lg+';
 
 export const DOODLE_TONE_HEX: Record<DoodleTone, string> = {
@@ -45,12 +45,12 @@ const DOODLE_PRESETS: Record<DoodlePreset, PresetConfig> = {
     duration: 1.6,
     stagger: 0.14,
     ease: [0.22, 1, 0.36, 1],
-    float: true,
-    floatY: [-3, 3, -3],
-    floatRotate: [-1.5, 1.5, -1.5],
-    floatDuration: 5,
-    hoverScale: 1.05,
-    hoverRotateOffset: 3,
+    float: false,
+    floatY: [0, 0, 0],
+    floatRotate: [0, 0, 0],
+    floatDuration: 0,
+    hoverScale: 1.04,
+    hoverRotateOffset: 2,
   },
   accent: {
     mountPriority: false,
@@ -77,19 +77,6 @@ const DOODLE_PRESETS: Record<DoodlePreset, PresetConfig> = {
     floatDuration: 0,
     hoverScale: 1,
     hoverRotateOffset: 0,
-  },
-  botanical: {
-    mountPriority: false,
-    inViewAmount: 0.25,
-    duration: 2.2,
-    stagger: 0.16,
-    ease: [0.22, 1, 0.36, 1],
-    float: true,
-    floatY: [-4, 4, -4],
-    floatRotate: [-1.5, 1.5, -1.5],
-    floatDuration: 5.4,
-    hoverScale: 1.06,
-    hoverRotateOffset: 4,
   },
 };
 
@@ -169,11 +156,11 @@ function useMotionEnvironment() {
 /**
  * Hand-drawn SVG doodle loaded inline from /public/assets/doodles via the typed registry.
  * Uses currentColor + stroke-linecap="round" + preset choreography (hero, accent,
- * connector, botanical) and honors prefers-reduced-motion.
+ * connector) and honors prefers-reduced-motion.
  */
 export function Doodle({
   name,
-  preset = 'botanical',
+  preset = 'accent',
   tone = 'oat',
   size,
   draw = true,

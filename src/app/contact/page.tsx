@@ -10,7 +10,6 @@ import { FadeInSection } from '@/components/motion/FadeInSection';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { SplitText } from '@/components/react-bits/SplitText';
-import { Doodle } from '@/components/doodles';
 import { MOTION_DURATION, MOTION_EASE } from '@/lib/motion/tokens';
 
 export default function ContactPage() {
@@ -190,21 +189,9 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
               <div className="lg:col-span-6 lg:col-start-4 relative">
                 <OatSheet tone="warm" className="relative z-10 p-8 sm:p-10 space-y-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat leading-tight">
-                      Custom festive hampers &amp; pantry refills.
-                    </h2>
-                    <Doodle
-                      name="sparkle-trio-asymmetric"
-                      preset="accent"
-                      tone="flame"
-                      size={36}
-                      opacity={0.9}
-                      showOn="md+"
-                      inline
-                      className="shrink-0 mt-1"
-                    />
-                  </div>
+                  <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat leading-tight">
+                    Custom festive hampers &amp; pantry refills.
+                  </h2>
                   <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">
                     For corporate gifting, café pantry partnerships, or bulk seasonal orders, share
                     your preferred harvests above and our packing hub will prepare a fresh-batch quote.
