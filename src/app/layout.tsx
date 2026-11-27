@@ -8,6 +8,7 @@ import './globals.css';
 import { siteConfig } from '@/lib/data/site';
 import { ASSETS } from '@/lib/assets';
 import { SmoothScrollProvider } from '@/components/motion/SmoothScrollProvider';
+import { AuthProvider } from '@/components/auth/AuthProvider';
 import { PageTransition } from '@/components/motion/PageTransition';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Navbar } from '@/components/layout/Navbar';
@@ -68,14 +69,16 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <SmoothScrollProvider>
-          <Navbar />
-          <CartDrawer />
-          <main id="main-content" className="min-h-[100dvh]">
-            <PageTransition>{children}</PageTransition>
-          </main>
-          <Footer />
-        </SmoothScrollProvider>
+        <AuthProvider>
+          <SmoothScrollProvider>
+            <Navbar />
+            <CartDrawer />
+            <main id="main-content" className="min-h-[100dvh]">
+              <PageTransition>{children}</PageTransition>
+            </main>
+            <Footer />
+          </SmoothScrollProvider>
+        </AuthProvider>
       </body>
     </html>
   );

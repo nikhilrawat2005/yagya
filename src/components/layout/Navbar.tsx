@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ShoppingBag, Sparkles } from 'lucide-react';
+import { Menu, X, ShoppingBag, Sparkles, User, Shield } from 'lucide-react';
 import {
   AnimatePresence,
   motion,
@@ -14,6 +14,7 @@ import {
 import { siteConfig } from '@/lib/data/site';
 import { ASSETS } from '@/lib/assets';
 import { useCartStore } from '@/lib/store/cartStore';
+import { useAuth } from '@/components/auth/AuthProvider';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
 
 const NAV_LINKS = [
@@ -29,6 +30,7 @@ export function Navbar() {
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const { scrollY } = useScroll();
+  const { user, profile, loading: authLoading, isAdmin } = useAuth();
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const next = latest > 56;
@@ -48,6 +50,9 @@ export function Navbar() {
 
   const totalItems = useCartStore((s) => s.getTotalItems());
   const openCart = useCartStore((s) => s.openCart);
+
+  const accountLabel =
+    profile?.firstName || user?.displayName?.split(' ')[0] || 'Account';
 
   return (
     <div className="fixed top-2.5 sm:top-3 left-3 right-3 sm:left-4 sm:right-4 z-50 pointer-events-none">
@@ -90,9 +95,9 @@ export function Navbar() {
               </span>
             </Link>
 
-            {/* Right: Navigation + Bag Trigger + Mobile Toggle */}
-            <div className="flex items-center gap-2 sm:gap-5">
-              <nav aria-label="Main navigation" className="hidden md:flex items-center gap-7">
+            {/* Right: Navigation + Account + Bag Trigger + Mobile Toggle */}
+            <div className="flex items-center gap-2 sm:gap-4">
+              <nav aria-label="Main navigation" className="hidden md:flex items-center gap-6">
                 {NAV_LINKS.map((item) => {
                   const active = pathname === item.href;
                   return (
@@ -115,6 +120,47 @@ export function Navbar() {
                   );
                 })}
               </nav>
+
+              {!authLoading && user ? (
+                <div className="hidden sm:flex items-center gap-2">
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      className={`inline-flex items-center gap-1.5 min-h-[40px] px-3 py-2 rounded-[4px] border text-[10px] font-ui-label whitespace-nowrap transition-colors ${
+                        scrolled
+                          ? 'border-flame bg-flame text-navy font-semibold hover:bg-flame-soft'
+                          : 'border-flame/70 bg-flame/20 text-peach hover:bg-flame hover:text-navy'
+                      }`}
+                    >
+                      <Shield className="w-3.5 h-3.5" aria-hidden="true" />
+                      <span>Admin</span>
+                    </Link>
+                  )}
+                  <Link
+                    href="/dashboard"
+                    className={`inline-flex items-center gap-1.5 min-h-[40px] px-3 py-2 rounded-[4px] border text-[11px] font-ui-label whitespace-nowrap transition-colors ${
+                      scrolled
+                        ? 'border-navy/25 bg-navy/5 text-navy hover:border-navy/50'
+                        : 'border-white/25 bg-oat/10 text-oat hover:border-peach/60'
+                    }`}
+                  >
+                    <User className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span>{accountLabel}</span>
+                  </Link>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className={`hidden sm:inline-flex items-center gap-1.5 min-h-[40px] px-3 py-2 rounded-[4px] border text-[11px] font-ui-label whitespace-nowrap transition-colors ${
+                    scrolled
+                      ? 'border-navy/25 bg-navy/5 text-navy hover:border-navy/50'
+                      : 'border-white/25 bg-oat/10 text-oat hover:border-peach/60'
+                  }`}
+                >
+                  <User className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>Sign In</span>
+                </Link>
+              )}
 
               <button
                 type="button"
@@ -184,6 +230,47 @@ export function Navbar() {
                       </Link>
                     );
                   })}
+
+                  <div className={`pt-2 mt-1 border-t flex flex-col gap-1 ${scrolled ? 'border-navy/15' : 'border-white/15'}`}>
+                    {!authLoading && user ? (
+                      <>
+                        <Link
+                          href="/dashboard"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={`font-ui-label text-xs py-2.5 px-2 rounded-[4px] flex items-center gap-2 ${
+                            scrolled ? 'text-navy hover:bg-navy/5' : 'text-peach hover:bg-oat/10'
+                          }`}
+                        >
+                          <User className="w-3.5 h-3.5" aria-hidden="true" />
+                          <span>My Dashboard ({accountLabel})</span>
+                        </Link>
+                        {isAdmin && (
+                          <Link
+                            href="/admin"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`font-ui-label text-xs py-2.5 px-2 rounded-[4px] flex items-center gap-2 ${
+                              scrolled ? 'text-[#9A4906] font-semibold' : 'text-flame font-semibold'
+                            }`}
+                          >
+                            <Shield className="w-3.5 h-3.5" aria-hidden="true" />
+                            <span>Admin Dashboard</span>
+                          </Link>
+                        )}
+                      </>
+                    ) : (
+                      <Link
+                        href="/login"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`font-ui-label text-xs py-2.5 px-2 rounded-[4px] flex items-center gap-2 ${
+                          scrolled ? 'text-navy hover:bg-navy/5' : 'text-peach hover:bg-oat/10'
+                        }`}
+                      >
+                        <User className="w-3.5 h-3.5" aria-hidden="true" />
+                        <span>Sign In / Create Account</span>
+                      </Link>
+                    )}
+                  </div>
+
                   <p className={`text-[11px] px-2 pt-2 mt-1 border-t ${scrolled ? 'border-navy/15 text-navy/80' : 'border-white/15 text-sand'}`}>
                     {siteConfig.announcement}
                   </p>
