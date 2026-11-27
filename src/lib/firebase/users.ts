@@ -16,11 +16,11 @@ export interface UserProfile {
   firstName: string;
   lastName: string;
   displayName: string;
-  phone?: string;
+  phone?: string | null;
   age: number;
   role: UserRole;
   authProviders: string[];
-  photoURL?: string;
+  photoURL?: string | null;
   profileCompleted: boolean;
   createdAt: string;
   updatedAt: string;
@@ -67,10 +67,16 @@ export async function saveUserProfile(
   const payload: UserProfile = {
     ...profile,
     email: normalizedEmail,
+    phone: profile.phone?.trim() || null,
+    photoURL: profile.photoURL || null,
     role: getUserRole(normalizedEmail),
   };
 
-  await setDoc(doc(db, USERS_COLLECTION, profile.uid), payload, { merge: true });
+  const sanitized = Object.fromEntries(
+    Object.entries(payload).filter(([, value]) => value !== undefined)
+  );
+
+  await setDoc(doc(db, USERS_COLLECTION, profile.uid), sanitized, { merge: true });
   return payload;
 }
 
