@@ -356,7 +356,7 @@ export const products: Product[] = [
     images: [
       {
         src: ASSETS.products.berries.blueberry,
-        alt: '3D clay render of whole indigo Dried Blueberries',
+        alt: 'Matte dark ceramic bowl of plump Dried Blueberries with fresh sprig on slate',
       },
     ],
     variants: [
