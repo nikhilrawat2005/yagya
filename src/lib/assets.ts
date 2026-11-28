@@ -20,6 +20,7 @@ export interface BackgroundAsset {
 export const ASSETS = {
   brand: {
     logoPrimary: '/assets/brand/logo-primary.png',
+    logoFlame: '/assets/brand/logo-flame.png',
   },
   backgrounds: {
     home: [

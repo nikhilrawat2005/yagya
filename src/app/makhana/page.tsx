@@ -1,5 +1,10 @@
+import type { Metadata } from 'next';
 import { getProductsByCategory } from '@/lib/services/productService';
 import { CategoryStoryPage } from '@/components/editorial/CategoryStoryPage';
+
+export const metadata: Metadata = {
+  title: 'Flavoured Makhana',
+};
 
 export default async function MakhanaPage() {
   const products = await getProductsByCategory('flavoured-makhana');

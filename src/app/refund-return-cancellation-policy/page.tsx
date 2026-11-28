@@ -3,7 +3,7 @@ import { DraftPolicyPage } from '@/components/legal/DraftPolicyPage';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: `Refund, Return & Cancellation Policy (Draft) — ${siteConfig.brandName}`,
+  title: 'Refund, Return & Cancellation Policy (Draft)',
   description: `Draft refund, return, and cancellation policy for ${siteConfig.brandName}.`,
 };
 

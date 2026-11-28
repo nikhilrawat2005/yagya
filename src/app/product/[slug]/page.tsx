@@ -22,11 +22,11 @@ export async function generateMetadata({
   const product = await getProductBySlug(slug);
   if (!product) {
     return {
-      title: `Product Not Found — ${siteConfig.brandName}`,
+      title: 'Product Not Found',
     };
   }
   return {
-    title: `${product.name} — ${siteConfig.brandName}`,
+    title: product.name,
     description: product.shortDescription,
   };
 }

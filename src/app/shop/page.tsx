@@ -1,7 +1,12 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { getProducts, getCategories } from '@/lib/services/productService';
 import { ShopClient } from '@/components/shop/ShopClient';
 import { ProductCardSkeleton, Skeleton } from '@/components/ui/Skeleton';
+
+export const metadata: Metadata = {
+  title: 'Shop Pantry Collection',
+};
 
 export const dynamic = 'force-dynamic';
 

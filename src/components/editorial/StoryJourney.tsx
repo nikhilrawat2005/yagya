@@ -97,8 +97,8 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                       <SplitText
                         as="h1"
                         trigger="mount"
-                        text="A yagya is an offering of what is pure."
-                        accentWord="pure"
+                        text="Honest ingredients, gathered for everyday kitchens."
+                        accentWord="everyday"
                         accentStyle="circle"
                         accentTone="flame"
                         className="font-display text-4xl sm:text-5xl lg:text-[54px] text-oat font-medium leading-[1.06] mb-4"

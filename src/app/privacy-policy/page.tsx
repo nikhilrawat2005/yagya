@@ -3,7 +3,7 @@ import { DraftPolicyPage } from '@/components/legal/DraftPolicyPage';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: `Privacy Policy (Draft) — ${siteConfig.brandName}`,
+  title: 'Privacy Policy (Draft)',
   description: `Draft DPDP Act, 2023 privacy policy for ${siteConfig.brandName}.`,
 };
 

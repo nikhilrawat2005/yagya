@@ -34,7 +34,7 @@ export function DraftPolicyPage({
           <AlertTriangle className="w-4 h-4 text-peach shrink-0 mt-0.5" aria-hidden="true" />
           <div>
             <p className="font-ui-label text-[10px] text-peach font-semibold tracking-wider">
-              DRAFT — PENDING LEGAL / CA REVIEW BEFORE LAUNCH
+              DRAFT: PENDING LEGAL / CA REVIEW BEFORE LAUNCH
             </p>
             <p className="text-sand mt-1 leading-relaxed">
               This policy is a pre-launch structural draft. Bracketed placeholders must be finalized

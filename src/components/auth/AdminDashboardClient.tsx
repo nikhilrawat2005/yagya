@@ -54,9 +54,9 @@ type AdminPanel = 'dashboard' | 'users' | 'catalog' | 'orders' | 'security';
 type RoleFilter = 'all' | 'customer' | 'admin';
 
 function formatJoinDate(iso?: string): string {
-  if (!iso) return '—';
+  if (!iso) return '-';
   const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return '—';
+  if (Number.isNaN(date.getTime())) return '-';
   return date.toLocaleDateString('en-IN', {
     day: '2-digit',
     month: 'short',
@@ -650,7 +650,7 @@ export function AdminDashboardClient({
                                   className="py-3 flex flex-wrap items-center justify-between gap-3 text-xs"
                                 >
                                   <div>
-                                    <p className="font-semibold text-oat">{u.displayName || '—'}</p>
+                                    <p className="font-semibold text-oat">{u.displayName || '-'}</p>
                                     <p className="text-sand">{u.email}</p>
                                   </div>
                                   <div className="flex items-center gap-2">
@@ -767,7 +767,7 @@ export function AdminDashboardClient({
                                 >
                                   <div className="flex items-start justify-between gap-2">
                                     <div>
-                                      <p className="font-semibold text-oat text-sm">{u.displayName || '—'}</p>
+                                      <p className="font-semibold text-oat text-sm">{u.displayName || '-'}</p>
                                       <p className="text-sand">{u.email}</p>
                                     </div>
                                     <span
@@ -781,11 +781,11 @@ export function AdminDashboardClient({
                                     </span>
                                   </div>
                                   <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10 text-[11px] text-sand tabular-nums">
-                                    <span>Phone: {u.phone || '—'}</span>
-                                    <span>Age: {u.age || '—'}</span>
+                                    <span>Phone: {u.phone || '-'}</span>
+                                    <span>Age: {u.age || '-'}</span>
                                     <span>Joined: {formatJoinDate(u.createdAt)}</span>
                                     <span className="text-peach">
-                                      {formatProviders(u.authProviders).join(' + ') || '—'}
+                                      {formatProviders(u.authProviders).join(' + ') || '-'}
                                     </span>
                                   </div>
                                 </div>
@@ -808,7 +808,7 @@ export function AdminDashboardClient({
                                   {filteredUsers.map((u) => (
                                     <tr key={u.uid} className="hover:bg-oat/[0.04]">
                                       <td className="py-3.5 pr-4">
-                                        <p className="font-medium text-oat">{u.displayName || '—'}</p>
+                                        <p className="font-medium text-oat">{u.displayName || '-'}</p>
                                         <p className="text-[11px] text-sand">{u.email}</p>
                                       </td>
                                       <td className="py-3.5 pr-4">
@@ -823,9 +823,9 @@ export function AdminDashboardClient({
                                         </span>
                                       </td>
                                       <td className="py-3.5 pr-4 tabular-nums text-sand">
-                                        {u.phone || '—'}
+                                        {u.phone || '-'}
                                       </td>
-                                      <td className="py-3.5 pr-4 tabular-nums">{u.age || '—'}</td>
+                                      <td className="py-3.5 pr-4 tabular-nums">{u.age || '-'}</td>
                                       <td className="py-3.5 pr-4">
                                         <div className="flex flex-wrap gap-1.5">
                                           {formatProviders(u.authProviders).map((label) => (

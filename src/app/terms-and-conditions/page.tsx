@@ -3,7 +3,7 @@ import { DraftPolicyPage } from '@/components/legal/DraftPolicyPage';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: `Terms & Conditions (Draft) — ${siteConfig.brandName}`,
+  title: 'Terms & Conditions (Draft)',
   description: `Draft Terms & Conditions for ${siteConfig.brandName} under Indian Consumer Protection and Legal Metrology rules.`,
 };
 

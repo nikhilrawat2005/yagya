@@ -1,5 +1,10 @@
+import type { Metadata } from 'next';
 import { getProductsByCategory } from '@/lib/services/productService';
 import { CategoryStoryPage } from '@/components/editorial/CategoryStoryPage';
+
+export const metadata: Metadata = {
+  title: 'Dried Berries',
+};
 
 export default async function BerriesPage() {
   const products = await getProductsByCategory('berries');

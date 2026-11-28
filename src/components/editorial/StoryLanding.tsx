@@ -2,9 +2,22 @@
 
 import React, { useMemo } from 'react';
 import Link from 'next/link';
-import { ArrowRight, ShieldCheck, Sprout, Truck, Award, Star, CheckCircle2, PackageCheck } from 'lucide-react';
+import {
+  ArrowRight,
+  ShieldCheck,
+  Sprout,
+  Truck,
+  Award,
+  Star,
+  CheckCircle2,
+  PackageCheck,
+  Clock,
+  Coffee,
+  Sparkles,
+} from 'lucide-react';
 import { BackgroundChapter } from '@/components/editorial/BackgroundChapter';
 import { ChapterIndex, type ChapterDefinition } from '@/components/editorial/ChapterIndex';
+import { DailyBowlBuilder } from '@/components/editorial/DailyBowlBuilder';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { ProductCard } from '@/components/product/ProductCard';
@@ -26,9 +39,9 @@ interface StoryLandingProps {
 
 const HOME_CHAPTERS: ReadonlyArray<ChapterDefinition> = [
   { id: 'chapter-01', number: '01', label: 'The Offering' },
-  { id: 'chapter-02', number: '02', label: 'Pantry & Collection' },
-  { id: 'chapter-03', number: '03', label: 'Craft & Nutrition' },
-  { id: 'chapter-04', number: '04', label: 'Our Standard' },
+  { id: 'chapter-02', number: '02', label: 'Pantry & Bowl' },
+  { id: 'chapter-03', number: '03', label: 'Ingredient Clarity' },
+  { id: 'chapter-04', number: '04', label: 'Daily Moments' },
 ];
 
 const CATEGORY_ROUTE_MAP: Record<string, string> = {
@@ -39,6 +52,30 @@ const CATEGORY_ROUTE_MAP: Record<string, string> = {
   'flavoured-makhana': '/makhana',
   mixture: '/shop?category=mixture',
 };
+
+const DAILY_MOMENTS = [
+  {
+    time: '07:30 AM',
+    title: 'Morning Bowl',
+    detail: 'Soak chia seeds overnight, fold in plump pumpkin pepitas, and top with dried blueberries or sea buckthorn.',
+    href: '/seeds',
+    icon: Clock,
+  },
+  {
+    time: '04:30 PM',
+    title: 'Chai Crunch',
+    detail: 'Pour a crisp bowl of mint or black pepper makhana alongside whole roasted cashews and afternoon tea.',
+    href: '/makhana',
+    icon: Coffee,
+  },
+  {
+    time: 'Kitchen Prep',
+    title: 'Everyday Cooking',
+    detail: 'Knead alsi into warm roti dough, warm pine nuts gently in a dry pan, or blend soaked dates into smoothies.',
+    href: '/shop',
+    icon: Sparkles,
+  },
+] as const;
 
 function findNutrientRow(product: Product, nutrientPrefix: string) {
   return product.nutritionFacts?.find((row) =>
@@ -118,7 +155,6 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
         enableVanta
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-7 items-end pt-1">
-          {/* Primary Editorial Hero Sheet */}
           <div className="lg:col-span-7 relative">
             <OatSheet tone="medium" delay={0.04} className="relative z-10 p-6 sm:p-9 lg:p-10">
               <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
@@ -155,7 +191,7 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
               <SplitText
                 as="h1"
                 trigger="mount"
-                text="Pure farm harvests, gathered like an offering."
+                text="Every spoonful, a small daily offering."
                 accentWord="offering"
                 accentStyle="circle"
                 accentTone="flame"
@@ -172,11 +208,10 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
                 </GlowButton>
                 <GlowButton href="#chapter-02" variant="secondary" className="min-h-[46px]">
-                  <span>Featured Pantry</span>
+                  <span>Mix Your Bowl</span>
                 </GlowButton>
               </div>
 
-              {/* Hero Pantry Bar */}
               <div className="pt-5 border-t border-white/15 grid grid-cols-3 gap-3 text-[11px] text-sand">
                 <div className="flex items-center gap-2">
                   <Sprout className="w-4 h-4 text-peach shrink-0" aria-hidden="true" />
@@ -194,7 +229,6 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
             </OatSheet>
           </div>
 
-          {/* Right Column: Tagline Note + Spotlight Card */}
           <div className="lg:col-span-5 relative space-y-4">
             <OatSheet tone="subtle" delay={0.14} className="p-4 sm:p-5">
               <p className="font-annotation text-xl text-oat">
@@ -205,7 +239,7 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
             {heroSpotlight && (
               <Link
                 href={`/product/${heroSpotlight.slug}`}
-                className="group block sm:ml-4"
+                className="group block sm:ml-4 rounded-[6px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat"
               >
                 <SpotlightCard
                   spotlightColor="rgba(223, 127, 37, 0.16)"
@@ -260,12 +294,12 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
       </BackgroundChapter>
 
       {/* ================================================================
-          CHAPTER 02 - PANTRY & COLLECTION
+          CHAPTER 02 - PANTRY, INTERACTIVE BOWL & HIGHLIGHTS
          ================================================================ */}
       <BackgroundChapter
         id="chapter-02"
         chapterNumber="02"
-        chapterLabel="Pantry & Collection"
+        chapterLabel="Pantry & Bowl"
         desktopSrc={ASSETS.backgrounds.home[1].desktop}
         mobileSrc={ASSETS.backgrounds.home[1].mobile}
         imageAlt={ASSETS.backgrounds.home[1].alt}
@@ -281,12 +315,13 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                 <SplitText
                   as="h2"
                   trigger="scroll"
-                  text="Thoughtful everyday nourishment from field to bowl."
+                  text="Crisp, tart, and roasted for everyday kitchens."
                   className="font-display text-3xl sm:text-4xl lg:text-[42px] font-medium tracking-tight text-oat mb-4"
                 />
                 <p className="text-sm sm:text-base text-sand leading-relaxed mb-6 max-w-2xl">
-                  Explore whole seeds, dried berries, orchard fruits, tree nuts, and seasoned
-                  makhana packed cleanly for daily breakfast bowls, snacks, and kitchen staples.
+                  From earthy alsi and plump kaddu seeds to tangy berries, whole tree nuts, and
+                  five seasoned makhana flavours, every pouch fits naturally into breakfast bowls,
+                  baking, and tea-time jars.
                 </p>
 
                 <div className="flex flex-wrap gap-2">
@@ -308,26 +343,26 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                 <ul className="divide-y divide-white/15">
                   <li className="pb-3.5">
                     <h3 className="font-ui-label text-[10px] text-peach mb-1">
-                      Clean Packing Standards
+                      Texture &amp; Crunch First
                     </h3>
                     <p className="text-xs sm:text-sm text-sand leading-relaxed">
-                      Sorted and packed in sealed pouches designed to protect crunch, natural aroma, and freshness.
+                      Sorted whole seeds, plump berries, and crisp lotus puffs sealed for everyday snacking.
                     </p>
                   </li>
                   <li className="py-3.5">
                     <h3 className="font-ui-label text-[10px] text-peach mb-1">
-                      Clear Ingredient Labels
+                      Transparent Ingredients
                     </h3>
                     <p className="text-xs sm:text-sm text-sand leading-relaxed">
-                      Documented nutrition references, ingredients, and allergen guidance displayed clearly per product.
+                      Zero added sugar on our documented seeds and sea buckthorn, and clear sugar disclosures on sweetened berries.
                     </p>
                   </li>
                   <li className="pt-3.5">
                     <h3 className="font-ui-label text-[10px] text-peach mb-1">
-                      Everyday Kitchen Versatility
+                      100g to 500g Formats
                     </h3>
                     <p className="text-xs sm:text-sm text-sand leading-relaxed">
-                      Pack sizes from 100g to 500g tailored for morning bowls, baking, and tea-time snacking.
+                      Pick compact trial pouches or larger family refills for your weekly breakfast prep.
                     </p>
                   </li>
                 </ul>
@@ -335,14 +370,17 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
             </div>
           </div>
 
+          {/* Interactive 3-Step Bowl Pairing Studio */}
+          <DailyBowlBuilder products={products} />
+
           <div className="space-y-4">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
                 <span className="font-ui-label text-[10px] text-peach block mb-1">
-                  Featured Daily Selections
+                  Start With The Pantry
                 </span>
                 <h2 className="font-display text-2xl sm:text-3xl font-medium text-oat">
-                  Pantry Highlights
+                  Signature Selections
                 </h2>
               </div>
               <GlowButton href="/shop" variant="secondary" size="sm">
@@ -361,12 +399,12 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
       </BackgroundChapter>
 
       {/* ================================================================
-          CHAPTER 03 - CRAFT & INDICATIVE NUTRITION
+          CHAPTER 03 - TRANSPARENCY & INDICATIVE NUTRITION
          ================================================================ */}
       <BackgroundChapter
         id="chapter-03"
         chapterNumber="03"
-        chapterLabel="Craft & Nutrition"
+        chapterLabel="Ingredient Clarity"
         desktopSrc={ASSETS.backgrounds.home[2].desktop}
         mobileSrc={ASSETS.backgrounds.home[2].mobile}
         imageAlt={ASSETS.backgrounds.home[2].alt}
@@ -380,7 +418,7 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                   <Link
                     key={item.product.id}
                     href={`/product/${item.product.slug}`}
-                    className="group block"
+                    className="group block rounded-[4px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat"
                   >
                     <div className="relative aspect-[4/3] w-full rounded-[4px] overflow-hidden border border-white/25 bg-[#1C2638]">
                       <ProductImageWithFallback
@@ -395,16 +433,20 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                 ))}
               </div>
 
+              <span className="font-ui-label text-[10px] text-peach block mb-2">
+                Good to Know
+              </span>
               <SplitText
                 as="h2"
                 trigger="scroll"
-                text="Gently dried. Naturally dense."
+                text="Pure tart vs. lightly sweetened."
                 className="font-display text-3xl sm:text-[40px] font-medium tracking-tight text-oat mb-4"
               />
 
               <p className="text-sm sm:text-base text-sand leading-relaxed mb-5">
-                From whole mountain sea buckthorn berries to winter flax and chia seeds, our
-                documented staples publish clear reference values for everyday pantry planning.
+                Sea buckthorn berries stay 100% unsweetened with bold mountain tartness. Blueberries
+                and cranberries pair concentrated fruit with cane sugar and sunflower oil so they
+                stay soft and balanced in salads, oats, and baking.
               </p>
 
               <div className="pt-4 border-t border-white/15 flex items-center justify-between gap-3">
@@ -478,12 +520,12 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
       </BackgroundChapter>
 
       {/* ================================================================
-          CHAPTER 04 - STANDARD & PREVIEW
+          CHAPTER 04 - DAILY MOMENTS & STANDARD
          ================================================================ */}
       <BackgroundChapter
         id="chapter-04"
         chapterNumber="04"
-        chapterLabel="Our Standard"
+        chapterLabel="Daily Moments"
         desktopSrc={ASSETS.backgrounds.home[3].desktop}
         mobileSrc={ASSETS.backgrounds.home[3].mobile}
         imageAlt={ASSETS.backgrounds.home[3].alt}
@@ -494,19 +536,38 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
           <div className="lg:col-span-6 relative">
             <OatSheet tone="medium" delay={0.06} className="relative z-10 p-6 sm:p-9">
               <span className="font-ui-label text-[10px] text-peach block mb-2">
-                {siteConfig.brandName} Standard
+                Three Simple Moments Every Day
               </span>
               <SplitText
                 as="h2"
                 trigger="scroll"
-                text="Honest pantry staples, packed with care."
+                text="Built for morning bowls and evening chai."
                 className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-oat mb-5"
               />
 
-              <p className="text-sm sm:text-base text-sand leading-relaxed max-w-lg mb-6">
-                Steep dried sea buckthorn in warm water, fold winter flax into morning dough, or
-                serve crisp roasted makhana with evening tea.
-              </p>
+              <div className="space-y-3 mb-6">
+                {DAILY_MOMENTS.map((moment) => {
+                  const Icon = moment.icon;
+                  return (
+                    <Link
+                      key={moment.title}
+                      href={moment.href}
+                      className="group block p-3.5 rounded-[6px] bg-oat/[0.07] border border-white/15 hover:border-peach/55 hover:bg-oat/[0.12] transition-colors"
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="inline-flex items-center gap-2 font-ui-label text-[10px] text-peach">
+                          <Icon className="w-3.5 h-3.5" aria-hidden="true" />
+                          <span>{moment.time}</span>
+                        </span>
+                        <span className="font-display text-base text-oat group-hover:text-peach transition-colors">
+                          {moment.title}
+                        </span>
+                      </div>
+                      <p className="text-xs text-sand leading-relaxed">{moment.detail}</p>
+                    </Link>
+                  );
+                })}
+              </div>
 
               {siteConfig.featureFlags.showTrustBadges ? (
                 <div className="grid grid-cols-2 gap-3 mb-7 p-4 rounded-[6px] bg-oat/[0.06] border border-white/15">

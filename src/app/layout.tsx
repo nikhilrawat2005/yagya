@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import {
-  Cormorant_Garamond,
-  Plus_Jakarta_Sans,
+  Fraunces,
+  Outfit,
   Caveat,
 } from 'next/font/google';
 import './globals.css';
@@ -14,18 +14,18 @@ import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
-const cormorant = Cormorant_Garamond({
+const fraunces = Fraunces({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
-  variable: '--font-cormorant',
+  axes: ['SOFT', 'opsz'],
+  variable: '--font-fraunces',
   display: 'swap',
 });
 
-const jakarta = Plus_Jakarta_Sans({
+const outfit = Outfit({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
-  variable: '--font-jakarta',
+  variable: '--font-outfit',
   display: 'swap',
 });
 
@@ -37,14 +37,21 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: `${siteConfig.brandName} — ${siteConfig.tagline}`,
+  title: {
+    default: `${siteConfig.brandName} | ${siteConfig.tagline}`,
+    template: `%s | ${siteConfig.brandName}`,
+  },
   description: siteConfig.description,
   robots: {
     index: false,
     follow: false,
   },
   icons: {
-    icon: ASSETS.brand.logoPrimary,
+    icon: [
+      { url: ASSETS.brand.logoFlame, type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: ASSETS.brand.logoFlame,
   },
 };
 
@@ -61,8 +68,8 @@ export default function RootLayout({
     <html
       lang="en"
       className={[
-        cormorant.variable,
-        jakarta.variable,
+        fraunces.variable,
+        outfit.variable,
         caveat.variable,
       ].join(' ')}
     >

@@ -474,7 +474,7 @@ export const products: Product[] = [
   },
 
   // =========================================================================
-  // DRIED FRUITS (Concise Quality & Culinary Copy Only — Unconfirmed Specs Null)
+  // DRIED FRUITS (Concise Quality & Culinary Copy Only, Unconfirmed Specs Null)
   // =========================================================================
   {
     id: 'prod-anjeer',
@@ -647,7 +647,7 @@ export const products: Product[] = [
   },
 
   // =========================================================================
-  // NUTS (Concise Quality & Culinary Copy Only — Unconfirmed Specs Null)
+  // NUTS (Concise Quality & Culinary Copy Only, Unconfirmed Specs Null)
   // =========================================================================
   {
     id: 'prod-pine-nuts',
@@ -822,7 +822,7 @@ export const products: Product[] = [
   },
 
   // =========================================================================
-  // FLAVOURED MAKHANA (100g Packs — Concise Culinary Copy Only)
+  // FLAVOURED MAKHANA (100g Packs, Concise Culinary Copy Only)
   // =========================================================================
   {
     id: 'prod-mint-makhana',

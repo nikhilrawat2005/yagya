@@ -2,7 +2,7 @@ export const siteConfig = {
   brandName: "Yagya",
   tagline: "Nurtured by Nature, Handcrafted by Tradition",
   description:
-    "Whole seeds, dried mountain berries, orchard fruits, nuts, and roasted makhana — packed in small batches.",
+    "Crisp seeds, tart mountain berries, tender dry fruits, whole nuts, and seasoned makhana, packed in small batches for everyday Indian kitchens.",
   announcement: "Yagya · Nurtured by Nature, Handcrafted by Tradition",
   siteUrl: "https://yagya-nu.vercel.app",
   currency: "INR",
@@ -20,7 +20,7 @@ export const siteConfig = {
       "Please review ingredient and allergen details on each product page and physical pouch label prior to consumption.",
   },
 
-  // Unconfirmed business/legal details — keep null until client provides them.
+  // Unconfirmed business/legal details: keep null until client provides them.
   // RULE: If a value is null, HIDE the UI element completely. Never render fake data.
   legalEntityName: null as string | null,       // {{LEGAL_ENTITY_NAME}}
   registeredAddress: null as string | null,     // {{REGISTERED_ADDRESS}}

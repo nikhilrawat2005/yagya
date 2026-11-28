@@ -61,6 +61,11 @@ const CHECKS = [
     category: 'Unverified / Contradictory Compliance Claim',
     regex: /Zero Added Sugar or Glaze|Lab[- ]Checked|Verified Nutrition|FSSAI Aligned|Zero Fillers|chemical whitening|sulfur bleaching|synthetic MSG/gi,
   },
+  {
+    id: 'EM_DASH',
+    category: 'Disallowed Em-Dash Character',
+    regex: /\u2014/g,
+  },
 ];
 
 function collectFiles(dirPath, seenRealPaths, out) {

@@ -3,7 +3,7 @@ import { DraftPolicyPage } from '@/components/legal/DraftPolicyPage';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: `Shipping Policy (Draft) — ${siteConfig.brandName}`,
+  title: 'Shipping Policy (Draft)',
   description: `Draft shipping and dispatch policy for ${siteConfig.brandName}.`,
 };
 

@@ -1,5 +1,10 @@
+import type { Metadata } from 'next';
 import { getProductsByCategory } from '@/lib/services/productService';
 import { CategoryStoryPage } from '@/components/editorial/CategoryStoryPage';
+
+export const metadata: Metadata = {
+  title: 'Seeds & Grains',
+};
 
 export default async function SeedsPage() {
   const products = await getProductsByCategory('seeds-and-grains');
@@ -13,7 +18,7 @@ export default async function SeedsPage() {
         titleLead: 'Sun-ripened',
         titleAccent: 'Seeds',
         introBody:
-          'Flax seeds, chia seeds, pumpkin pepitas, and sunflower kernels — cleaned and packed in small batches with zero added sugar on our documented seed lineup.',
+          'Flax seeds, chia seeds, pumpkin pepitas, and sunflower kernels, cleaned and packed in small batches with zero added sugar on our documented seed lineup.',
         originTag: 'Seeds & Grains',
         harvestTitle: 'Sorted for daily bowls and baking.',
         harvestBody:

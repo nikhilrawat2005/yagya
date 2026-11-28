@@ -1,5 +1,10 @@
+import type { Metadata } from 'next';
 import { getProductsByCategory } from '@/lib/services/productService';
 import { CategoryStoryPage } from '@/components/editorial/CategoryStoryPage';
+
+export const metadata: Metadata = {
+  title: 'Whole Nuts',
+};
 
 export default async function NutsPage() {
   const products = await getProductsByCategory('nuts');
@@ -17,7 +22,7 @@ export default async function NutsPage() {
         originTag: 'Whole Nuts',
         harvestTitle: 'Crisp kernels for daily kitchens.',
         harvestBody:
-          'Whole nuts selected for clean crunch and natural nutty aroma — ready for morning soaking, trail mixes, festive cooking, and spreads.',
+          'Whole nuts selected for clean crunch and natural nutty aroma, ready for morning soaking, trail mixes, festive cooking, and spreads.',
         craftTitle: 'Roast, blend, or snack whole.',
         craftBody:
           'Lightly warm pine nuts or hazelnuts in a dry skillet, soak almonds overnight, or blend cashews into rich culinary gravies.',

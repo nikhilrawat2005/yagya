@@ -46,7 +46,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
           row.rda !== undefined &&
           row.rda.trim() !== '' &&
           row.rda.trim() !== '-' &&
-          row.rda.trim() !== '—'
+          row.rda.trim() !== '\u2014'
       ),
     [nutritionRows]
   );
@@ -159,6 +159,10 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               ) : product.zeroAddedSugar ? (
                 <span className="inline-block font-ui-label text-[10px] px-2.5 py-0.5 rounded-[4px] bg-flame text-navy font-semibold whitespace-nowrap">
                   Zero Added Sugar
+                </span>
+              ) : product.categorySlug === 'berries' ? (
+                <span className="inline-block font-ui-label text-[10px] px-2.5 py-0.5 rounded-[4px] bg-oat/15 text-peach border border-white/25 whitespace-nowrap">
+                  Lightly Sweetened Berry
                 </span>
               ) : null}
             </div>
@@ -436,7 +440,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                           <tbody className="divide-y divide-white/10 text-[11px] text-oat/95">
                             {nutritionRows.map((row) => {
                               const cleanRda =
-                                row.rda && row.rda.trim() !== '' && row.rda.trim() !== '-' && row.rda.trim() !== '—'
+                                row.rda && row.rda.trim() !== '' && row.rda.trim() !== '-' && row.rda.trim() !== '\u2014'
                                   ? row.rda
                                   : 'N/A';
                               return (
@@ -503,7 +507,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 <SplitText
                   as="h2"
                   trigger="scroll"
-                  text="More From The Pantry"
+                  text="Pair It With"
                   className="font-display text-3xl text-oat font-medium"
                 />
                 <Doodle
