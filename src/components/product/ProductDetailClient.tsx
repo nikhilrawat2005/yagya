@@ -67,7 +67,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
   ];
 
   return (
-    <div className="min-h-[100dvh] bg-navy text-oat pt-24 pb-24">
+    <div className="min-h-[100dvh] bg-navy text-oat pt-24 sm:pt-32 pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb" className="text-xs text-apricot/85 mb-6 flex flex-wrap items-center gap-2">

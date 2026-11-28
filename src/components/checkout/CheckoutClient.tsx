@@ -105,7 +105,7 @@ export function CheckoutClient() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-[100dvh] bg-navy text-oat pt-24 pb-24 px-4 flex items-center">
+      <div className="min-h-[100dvh] bg-navy text-oat pt-24 sm:pt-32 pb-24 px-4 flex items-center">
         <OatSheet tone="subtle" className="max-w-md mx-auto w-full p-10 text-center">
           <div className="w-14 h-14 mx-auto mb-4 rounded-[6px] bg-oat/10 border border-white/25 flex items-center justify-center">
             <ShoppingBag className="w-7 h-7 text-peach" aria-hidden="true" />
@@ -125,7 +125,7 @@ export function CheckoutClient() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-navy text-oat pt-24 pb-24">
+    <div className="min-h-[100dvh] bg-navy text-oat pt-24 sm:pt-32 pb-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeInSection className="mb-8">
           <span className="font-ui-label text-[11px] text-peach block mb-1.5">

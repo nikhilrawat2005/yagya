@@ -136,10 +136,10 @@ export function BackgroundChapter({
       className={`relative w-full overflow-x-clip flex ${
         compact
           ? isHero
-            ? 'items-start pt-24 sm:pt-28 pb-10 sm:pb-12'
+            ? 'items-start pt-24 sm:pt-32 pb-10 sm:pb-12'
             : 'items-start py-10 sm:py-14'
           : isHero
-          ? 'min-h-[84dvh] items-start pt-24 sm:pt-30 pb-10 sm:pb-14'
+          ? 'min-h-[84dvh] items-start pt-24 sm:pt-32 pb-10 sm:pb-14'
           : 'min-h-[78dvh] items-center py-12 sm:py-16'
       } ${className}`}
     >

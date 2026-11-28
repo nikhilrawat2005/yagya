@@ -25,7 +25,7 @@ async function OrderSuccessDetails({
   const total = resolved.total || '249';
 
   return (
-    <div className="min-h-[100dvh] bg-aubergine text-oat pt-24 pb-24 px-4 flex items-center">
+    <div className="min-h-[100dvh] bg-aubergine text-oat pt-24 sm:pt-32 pb-24 px-4 flex items-center">
       <div className="max-w-lg mx-auto w-full text-center">
         <div className="w-16 h-16 mx-auto rounded-[6px] bg-oat/[0.14] border border-white/25 text-peach flex items-center justify-center mb-6">
           <Check className="w-8 h-8" aria-hidden="true" />

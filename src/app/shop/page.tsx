@@ -24,7 +24,7 @@ async function ShopContent({
 
 function ShopLoadingFallback() {
   return (
-    <div className="min-h-[100dvh] bg-navy pt-24 pb-16 px-5 sm:px-8 lg:px-12 max-w-6xl mx-auto space-y-6">
+    <div className="min-h-[100dvh] bg-navy pt-24 sm:pt-32 pb-16 px-5 sm:px-8 lg:px-12 max-w-6xl mx-auto space-y-6">
       <div className="space-y-2">
         <Skeleton className="h-3 w-36" />
         <Skeleton className="h-10 w-64" />
