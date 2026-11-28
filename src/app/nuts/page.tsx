@@ -9,21 +9,21 @@ export default async function NutsPage() {
       config={{
         pageKey: 'nuts',
         categorySlug: 'nuts',
-        eyebrow: 'Orchard Nuts',
-        titleLead: 'Single-origin',
+        eyebrow: 'Whole Nuts',
+        titleLead: 'Whole Pantry',
         titleAccent: 'Nuts',
         introBody:
-          'Rare Himalayan chilgoza pine nuts, crisp whole almonds, creamy cashews, and fragrant hazelnuts, graded for size, crunch, and natural oil density.',
-        originTag: 'Orchard & Cedar Forest Groves',
-        harvestTitle: 'Graded for crispness.',
+          'Buttery pine nuts (chilgoza), crisp whole almonds, creamy whole cashews, and aromatic hazelnuts suited for soaking, pan-roasting, and culinary prep.',
+        originTag: 'Whole Nuts',
+        harvestTitle: 'Crisp kernels for daily kitchens.',
         harvestBody:
-          'We source single-harvest whole kernels rather than mixed commodity lots, preserving sweet creaminess and clean snap.',
-        craftTitle: 'Raw, whole & unbleached.',
+          'Whole nuts selected for clean crunch and natural nutty aroma — ready for morning soaking, trail mixes, festive cooking, and spreads.',
+        craftTitle: 'Roast, blend, or snack whole.',
         craftBody:
-          'From morning soaked almonds to roasted hazelnut butter, these kernels carry pure plant fats and steady energy.',
-        promiseTitle: 'Forest & orchard harvests.',
+          'Lightly warm pine nuts or hazelnuts in a dry skillet, soak almonds overnight, or blend cashews into rich culinary gravies.',
+        promiseTitle: 'Flexible pack weights.',
         promiseBody:
-          'Packed in nitrogen-flushed barrier pouches so natural nut oils never turn stale.',
+          'Available across 100g, 200g, and 500g pack sizes to match weekly or monthly pantry needs.',
         charcoalDoodle: 'olive',
         accentDoodle: 'leaf',
         products,

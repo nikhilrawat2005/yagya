@@ -34,9 +34,9 @@ import {
   updateVariantStock,
   type StoredOrder,
 } from '@/lib/firebase/catalog';
-import type { Product } from '@/lib/data/products';
+import type { Product } from '@/data/products';
 import type { Category, CategorySlug } from '@/lib/data/categories';
-import { siteConfig } from '@/lib/data/site';
+import { siteConfig } from '@/config/site';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { GlowInput } from '@/components/ui/GlowInput';
@@ -284,7 +284,7 @@ export function AdminDashboardClient({
       return (
         p.name.toLowerCase().includes(q) ||
         p.category.toLowerCase().includes(q) ||
-        p.variants.some((v) => v.sku.toLowerCase().includes(q))
+        p.variants.some((v) => (v.sku ?? '').toLowerCase().includes(q))
       );
     });
   }, [catalogProducts, selectedSection, searchQuery]);
@@ -382,7 +382,7 @@ export function AdminDashboardClient({
                   </h1>
                   <p className="text-sm text-sand">
                     Signed in as <strong className="text-oat">{user.email}</strong>. This workspace is
-                    reserved for authorized {siteConfig.name} administrators only.
+                    reserved for authorized {siteConfig.brandName} administrators only.
                   </p>
                   <div className="flex flex-wrap justify-center gap-3 pt-2">
                     <GlowButton href="/dashboard" variant="cta">
@@ -470,7 +470,7 @@ export function AdminDashboardClient({
                         </div>
                         <div className="min-w-0">
                           <span className="font-ui-label text-[9px] text-peach block">
-                            {siteConfig.name} Admin
+                            {siteConfig.brandName} Admin
                           </span>
                           <p className="text-xs font-medium text-oat truncate">{user.email}</p>
                         </div>
@@ -615,7 +615,7 @@ export function AdminDashboardClient({
                                 Recent Client Signups
                               </h2>
                               <p className="text-xs text-sand">
-                                Latest accounts created on {siteConfig.name}
+                                Latest accounts created on {siteConfig.brandName}
                               </p>
                             </div>
                             <button
@@ -894,7 +894,7 @@ export function AdminDashboardClient({
                               disabled={seedingCatalog}
                             >
                               <Database className="w-3.5 h-3.5" aria-hidden="true" />
-                              <span>{seedingCatalog ? 'Syncing…' : 'Sync Base 20'}</span>
+                              <span>{seedingCatalog ? 'Syncing…' : 'Sync Base Catalog'}</span>
                             </GlowButton>
                             <GlowButton
                               type="button"
@@ -1089,7 +1089,10 @@ export function AdminDashboardClient({
                                         >
                                           <div className="flex items-center justify-between gap-2 tabular-nums">
                                             <span className="font-semibold text-oat">
-                                              {v.weight} · {siteConfig.currencySymbol}{v.price}
+                                              {v.weight} ·{' '}
+                                              {v.priceInr !== null
+                                                ? `${siteConfig.currencySymbol}${v.priceInr}`
+                                                : 'Price unset'}
                                             </span>
                                             <span
                                               className={`font-ui-label text-[9px] px-1.5 py-0.5 rounded-[3px] ${
@@ -1103,7 +1106,7 @@ export function AdminDashboardClient({
                                               {v.stock <= 0 ? 'Out of stock' : `${v.stock} in stock`}
                                             </span>
                                           </div>
-                                          <span className="text-[10px] text-sand/85">{v.sku}</span>
+                                          <span className="text-[10px] text-sand/85">{v.sku || 'SKU pending'}</span>
 
                                           <div className="flex items-center gap-1.5 pt-1">
                                             <button
@@ -1217,7 +1220,9 @@ export function AdminDashboardClient({
                                   </div>
                                   <div className="text-right tabular-nums">
                                     <span className="font-display text-xl text-peach font-semibold block">
-                                      {siteConfig.currencySymbol}{ord.total}
+                                      {ord.totalInr !== null
+                                        ? `${siteConfig.currencySymbol}${ord.totalInr}`
+                                        : 'Pending pricing'}
                                     </span>
                                     <span className="text-[11px] text-sand">
                                       {ord.paymentMethod.toUpperCase()} · {formatJoinDate(ord.createdAt)}

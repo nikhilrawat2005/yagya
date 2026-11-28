@@ -7,8 +7,9 @@ import { OatSheet } from '@/components/editorial/OatSheet';
 import { EditorialProductCard } from '@/components/editorial/EditorialProductCard';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { SplitText } from '@/components/react-bits/SplitText';
+import { siteConfig } from '@/config/site';
 import type { PageBackgroundKey } from '@/lib/assets';
-import type { Product } from '@/lib/data/products';
+import type { Product } from '@/data/products';
 
 export interface CategoryStoryConfig {
   pageKey: Exclude<PageBackgroundKey, 'home' | 'signature'>;
@@ -29,13 +30,12 @@ export interface CategoryStoryConfig {
   products: Product[];
 }
 
-/**
- * 4-chapter editorial category experience with per-page sheet positioning and spotlight cards.
- */
 export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
   const { pageKey, products } = config;
-  const leadProducts = products.slice(0, 2);
-  const restProducts = products.slice(2);
+  const activeProducts = products.filter((p) => !p.comingSoon);
+  const comingSoonProducts = products.filter((p) => p.comingSoon);
+  const leadProducts = activeProducts.slice(0, 2);
+  const restProducts = [...activeProducts.slice(2), ...comingSoonProducts];
 
   const introAlign: Record<CategoryStoryConfig['pageKey'], string> = {
     seeds: 'lg:col-span-6 lg:col-start-1',
@@ -49,7 +49,7 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
     {
       id: `${pageKey}-chapter-01`,
       chapterNumber: '01',
-      chapterLabel: 'The Harvest',
+      chapterLabel: 'The Selection',
       content: (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
           <div className={`${introAlign[pageKey]} relative`}>
@@ -68,7 +68,7 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
               </p>
               <div className="flex flex-wrap items-center gap-5">
                 <GlowButton href={`#${pageKey}-chapter-02`} variant="cta" magnetic>
-                  <span>Explore Harvests</span>
+                  <span>Explore Selection</span>
                   <ArrowDown className="w-4 h-4" aria-hidden="true" />
                 </GlowButton>
               </div>
@@ -80,7 +80,7 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
     {
       id: `${pageKey}-chapter-02`,
       chapterNumber: '02',
-      chapterLabel: 'First Harvests',
+      chapterLabel: 'Featured Picks',
       content: (
         <div className="space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -118,7 +118,7 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
     {
       id: `${pageKey}-chapter-03`,
       chapterNumber: '03',
-      chapterLabel: 'The Craft',
+      chapterLabel: 'More Varieties',
       content: (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           {restProducts.length > 0 ? (
@@ -163,7 +163,7 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
     {
       id: `${pageKey}-chapter-04`,
       chapterNumber: '04',
-      chapterLabel: 'Bring It Home',
+      chapterLabel: 'Browse All',
       content: (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           <div className={`relative ${pageKey === 'nuts' ? 'lg:col-span-6 lg:col-start-7' : 'lg:col-span-6 lg:col-start-2'}`}>
@@ -179,9 +179,15 @@ export function CategoryStoryPage({ config }: { config: CategoryStoryConfig }) {
                   <span>Shop {config.eyebrow}</span>
                   <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </GlowButton>
-                <GlowButton href="/journal" variant="secondary">
-                  Read Journal
-                </GlowButton>
+                {siteConfig.featureFlags.showJournal ? (
+                  <GlowButton href="/journal" variant="secondary">
+                    Read Journal
+                  </GlowButton>
+                ) : (
+                  <GlowButton href="/shop" variant="secondary">
+                    Explore Full Pantry
+                  </GlowButton>
+                )}
               </div>
             </OatSheet>
           </div>

@@ -29,7 +29,7 @@ import { useAuth } from '@/components/auth/AuthProvider';
 import { createGoogleProvider, getFirebaseAuth } from '@/lib/firebase/config';
 import { saveUserProfile, splitFullName, type UserProfile } from '@/lib/firebase/users';
 import { useCartStore } from '@/lib/store/cartStore';
-import { siteConfig } from '@/lib/data/site';
+import { siteConfig } from '@/config/site';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { GlowInput } from '@/components/ui/GlowInput';
@@ -161,7 +161,7 @@ function ProfileSettingsForm({
             maxLength={10}
             value={phone}
             onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
-            placeholder="9876543210"
+            placeholder="9123456789"
           />
           <GlowInput
             name="age"
@@ -406,9 +406,10 @@ export function UserDashboardClient() {
   const { user, profile, loading, isAdmin, refreshProfile, signOut } = useAuth();
 
   const totalItems = useCartStore((s) => s.getTotalItems());
-  const subtotal = useCartStore((s) => s.getSubtotal());
+  const subtotal = useCartStore((s) => s.getSubtotalInr());
   const freeShippingProgress = useCartStore((s) => s.getFreeShippingProgress());
   const openCart = useCartStore((s) => s.openCart);
+  const freeThreshold = siteConfig.operations.freeShippingThresholdInr;
 
   useEffect(() => {
     if (!loading && !user) {
@@ -527,20 +528,26 @@ export function UserDashboardClient() {
                       <div className="flex justify-between">
                         <span>Current Subtotal</span>
                         <span className="font-semibold text-oat">
-                          {siteConfig.currencySymbol}{subtotal}
+                          {subtotal !== null
+                            ? `${siteConfig.currencySymbol}${subtotal}`
+                            : 'Price coming soon'}
                         </span>
                       </div>
-                      <div className="w-full bg-oat/10 rounded-[2px] h-1.5 overflow-hidden">
-                        <div
-                          className="h-full bg-flame transition-all duration-300"
-                          style={{ width: `${freeShippingProgress}%` }}
-                        />
-                      </div>
-                      <p className="text-[11px] text-sand/90">
-                        {subtotal >= siteConfig.freeShippingThreshold
-                          ? 'Free dispatch unlocked on your bag.'
-                          : `Add ${siteConfig.currencySymbol}${siteConfig.freeShippingThreshold - subtotal} more for free dispatch.`}
-                      </p>
+                      {freeThreshold !== null && freeShippingProgress !== null && subtotal !== null && (
+                        <>
+                          <div className="w-full bg-oat/10 rounded-[2px] h-1.5 overflow-hidden">
+                            <div
+                              className="h-full bg-flame transition-all duration-300"
+                              style={{ width: `${freeShippingProgress}%` }}
+                            />
+                          </div>
+                          <p className="text-[11px] text-sand/90">
+                            {subtotal >= freeThreshold
+                              ? 'Free dispatch unlocked on your bag.'
+                              : `Add ${siteConfig.currencySymbol}${freeThreshold - subtotal} more for free dispatch.`}
+                          </p>
+                        </>
+                      )}
                     </div>
 
                     <div className="flex flex-wrap gap-2.5">
@@ -556,7 +563,7 @@ export function UserDashboardClient() {
                     <p className="text-[11px] text-sand/85 pt-2 border-t border-white/15">
                       Questions about an order?{' '}
                       <Link href="/contact" className="text-peach hover:text-oat underline underline-offset-4">
-                        Message {siteConfig.name}
+                        Message {siteConfig.brandName}
                       </Link>
                     </p>
                   </OatSheet>

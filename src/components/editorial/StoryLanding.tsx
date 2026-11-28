@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import Link from 'next/link';
-import { ArrowRight, ShieldCheck, Sprout, Truck, Award, Star, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Sprout, Truck, Award, Star, CheckCircle2, PackageCheck } from 'lucide-react';
 import { BackgroundChapter } from '@/components/editorial/BackgroundChapter';
 import { ChapterIndex, type ChapterDefinition } from '@/components/editorial/ChapterIndex';
 import { OatSheet } from '@/components/editorial/OatSheet';
@@ -12,8 +12,8 @@ import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallba
 import { SplitText } from '@/components/react-bits/SplitText';
 import { SpotlightCard } from '@/components/react-bits/SpotlightCard';
 import { ASSETS } from '@/lib/assets';
-import { siteConfig } from '@/lib/data/site';
-import type { Product } from '@/lib/data/products';
+import { siteConfig } from '@/config/site';
+import type { Product } from '@/data/products';
 import type { Category } from '@/lib/data/categories';
 import type { Review } from '@/lib/data/reviews';
 import { Doodle } from '@/components/doodles';
@@ -26,9 +26,9 @@ interface StoryLandingProps {
 
 const HOME_CHAPTERS: ReadonlyArray<ChapterDefinition> = [
   { id: 'chapter-01', number: '01', label: 'The Offering' },
-  { id: 'chapter-02', number: '02', label: 'Origin & Pantry' },
-  { id: 'chapter-03', number: '03', label: 'Craft & Inside' },
-  { id: 'chapter-04', number: '04', label: 'Trust & Promise' },
+  { id: 'chapter-02', number: '02', label: 'Pantry & Collection' },
+  { id: 'chapter-03', number: '03', label: 'Craft & Nutrition' },
+  { id: 'chapter-04', number: '04', label: 'Our Standard' },
 ];
 
 const CATEGORY_ROUTE_MAP: Record<string, string> = {
@@ -37,31 +37,37 @@ const CATEGORY_ROUTE_MAP: Record<string, string> = {
   'dried-fruits': '/dry-fruits',
   nuts: '/nuts',
   'flavoured-makhana': '/makhana',
+  mixture: '/shop?category=mixture',
 };
 
 function findNutrientRow(product: Product, nutrientPrefix: string) {
-  return product.nutritionFacts.find((row) =>
+  return product.nutritionFacts?.find((row) =>
     row.nutrient.toLowerCase().startsWith(nutrientPrefix.toLowerCase())
   );
 }
 
 export function StoryLanding({ products, categories, reviews }: StoryLandingProps) {
-  const heroSpotlight = useMemo(
-    () => products.find((p) => p.slug === 'pine-nuts') ?? products[0],
+  const activeProducts = useMemo(
+    () => products.filter((p) => !p.comingSoon),
     [products]
   );
 
+  const heroSpotlight = useMemo(
+    () => activeProducts.find((p) => p.slug === 'dried-sea-buckthorn-berries') ?? activeProducts[0],
+    [activeProducts]
+  );
+
   const bestsellerProducts = useMemo(() => {
-    const picked = products.filter((p) => p.isBestseller || p.isFeatured);
+    const picked = activeProducts.filter((p) => p.isBestseller || p.isFeatured);
     return picked.slice(0, 4);
-  }, [products]);
+  }, [activeProducts]);
 
   const harvestPeeks = useMemo(() => {
     const slugs = ['dried-anjeer-figs', 'mint-makhana'];
     return slugs
-      .map((slug) => products.find((p) => p.slug === slug))
+      .map((slug) => activeProducts.find((p) => p.slug === slug))
       .filter((p): p is Product => Boolean(p));
-  }, [products]);
+  }, [activeProducts]);
 
   const nutritionHighlights = useMemo(() => {
     const specs: Array<{ slug: string; nutrientMatch: string; label: string }> = [
@@ -73,28 +79,32 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
 
     return specs
       .map((spec) => {
-        const prod = products.find((p) => p.slug === spec.slug);
+        const prod = activeProducts.find((p) => p.slug === spec.slug);
         if (!prod) return null;
         const row = findNutrientRow(prod, spec.nutrientMatch);
+        if (!row?.per100g) return null;
         return {
           product: prod,
-          value: row?.per100g ?? '',
+          value: row.per100g,
           nutrient: spec.label,
-          note: `${prod.servingSize} serve · ${prod.badges[0] ?? prod.origin}`,
+          note: prod.servingSize ? `${prod.servingSize} serve` : prod.category,
         };
       })
-      .filter((item): item is NonNullable<typeof item> => Boolean(item && item.value));
-  }, [products]);
+      .filter((item): item is NonNullable<typeof item> => Boolean(item));
+  }, [activeProducts]);
 
-  const featuredReview = reviews[2] ?? reviews[0];
-  const secondaryReviews = reviews.slice(0, 2);
+  const featuredReview = siteConfig.featureFlags.showTestimonials ? (reviews[2] ?? reviews[0]) : undefined;
+  const secondaryReviews = siteConfig.featureFlags.showTestimonials ? reviews.slice(0, 2) : [];
+
+  const freeThreshold = siteConfig.operations.freeShippingThresholdInr;
+  const showPrices = siteConfig.featureFlags.showPrices;
 
   return (
     <div className="relative w-full text-oat">
       <ChapterIndex chapters={HOME_CHAPTERS} />
 
       {/* ================================================================
-          CHAPTER 01 - NEON NAVY / BLUEBERRIES - HERO
+          CHAPTER 01 - HERO
          ================================================================ */}
       <BackgroundChapter
         id="chapter-01"
@@ -116,26 +126,30 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                   <div className="relative w-10 h-10 rounded-[4px] overflow-hidden border border-white/25 bg-oat shrink-0">
                     <ProductImageWithFallback
                       src={ASSETS.brand.logoPrimary}
-                      alt={siteConfig.name}
+                      alt={`${siteConfig.brandName} logo`}
                       fill
                       sizes="40px"
-                      preload
                       className="object-cover"
                     />
                   </div>
                   <div>
-                    <span translate="no" className="font-display text-xl sm:text-2xl tracking-[0.08em] text-oat font-semibold block leading-none">
-                      {siteConfig.name.toUpperCase()}
+                    <span
+                      translate="no"
+                      className="font-display text-xl sm:text-2xl tracking-[0.08em] text-oat font-semibold block leading-none"
+                    >
+                      {siteConfig.brandName.toUpperCase()}
                     </span>
                     <span className="font-ui-label text-[9px] text-peach block mt-1">
-                      Small-Batch Artisan Pantry
+                      {siteConfig.tagline}
                     </span>
                   </div>
                 </div>
 
-                <span className="font-ui-label text-[10px] px-2.5 py-1 rounded-[4px] bg-[#252905]/85 text-sage border border-sage/35">
-                  Free Dispatch {siteConfig.currencySymbol}{siteConfig.freeShippingThreshold}+
-                </span>
+                {freeThreshold !== null && (
+                  <span className="font-ui-label text-[10px] px-2.5 py-1 rounded-[4px] bg-[#252905]/85 text-sage border border-sage/35">
+                    Free Dispatch {siteConfig.currencySymbol}{freeThreshold}+
+                  </span>
+                )}
               </div>
 
               <SplitText
@@ -152,36 +166,35 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                 {siteConfig.description}
               </p>
 
-              {/* Direct High-Converting Dual CTA */}
               <div className="flex flex-wrap items-center gap-3.5 mb-7">
                 <GlowButton href="/shop" variant="cta" magnetic className="min-h-[46px] px-7">
-                  <span>Shop Harvests</span>
+                  <span>Explore Collection</span>
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
                 </GlowButton>
                 <GlowButton href="#chapter-02" variant="secondary" className="min-h-[46px]">
-                  <span>Explore Bestsellers</span>
+                  <span>Featured Pantry</span>
                 </GlowButton>
               </div>
 
-              {/* Hero Trust Bar */}
+              {/* Hero Pantry Bar */}
               <div className="pt-5 border-t border-white/15 grid grid-cols-3 gap-3 text-[11px] text-sand">
                 <div className="flex items-center gap-2">
                   <Sprout className="w-4 h-4 text-peach shrink-0" aria-hidden="true" />
-                  <span>Grower Direct</span>
+                  <span>Small-Batch Packed</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <PackageCheck className="w-4 h-4 text-peach shrink-0" aria-hidden="true" />
+                  <span>Pantry Essentials</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-peach shrink-0" aria-hidden="true" />
-                  <span>Zero Fillers</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Truck className="w-4 h-4 text-peach shrink-0" aria-hidden="true" />
-                  <span>Sealed Fresh</span>
+                  <span>Resealable Pouches</span>
                 </div>
               </div>
             </OatSheet>
           </div>
 
-          {/* Right Column: Handwritten Note + Dynamic Flagship Harvest Card */}
+          {/* Right Column: Tagline Note + Spotlight Card */}
           <div className="lg:col-span-5 relative space-y-4">
             <OatSheet tone="subtle" delay={0.14} className="p-4 sm:p-5">
               <p className="font-annotation text-xl text-oat">
@@ -203,30 +216,37 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                       <div className="relative w-16 h-20 rounded-[4px] overflow-hidden border border-white/25 shrink-0 bg-[#1C2638]">
                         <ProductImageWithFallback
                           src={heroSpotlight.images[0]?.src || ''}
-                          alt={heroSpotlight.images[0]?.alt || heroSpotlight.name}
+                          alt={heroSpotlight.name}
                           fill
                           sizes="64px"
-                          preload
                           className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
                         />
                       </div>
                       <div className="min-w-0">
                         <span className="font-ui-label text-[9px] text-peach block mb-0.5">
-                          {heroSpotlight.origin}
+                          {heroSpotlight.category}
                         </span>
                         <p className="font-display text-lg text-oat group-hover:text-peach transition-colors leading-snug truncate">
                           {heroSpotlight.name}
                         </p>
-                        <p className="text-xs text-sand line-clamp-1 mt-0.5">
-                          {heroSpotlight.provenance}
-                        </p>
+                        {heroSpotlight.provenance && (
+                          <p className="text-xs text-sand line-clamp-1 mt-0.5">
+                            {heroSpotlight.provenance}
+                          </p>
+                        )}
                       </div>
                     </div>
 
                     <div className="text-right shrink-0 tabular-nums">
-                      <span className="font-display text-xl font-semibold text-peach block">
-                        {siteConfig.currencySymbol}{heroSpotlight.variants[0]?.price}
-                      </span>
+                      {showPrices && heroSpotlight.variants[0]?.priceInr !== null ? (
+                        <span className="font-display text-xl font-semibold text-peach block">
+                          {siteConfig.currencySymbol}{heroSpotlight.variants[0].priceInr}
+                        </span>
+                      ) : (
+                        <span className="font-ui-label text-[9px] text-peach block">
+                          Price coming soon
+                        </span>
+                      )}
                       <span className="font-ui-label text-[9px] text-oat/90 inline-flex items-center gap-1 mt-1">
                         View <ArrowRight className="w-3 h-3" aria-hidden="true" />
                       </span>
@@ -240,38 +260,35 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
       </BackgroundChapter>
 
       {/* ================================================================
-          CHAPTER 02 - OLIVE GREEN / OLIVES - ORIGIN & BESTSELLERS
+          CHAPTER 02 - PANTRY & COLLECTION
          ================================================================ */}
       <BackgroundChapter
         id="chapter-02"
         chapterNumber="02"
-        chapterLabel="Origin & Pantry"
+        chapterLabel="Pantry & Collection"
         desktopSrc={ASSETS.backgrounds.home[1].desktop}
         mobileSrc={ASSETS.backgrounds.home[1].mobile}
         imageAlt={ASSETS.backgrounds.home[1].alt}
         tone={ASSETS.backgrounds.home[1].tone}
       >
         <div className="space-y-8">
-          {/* Origin + Category Discovery Row */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             <div className="lg:col-span-7 relative">
               <OatSheet tone="medium" delay={0.06} className="p-6 sm:p-8">
                 <span className="font-ui-label text-[10px] text-peach block mb-2">
-                  The Pantry · {products.length} Small-Batch Harvests
+                  The Pantry · {activeProducts.length} Active Selections
                 </span>
                 <SplitText
                   as="h2"
                   trigger="scroll"
-                  text="Rooted in the clarity of living soil."
+                  text="Thoughtful everyday nourishment from field to bowl."
                   className="font-display text-3xl sm:text-4xl lg:text-[42px] font-medium tracking-tight text-oat mb-4"
                 />
                 <p className="text-sm sm:text-base text-sand leading-relaxed mb-6 max-w-2xl">
-                  Every harvest is sourced directly from partner growers across Madhya Pradesh,
-                  Rajasthan, Karnataka, Himachal, and Uttarakhand—sorted cleanly without bleaching,
-                  syrups, or middleman warehousing.
+                  Explore whole seeds, dried berries, orchard fruits, tree nuts, and seasoned
+                  makhana packed cleanly for daily breakfast bowls, snacks, and kitchen staples.
                 </p>
 
-                {/* Category Quick Pills */}
                 <div className="flex flex-wrap gap-2">
                   {categories.map((cat) => (
                     <Link
@@ -291,26 +308,26 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                 <ul className="divide-y divide-white/15">
                   <li className="pb-3.5">
                     <h3 className="font-ui-label text-[10px] text-peach mb-1">
-                      Grower-Direct Sourcing
+                      Clean Packing Standards
                     </h3>
                     <p className="text-xs sm:text-sm text-sand leading-relaxed">
-                      Short supply chains preserve fresh harvest oils and pay farming families fairly.
+                      Sorted and packed in sealed pouches designed to protect crunch, natural aroma, and freshness.
                     </p>
                   </li>
                   <li className="py-3.5">
                     <h3 className="font-ui-label text-[10px] text-peach mb-1">
-                      Strict Hygiene Sorting
+                      Clear Ingredient Labels
                     </h3>
                     <p className="text-xs sm:text-sm text-sand leading-relaxed">
-                      Multi-stage cleaning removes dust and chaff with zero chemical whitening.
+                      Documented nutrition references, ingredients, and allergen guidance displayed clearly per product.
                     </p>
                   </li>
                   <li className="pt-3.5">
                     <h3 className="font-ui-label text-[10px] text-peach mb-1">
-                      Barrier-Sealed Freshness
+                      Everyday Kitchen Versatility
                     </h3>
                     <p className="text-xs sm:text-sm text-sand leading-relaxed">
-                      Packed in small batches so crunch, natural fats, and aroma stay intact.
+                      Pack sizes from 100g to 500g tailored for morning bowls, baking, and tea-time snacking.
                     </p>
                   </li>
                 </ul>
@@ -318,19 +335,18 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
             </div>
           </div>
 
-          {/* Shoppable Bestsellers Grid */}
           <div className="space-y-4">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
                 <span className="font-ui-label text-[10px] text-peach block mb-1">
-                  Most Loved Daily Rituals
+                  Featured Daily Selections
                 </span>
                 <h2 className="font-display text-2xl sm:text-3xl font-medium text-oat">
-                  Signature Bestsellers
+                  Pantry Highlights
                 </h2>
               </div>
               <GlowButton href="/shop" variant="secondary" size="sm">
-                <span>View All {products.length} Harvests</span>
+                <span>View All {activeProducts.length} Products</span>
                 <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
               </GlowButton>
             </div>
@@ -345,19 +361,18 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
       </BackgroundChapter>
 
       {/* ================================================================
-          CHAPTER 03 - POTENT PURPLE / PLUMS - CRAFT & NUTRITION
+          CHAPTER 03 - CRAFT & INDICATIVE NUTRITION
          ================================================================ */}
       <BackgroundChapter
         id="chapter-03"
         chapterNumber="03"
-        chapterLabel="Craft & Inside"
+        chapterLabel="Craft & Nutrition"
         desktopSrc={ASSETS.backgrounds.home[2].desktop}
         mobileSrc={ASSETS.backgrounds.home[2].mobile}
         imageAlt={ASSETS.backgrounds.home[2].alt}
         tone={ASSETS.backgrounds.home[2].tone}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative">
-          {/* Craft Narrative Sheet */}
           <div className="lg:col-span-5 relative">
             <OatSheet tone="medium" delay={0.06} className="relative z-10 p-6 sm:p-8">
               <div className="grid grid-cols-2 gap-3 mb-6">
@@ -370,7 +385,7 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                     <div className="relative aspect-[4/3] w-full rounded-[4px] overflow-hidden border border-white/25 bg-[#1C2638]">
                       <ProductImageWithFallback
                         src={item.product.images[0]?.src || ''}
-                        alt={item.product.images[0]?.alt || item.product.name}
+                        alt={item.product.name}
                         fill
                         sizes="(max-width: 640px) 42vw, 210px"
                         className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
@@ -388,25 +403,26 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
               />
 
               <p className="text-sm sm:text-base text-sand leading-relaxed mb-5">
-                Low-temperature dehydration and gentle cleaning keep natural plant Omegas,
-                polyphenols, and crisp seed oils intact inside every barrier-sealed pack.
+                From whole mountain sea buckthorn berries to winter flax and chia seeds, our
+                documented staples publish clear reference values for everyday pantry planning.
               </p>
 
               <div className="pt-4 border-t border-white/15 flex items-center justify-between gap-3">
                 <span className="font-annotation text-xl text-peach">
-                  Pulp, seed &amp; crunch intact
+                  {siteConfig.tagline}
                 </span>
-                <Link
-                  href="/journal"
-                  className="font-ui-label text-[10px] text-oat hover:text-peach inline-flex items-center gap-1"
-                >
-                  Read Journal <ArrowRight className="w-3 h-3" aria-hidden="true" />
-                </Link>
+                {siteConfig.featureFlags.showJournal && (
+                  <Link
+                    href="/journal"
+                    className="font-ui-label text-[10px] text-oat hover:text-peach inline-flex items-center gap-1"
+                  >
+                    Read Journal <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                  </Link>
+                )}
               </div>
             </OatSheet>
           </div>
 
-          {/* Dynamic Lab-Verified Nutrition Highlights Sheet */}
           <div className="lg:col-span-7 relative">
             <SpotlightCard
               spotlightColor="rgba(246, 239, 226, 0.10)"
@@ -414,10 +430,10 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
             >
               <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-white/20">
                 <span className="font-ui-label text-[11px] text-oat">
-                  Verified Nutrition Highlights
+                  Indicative Nutrition Highlights (Per 100 g Reference)
                 </span>
                 <span className="font-ui-label text-[10px] text-peach">
-                  Per 100 g Reference
+                  Reference Data
                 </span>
               </div>
 
@@ -433,7 +449,7 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                     <div className="relative w-14 h-14 rounded-[4px] overflow-hidden border border-white/20 shrink-0 mt-0.5 bg-[#1C2638]">
                       <ProductImageWithFallback
                         src={item.product.images[0]?.src || ''}
-                        alt={item.product.images[0]?.alt || item.product.name}
+                        alt={item.product.name}
                         fill
                         sizes="56px"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -452,18 +468,22 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                   </Link>
                 ))}
               </div>
+
+              <p className="pt-4 mt-2 border-t border-white/15 text-[11px] text-sand/90">
+                {siteConfig.disclaimers.nutritionIndicative}
+              </p>
             </SpotlightCard>
           </div>
         </div>
       </BackgroundChapter>
 
       {/* ================================================================
-          CHAPTER 04 - AUBERGINE GLEAM / BLACKBERRIES - TRUST, REVIEWS & CTA
+          CHAPTER 04 - STANDARD & PREVIEW
          ================================================================ */}
       <BackgroundChapter
         id="chapter-04"
         chapterNumber="04"
-        chapterLabel="Trust & Promise"
+        chapterLabel="Our Standard"
         desktopSrc={ASSETS.backgrounds.home[3].desktop}
         mobileSrc={ASSETS.backgrounds.home[3].mobile}
         imageAlt={ASSETS.backgrounds.home[3].alt}
@@ -471,55 +491,57 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
         isLast
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          {/* Primary Promise, Trust Pillars & CTA Sheet */}
           <div className="lg:col-span-6 relative">
             <OatSheet tone="medium" delay={0.06} className="relative z-10 p-6 sm:p-9">
               <span className="font-ui-label text-[10px] text-peach block mb-2">
-                {siteConfig.name} Standard
+                {siteConfig.brandName} Standard
               </span>
               <SplitText
                 as="h2"
                 trigger="scroll"
-                text="Honest food that asks for nothing extra."
+                text="Honest pantry staples, packed with care."
                 className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-oat mb-5"
               />
 
               <p className="text-sm sm:text-base text-sand leading-relaxed max-w-lg mb-6">
-                Steep mountain berries in warm water, fold crisp winter alsi into morning dough,
-                or open slow-roasted wetland makhana for clean everyday nourishment.
+                Steep dried sea buckthorn in warm water, fold winter flax into morning dough, or
+                serve crisp roasted makhana with evening tea.
               </p>
 
-              {/* Trust & Provenance Grid */}
-              <div className="grid grid-cols-2 gap-3 mb-7 p-4 rounded-[6px] bg-oat/[0.06] border border-white/15">
-                <div className="flex items-start gap-2.5">
-                  <Award className="w-4 h-4 text-peach shrink-0 mt-0.5" aria-hidden="true" />
-                  <div>
-                    <p className="text-xs font-semibold text-oat">FSSAI Aligned</p>
-                    <p className="text-[11px] text-sand">Hygienic batch packing</p>
+              {siteConfig.featureFlags.showTrustBadges ? (
+                <div className="grid grid-cols-2 gap-3 mb-7 p-4 rounded-[6px] bg-oat/[0.06] border border-white/15">
+                  <div className="flex items-start gap-2.5">
+                    <Award className="w-4 h-4 text-peach shrink-0 mt-0.5" aria-hidden="true" />
+                    <div>
+                      <p className="text-xs font-semibold text-oat">Quality Standard</p>
+                      <p className="text-[11px] text-sand">Hygienic batch packing</p>
+                    </div>
+                  </div>
+                  {siteConfig.operations.dispatchWindowText && (
+                    <div className="flex items-start gap-2.5">
+                      <Truck className="w-4 h-4 text-peach shrink-0 mt-0.5" aria-hidden="true" />
+                      <div>
+                        <p className="text-xs font-semibold text-oat">
+                          {siteConfig.operations.dispatchWindowText}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-peach shrink-0 mt-0.5" aria-hidden="true" />
+                    <div>
+                      <p className="text-xs font-semibold text-oat">Direct Support</p>
+                      <p className="text-[11px] text-sand">{siteConfig.contactEmail}</p>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-start gap-2.5">
-                  <ShieldCheck className="w-4 h-4 text-peach shrink-0 mt-0.5" aria-hidden="true" />
-                  <div>
-                    <p className="text-xs font-semibold text-oat">Lab Checked</p>
-                    <p className="text-[11px] text-sand">Zero artificial colors</p>
-                  </div>
+              ) : (
+                <div className="mb-7 p-4 rounded-[6px] bg-oat/[0.06] border border-white/15 space-y-1.5 text-xs text-sand">
+                  <p className="text-oat font-medium">Pantry Information Notice</p>
+                  <p>{siteConfig.disclaimers.healthAndMedical}</p>
+                  <p>{siteConfig.disclaimers.allergenGeneral}</p>
                 </div>
-                <div className="flex items-start gap-2.5">
-                  <Truck className="w-4 h-4 text-peach shrink-0 mt-0.5" aria-hidden="true" />
-                  <div>
-                    <p className="text-xs font-semibold text-oat">2–3 Day Dispatch</p>
-                    <p className="text-[11px] text-sand">Free over {siteConfig.currencySymbol}{siteConfig.freeShippingThreshold}</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-peach shrink-0 mt-0.5" aria-hidden="true" />
-                  <div>
-                    <p className="text-xs font-semibold text-oat">7-Day Support</p>
-                    <p className="text-[11px] text-sand">Freshness guarantee</p>
-                  </div>
-                </div>
-              </div>
+              )}
 
               <div className="relative flex flex-wrap items-center gap-3">
                 <Doodle
@@ -545,7 +567,6 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
             </OatSheet>
           </div>
 
-          {/* Verified Reviews + Harvest Peeks */}
           <div className="lg:col-span-6 relative space-y-4">
             <div className="grid grid-cols-2 gap-3.5">
               {harvestPeeks.map((peek) => (
@@ -557,7 +578,7 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                     <div className="relative aspect-[4/5] w-full rounded-[4px] overflow-hidden border border-white/20 mb-2.5 bg-[#1C2638]">
                       <ProductImageWithFallback
                         src={peek.images[0]?.src || ''}
-                        alt={peek.images[0]?.alt || peek.name}
+                        alt={peek.name}
                         fill
                         sizes="(max-width: 640px) 44vw, 220px"
                         className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
@@ -567,17 +588,25 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                       <p className="font-display text-base text-oat group-hover:text-peach transition-colors leading-snug truncate">
                         {peek.name}
                       </p>
-                      <span className="text-xs font-semibold text-peach tabular-nums shrink-0">
-                        {siteConfig.currencySymbol}{peek.variants[0]?.price}
-                      </span>
+                      {showPrices && peek.variants[0]?.priceInr !== null ? (
+                        <span className="text-xs font-semibold text-peach tabular-nums shrink-0">
+                          {siteConfig.currencySymbol}{peek.variants[0].priceInr}
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-ui-label text-peach shrink-0">
+                          View
+                        </span>
+                      )}
                     </div>
-                    <p className="text-[11px] text-sand truncate">{peek.origin}</p>
+                    <p className="text-[11px] text-sand truncate">
+                      {peek.origin ?? peek.category}
+                    </p>
                   </SpotlightCard>
                 </Link>
               ))}
             </div>
 
-            {featuredReview && (
+            {siteConfig.featureFlags.showTestimonials && featuredReview && (
               <OatSheet as="blockquote" tone="warm" delay={0.14} className="p-6 sm:p-7">
                 <div className="flex items-center justify-between gap-2 mb-3">
                   <div className="flex items-center gap-0.5 text-flame" aria-label={`Rated ${featuredReview.rating} out of 5`}>
@@ -585,17 +614,10 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                       <Star key={idx} className="w-3.5 h-3.5 fill-flame text-flame" aria-hidden="true" />
                     ))}
                   </div>
-                  {featuredReview.verifiedBuyer && (
-                    <span className="font-ui-label text-[9px] text-sage">
-                      Verified Harvest Buyer
-                    </span>
-                  )}
                 </div>
-
                 <p className="font-display text-xl sm:text-2xl italic leading-snug text-oat mb-4">
                   &ldquo;{featuredReview.comment}&rdquo;
                 </p>
-
                 <footer className="pt-3.5 border-t border-white/15 flex items-center justify-between gap-3">
                   <div>
                     <cite className="not-italic text-xs font-semibold text-oat block">
@@ -605,14 +627,11 @@ export function StoryLanding({ products, categories, reviews }: StoryLandingProp
                       {featuredReview.location} · {featuredReview.date}
                     </span>
                   </div>
-                  <span className="font-annotation text-lg text-peach">
-                    Sealed fresh
-                  </span>
                 </footer>
               </OatSheet>
             )}
 
-            {secondaryReviews.length > 0 && (
+            {siteConfig.featureFlags.showTestimonials && secondaryReviews.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {secondaryReviews.map((rev) => (
                   <OatSheet key={rev.id} tone="subtle" interactive={false} className="p-4">

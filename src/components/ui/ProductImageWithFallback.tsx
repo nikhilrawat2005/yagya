@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Sprout } from 'lucide-react';
-import { siteConfig } from '@/lib/data/site';
+import { siteConfig } from '@/config/site';
 
 interface ProductImageProps {
   src: string;
@@ -34,11 +34,13 @@ export function ProductImageWithFallback({
   if (error || !src) {
     return (
       <div
+        role="img"
+        aria-label={alt || siteConfig.brandName}
         className={`bg-oat/10 flex flex-col items-center justify-center text-oat p-4 border border-white/20 rounded-[6px] w-full h-full ${className}`}
       >
         <Sprout className="w-6 h-6 mb-1.5 text-peach" aria-hidden="true" />
         <span className="text-[11px] font-ui-label text-apricot text-center">
-          {siteConfig.name}
+          {siteConfig.brandName}
         </span>
       </div>
     );

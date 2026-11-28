@@ -2,9 +2,9 @@
 
 import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Check, Sparkles, XCircle, Sprout, ShieldCheck, PackageCheck, Coffee } from 'lucide-react';
-import { siteConfig } from '@/lib/data/site';
-import type { Product } from '@/lib/data/products';
+import { ArrowRight, Check, Sparkles, Sprout, ShieldCheck, PackageCheck, Coffee } from 'lucide-react';
+import { siteConfig } from '@/config/site';
+import type { Product } from '@/data/products';
 import type { Category } from '@/lib/data/categories';
 import { PageBackgroundSet } from '@/components/editorial/PageBackgroundSet';
 import { ChapterIndex, type ChapterDefinition } from '@/components/editorial/ChapterIndex';
@@ -23,14 +23,14 @@ interface StoryJourneyProps {
 const STORY_CHAPTERS: ReadonlyArray<ChapterDefinition> = [
   { id: 'story-01', number: '01', label: 'The Spark' },
   { id: 'story-02', number: '02', label: 'Journey Map' },
-  { id: 'story-03', number: '03', label: '5 Belts & Craft' },
+  { id: 'story-03', number: '03', label: 'Pantry Explorer' },
   { id: 'story-04', number: '04', label: 'Daily Ritual' },
 ];
 
 const JOURNEY_STEPS = [
-  { id: 'step-soil', num: '01', title: 'Living Soil', sub: '5 Indian harvest belts', icon: Sprout },
-  { id: 'step-sort', num: '02', title: 'Clean Sort', sub: 'Zero bleach or fillers', icon: ShieldCheck },
-  { id: 'step-seal', num: '03', title: 'Small-Batch Seal', sub: 'Oils & crunch locked', icon: PackageCheck },
+  { id: 'step-soil', num: '01', title: 'Sourcing', sub: 'Partner farming communities', icon: Sprout },
+  { id: 'step-sort', num: '02', title: 'Clean Sort', sub: 'Hygienic batch cleaning', icon: ShieldCheck },
+  { id: 'step-seal', num: '03', title: 'Small-Batch Pack', sub: 'Resealable barrier pouches', icon: PackageCheck },
   { id: 'step-bowl', num: '04', title: 'Morning Bowl', sub: 'Your daily offering', icon: Coffee },
 ] as const;
 
@@ -40,33 +40,39 @@ const CATEGORY_LINKS: Record<string, string> = {
   'dried-fruits': '/dry-fruits',
   nuts: '/nuts',
   'flavoured-makhana': '/makhana',
+  mixture: '/shop?category=mixture',
 };
 
 export function StoryJourney({ products, categories }: StoryJourneyProps) {
-  const [selectedBeltSlug, setSelectedBeltSlug] = useState<string>(categories[0]?.slug ?? 'seeds-and-grains');
-
-  const activeCategory = useMemo(
-    () => categories.find((c) => c.slug === selectedBeltSlug) ?? categories[0],
-    [categories, selectedBeltSlug]
+  const activeProducts = useMemo(() => products.filter((p) => !p.comingSoon), [products]);
+  const [selectedCategorySlug, setSelectedCategorySlug] = useState<string>(
+    categories[0]?.slug ?? 'seeds-and-grains'
   );
 
-  const activeBeltProducts = useMemo(
+  const activeCategory = useMemo(
+    () => categories.find((c) => c.slug === selectedCategorySlug) ?? categories[0],
+    [categories, selectedCategorySlug]
+  );
+
+  const activeCategoryProducts = useMemo(
     () => products.filter((p) => p.categorySlug === activeCategory?.slug).slice(0, 3),
     [products, activeCategory]
   );
 
   const seaBuckthorn = useMemo(
-    () => products.find((p) => p.slug === 'dried-sea-buckthorn-berries') ?? products[0],
-    [products]
+    () => activeProducts.find((p) => p.slug === 'dried-sea-buckthorn-berries') ?? activeProducts[0],
+    [activeProducts]
   );
   const flaxSeeds = useMemo(
-    () => products.find((p) => p.slug === 'flax-seeds') ?? products[1],
-    [products]
+    () => activeProducts.find((p) => p.slug === 'flax-seeds') ?? activeProducts[1],
+    [activeProducts]
   );
   const makhana = useMemo(
-    () => products.find((p) => p.slug === 'mint-makhana') ?? products[2],
-    [products]
+    () => activeProducts.find((p) => p.slug === 'mint-makhana') ?? activeProducts[2],
+    [activeProducts]
   );
+
+  const showPrices = siteConfig.featureFlags.showPrices;
 
   return (
     <div className="relative w-full text-oat">
@@ -86,7 +92,7 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                   <div className="lg:col-span-7 relative">
                     <OatSheet tone="medium" delay={0.04} className="p-6 sm:p-9 relative overflow-visible">
                       <span className="font-ui-label text-[10px] text-peach block mb-2">
-                        Why {siteConfig.name} Exists
+                        Why {siteConfig.brandName} Exists
                       </span>
                       <SplitText
                         as="h1"
@@ -104,7 +110,7 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                       {/* 4-Node Visual Journey Strip inside Hero */}
                       <div className="pt-4 border-t border-white/15">
                         <span className="font-annotation text-lg text-peach block mb-3">
-                          Follow how every harvest travels from grower to table:
+                          From partner fields to your kitchen pantry:
                         </span>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                           {JOURNEY_STEPS.map((st, idx) => {
@@ -139,7 +145,7 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                     </OatSheet>
                   </div>
 
-                  {/* Visual Collage Card with Doodle Loop */}
+                  {/* Visual Collage Card */}
                   <div className="lg:col-span-5 relative">
                     <OatSheet tone="subtle" delay={0.14} className="p-5 sm:p-6">
                       <div className="grid grid-cols-3 gap-2.5 mb-4">
@@ -152,10 +158,9 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                             <div className="relative aspect-[4/5] rounded-[4px] overflow-hidden border border-white/20 bg-[#1C2638]">
                               <ProductImageWithFallback
                                 src={item.images[0]?.src || ''}
-                                alt={item.images[0]?.alt || item.name}
+                                alt={item.name}
                                 fill
                                 sizes="(max-width: 640px) 28vw, 150px"
-                                preload
                                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                               />
                             </div>
@@ -168,7 +173,7 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                             &ldquo;{siteConfig.tagline}&rdquo;
                           </p>
                           <span className="font-annotation text-base text-peach">
-                            Zero middlemen · 5 origin belts
+                            Small-batch pantry staples
                           </span>
                         </div>
                         <Doodle
@@ -196,7 +201,7 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
               <div className="space-y-6 relative">
                 <div className="max-w-2xl">
                   <span className="font-ui-label text-[10px] text-peach block mb-1">
-                    Illustrated Field-to-Pantry Flowchart
+                    Field-to-Pantry Approach
                   </span>
                   <SplitText
                     as="h2"
@@ -206,9 +211,7 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                   />
                 </div>
 
-                {/* Zigzag Visual Flowchart with Animated Doodle Arrows */}
                 <div className="relative space-y-5">
-                  {/* Node 1 -> Node 2 */}
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
                     <OatSheet tone="medium" delay={0.05} className="lg:col-span-5 p-5 sm:p-6">
                       <div className="flex items-start gap-4">
@@ -223,20 +226,19 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                         </div>
                         <div>
                           <span className="font-ui-label text-[10px] text-peach block mb-1">
-                            Stage 01 · Harvested at Origin
+                            Stage 01 · Partner Sourcing
                           </span>
                           <h3 className="font-display text-2xl text-oat mb-1.5">
                             Direct From Partner Growers
                           </h3>
                           <p className="text-xs sm:text-sm text-sand leading-relaxed">
-                            Grown across Ladakh, Himachal, Madhya Pradesh, Rajasthan &amp; Karnataka—skipping
-                            multi-tier mandi storage so fresh oils never go stale.
+                            Our documented seeds and berries are sourced from partner farming
+                            communities across key Indian growing regions.
                           </p>
                         </div>
                       </div>
                     </OatSheet>
 
-                    {/* Doodle Connector Arrow */}
                     <div className="hidden lg:flex lg:col-span-2 justify-center">
                       <Doodle
                         name="arrow-loop-delight"
@@ -260,21 +262,20 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                         </div>
                         <div>
                           <span className="font-ui-label text-[10px] text-peach block mb-1">
-                            Stage 02 · Clean Hygiene Sort
+                            Stage 02 · Hygienic Sorting
                           </span>
                           <h3 className="font-display text-2xl text-oat mb-1.5">
-                            Sorted &amp; Gently Dehydrated
+                            Cleaned &amp; Sorted Batches
                           </h3>
                           <p className="text-xs sm:text-sm text-sand leading-relaxed">
-                            Dust, grit, and chaff are cleaned mechanically while keeping delicate Omega-3,
-                            Omega-7, and crisp hull integrity untouched.
+                            Seeds and berries are cleaned to remove dust and chaff and packed under
+                            hygienic standards for everyday pantry use.
                           </p>
                         </div>
                       </div>
                     </OatSheet>
                   </div>
 
-                  {/* Downward Curved Connector */}
                   <div className="flex justify-center py-1">
                     <Doodle
                       name="arrow-curved-pointer"
@@ -286,44 +287,44 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                     />
                   </div>
 
-                  {/* Stage 03: Pure Comparison Matrix (In vs Never) */}
+                  {/* Honest Stage 03 */}
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
                     <OatSheet tone="subtle" delay={0.08} className="lg:col-span-6 p-5 sm:p-6 border-sage/30">
                       <span className="font-ui-label text-[10px] text-sage block mb-2">
-                        Stage 03A · Inside Every Pouch
+                        Stage 03A · Transparent Product Information
                       </span>
                       <ul className="space-y-2.5 text-xs sm:text-sm text-oat">
                         <li className="flex items-center gap-2.5">
                           <Check className="w-4 h-4 text-sage shrink-0" aria-hidden="true" />
-                          <span>Single-origin whole berries, seeds, nuts &amp; wetland lotus puffs</span>
+                          <span>Indicative nutritional tables per 100 g &amp; per serve on documented items</span>
                         </li>
                         <li className="flex items-center gap-2.5">
                           <Check className="w-4 h-4 text-sage shrink-0" aria-hidden="true" />
-                          <span>High-barrier resealable packs that block humidity &amp; oxidation</span>
+                          <span>Resealable packaging guidance to help keep moisture out</span>
                         </li>
                         <li className="flex items-center gap-2.5">
                           <Check className="w-4 h-4 text-sage shrink-0" aria-hidden="true" />
-                          <span>Transparent ICMR-NIN / FSSAI nutrition per 100g &amp; per serve</span>
+                          <span>Explicit ingredient and allergen notes where confirmed</span>
                         </li>
                       </ul>
                     </OatSheet>
 
                     <OatSheet tone="warm" delay={0.14} className="lg:col-span-6 p-5 sm:p-6">
                       <span className="font-ui-label text-[10px] text-peach block mb-2">
-                        Stage 03B · Strictly Left Out
+                        Stage 03B · Label Clarity
                       </span>
                       <ul className="space-y-2.5 text-xs sm:text-sm text-sand">
                         <li className="flex items-center gap-2.5">
-                          <XCircle className="w-4 h-4 text-flame shrink-0" aria-hidden="true" />
-                          <span>Zero sulfur bleaching or artificial sheen on figs &amp; nuts</span>
+                          <Check className="w-4 h-4 text-peach shrink-0" aria-hidden="true" />
+                          <span>Zero added sugar highlighted strictly on unsweetened seeds and sea buckthorn</span>
                         </li>
                         <li className="flex items-center gap-2.5">
-                          <XCircle className="w-4 h-4 text-flame shrink-0" aria-hidden="true" />
-                          <span>Zero hidden sugar syrups on wild mountain berries</span>
+                          <Check className="w-4 h-4 text-peach shrink-0" aria-hidden="true" />
+                          <span>Sweetened berries (Blueberries &amp; Cranberries) declare cane sugar and sunflower oil clearly</span>
                         </li>
                         <li className="flex items-center gap-2.5">
-                          <XCircle className="w-4 h-4 text-flame shrink-0" aria-hidden="true" />
-                          <span>Zero palm oil or synthetic MSG on roasted makhana</span>
+                          <Check className="w-4 h-4 text-peach shrink-0" aria-hidden="true" />
+                          <span>{siteConfig.disclaimers.nutritionIndicative}</span>
                         </li>
                       </ul>
                     </OatSheet>
@@ -335,28 +336,28 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
           {
             id: 'story-03',
             chapterNumber: '03',
-            chapterLabel: '5 Belts & Craft',
+            chapterLabel: 'Pantry Explorer',
             compact: true,
             content: (
               <div className="space-y-6 relative">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                   <div>
                     <span className="font-ui-label text-[10px] text-peach block mb-1">
-                      Interactive Belt Explorer
+                      Interactive Category Explorer
                     </span>
                     <SplitText
                       as="h2"
                       trigger="scroll"
-                      text="Five belts. Tap a harvest to inspect."
+                      text="Explore our pantry categories."
                       className="font-display text-3xl sm:text-4xl text-oat font-medium"
                     />
                   </div>
                   <span className="font-annotation text-xl text-peach">
-                    Click any belt below
+                    Select a category below
                   </span>
                 </div>
 
-                {/* Belt Selector Tabs */}
+                {/* Category Selector Tabs */}
                 <div className="flex flex-wrap gap-2">
                   {categories.map((cat) => {
                     const isSelected = cat.slug === activeCategory?.slug;
@@ -364,7 +365,7 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                       <button
                         key={cat.id}
                         type="button"
-                        onClick={() => setSelectedBeltSlug(cat.slug)}
+                        onClick={() => setSelectedCategorySlug(cat.slug)}
                         aria-pressed={isSelected}
                         className={`px-4 py-2 rounded-[4px] border font-ui-label text-[11px] transition-colors cursor-pointer ${
                           isSelected
@@ -378,7 +379,6 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                   })}
                 </div>
 
-                {/* Interactive Belt Stage */}
                 {activeCategory && (
                   <OatSheet tone="medium" interactive={false} className="p-5 sm:p-7">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
@@ -394,9 +394,11 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                             />
                           </div>
                           <div>
-                            <span className="font-ui-label text-[10px] text-peach block mb-1">
-                              {activeCategory.originNote}
-                            </span>
+                            {activeCategory.originNote && (
+                              <span className="font-ui-label text-[10px] text-peach block mb-1">
+                                {activeCategory.originNote}
+                              </span>
+                            )}
                             <h3 className="font-display text-2xl sm:text-3xl text-oat">
                               {activeCategory.name}
                             </h3>
@@ -425,9 +427,8 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                         </div>
                       </div>
 
-                      {/* 3 Harvests from Selected Belt */}
                       <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                        {activeBeltProducts.map((prod) => (
+                        {activeCategoryProducts.map((prod) => (
                           <Link
                             key={prod.id}
                             href={`/product/${prod.slug}`}
@@ -440,7 +441,7 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                               <div className="relative aspect-[4/5] rounded-[4px] overflow-hidden border border-white/15 mb-2.5 bg-[#1C2638]">
                                 <ProductImageWithFallback
                                   src={prod.images[0]?.src || ''}
-                                  alt={prod.images[0]?.alt || prod.name}
+                                  alt={prod.name}
                                   fill
                                   sizes="(max-width: 640px) 80vw, 180px"
                                   className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -452,7 +453,11 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                               <div className="flex items-center justify-between text-[11px] text-sand mt-1 tabular-nums">
                                 <span>{prod.variants[0]?.weight}</span>
                                 <span className="font-semibold text-peach">
-                                  {siteConfig.currencySymbol}{prod.variants[0]?.price}
+                                  {prod.comingSoon
+                                    ? 'Coming Soon'
+                                    : showPrices && prod.variants[0]?.priceInr !== null
+                                    ? `${siteConfig.currencySymbol}${prod.variants[0].priceInr}`
+                                    : 'View'}
                                 </span>
                               </div>
                             </SpotlightCard>
@@ -477,18 +482,18 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                     <div className="flex items-center gap-2 text-peach">
                       <Sparkles className="w-4 h-4" aria-hidden="true" />
                       <span className="font-ui-label text-[10px]">
-                        Stage 04 · Ready For Your Pantry
+                        Stage 04 · Everyday Pantry
                       </span>
                     </div>
                     <SplitText
                       as="h2"
                       trigger="scroll"
-                      text="Cleanly sorted, sealed at peak freshness."
+                      text="Honest everyday staples for bowls, baking, and snacking."
                       className="font-display text-3xl sm:text-5xl text-oat font-medium"
                     />
                     <p className="text-sm sm:text-base text-sand leading-relaxed max-w-xl">
-                      No shortcuts between the harvest field and your table. Taste the difference of
-                      small-batch seeds, berries, orchard fruits, nuts, and slow-roasted makhana.
+                      Explore seeds, berries, dried fruits, whole nuts, and seasoned makhana packed
+                      for daily kitchen routines.
                     </p>
                     <div className="flex flex-wrap items-center gap-3 pt-1">
                       <Doodle
@@ -501,7 +506,7 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                         inline
                       />
                       <GlowButton href="/shop" variant="cta" magnetic>
-                        <span>Shop All {products.length} Harvests</span>
+                        <span>Shop All {activeProducts.length} Products</span>
                         <ArrowRight className="w-4 h-4" aria-hidden="true" />
                       </GlowButton>
                       <GlowButton href="/contact" variant="secondary">
@@ -511,31 +516,32 @@ export function StoryJourney({ products, categories }: StoryJourneyProps) {
                   </OatSheet>
                 </div>
 
-                {/* Live Ritual Snippets from products.ts */}
                 <div className="lg:col-span-5 space-y-3">
-                  {[seaBuckthorn, flaxSeeds, makhana].filter(Boolean).map((item, idx) => (
-                    <OatSheet key={item.id} tone="subtle" delay={0.1 + idx * 0.05} className="p-4">
-                      <Link href={`/product/${item.slug}`} className="flex items-start gap-3.5 group">
-                        <div className="relative w-12 h-14 rounded-[4px] overflow-hidden border border-white/20 shrink-0 bg-[#1C2638]">
-                          <ProductImageWithFallback
-                            src={item.images[0]?.src || ''}
-                            alt={item.name}
-                            fill
-                            sizes="48px"
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="min-w-0">
-                          <span className="font-ui-label text-[9px] text-peach block mb-0.5">
-                            {item.name} Ritual
-                          </span>
-                          <p className="text-xs text-sand leading-relaxed line-clamp-2 group-hover:text-oat transition-colors">
-                            {item.howToUse[0]}
-                          </p>
-                        </div>
-                      </Link>
-                    </OatSheet>
-                  ))}
+                  {[seaBuckthorn, flaxSeeds, makhana]
+                    .filter((item) => Boolean(item && item.howToUse?.[0]))
+                    .map((item, idx) => (
+                      <OatSheet key={item.id} tone="subtle" delay={0.1 + idx * 0.05} className="p-4">
+                        <Link href={`/product/${item.slug}`} className="flex items-start gap-3.5 group">
+                          <div className="relative w-12 h-14 rounded-[4px] overflow-hidden border border-white/20 shrink-0 bg-[#1C2638]">
+                            <ProductImageWithFallback
+                              src={item.images[0]?.src || ''}
+                              alt={item.name}
+                              fill
+                              sizes="48px"
+                              className="object-cover"
+                            />
+                          </div>
+                          <div className="min-w-0">
+                            <span className="font-ui-label text-[9px] text-peach block mb-0.5">
+                              {item.name}
+                            </span>
+                            <p className="text-xs text-sand leading-relaxed line-clamp-2 group-hover:text-oat transition-colors">
+                              {item.howToUse?.[0]}
+                            </p>
+                          </div>
+                        </Link>
+                      </OatSheet>
+                    ))}
                 </div>
               </div>
             ),

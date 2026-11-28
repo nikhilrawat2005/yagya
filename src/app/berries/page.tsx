@@ -9,21 +9,21 @@ export default async function BerriesPage() {
       config={{
         pageKey: 'berries',
         categorySlug: 'berries',
-        eyebrow: 'Mountain Berries',
-        titleLead: 'Vibrant Himalayan',
+        eyebrow: 'Dried Berries',
+        titleLead: 'Vibrant Dried',
         titleAccent: 'Berries',
         introBody:
-          'Wild sea buckthorn, orchard cranberries, and deep blueberries, gently dehydrated to preserve their tart mountain pulp and seed oils without refined sugar.',
-        originTag: 'Ladakh · Himachal · Uttarakhand',
-        harvestTitle: 'Tart pulp, zero disguised sugar.',
+          'Whole dried sea buckthorn berries with zero added sugar alongside sweet-tart dried blueberries and ruby cranberries for everyday bowls, trail mixes, and baking.',
+        originTag: 'Dried Berries',
+        harvestTitle: 'Honest ingredient clarity.',
         harvestBody:
-          'Unlike glazed snack berries, our mountain harvests keep their natural acidity, Vitamin C, and phytonutrient density intact.',
-        craftTitle: 'Gentle low-heat dehydration.',
+          'Our Dried Sea Buckthorn Berries contain 100% berries with zero added sugar, while Dried Blueberries and Cranberries list cane sugar and sunflower oil openly on every page.',
+        craftTitle: 'Steep, blend, or snack straight.',
         craftBody:
-          'Slow drying protects delicate anthocyanins and Omega-7 oils so every spoonful tastes bright in warm infusions or morning bowls.',
-        promiseTitle: 'High-altitude purity in every pouch.',
+          'Steep sea buckthorn in warm water for a tangy herbal infusion, or fold blueberries and cranberries into overnight oats, salads, and muffins.',
+        promiseTitle: 'Documented reference nutrition.',
         promiseBody:
-          'Hand-sorted in small seasonal batches and sealed immediately against humidity.',
+          'Explore 100g, 200g, and 500g formats, with Dried Blackberries and Dried Raspberries coming soon.',
         charcoalDoodle: 'blueberry',
         accentDoodle: 'berries',
         products,

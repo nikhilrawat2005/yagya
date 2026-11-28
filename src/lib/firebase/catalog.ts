@@ -5,7 +5,7 @@ import {
   runTransaction,
   setDoc,
 } from 'firebase/firestore';
-import { products as baselineProducts, type Product } from '@/lib/data/products';
+import { products as baselineProducts, type Product, type ProductVariant } from '@/data/products';
 import { getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase/config';
 
 const PRODUCTS_COLLECTION = 'products';
@@ -15,7 +15,7 @@ export interface StoredOrderItem {
   productId: string;
   variantId: string;
   quantity: number;
-  price: number;
+  priceInr: number | null;
 }
 
 export interface StoredOrder {
@@ -31,7 +31,7 @@ export interface StoredOrder {
   state: string;
   paymentMethod: string;
   items: StoredOrderItem[];
-  total: number;
+  totalInr: number | null;
   status: 'confirmed' | 'dispatched' | 'delivered';
   createdAt: string;
 }
@@ -65,6 +65,41 @@ function decodeFirestoreValue(val: FirestoreValue): unknown {
   return undefined;
 }
 
+function normalizeRemoteVariant(raw: Record<string, unknown>): ProductVariant {
+  return {
+    id: String(raw.id ?? ''),
+    label: String(raw.label ?? raw.weight ?? ''),
+    weight: String(raw.weight ?? raw.label ?? ''),
+    priceInr: typeof raw.priceInr === 'number' ? raw.priceInr : null,
+    mrpInr: typeof raw.mrpInr === 'number' ? raw.mrpInr : null,
+    sku: typeof raw.sku === 'string' ? raw.sku : null,
+    stock: typeof raw.stock === 'number' ? raw.stock : 0,
+  };
+}
+
+function normalizeProduct(raw: Product): Product {
+  return {
+    ...raw,
+    provenance: raw.provenance ?? null,
+    origin: raw.origin ?? null,
+    zeroAddedSugar: Boolean(raw.zeroAddedSugar),
+    rating: typeof raw.rating === 'number' ? raw.rating : null,
+    reviewCount: typeof raw.reviewCount === 'number' ? raw.reviewCount : null,
+    servingSize: raw.servingSize ?? null,
+    nutritionFacts: Array.isArray(raw.nutritionFacts) && raw.nutritionFacts.length > 0
+      ? raw.nutritionFacts
+      : null,
+    nutritionFootnote: raw.nutritionFootnote ?? null,
+    ingredients: raw.ingredients ?? null,
+    allergenAdvice: raw.allergenAdvice ?? null,
+    howToUse: Array.isArray(raw.howToUse) && raw.howToUse.length > 0 ? raw.howToUse : null,
+    storage: raw.storage ?? null,
+    variants: Array.isArray(raw.variants)
+      ? raw.variants.map((v) => normalizeRemoteVariant(v as unknown as Record<string, unknown>))
+      : [],
+  };
+}
+
 function decodeFirestoreDocument(docObj: {
   name?: string;
   fields?: Record<string, FirestoreValue>;
@@ -77,7 +112,7 @@ function decodeFirestoreDocument(docObj: {
   if (!decoded.id || !decoded.slug || !decoded.name || !Array.isArray(decoded.variants)) {
     return null;
   }
-  return decoded as unknown as Product;
+  return normalizeProduct(decoded as unknown as Product);
 }
 
 function mergeCatalog(remoteProducts: Product[]): Product[] {
@@ -87,7 +122,19 @@ function mergeCatalog(remoteProducts: Product[]): Product[] {
   }
   for (const remote of remoteProducts) {
     if (remote && remote.id) {
-      map.set(remote.id, remote);
+      const base = map.get(remote.id);
+      if (base) {
+        // Keep compliant baseline copy/nutrition while allowing stock overrides
+        map.set(remote.id, {
+          ...base,
+          variants: base.variants.map((bv) => {
+            const rv = remote.variants.find((v) => v.id === bv.id);
+            return rv ? { ...bv, stock: rv.stock } : bv;
+          }),
+        });
+      } else {
+        map.set(remote.id, normalizeProduct(remote));
+      }
     }
   }
   return Array.from(map.values());
@@ -95,27 +142,24 @@ function mergeCatalog(remoteProducts: Product[]): Product[] {
 
 /**
  * Fetches the live product catalog (Firestore overrides + newly added products merged with baseline).
- * Uses Firestore REST API on server and Firestore SDK on client.
  */
 export async function fetchLiveCatalog(): Promise<Product[]> {
   if (!isFirebaseConfigured) {
     return [...baselineProducts];
   }
 
-  // Client-side: use Firestore SDK
   if (typeof window !== 'undefined') {
     try {
       const db = getFirebaseDb();
       if (!db) return [...baselineProducts];
       const snap = await getDocs(collection(db, PRODUCTS_COLLECTION));
-      const remote = snap.docs.map((d) => d.data() as Product);
+      const remote = snap.docs.map((d) => normalizeProduct(d.data() as Product));
       return mergeCatalog(remote);
     } catch {
       return [...baselineProducts];
     }
   }
 
-  // Server-side: use Firestore REST API (no service account needed for public catalog reads)
   try {
     const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
     const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
@@ -192,7 +236,6 @@ export async function recordOrderAndSubtractStock(
   const db = getFirebaseDb();
   if (!db) return;
 
-  // Group quantities by productId -> variantId
   const byProduct = new Map<string, Map<string, number>>();
   for (const item of order.items) {
     const varMap = byProduct.get(item.productId) || new Map<string, number>();
@@ -201,14 +244,13 @@ export async function recordOrderAndSubtractStock(
   }
 
   await runTransaction(db, async (tx) => {
-    // 1. Read all affected product documents first (Firestore transaction rule: reads before writes)
     const productReads = new Map<string, Product>();
 
     for (const productId of byProduct.keys()) {
       const ref = doc(db, PRODUCTS_COLLECTION, productId);
       const snap = await tx.get(ref);
       if (snap.exists()) {
-        productReads.set(productId, snap.data() as Product);
+        productReads.set(productId, normalizeProduct(snap.data() as Product));
       } else {
         const base = baselineProducts.find((p) => p.id === productId);
         if (base) {
@@ -217,7 +259,6 @@ export async function recordOrderAndSubtractStock(
       }
     }
 
-    // 2. Subtract ordered quantities and write updated product docs
     for (const [productId, varMap] of byProduct.entries()) {
       const currentProduct = productReads.get(productId);
       if (!currentProduct) continue;
@@ -239,7 +280,6 @@ export async function recordOrderAndSubtractStock(
       tx.set(doc(db, PRODUCTS_COLLECTION, productId), updatedProduct, { merge: true });
     }
 
-    // 3. Persist the order document
     const cleanOrder = JSON.parse(JSON.stringify(order)) as StoredOrder;
     tx.set(doc(db, ORDERS_COLLECTION, order.orderId), cleanOrder);
   });

@@ -1,4 +1,6 @@
+import { BookOpen } from 'lucide-react';
 import { getJournalArticles } from '@/lib/services/productService';
+import { siteConfig } from '@/config/site';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
 import { SpotlightCard } from '@/components/react-bits/SpotlightCard';
 import { SplitText } from '@/components/react-bits/SplitText';
@@ -10,6 +12,39 @@ import { GlowButton } from '@/components/ui/GlowButton';
 
 export default async function JournalPage() {
   const articles = await getJournalArticles();
+
+  if (!siteConfig.featureFlags.showJournal || articles.length === 0) {
+    return (
+      <div className="min-h-[100dvh] bg-navy text-oat pt-24 sm:pt-32 pb-24 px-4 flex items-center">
+        <div className="max-w-lg mx-auto w-full">
+          <OatSheet tone="medium" interactive={false} className="p-8 sm:p-10 text-center space-y-4">
+            <div className="w-14 h-14 mx-auto rounded-[6px] bg-oat/10 border border-white/25 flex items-center justify-center text-peach">
+              <BookOpen className="w-7 h-7" aria-hidden="true" />
+            </div>
+            <span className="font-ui-label text-[10px] text-peach block">
+              {siteConfig.brandName} Editorial
+            </span>
+            <h1 className="font-display text-3xl sm:text-4xl font-medium text-oat">
+              Journal Coming Soon
+            </h1>
+            <p className="text-sm text-sand leading-relaxed">
+              We are preparing verified harvest notes and kitchen recipes. In the meantime, explore
+              our full pantry collection.
+            </p>
+            <div className="pt-2 flex flex-wrap justify-center gap-3">
+              <GlowButton href="/shop" variant="cta">
+                Explore Collection
+              </GlowButton>
+              <GlowButton href="/" variant="secondary">
+                Return Home
+              </GlowButton>
+            </div>
+          </OatSheet>
+        </div>
+      </div>
+    );
+  }
+
   const firstHalf = articles.slice(0, 2);
   const secondHalf = articles.slice(2);
 
@@ -30,140 +65,32 @@ export default async function JournalPage() {
                   text="Harvest Journal"
                   className="font-display text-4xl sm:text-5xl text-oat font-medium mb-3"
                 />
-                <p className="text-sm sm:text-base text-apricot/90">
-                  Notes from winter seed belts, cool mountain berry bushes, and farm-direct packing.
-                </p>
               </FadeInSection>
 
               <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {firstHalf.map((art) => (
+                {[...firstHalf, ...secondHalf].map((art) => (
                   <StaggerItem key={art.id}>
                     <SpotlightCard
                       as="article"
                       spotlightColor="rgba(223, 127, 37, 0.14)"
                       className="h-full bg-[#141C2B]/55 overflow-hidden flex flex-col justify-between"
                     >
-                      <div className="flex flex-col justify-between h-full">
-                        <div>
-                          <div className="relative aspect-[16/10] bg-navy/40 border-b border-white/15 overflow-hidden">
-                            <ProductImageWithFallback
-                              src={art.image}
-                              alt={art.title}
-                              fill
-                              className={
-                                art.image.includes('/assets/products/')
-                                  ? 'object-cover transition-transform duration-500 ease-[var(--ease-smooth)] group-hover:scale-105'
-                                  : 'object-contain p-4 transition-transform duration-500 ease-[var(--ease-smooth)] group-hover:scale-105'
-                              }
-                            />
-                          </div>
-                          <div className="p-6">
-                            <div className="flex justify-between items-center text-[10px] font-ui-label mb-3">
-                              <span className="px-2.5 py-0.5 rounded-[4px] bg-oat/15 text-peach border border-white/20">
-                                {art.category}
-                              </span>
-                              <span className="text-apricot/85">{art.readTime}</span>
-                            </div>
-                            <h2 className="font-display text-xl font-medium text-oat group-hover:text-peach transition-colors mb-2 leading-snug">
-                              {art.title}
-                            </h2>
-                            <p className="text-sm text-apricot/90 line-clamp-3 leading-relaxed">
-                              {art.excerpt}
-                            </p>
-                          </div>
+                      <div className="p-6">
+                        <div className="relative aspect-[16/10] bg-navy/40 border-b border-white/15 overflow-hidden mb-4 rounded-[4px]">
+                          <ProductImageWithFallback
+                            src={art.image}
+                            alt={art.title}
+                            fill
+                            className="object-cover"
+                          />
                         </div>
-
-                        <div className="px-6 pb-6 pt-2">
-                          <span className="text-[11px] text-apricot/85">{art.date}</span>
-                        </div>
+                        <h2 className="font-display text-xl font-medium text-oat mb-2">{art.title}</h2>
+                        <p className="text-sm text-apricot/90 leading-relaxed">{art.excerpt}</p>
                       </div>
                     </SpotlightCard>
                   </StaggerItem>
                 ))}
               </StaggerContainer>
-            </div>
-          ),
-        },
-        {
-          id: 'journal-02',
-          chapterNumber: '02',
-          chapterLabel: 'Orchard & Roastery',
-          content: (
-            <div className="max-w-5xl mx-auto space-y-8 relative">
-              <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {secondHalf.map((art) => (
-                  <StaggerItem key={art.id}>
-                    <SpotlightCard
-                      as="article"
-                      spotlightColor="rgba(223, 127, 37, 0.14)"
-                      className="h-full bg-[#141C2B]/55 overflow-hidden flex flex-col justify-between"
-                    >
-                      <div className="flex flex-col justify-between h-full">
-                        <div>
-                          <div className="relative aspect-[16/10] bg-navy/40 border-b border-white/15 overflow-hidden">
-                            <ProductImageWithFallback
-                              src={art.image}
-                              alt={art.title}
-                              fill
-                              className={
-                                art.image.includes('/assets/products/')
-                                  ? 'object-cover transition-transform duration-500 ease-[var(--ease-smooth)] group-hover:scale-105'
-                                  : 'object-contain p-4 transition-transform duration-500 ease-[var(--ease-smooth)] group-hover:scale-105'
-                              }
-                            />
-                          </div>
-                          <div className="p-6">
-                            <div className="flex justify-between items-center text-[10px] font-ui-label mb-3">
-                              <span className="px-2.5 py-0.5 rounded-[4px] bg-oat/15 text-peach border border-white/20">
-                                {art.category}
-                              </span>
-                              <span className="text-apricot/85">{art.readTime}</span>
-                            </div>
-                            <h2 className="font-display text-xl font-medium text-oat group-hover:text-peach transition-colors mb-2 leading-snug">
-                              {art.title}
-                            </h2>
-                            <p className="text-sm text-apricot/90 line-clamp-3 leading-relaxed">
-                              {art.excerpt}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="px-6 pb-6 pt-2">
-                          <span className="text-[11px] text-apricot/85">{art.date}</span>
-                        </div>
-                      </div>
-                    </SpotlightCard>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
-            </div>
-          ),
-        },
-        {
-          id: 'journal-03',
-          chapterNumber: '03',
-          chapterLabel: 'Taste the Harvest',
-          content: (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              <div className="lg:col-span-6 lg:col-start-4 relative">
-                <OatSheet tone="warm" className="relative z-10 p-8 sm:p-10 space-y-5 text-center">
-                  <h2 className="font-display text-3xl sm:text-4xl font-medium text-oat leading-tight">
-                    Every harvest written here is packed in small batches.
-                  </h2>
-                  <p className="text-sm sm:text-base text-apricot/95 leading-relaxed">
-                    Explore the full pantry of Rabi seeds, Himalayan berries, sun-cured orchard fruits,
-                    and slow-roasted makhana.
-                  </p>
-                  <div className="flex flex-wrap justify-center gap-4 pt-2">
-                    <GlowButton href="/shop" variant="cta" magnetic>
-                      Explore Collection
-                    </GlowButton>
-                    <GlowButton href="/about" variant="secondary">
-                      Our Philosophy
-                    </GlowButton>
-                  </div>
-                </OatSheet>
-              </div>
             </div>
           ),
         },

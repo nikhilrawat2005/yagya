@@ -1,7 +1,9 @@
-import { Product } from '@/lib/data/products';
+import { Product } from '@/data/products';
 import { categories, Category } from '@/lib/data/categories';
 import { reviews, Review } from '@/lib/data/reviews';
 import { journalArticles, JournalArticle } from '@/lib/data/journal';
+import { siteConfig } from '@/config/site';
+import { INDIAN_PINCODE_REGEX } from '@/lib/validation/forms';
 import {
   fetchLiveCatalog,
   recordOrderAndSubtractStock,
@@ -22,9 +24,9 @@ export interface OrderInput {
     productId: string;
     variantId: string;
     quantity: number;
-    price: number;
+    priceInr: number | null;
   }>;
-  total: number;
+  totalInr: number | null;
 }
 
 export interface OrderResult {
@@ -50,7 +52,7 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
 
 export async function getFeaturedProducts(): Promise<Product[]> {
   const all = await fetchLiveCatalog();
-  return all.filter((p) => p.isFeatured || p.isBestseller);
+  return all.filter((p) => (p.isFeatured || p.isBestseller) && !p.comingSoon);
 }
 
 export async function getCategories(): Promise<Category[]> {
@@ -58,6 +60,9 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function getReviews(productSlug?: string): Promise<Review[]> {
+  if (!siteConfig.featureFlags.showTestimonials) {
+    return [];
+  }
   if (productSlug) {
     return reviews.filter((r) => r.productSlug === productSlug);
   }
@@ -65,16 +70,30 @@ export async function getReviews(productSlug?: string): Promise<Review[]> {
 }
 
 export async function getJournalArticles(): Promise<JournalArticle[]> {
+  if (!siteConfig.featureFlags.showJournal) {
+    return [];
+  }
   return [...journalArticles];
 }
 
-export async function checkPincodeDelivery(pincode: string): Promise<{ serviceable: boolean; estimatedDays: string }> {
-  await new Promise((res) => setTimeout(res, 300));
+export async function checkPincodeDelivery(
+  pincode: string
+): Promise<{ serviceable: boolean; message: string }> {
+  await new Promise((res) => setTimeout(res, 250));
   const pin = pincode.trim();
-  if (/^\d{6}$/.test(pin)) {
-    return { serviceable: true, estimatedDays: '2 - 3 business days' };
+  if (INDIAN_PINCODE_REGEX.test(pin)) {
+    const dispatchText = siteConfig.operations.dispatchWindowText;
+    return {
+      serviceable: true,
+      message: dispatchText
+        ? `Valid Indian PIN code (${pin}). Estimated dispatch: ${dispatchText}.`
+        : `Valid 6-digit Indian PIN code (${pin}). Delivery schedule will be confirmed upon order review.`,
+    };
   }
-  return { serviceable: false, estimatedDays: 'Pincode not serviceable' };
+  return {
+    serviceable: false,
+    message: 'Enter a valid 6-digit Indian PIN code.',
+  };
 }
 
 export async function createOrder(input: OrderInput): Promise<OrderResult> {
@@ -97,12 +116,12 @@ export async function createOrder(input: OrderInput): Promise<OrderResult> {
       state: input.state,
       paymentMethod: input.paymentMethod,
       items: input.items,
-      total: input.total,
+      totalInr: input.totalInr,
       status: 'confirmed',
       createdAt: timestamp,
     });
   } else {
-    await new Promise((res) => setTimeout(res, 400));
+    await new Promise((res) => setTimeout(res, 350));
   }
 
   return {

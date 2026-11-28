@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { ShieldCheck, Truck, Sprout, Award } from 'lucide-react';
-import { siteConfig } from '@/lib/data/site';
+import { Mail, Phone } from 'lucide-react';
+import { siteConfig } from '@/config/site';
 import { categories } from '@/lib/data/categories';
 import { ASSETS } from '@/lib/assets';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
@@ -13,109 +13,162 @@ const CATEGORY_LINKS: Record<string, string> = {
   'dried-fruits': '/dry-fruits',
   nuts: '/nuts',
   'flavoured-makhana': '/makhana',
+  mixture: '/shop?category=mixture',
 };
 
-const TRUST_SIGNALS = [
-  { icon: Sprout, label: 'Farm-Direct Partner Growers' },
-  { icon: ShieldCheck, label: 'Hygienically Lab-Checked' },
-  { icon: Award, label: 'Zero Added Sugar or Glaze' },
-  { icon: Truck, label: `Free Dispatch Over ${siteConfig.currencySymbol}${siteConfig.freeShippingThreshold}` },
+const POLICY_LINKS = [
+  { href: '/privacy-policy', label: 'Privacy Policy (Draft)' },
+  { href: '/terms-and-conditions', label: 'Terms & Conditions (Draft)' },
+  { href: '/refund-return-cancellation-policy', label: 'Refund & Cancellation (Draft)' },
+  { href: '/shipping-policy', label: 'Shipping Policy (Draft)' },
 ] as const;
 
 export function Footer() {
+  const companyLinks = [
+    { href: '/about', label: 'Our Story' },
+    { href: '/shop', label: 'Shop All' },
+    ...(siteConfig.featureFlags.showJournal ? [{ href: '/journal', label: 'Journal' }] : []),
+    { href: '/contact', label: 'Contact' },
+  ];
+
   return (
     <footer className="relative z-20 overflow-hidden bg-aubergine/95 backdrop-blur-md border-t border-white/15 text-oat">
-      {/* Subtle Trust Ribbon */}
-      <div className="border-b border-white/10 bg-[#141C2B]/60">
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 py-4 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-          {TRUST_SIGNALS.map(({ icon: Icon, label }) => (
-            <div key={label} className="flex items-center gap-2.5 text-xs text-sand">
-              <Icon className="w-4 h-4 text-peach shrink-0" aria-hidden="true" />
-              <span className="leading-snug">{label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 py-10">
-        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-8">
-          {/* Brand Identity */}
-          <div className="max-w-sm">
-            <Link href="/" className="flex items-center gap-3.5 group w-fit">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6">
+          {/* Brand & Tagline */}
+          <div className="lg:col-span-4 space-y-3">
+            <Link
+              href="/"
+              className="flex items-center gap-3.5 group w-fit rounded-[4px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat"
+            >
               <div className="relative w-10 h-10 rounded-[4px] overflow-hidden border border-white/25 bg-oat shrink-0">
                 <ProductImageWithFallback
                   src={ASSETS.brand.logoPrimary}
-                  alt={siteConfig.name}
+                  alt={`${siteConfig.brandName} logo`}
                   fill
                   sizes="40px"
                   className="object-cover"
                 />
               </div>
               <div>
-                <span translate="no" className="font-display text-xl tracking-[0.08em] font-semibold text-oat block leading-none">
-                  {siteConfig.name.toUpperCase()}
+                <span
+                  translate="no"
+                  className="font-display text-xl tracking-[0.08em] font-semibold text-oat block leading-none"
+                >
+                  {siteConfig.brandName.toUpperCase()}
                 </span>
-                <span className="text-xs text-sand mt-1 block">
+                <span className="text-xs text-peach mt-1 block">
                   {siteConfig.tagline}
                 </span>
               </div>
             </Link>
-            <p className="text-xs text-sand/90 leading-relaxed mt-3">
+            <p className="text-xs text-sand/90 leading-relaxed max-w-xs">
               {siteConfig.description}
             </p>
+            {siteConfig.legalEntityName && (
+              <p className="text-[11px] text-sand/80">{siteConfig.legalEntityName}</p>
+            )}
+            {siteConfig.fssaiLicenseNo && (
+              <p className="text-[11px] text-sand/80">FSSAI: {siteConfig.fssaiLicenseNo}</p>
+            )}
+            {siteConfig.gstin && (
+              <p className="text-[11px] text-sand/80">GSTIN: {siteConfig.gstin}</p>
+            )}
           </div>
 
-          {/* Minimal Editorial Links */}
-          <nav aria-label="Footer navigation" className="flex flex-wrap items-center gap-x-5 gap-y-2.5 lg:max-w-md lg:justify-end">
-            {categories.map((cat) => (
-              <Link
-                key={cat.id}
-                href={CATEGORY_LINKS[cat.slug] || `/shop?category=${cat.slug}`}
-                className="nav-link-underline font-ui-label text-[11px] text-sand hover:text-oat py-1 whitespace-nowrap"
-              >
-                {cat.name}
-              </Link>
-            ))}
-            <Link
-              href="/about"
-              className="nav-link-underline font-ui-label text-[11px] text-sand hover:text-oat py-1 whitespace-nowrap"
-            >
-              Story
-            </Link>
-            <Link
-              href="/journal"
-              className="nav-link-underline font-ui-label text-[11px] text-sand hover:text-oat py-1 whitespace-nowrap"
-            >
-              Journal
-            </Link>
-            <Link
-              href="/shop"
-              className="nav-link-underline font-ui-label text-[11px] text-sand hover:text-oat py-1 whitespace-nowrap"
-            >
-              Shop All
-            </Link>
-            <Link
-              href="/contact"
-              className="nav-link-underline font-ui-label text-[11px] text-sand hover:text-oat py-1 whitespace-nowrap"
-            >
-              Contact
-            </Link>
+          {/* Shop Categories */}
+          <nav aria-label="Shop categories" className="lg:col-span-2 space-y-3">
+            <h2 className="font-ui-label text-[10px] text-peach">Shop Categories</h2>
+            <ul className="space-y-2 text-xs">
+              {categories.map((cat) => (
+                <li key={cat.id}>
+                  <Link
+                    href={CATEGORY_LINKS[cat.slug] || `/shop?category=${cat.slug}`}
+                    className="nav-link-underline text-sand hover:text-oat py-0.5 rounded-[4px]"
+                  >
+                    {cat.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </nav>
+
+          {/* Company */}
+          <nav aria-label="Company links" className="lg:col-span-2 space-y-3">
+            <h2 className="font-ui-label text-[10px] text-peach">Company</h2>
+            <ul className="space-y-2 text-xs">
+              {companyLinks.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="nav-link-underline text-sand hover:text-oat py-0.5 rounded-[4px]"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Policies */}
+          <nav aria-label="Compliance policies" className="lg:col-span-2 space-y-3">
+            <h2 className="font-ui-label text-[10px] text-peach">Policies</h2>
+            <ul className="space-y-2 text-xs">
+              {POLICY_LINKS.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="nav-link-underline text-sand hover:text-oat py-0.5 rounded-[4px]"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Contact */}
+          <div className="lg:col-span-2 space-y-3">
+            <h2 className="font-ui-label text-[10px] text-peach">Contact</h2>
+            <ul className="space-y-2.5 text-xs text-sand">
+              <li>
+                <a
+                  href={`mailto:${siteConfig.contactEmail}`}
+                  className="inline-flex items-center gap-2 hover:text-oat transition-colors break-all"
+                >
+                  <Mail className="w-3.5 h-3.5 text-peach shrink-0" aria-hidden="true" />
+                  <span>{siteConfig.contactEmail}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`tel:+91${siteConfig.contactPhoneRaw}`}
+                  className="inline-flex items-center gap-2 hover:text-oat transition-colors whitespace-nowrap"
+                >
+                  <Phone className="w-3.5 h-3.5 text-peach shrink-0" aria-hidden="true" />
+                  <span>{siteConfig.contactPhone}</span>
+                </a>
+              </li>
+              {siteConfig.registeredAddress && (
+                <li className="text-[11px] text-sand/85 leading-relaxed">
+                  {siteConfig.registeredAddress}
+                </li>
+              )}
+              {siteConfig.supportHours && (
+                <li className="text-[11px] text-sand/85">{siteConfig.supportHours}</li>
+              )}
+            </ul>
+          </div>
         </div>
 
-        {/* Direct Contact & Copyright */}
-        <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-sand">
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
-            <a
-              href={`mailto:${siteConfig.contact.email}`}
-              className="hover:text-oat transition-colors whitespace-nowrap"
-            >
-              {siteConfig.contact.email}
-            </a>
-            <span className="text-oat/40" aria-hidden="true">·</span>
-            <span className="whitespace-nowrap">{siteConfig.contact.address}</span>
-          </div>
-          <span className="whitespace-nowrap">© {new Date().getFullYear()} {siteConfig.name}</span>
+        {/* Disclaimer & Copyright */}
+        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[11px] text-sand/90">
+          <p className="max-w-2xl leading-relaxed">
+            {siteConfig.disclaimers.healthAndMedical}
+          </p>
+          <span className="whitespace-nowrap shrink-0">
+            © {new Date().getFullYear()} {siteConfig.brandName}
+          </span>
         </div>
       </div>
     </footer>

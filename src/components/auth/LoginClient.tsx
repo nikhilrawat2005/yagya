@@ -27,7 +27,7 @@ import {
   Sparkles,
   User as UserIcon,
 } from 'lucide-react';
-import { siteConfig } from '@/lib/data/site';
+import { siteConfig } from '@/config/site';
 import { ASSETS } from '@/lib/assets';
 import {
   createGoogleProvider,
@@ -309,7 +309,7 @@ function GoogleOnboardingForm({
           maxLength={10}
           value={phone}
           onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
-          placeholder="9876543210"
+          placeholder="9123456789"
         />
         <GlowInput
           name="age"
@@ -579,16 +579,15 @@ export function LoginClient() {
                       <div className="relative w-10 h-10 rounded-[4px] overflow-hidden border border-white/25 bg-oat shrink-0">
                         <ProductImageWithFallback
                           src={ASSETS.brand.logoPrimary}
-                          alt={siteConfig.name}
+                          alt={siteConfig.brandName}
                           fill
                           sizes="40px"
-                          preload
                           className="object-cover"
                         />
                       </div>
                       <div>
                         <span className="font-display text-2xl tracking-[0.06em] font-semibold text-oat block leading-none">
-                          {siteConfig.name.toUpperCase()}
+                          {siteConfig.brandName.toUpperCase()}
                         </span>
                         <span className="font-ui-label text-[9px] text-peach block mt-1">
                           Member &amp; Pantry Access
@@ -827,7 +826,7 @@ export function LoginClient() {
                                 maxLength={10}
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
-                                placeholder="9876543210"
+                                placeholder="9123456789"
                               />
                               <GlowInput
                                 name="age"
@@ -889,7 +888,7 @@ export function LoginClient() {
                         <p className="text-[11px] text-sand/85 text-center pt-1">
                           Need help?{' '}
                           <Link href="/contact" className="text-peach hover:text-oat underline underline-offset-4">
-                            Contact {siteConfig.name} support
+                            Contact {siteConfig.brandName} support
                           </Link>
                         </p>
                       </div>

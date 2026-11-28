@@ -4,9 +4,9 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Search, X, SlidersHorizontal } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { Product } from '@/lib/data/products';
-import { Category } from '@/lib/data/categories';
-import { siteConfig } from '@/lib/data/site';
+import type { Product } from '@/data/products';
+import type { Category } from '@/lib/data/categories';
+import { siteConfig } from '@/config/site';
 import { ProductCard } from '@/components/product/ProductCard';
 import { AnimatedTabs } from '@/components/ui/AnimatedTabs';
 import { GlowInput } from '@/components/ui/GlowInput';
@@ -31,11 +31,17 @@ const CATEGORY_ROUTES: Record<string, string> = {
   'dried-fruits': '/dry-fruits',
   nuts: '/nuts',
   'flavoured-makhana': '/makhana',
+  mixture: '/shop?category=mixture',
 };
 
 export function ShopClient({ products, categories, initialCategory }: ShopClientProps) {
+  const showPrices = siteConfig.featureFlags.showPrices;
+  const showRatings = siteConfig.featureFlags.showRatingsAndReviews;
+
   const catalogCeiling = useMemo(() => {
-    const prices = products.flatMap((p) => p.variants.map((v) => v.price));
+    const prices = products.flatMap((p) =>
+      p.variants.map((v) => v.priceInr).filter((n): n is number => n !== null)
+    );
     const maxVal = prices.length > 0 ? Math.max(...prices) : 3000;
     return Math.ceil(maxVal / 100) * 100;
   }, [products]);
@@ -55,31 +61,44 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
           q &&
           !p.name.toLowerCase().includes(q) &&
           !p.category.toLowerCase().includes(q) &&
-          !p.origin.toLowerCase().includes(q) &&
+          !(p.origin || '').toLowerCase().includes(q) &&
           !p.tags.some((t) => t.toLowerCase().includes(q))
         ) {
           return false;
         }
-        const minVariantPrice = Math.min(...p.variants.map((v) => v.price));
-        if (minVariantPrice > maxPrice) return false;
+        if (showPrices) {
+          const prices = p.variants
+            .map((v) => v.priceInr)
+            .filter((n): n is number => n !== null);
+          if (prices.length > 0 && Math.min(...prices) > maxPrice) return false;
+        }
         return true;
       })
       .sort((a, b) => {
-        const priceA = a.variants[0]?.price || 0;
-        const priceB = b.variants[0]?.price || 0;
-        if (selectedSort === 'price-low') return priceA - priceB;
-        if (selectedSort === 'price-high') return priceB - priceA;
-        if (selectedSort === 'rating') return b.rating - a.rating;
+        if (a.comingSoon !== b.comingSoon) {
+          return Number(Boolean(a.comingSoon)) - Number(Boolean(b.comingSoon));
+        }
+        if (showPrices && (selectedSort === 'price-low' || selectedSort === 'price-high')) {
+          const priceA = a.variants[0]?.priceInr ?? 0;
+          const priceB = b.variants[0]?.priceInr ?? 0;
+          return selectedSort === 'price-low' ? priceA - priceB : priceB - priceA;
+        }
+        if (showRatings && selectedSort === 'rating') {
+          return (b.rating ?? 0) - (a.rating ?? 0);
+        }
+        if (selectedSort === 'name-az') {
+          return a.name.localeCompare(b.name);
+        }
         return Number(Boolean(b.isBestseller)) - Number(Boolean(a.isBestseller));
       });
-  }, [products, selectedCategory, searchQuery, maxPrice, selectedSort]);
+  }, [products, selectedCategory, searchQuery, maxPrice, selectedSort, showPrices, showRatings]);
 
   const activeCategoryObj = categories.find((c) => c.slug === selectedCategory);
 
   const hasActiveFilters =
     selectedCategory !== 'all' ||
     searchQuery.trim().length > 0 ||
-    maxPrice < catalogCeiling ||
+    (showPrices && maxPrice < catalogCeiling) ||
     selectedSort !== 'featured';
 
   const resetFilters = () => {
@@ -115,12 +134,12 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
               <div className="relative z-10 pb-4 border-b border-white/15 flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
                   <span className="font-ui-label text-[10px] text-peach block mb-1">
-                    {siteConfig.name} Pantry · {products.length} Small-Batch Harvests
+                    {siteConfig.brandName} Pantry · {products.length} Catalog Items
                   </span>
                   <SplitText
                     as="h1"
                     trigger="mount"
-                    text={`Explore ${siteConfig.name}`}
+                    text={`Explore ${siteConfig.brandName}`}
                     className="font-display text-3xl sm:text-5xl text-oat font-medium leading-none"
                   />
                 </div>
@@ -134,7 +153,7 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search seeds, berries, nuts, makhana…"
-                    aria-label="Search harvest"
+                    aria-label="Search catalog"
                     leadingIcon={<Search className="w-4 h-4" />}
                     trailingSlot={
                       <AnimatePresence>
@@ -158,7 +177,7 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                 </div>
               </div>
 
-              {/* Compact Unified Filter Bar */}
+              {/* Unified Filter Bar */}
               <OatSheet tone="subtle" interactive={false} className="p-3.5 sm:p-4">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
                   <div className="overflow-x-auto pb-1 lg:pb-0 -mx-1 px-1">
@@ -172,35 +191,38 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2.5 text-xs text-oat shrink-0">
-                    <div className="flex items-center gap-2 bg-[#141C2B]/75 border border-white/25 rounded-[4px] px-3 py-2 min-h-[38px]">
-                      <SlidersHorizontal className="w-3.5 h-3.5 text-peach shrink-0" aria-hidden="true" />
-                      <label htmlFor="max-price" className="whitespace-nowrap text-sand tabular-nums">
-                        Up to {siteConfig.currencySymbol}{maxPrice}
-                      </label>
-                      <input
-                        id="max-price"
-                        name="maxPrice"
-                        type="range"
-                        min="200"
-                        max={catalogCeiling}
-                        step="100"
-                        value={maxPrice}
-                        onChange={(e) => setMaxPrice(Number(e.target.value))}
-                        className="accent-flame cursor-pointer w-20 sm:w-24"
-                      />
-                    </div>
+                    {showPrices && (
+                      <div className="flex items-center gap-2 bg-[#141C2B]/75 border border-white/25 rounded-[4px] px-3 py-2 min-h-[38px]">
+                        <SlidersHorizontal className="w-3.5 h-3.5 text-peach shrink-0" aria-hidden="true" />
+                        <label htmlFor="max-price" className="whitespace-nowrap text-sand tabular-nums">
+                          Up to {siteConfig.currencySymbol}{maxPrice}
+                        </label>
+                        <input
+                          id="max-price"
+                          name="maxPrice"
+                          type="range"
+                          min="200"
+                          max={catalogCeiling}
+                          step="100"
+                          value={maxPrice}
+                          onChange={(e) => setMaxPrice(Number(e.target.value))}
+                          className="accent-flame cursor-pointer w-20 sm:w-24"
+                        />
+                      </div>
+                    )}
 
                     <select
                       name="sort"
                       value={selectedSort}
                       onChange={(e) => setSelectedSort(e.target.value)}
                       aria-label="Sort products"
-                      className="glow-input bg-[#141C2B]/85 border border-white/25 rounded-[4px] px-3 py-2 min-h-[38px] text-xs text-oat cursor-pointer"
+                      className="glow-input bg-[#141C2B]/85 border border-white/25 rounded-[4px] px-3 py-2 min-h-[38px] text-xs text-oat cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat"
                     >
-                      <option value="featured">Featured &amp; Bestsellers</option>
-                      <option value="price-low">Price: Low to High</option>
-                      <option value="price-high">Price: High to Low</option>
-                      <option value="rating">Highest Rated</option>
+                      <option value="featured">Featured Selections</option>
+                      <option value="name-az">Name: A to Z</option>
+                      {showPrices && <option value="price-low">Price: Low to High</option>}
+                      {showPrices && <option value="price-high">Price: High to Low</option>}
+                      {showRatings && <option value="rating">Highest Rated</option>}
                     </select>
                   </div>
                 </div>
@@ -209,21 +231,21 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
               {/* Results Count & Active Reset */}
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="font-display text-xl sm:text-2xl font-medium text-oat tabular-nums">
-                  {activeCategoryObj ? activeCategoryObj.name : 'All Harvests'} ({filteredProducts.length})
+                  {activeCategoryObj ? activeCategoryObj.name : 'All Products'} ({filteredProducts.length})
                 </h2>
 
                 {hasActiveFilters && (
                   <button
                     type="button"
                     onClick={resetFilters}
-                    className="font-ui-label text-[10px] text-peach hover:text-oat underline underline-offset-4 cursor-pointer"
+                    className="font-ui-label text-[10px] text-peach hover:text-oat underline underline-offset-4 cursor-pointer rounded-[4px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat"
                   >
                     Reset Filters
                   </button>
                 )}
               </div>
 
-              {/* Immediately Visible Product Grid Above the Fold */}
+              {/* Product Grid */}
               <AnimatePresence mode="wait">
                 {filteredProducts.length === 0 ? (
                   <OatSheet key="empty-state" tone="subtle" className="text-center py-14 px-6">
@@ -233,15 +255,15 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                     <p className="font-display text-2xl font-medium text-oat mb-2">
                       {activeCategoryObj
                         ? `No ${activeCategoryObj.name} match your filters`
-                        : 'No superfoods match your filter'}
+                        : 'No products match your filter'}
                     </p>
                     <p className="text-sm text-sand max-w-md mx-auto mb-5">
                       {activeCategoryObj
                         ? activeCategoryObj.description
-                        : 'Try clearing your search or increasing your maximum price limit.'}
+                        : 'Try clearing your search or selecting another category.'}
                     </p>
                     <GlowButton type="button" variant="cta" onClick={resetFilters}>
-                      Show All {products.length} Harvests
+                      Show All {products.length} Products
                     </GlowButton>
                   </OatSheet>
                 ) : (
@@ -285,7 +307,7 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
         {
           id: 'explore-02',
           chapterNumber: '02',
-          chapterLabel: 'By Origin',
+          chapterLabel: 'By Category',
           compact: true,
           content: (
             <div className="space-y-5 relative">
@@ -293,20 +315,20 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                 <SplitText
                   as="h2"
                   trigger="scroll"
-                  text="Our Harvest Belts"
+                  text="Browse By Category"
                   className="font-display text-3xl sm:text-4xl font-medium text-oat mb-2"
                 />
                 <p className="text-sm text-sand">
-                  Every category has its own dedicated field story, origin notes, and curated selection.
+                  Explore seeds, berries, dried fruits, whole nuts, roasted makhana, and upcoming mixtures.
                 </p>
               </OatSheet>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 relative">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4 relative">
                 {categories.map((cat) => (
                   <Link
                     key={cat.id}
                     href={CATEGORY_ROUTES[cat.slug] || `/shop?category=${cat.slug}`}
-                    className="group block"
+                    className="group block rounded-[6px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat"
                   >
                     <SpotlightCard
                       spotlightColor="rgba(223, 127, 37, 0.14)"
@@ -317,13 +339,15 @@ export function ShopClient({ products, categories, initialCategory }: ShopClient
                           src={cat.image}
                           alt={cat.name}
                           fill
-                          sizes="(max-width: 640px) 46vw, (max-width: 1024px) 30vw, 19vw"
+                          sizes="(max-width: 640px) 46vw, (max-width: 1024px) 30vw, 18vw"
                           className="object-cover transition-transform duration-500 [@media(hover:hover)]:group-hover:scale-105"
                         />
                       </div>
-                      <span className="font-ui-label text-[9px] text-peach block mb-0.5 truncate">
-                        {cat.originNote}
-                      </span>
+                      {cat.originNote && (
+                        <span className="font-ui-label text-[9px] text-peach block mb-0.5 truncate">
+                          {cat.originNote}
+                        </span>
+                      )}
                       <h3 className="font-display text-base sm:text-lg text-oat group-hover:text-peach transition-colors">
                         {cat.name}
                       </h3>

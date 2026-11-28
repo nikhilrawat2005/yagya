@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, X } from 'lucide-react';
 import type { Category, CategorySlug } from '@/lib/data/categories';
-import type { NutritionFact, Product, ProductVariant } from '@/lib/data/products';
+import type { NutritionFact, Product, ProductVariant } from '@/data/products';
 import { ASSETS } from '@/lib/assets';
-import { siteConfig } from '@/lib/data/site';
+import { siteConfig } from '@/config/site';
 import { upsertCatalogProduct } from '@/lib/firebase/catalog';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { GlowInput, GlowTextarea } from '@/components/ui/GlowInput';
@@ -75,28 +75,20 @@ export function AdminAddProductModal({
   );
   const [imageAlt, setImageAlt] = useState(initialProduct?.images[0]?.alt ?? '');
   const [badgesText, setBadgesText] = useState(
-    initialProduct ? initialProduct.badges.join(', ') : '100% Natural, Small Batch'
+    initialProduct ? initialProduct.badges.join(', ') : ''
   );
   const [tagsText, setTagsText] = useState(initialProduct ? initialProduct.tags.join(', ') : '');
-  const [servingSize, setServingSize] = useState(initialProduct?.servingSize ?? '25 g');
+  const [servingSize, setServingSize] = useState(initialProduct?.servingSize ?? '');
   const [ingredients, setIngredients] = useState(initialProduct?.ingredients ?? '');
-  const [allergenAdvice, setAllergenAdvice] = useState(
-    initialProduct?.allergenAdvice ??
-      'Packed in a facility that handles tree nuts, peanuts, and seeds.'
-  );
+  const [allergenAdvice, setAllergenAdvice] = useState(initialProduct?.allergenAdvice ?? '');
   const [howToUseText, setHowToUseText] = useState(
-    initialProduct
-      ? initialProduct.howToUse.join('\n')
-      : 'Enjoy a handful straight from the pack.\nFold into morning oats, smoothies, or salads.'
+    initialProduct?.howToUse ? initialProduct.howToUse.join('\n') : ''
   );
-  const [storage, setStorage] = useState(
-    initialProduct?.storage ??
-      'Store in a cool, dry place away from direct sunlight. Reseal tightly after use.'
-  );
-  const [nutritionFootnote, setNutritionFootnote] = useState(
-    initialProduct?.nutritionFootnote ?? 'Small-batch packed under clean hygiene standards.'
-  );
-  const [isFeatured, setIsFeatured] = useState(initialProduct?.isFeatured ?? true);
+  const [storage, setStorage] = useState(initialProduct?.storage ?? '');
+  const [nutritionFootnote, setNutritionFootnote] = useState(initialProduct?.nutritionFootnote ?? '');
+  const [zeroAddedSugar, setZeroAddedSugar] = useState(initialProduct?.zeroAddedSugar ?? false);
+  const [comingSoon, setComingSoon] = useState(initialProduct?.comingSoon ?? false);
+  const [isFeatured, setIsFeatured] = useState(initialProduct?.isFeatured ?? false);
   const [isBestseller, setIsBestseller] = useState(initialProduct?.isBestseller ?? false);
 
   const [variants, setVariants] = useState<ProductVariant[]>(
@@ -107,10 +99,10 @@ export function AdminAddProductModal({
             id: 'var-100',
             label: '100g',
             weight: '100g',
-            price: 249,
-            mrp: 299,
-            sku: 'YAG-NEW-100',
-            stock: 50,
+            priceInr: null,
+            mrpInr: null,
+            sku: null,
+            stock: 0,
           },
         ]
   );
@@ -136,18 +128,16 @@ export function AdminAddProductModal({
         id: `var-${Date.now()}-${idx}`,
         label: '200g',
         weight: '200g',
-        price: 449,
-        mrp: 529,
-        sku: `YAG-${(slug || 'NEW').slice(0, 3).toUpperCase()}-${idx}00`,
-        stock: 30,
+        priceInr: null,
+        mrpInr: null,
+        sku: null,
+        stock: 0,
       },
     ]);
   };
 
   const updateVariant = (idx: number, patch: Partial<ProductVariant>) => {
-    setVariants((prev) =>
-      prev.map((v, i) => (i === idx ? { ...v, ...patch } : v))
-    );
+    setVariants((prev) => prev.map((v, i) => (i === idx ? { ...v, ...patch } : v)));
   };
 
   const removeVariant = (idx: number) => {
@@ -158,7 +148,7 @@ export function AdminAddProductModal({
   const addNutritionRow = () => {
     setNutritionRows((prev) => [
       ...prev,
-      { nutrient: '', per100g: '', perServe: '', rda: '-' },
+      { nutrient: '', per100g: '', perServe: '', rda: null },
     ]);
   };
 
@@ -171,30 +161,34 @@ export function AdminAddProductModal({
       setError('Product Name and Slug are required.');
       return;
     }
-    if (!origin.trim() || !provenance.trim()) {
-      setError('Origin and Provenance are required.');
-      return;
-    }
     if (!shortDescription.trim() || !description.trim()) {
       setError('Short Description and Full Description are required.');
       return;
     }
-    if (!imageSrc.trim()) {
-      setError('Product Image path or URL is required.');
-      return;
-    }
-    if (!ingredients.trim()) {
-      setError('Ingredients list is required.');
-      return;
-    }
     for (const v of variants) {
-      if (!v.weight.trim() || !v.sku.trim() || v.price <= 0 || v.mrp < v.price || v.stock < 0) {
-        setError('Check variants: weight, SKU, positive price, MRP >= price, and stock >= 0 are required.');
+      if (!v.weight.trim() || v.stock < 0) {
+        setError('Check variants: weight and stock >= 0 are required.');
+        return;
+      }
+      if (v.priceInr !== null && v.priceInr <= 0) {
+        setError('Entered price must be positive (or leave blank if unconfirmed).');
+        return;
+      }
+      if (v.mrpInr !== null && v.priceInr !== null && v.mrpInr < v.priceInr) {
+        setError('MRP must be greater than or equal to selling price.');
         return;
       }
     }
 
     const catObj = categories.find((c) => c.slug === categorySlug);
+    const cleanedNutrition = nutritionRows.filter(
+      (r) => r.nutrient.trim() && (r.per100g || r.perServe)
+    );
+    const cleanedHowToUse = howToUseText
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean);
+
     const product: Product = {
       id: initialProduct?.id ?? `prod-${cleanSlug}`,
       slug: cleanSlug,
@@ -203,40 +197,42 @@ export function AdminAddProductModal({
       categorySlug,
       shortDescription: shortDescription.trim(),
       description: description.trim(),
-      provenance: provenance.trim(),
-      origin: origin.trim(),
-      images: [
-        {
-          src: imageSrc.trim(),
-          alt: imageAlt.trim() || `${name.trim()} harvest pack`,
-        },
-        ...(initialProduct?.images.slice(1) ?? []),
-      ],
+      provenance: provenance.trim() || null,
+      origin: origin.trim() || null,
+      images: imageSrc.trim()
+        ? [
+            {
+              src: imageSrc.trim(),
+              alt: imageAlt.trim() || name.trim(),
+            },
+            ...(initialProduct?.images.slice(1) ?? []),
+          ]
+        : [],
       variants: variants.map((v) => ({
         ...v,
         label: v.label.trim() || v.weight.trim(),
         weight: v.weight.trim(),
-        sku: v.sku.trim().toUpperCase(),
-        price: Number(v.price),
-        mrp: Number(v.mrp),
+        sku: v.sku?.trim() ? v.sku.trim().toUpperCase() : null,
+        priceInr: v.priceInr !== null ? Number(v.priceInr) : null,
+        mrpInr: v.mrpInr !== null ? Number(v.mrpInr) : null,
         stock: Math.max(0, Math.floor(Number(v.stock))),
       })),
       badges: badgesText
         .split(',')
         .map((b) => b.trim())
         .filter(Boolean),
-      rating: initialProduct?.rating ?? 4.9,
-      reviewCount: initialProduct?.reviewCount ?? 1,
-      servingSize: servingSize.trim() || '25 g',
-      nutritionFacts: nutritionRows.filter((r) => r.nutrient.trim() && r.per100g.trim()),
-      nutritionFootnote: nutritionFootnote.trim(),
-      ingredients: ingredients.trim(),
-      allergenAdvice: allergenAdvice.trim(),
-      howToUse: howToUseText
-        .split('\n')
-        .map((l) => l.trim())
-        .filter(Boolean),
-      storage: storage.trim(),
+      zeroAddedSugar,
+      needsFssaiReview: initialProduct?.needsFssaiReview ?? false,
+      comingSoon,
+      rating: initialProduct?.rating ?? null,
+      reviewCount: initialProduct?.reviewCount ?? null,
+      servingSize: servingSize.trim() || null,
+      nutritionFacts: cleanedNutrition.length > 0 ? cleanedNutrition : null,
+      nutritionFootnote: nutritionFootnote.trim() || null,
+      ingredients: ingredients.trim() || null,
+      allergenAdvice: allergenAdvice.trim() || null,
+      howToUse: cleanedHowToUse.length > 0 ? cleanedHowToUse : null,
+      storage: storage.trim() || null,
       tags: tagsText
         .split(',')
         .map((t) => t.trim().toLowerCase())
@@ -261,7 +257,7 @@ export function AdminAddProductModal({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={isEdit ? `Edit ${initialProduct?.name}` : 'Add New Harvest Product'}
+      aria-label={isEdit ? `Edit ${initialProduct?.name}` : 'Add New Product'}
       className="fixed inset-0 z-[70] bg-navy/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
     >
       <div className="w-full max-w-3xl my-auto">
@@ -269,10 +265,10 @@ export function AdminAddProductModal({
           <div className="flex items-center justify-between gap-3 pb-4 mb-5 border-b border-white/15">
             <div>
               <span className="font-ui-label text-[10px] text-peach block">
-                {siteConfig.name} Catalog Schema
+                {siteConfig.brandName} Catalog Schema
               </span>
               <h2 className="font-display text-2xl sm:text-3xl text-oat font-medium">
-                {isEdit ? `Edit ${initialProduct?.name}` : 'Add New Harvest Product'}
+                {isEdit ? `Edit ${initialProduct?.name}` : 'Add New Product'}
               </h2>
             </div>
             <button
@@ -298,7 +294,7 @@ export function AdminAddProductModal({
                 label="Product Name *"
                 value={name}
                 onChange={(e) => handleNameChange(e.target.value)}
-                placeholder="e.g. Kashmiri Mamra Almonds"
+                placeholder="e.g. Amaranth (Rajgira)"
               />
               <GlowInput
                 name="slug"
@@ -310,7 +306,7 @@ export function AdminAddProductModal({
                   setSlugEdited(true);
                   setSlug(e.target.value);
                 }}
-                placeholder="kashmiri-mamra-almonds"
+                placeholder="amaranth-rajgira"
               />
             </div>
 
@@ -334,35 +330,35 @@ export function AdminAddProductModal({
               </div>
               <GlowInput
                 name="origin"
-                label="Origin Belt *"
+                label="Origin (Optional)"
                 value={origin}
                 onChange={(e) => setOrigin(e.target.value)}
-                placeholder="e.g. Pampore, Kashmir"
+                placeholder="Leave blank if unconfirmed"
               />
               <GlowInput
                 name="provenance"
-                label="Provenance Subtitle *"
+                label="Subtitle (Optional)"
                 value={provenance}
                 onChange={(e) => setProvenance(e.target.value)}
-                placeholder="Orchard Harvest · Whole Kernel"
+                placeholder="Leave blank if unconfirmed"
               />
             </div>
 
             <GlowInput
               name="shortDescription"
-              label="Short Description (1-2 lines for card) *"
+              label="Short Description *"
               value={shortDescription}
               onChange={(e) => setShortDescription(e.target.value)}
-              placeholder="Sweet, oil-rich heirloom kernels harvested in small batches."
+              placeholder="Concise culinary or quality description."
             />
 
             <GlowTextarea
               name="description"
-              label="Full Story & Description *"
+              label="Full Description *"
               rows={3}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Detailed farm sourcing story, taste profile, and purity details…"
+              placeholder="Honest taste, texture, and culinary uses…"
             />
 
             {/* Image Picker */}
@@ -375,12 +371,10 @@ export function AdminAddProductModal({
                   <select
                     id="preset-img"
                     value={PRESET_PRODUCT_IMAGES.some((p) => p.src === imageSrc) ? imageSrc : ''}
-                    onChange={(e) => {
-                      if (e.target.value) setImageSrc(e.target.value);
-                    }}
+                    onChange={(e) => setImageSrc(e.target.value)}
                     className="w-full rounded-[6px] border border-white/30 bg-[#141C2B]/80 px-3 py-2.5 text-xs text-oat cursor-pointer"
                   >
-                    <option value="">Custom URL below…</option>
+                    <option value="">No image / custom URL below…</option>
                     {PRESET_PRODUCT_IMAGES.map((img) => (
                       <option key={img.src} value={img.src}>
                         {img.label}
@@ -390,10 +384,10 @@ export function AdminAddProductModal({
                 </div>
                 <GlowInput
                   name="imageSrc"
-                  label="Or Image Path / URL *"
+                  label="Or Image Path / URL"
                   value={imageSrc}
                   onChange={(e) => setImageSrc(e.target.value)}
-                  placeholder="/assets/products/... or https://..."
+                  placeholder="/assets/products/..."
                 />
               </div>
               <GlowInput
@@ -401,7 +395,7 @@ export function AdminAddProductModal({
                 label="Image Alt Text (Accessibility)"
                 value={imageAlt}
                 onChange={(e) => setImageAlt(e.target.value)}
-                placeholder="Bowl of harvest pack on dark slate…"
+                placeholder="Product name"
               />
             </div>
 
@@ -430,21 +424,34 @@ export function AdminAddProductModal({
                     placeholder="100g"
                   />
                   <GlowInput
-                    label="Price (₹) *"
+                    label="Price (₹)"
                     type="number"
-                    value={String(v.price)}
-                    onChange={(e) => updateVariant(idx, { price: Number(e.target.value) })}
+                    value={v.priceInr !== null ? String(v.priceInr) : ''}
+                    placeholder="Unset"
+                    onChange={(e) =>
+                      updateVariant(idx, {
+                        priceInr: e.target.value === '' ? null : Number(e.target.value),
+                      })
+                    }
                   />
                   <GlowInput
-                    label="MRP (₹) *"
+                    label="MRP (₹)"
                     type="number"
-                    value={String(v.mrp)}
-                    onChange={(e) => updateVariant(idx, { mrp: Number(e.target.value) })}
+                    value={v.mrpInr !== null ? String(v.mrpInr) : ''}
+                    placeholder="Unset"
+                    onChange={(e) =>
+                      updateVariant(idx, {
+                        mrpInr: e.target.value === '' ? null : Number(e.target.value),
+                      })
+                    }
                   />
                   <GlowInput
-                    label="SKU *"
-                    value={v.sku}
-                    onChange={(e) => updateVariant(idx, { sku: e.target.value.toUpperCase() })}
+                    label="SKU"
+                    value={v.sku ?? ''}
+                    placeholder="Unset"
+                    onChange={(e) =>
+                      updateVariant(idx, { sku: e.target.value.trim() ? e.target.value.toUpperCase() : null })
+                    }
                   />
                   <GlowInput
                     label="Stock *"
@@ -470,17 +477,17 @@ export function AdminAddProductModal({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <GlowInput
                 name="ingredients"
-                label="Ingredients *"
+                label="Ingredients (Optional)"
                 value={ingredients}
                 onChange={(e) => setIngredients(e.target.value)}
-                placeholder="100% Natural Whole Kernels."
+                placeholder="Leave blank if unconfirmed"
               />
               <GlowInput
                 name="servingSize"
-                label="Serving Size *"
+                label="Serving Size (Optional)"
                 value={servingSize}
                 onChange={(e) => setServingSize(e.target.value)}
-                placeholder="25 g (approx. 2 tbsp)"
+                placeholder="e.g. 30 g"
               />
             </div>
 
@@ -490,20 +497,18 @@ export function AdminAddProductModal({
                 label="Badges (comma-separated)"
                 value={badgesText}
                 onChange={(e) => setBadgesText(e.target.value)}
-                placeholder="Zero Added Sugar, Small Batch"
               />
               <GlowInput
                 name="tags"
                 label="Search Tags (comma-separated)"
                 value={tagsText}
                 onChange={(e) => setTagsText(e.target.value)}
-                placeholder="almonds, protein, kashmiri"
               />
             </div>
 
             <GlowTextarea
               name="howToUse"
-              label="How To Use (one tip per line)"
+              label="How To Enjoy (Optional, one tip per line)"
               rows={2}
               value={howToUseText}
               onChange={(e) => setHowToUseText(e.target.value)}
@@ -512,13 +517,13 @@ export function AdminAddProductModal({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <GlowInput
                 name="allergenAdvice"
-                label="Allergen Advice"
+                label="Allergen Advice (Optional)"
                 value={allergenAdvice}
                 onChange={(e) => setAllergenAdvice(e.target.value)}
               />
               <GlowInput
                 name="storage"
-                label="Storage Instructions"
+                label="Storage Instructions (Optional)"
                 value={storage}
                 onChange={(e) => setStorage(e.target.value)}
               />
@@ -551,28 +556,28 @@ export function AdminAddProductModal({
                   />
                   <GlowInput
                     placeholder="534 kcal"
-                    value={row.per100g}
+                    value={row.per100g ?? ''}
                     onChange={(e) =>
                       setNutritionRows((prev) =>
-                        prev.map((r, i) => (i === idx ? { ...r, per100g: e.target.value } : r))
+                        prev.map((r, i) => (i === idx ? { ...r, per100g: e.target.value || null } : r))
                       )
                     }
                   />
                   <GlowInput
                     placeholder="53 kcal"
-                    value={row.perServe}
+                    value={row.perServe ?? ''}
                     onChange={(e) =>
                       setNutritionRows((prev) =>
-                        prev.map((r, i) => (i === idx ? { ...r, perServe: e.target.value } : r))
+                        prev.map((r, i) => (i === idx ? { ...r, perServe: e.target.value || null } : r))
                       )
                     }
                   />
                   <GlowInput
                     placeholder="2.7%"
-                    value={row.rda || ''}
+                    value={row.rda ?? ''}
                     onChange={(e) =>
                       setNutritionRows((prev) =>
-                        prev.map((r, i) => (i === idx ? { ...r, rda: e.target.value } : r))
+                        prev.map((r, i) => (i === idx ? { ...r, rda: e.target.value || null } : r))
                       )
                     }
                   />
@@ -580,7 +585,7 @@ export function AdminAddProductModal({
               ))}
               <GlowInput
                 name="nutritionFootnote"
-                label="Nutrition Footnote"
+                label="Nutrition Footnote (Optional)"
                 value={nutritionFootnote}
                 onChange={(e) => setNutritionFootnote(e.target.value)}
               />
@@ -590,11 +595,29 @@ export function AdminAddProductModal({
               <label className="inline-flex items-center gap-2 cursor-pointer text-oat">
                 <input
                   type="checkbox"
+                  checked={zeroAddedSugar}
+                  onChange={(e) => setZeroAddedSugar(e.target.checked)}
+                  className="accent-flame"
+                />
+                <span>Zero Added Sugar (Verified Only)</span>
+              </label>
+              <label className="inline-flex items-center gap-2 cursor-pointer text-oat">
+                <input
+                  type="checkbox"
+                  checked={comingSoon}
+                  onChange={(e) => setComingSoon(e.target.checked)}
+                  className="accent-flame"
+                />
+                <span>Coming Soon</span>
+              </label>
+              <label className="inline-flex items-center gap-2 cursor-pointer text-oat">
+                <input
+                  type="checkbox"
                   checked={isFeatured}
                   onChange={(e) => setIsFeatured(e.target.checked)}
                   className="accent-flame"
                 />
-                <span>Featured on Homepage</span>
+                <span>Featured</span>
               </label>
               <label className="inline-flex items-center gap-2 cursor-pointer text-oat">
                 <input
@@ -603,7 +626,7 @@ export function AdminAddProductModal({
                   onChange={(e) => setIsBestseller(e.target.checked)}
                   className="accent-flame"
                 />
-                <span>Mark as Bestseller</span>
+                <span>Bestseller</span>
               </label>
             </div>
 

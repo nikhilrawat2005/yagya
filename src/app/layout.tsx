@@ -5,7 +5,7 @@ import {
   Caveat,
 } from 'next/font/google';
 import './globals.css';
-import { siteConfig } from '@/lib/data/site';
+import { siteConfig } from '@/config/site';
 import { ASSETS } from '@/lib/assets';
 import { SmoothScrollProvider } from '@/components/motion/SmoothScrollProvider';
 import { AuthProvider } from '@/components/auth/AuthProvider';
@@ -37,8 +37,12 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} — ${siteConfig.tagline}`,
+  title: `${siteConfig.brandName} — ${siteConfig.tagline}`,
   description: siteConfig.description,
+  robots: {
+    index: false,
+    follow: false,
+  },
   icons: {
     icon: ASSETS.brand.logoPrimary,
   },

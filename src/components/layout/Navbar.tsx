@@ -11,7 +11,7 @@ import {
   useReducedMotion,
   useScroll,
 } from 'motion/react';
-import { siteConfig } from '@/lib/data/site';
+import { siteConfig } from '@/config/site';
 import { ASSETS } from '@/lib/assets';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/components/auth/AuthProvider';
@@ -20,7 +20,7 @@ import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallba
 const NAV_LINKS = [
   { href: '/shop', label: 'Shop' },
   { href: '/about', label: 'Story' },
-  { href: '/journal', label: 'Journal' },
+  ...(siteConfig.featureFlags.showJournal ? [{ href: '/journal', label: 'Journal' }] : []),
   { href: '/contact', label: 'Contact' },
 ] as const;
 
@@ -57,7 +57,7 @@ export function Navbar() {
   return (
     <div className="fixed top-2.5 sm:top-3 left-3 right-3 sm:left-4 sm:right-4 z-50 pointer-events-none">
       <div className="max-w-6xl mx-auto space-y-1.5">
-        {/* Announcement Micro-Strip (hides smoothly on scroll for clean reading) */}
+        {/* Announcement Micro-Strip */}
         {!scrolled && (
           <div className="pointer-events-auto hidden sm:flex items-center justify-center gap-2 rounded-[6px] bg-[#141C2B]/85 backdrop-blur-md border border-white/15 px-4 py-1 text-[11px] font-medium text-sand tracking-wide">
             <Sparkles className="w-3 h-3 text-peach shrink-0" aria-hidden="true" />
@@ -74,11 +74,14 @@ export function Navbar() {
         >
           <div className="px-3.5 sm:px-6 py-2 flex items-center justify-between gap-3">
             {/* Left: Logo + Wordmark */}
-            <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0 whitespace-nowrap min-h-[40px]">
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 sm:gap-3 group shrink-0 whitespace-nowrap min-h-[40px] rounded-[4px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat"
+            >
               <div className="relative w-9 h-9 rounded-[4px] overflow-hidden border border-white/25 bg-oat shrink-0">
                 <ProductImageWithFallback
                   src={ASSETS.brand.logoPrimary}
-                  alt={siteConfig.name}
+                  alt={`${siteConfig.brandName} logo`}
                   fill
                   sizes="36px"
                   preload
@@ -91,7 +94,7 @@ export function Navbar() {
                   scrolled ? 'text-navy' : 'text-oat'
                 }`}
               >
-                {siteConfig.name.toUpperCase()}
+                {siteConfig.brandName.toUpperCase()}
               </span>
             </Link>
 
@@ -105,7 +108,7 @@ export function Navbar() {
                       key={item.href}
                       href={item.href}
                       data-active={active ? 'true' : 'false'}
-                      className={`nav-link-underline font-ui-label text-[11px] py-1.5 whitespace-nowrap transition-colors duration-200 ${
+                      className={`nav-link-underline font-ui-label text-[11px] py-1.5 whitespace-nowrap rounded-[4px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat transition-colors duration-200 ${
                         scrolled
                           ? active
                             ? 'text-[#9A4906] font-semibold'
@@ -126,7 +129,7 @@ export function Navbar() {
                   {isAdmin && (
                     <Link
                       href="/admin"
-                      className={`inline-flex items-center gap-1.5 min-h-[40px] px-3 py-2 rounded-[4px] border text-[10px] font-ui-label whitespace-nowrap transition-colors ${
+                      className={`inline-flex items-center gap-1.5 min-h-[40px] px-3 py-2 rounded-[4px] border text-[10px] font-ui-label whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat ${
                         scrolled
                           ? 'border-flame bg-flame text-navy font-semibold hover:bg-flame-soft'
                           : 'border-flame/70 bg-flame/20 text-peach hover:bg-flame hover:text-navy'
@@ -138,7 +141,7 @@ export function Navbar() {
                   )}
                   <Link
                     href="/dashboard"
-                    className={`inline-flex items-center gap-1.5 min-h-[40px] px-3 py-2 rounded-[4px] border text-[11px] font-ui-label whitespace-nowrap transition-colors ${
+                    className={`inline-flex items-center gap-1.5 min-h-[40px] px-3 py-2 rounded-[4px] border text-[11px] font-ui-label whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat ${
                       scrolled
                         ? 'border-navy/25 bg-navy/5 text-navy hover:border-navy/50'
                         : 'border-white/25 bg-oat/10 text-oat hover:border-peach/60'
@@ -151,7 +154,7 @@ export function Navbar() {
               ) : (
                 <Link
                   href="/login"
-                  className={`hidden sm:inline-flex items-center gap-1.5 min-h-[40px] px-3 py-2 rounded-[4px] border text-[11px] font-ui-label whitespace-nowrap transition-colors ${
+                  className={`hidden sm:inline-flex items-center gap-1.5 min-h-[40px] px-3 py-2 rounded-[4px] border text-[11px] font-ui-label whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat ${
                     scrolled
                       ? 'border-navy/25 bg-navy/5 text-navy hover:border-navy/50'
                       : 'border-white/25 bg-oat/10 text-oat hover:border-peach/60'
@@ -166,7 +169,7 @@ export function Navbar() {
                 type="button"
                 onClick={openCart}
                 aria-label={`Open harvest bag, ${totalItems} items`}
-                className={`inline-flex items-center justify-center gap-2 min-h-[40px] px-3.5 py-2 rounded-[4px] border text-[11px] font-ui-label whitespace-nowrap transition-colors duration-200 cursor-pointer ${
+                className={`inline-flex items-center justify-center gap-2 min-h-[40px] px-3.5 py-2 rounded-[4px] border text-[11px] font-ui-label whitespace-nowrap transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat ${
                   scrolled
                     ? 'border-navy/30 bg-navy/10 text-navy hover:bg-flame hover:text-navy hover:border-flame'
                     : 'border-white/30 bg-oat/15 text-oat hover:bg-flame hover:text-navy hover:border-flame'
@@ -182,7 +185,7 @@ export function Navbar() {
                 onClick={() => setMobileMenuOpen((prev) => !prev)}
                 aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
                 aria-expanded={mobileMenuOpen}
-                className={`md:hidden inline-flex items-center justify-center w-10 h-10 rounded-[4px] transition-colors cursor-pointer ${
+                className={`md:hidden inline-flex items-center justify-center w-10 h-10 rounded-[4px] transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat ${
                   scrolled ? 'text-navy hover:bg-navy/10' : 'text-oat hover:bg-oat/15'
                 }`}
               >

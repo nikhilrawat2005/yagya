@@ -1,0 +1,1245 @@
+import { ASSETS } from '@/lib/assets';
+import type { CategorySlug } from '@/lib/data/categories';
+
+export interface ProductVariant {
+  id: string;
+  label: string;
+  weight: string;
+  priceInr: number | null;
+  mrpInr: number | null;
+  sku: string | null;
+  stock: number;
+}
+
+export interface ProductImage {
+  src: string;
+  alt: string;
+}
+
+export interface NutritionFact {
+  nutrient: string;
+  per100g: string | null;
+  perServe: string | null;
+  rda?: string | null;
+}
+
+export interface Product {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  categorySlug: CategorySlug;
+  shortDescription: string;
+  description: string;
+  provenance: string | null;
+  origin: string | null;
+  images: ProductImage[];
+  variants: ProductVariant[];
+  badges: string[];
+  zeroAddedSugar: boolean;
+  needsFssaiReview?: boolean;
+  comingSoon?: boolean;
+  rating: number | null;
+  reviewCount: number | null;
+  servingSize: string | null;
+  nutritionFacts: NutritionFact[] | null;
+  nutritionFootnote: string | null;
+  ingredients: string | null;
+  allergenAdvice: string | null;
+  howToUse: string[] | null;
+  storage: string | null;
+  tags: string[];
+  isFeatured?: boolean;
+  isBestseller?: boolean;
+  relatedSlugs: string[];
+}
+
+export const products: Product[] = [
+  // =========================================================================
+  // 7 DOCUMENTED PRODUCTS (Exact Nutrition Tables & Ingredients Retained)
+  // =========================================================================
+  {
+    id: 'prod-seabuckthorn',
+    slug: 'dried-sea-buckthorn-berries',
+    name: 'Dried Sea Buckthorn Berries',
+    category: 'Berries',
+    categorySlug: 'berries',
+    shortDescription:
+      'Whole dried sea buckthorn berries retaining pulp and seeds, with zero added sugar.',
+    description:
+      'Harvested directly from partner farmers and packed under strict hygiene standards, our whole Dried Sea Buckthorn Berries bring consumers the authentic, local, and traditional taste of the mountains with zero added sugar. Gently dehydrated to lock in their dense nutrition, these berries deliver a vibrant, tangy burst of rare plant-based Omega-7 alongside Omegas 3, 6, and 9, natural Vitamin C, carotenoids, and dietary fiber. Unlike watery or heavily sweetened fruit snacks, these whole berries retain their nutrient-rich pulp and seeds, making a single spoonful an effortless daily addition to morning oats, yogurt bowls, smoothies, herbal infusions, or savory trail mixes for skin, gut, and everyday wellness support.',
+    provenance: 'Mountain Harvest · Whole Pulp & Seeds',
+    origin: 'Mountain Harvest',
+    images: [
+      {
+        src: ASSETS.products.berries.seaBuckthorn,
+        alt: 'Dried Sea Buckthorn Berries',
+      },
+    ],
+    variants: [
+      { id: 'sbt-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 50 },
+      { id: 'sbt-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 40 },
+      { id: 'sbt-500', label: '500g', weight: '500g', priceInr: null, mrpInr: null, sku: null, stock: 25 },
+    ],
+    badges: ['Zero Added Sugar'],
+    zeroAddedSugar: true,
+    needsFssaiReview: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: '10 g (approx. 1 tbsp)',
+    nutritionFacts: [
+      { nutrient: 'Energy', per100g: '345 kcal', perServe: '34.5 kcal', rda: '1.7%' },
+      { nutrient: 'Protein', per100g: '5.2 g', perServe: '0.52 g', rda: null },
+      { nutrient: 'Carbohydrate', per100g: '48.0 g', perServe: '4.8 g', rda: null },
+      { nutrient: 'Total Sugars', per100g: '14.5 g', perServe: '1.45 g', rda: null },
+      { nutrient: 'Added Sugars', per100g: '0.0 g', perServe: '0.0 g', rda: '0.0%' },
+      { nutrient: 'Dietary Fiber', per100g: '22.0 g', perServe: '2.2 g', rda: '7.3%' },
+      { nutrient: 'Total Fat', per100g: '14.8 g', perServe: '1.48 g', rda: '2.2%' },
+      { nutrient: 'Saturated Fat', per100g: '3.6 g', perServe: '0.36 g', rda: '1.6%' },
+      { nutrient: 'Monounsaturated Fat (incl. Omega-7 & 9)', per100g: '6.8 g', perServe: '0.68 g', rda: null },
+      { nutrient: 'Polyunsaturated Fat (incl. Omega-3 & 6)', per100g: '4.4 g', perServe: '0.44 g', rda: null },
+      { nutrient: 'Trans Fat', per100g: '0.0 g', perServe: '0.0 g', rda: '0.0%' },
+      { nutrient: 'Cholesterol', per100g: '0 mg', perServe: '0 mg', rda: null },
+      { nutrient: 'Sodium', per100g: '12 mg', perServe: '1.2 mg', rda: '0.1%' },
+      { nutrient: 'Vitamin C', per100g: '650 mg', perServe: '65 mg', rda: '81.3%' },
+      { nutrient: 'Vitamin E', per100g: '12.5 mg', perServe: '1.25 mg', rda: '12.5%' },
+      { nutrient: 'Beta-Carotene (Pro-Vitamin A)', per100g: '1800 µg', perServe: '180 µg', rda: '3.8%' },
+      { nutrient: 'Potassium', per100g: '780 mg', perServe: '78 mg', rda: '2.2%' },
+      { nutrient: 'Iron', per100g: '4.2 mg', perServe: '0.42 mg', rda: '2.2%' },
+    ],
+    nutritionFootnote:
+      '% RDA values per serve (10 g) are calculated based on ICMR-NIN 2020 guidelines for a sedentary adult man (2000 kcal diet). Values shown are indicative averages and may vary by harvest batch.',
+    ingredients:
+      '100% Dried Sea Buckthorn Berries (Hippophae rhamnoides). No added sugar, preservatives, artificial colors, or flavors.',
+    allergenAdvice: 'Packed in a facility that also handles tree nuts and seeds.',
+    howToUse: [
+      'Enjoy 1 tablespoon (10 g) daily straight from the pack.',
+      'Steep in warm water for a tangy herbal infusion.',
+      'Blend into smoothies, yogurt bowls, oatmeal, and trail mixes.',
+    ],
+    storage:
+      'Store in a cool, dry, and dark place away from direct sunlight and heat to protect natural Omega oils. Reseal pouch tightly after every use.',
+    tags: ['sea buckthorn', 'berries', 'omega 7', 'vitamin c', 'zero added sugar'],
+    isFeatured: true,
+    isBestseller: true,
+    relatedSlugs: ['dried-cranberries', 'dried-blueberries', 'chia-seeds'],
+  },
+  {
+    id: 'prod-flax-seeds',
+    slug: 'flax-seeds',
+    name: 'Flax Seeds',
+    category: 'Seeds & Grains',
+    categorySlug: 'seeds-and-grains',
+    shortDescription:
+      'Traditional winter-grown Alsi seeds with earthy, nutty flavour and natural dietary fiber.',
+    description:
+      'Known traditionally as Alsi in Hindi and Jawas in Marathi, our flax seeds are a nutrient-dense superfood packed with plant-based Omega-3 fatty acids, gut-friendly dietary fiber, lignans, protein, and essential minerals like magnesium, iron, and zinc that support heart health, digestion, immunity, and everyday energy. Grown as a cool-season winter (Rabi) crop across fertile rainfed and irrigated belts in states like Madhya Pradesh, Uttar Pradesh, Rajasthan, and Chhattisgarh, our harvest is sourced directly from farming communities and cleaned and packed under strict hygienic standards.',
+    provenance: 'Rabi Harvest · Madhya Pradesh & Rajasthan',
+    origin: 'MP, UP, Rajasthan & Chhattisgarh',
+    images: [
+      {
+        src: ASSETS.products.seeds.flaxSeeds,
+        alt: 'Flax Seeds',
+      },
+    ],
+    variants: [
+      { id: 'flx-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 65 },
+      { id: 'flx-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 45 },
+    ],
+    badges: ['Zero Added Sugar'],
+    zeroAddedSugar: true,
+    needsFssaiReview: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: '10 g (Approx. 1 Tbsp)',
+    nutritionFacts: [
+      { nutrient: 'Energy', per100g: '534 kcal', perServe: '53.4 kcal', rda: '2.7%' },
+      { nutrient: 'Protein', per100g: '18.3 g', perServe: '1.83 g', rda: '3.4%' },
+      { nutrient: 'Carbohydrate', per100g: '28.9 g', perServe: '2.89 g', rda: null },
+      { nutrient: 'Total Sugars', per100g: '1.6 g', perServe: '0.16 g', rda: null },
+      { nutrient: 'Added Sugars', per100g: '0.0 g', perServe: '0.0 g', rda: '0.0%' },
+      { nutrient: 'Dietary Fiber', per100g: '27.3 g', perServe: '2.73 g', rda: '9.1%' },
+      { nutrient: 'Total Fat', per100g: '42.2 g', perServe: '4.22 g', rda: '6.3%' },
+      { nutrient: 'Saturated Fat', per100g: '3.7 g', perServe: '0.37 g', rda: '1.7%' },
+      { nutrient: 'Monounsaturated Fat', per100g: '7.5 g', perServe: '0.75 g', rda: null },
+      { nutrient: 'Polyunsaturated Fat', per100g: '28.7 g', perServe: '2.87 g', rda: null },
+      { nutrient: 'Omega-3 Fatty Acids (ALA)', per100g: '22.8 g', perServe: '2.28 g', rda: null },
+      { nutrient: 'Trans Fat', per100g: '0.0 g', perServe: '0.0 g', rda: '0.0%' },
+      { nutrient: 'Cholesterol', per100g: '0 mg', perServe: '0 mg', rda: null },
+      { nutrient: 'Sodium', per100g: '30 mg', perServe: '3.0 mg', rda: '0.2%' },
+    ],
+    nutritionFootnote:
+      'Values shown are indicative averages and may vary by harvest batch. % Recommended Dietary Allowance (RDA) is calculated per serving based on an average adult diet of 2000 kcal.',
+    ingredients: '100% Natural Flax Seeds (Alsi).',
+    allergenAdvice: 'Packed in a facility that also processes tree nuts, peanuts, sesame, and soy.',
+    howToUse: [
+      'Add 1 tbsp (10 g) daily to smoothies, yogurt, oats, salads, or roti dough.',
+    ],
+    storage: 'Store in a cool, dry place away from direct sunlight. Reseal tightly after use.',
+    tags: ['flax seeds', 'alsi', 'omega 3', 'fiber', 'seeds'],
+    isFeatured: true,
+    isBestseller: true,
+    relatedSlugs: ['chia-seeds', 'pumpkin-seeds', 'sunflower-seeds'],
+  },
+  {
+    id: 'prod-pumpkin-seeds',
+    slug: 'pumpkin-seeds',
+    name: 'Pumpkin Seeds',
+    category: 'Seeds & Grains',
+    categorySlug: 'seeds-and-grains',
+    shortDescription:
+      'Plump kaddu seed kernels with a naturally nutty flavour and crisp bite.',
+    description:
+      'Known as kaddu or sitaphal seeds across Indian households, pumpkin seeds (pepitas) are a powerhouse superfood rich in plant protein, heart-healthy unsaturated fats, dietary fiber, magnesium, zinc, and iron to support daily energy, muscle recovery, immunity, and overall wellness. Grown across warm, sun-drenched agricultural belts in West Bengal, Odisha, Tamil Nadu, Karnataka, and northern plains, and sourced directly from local farmers.',
+    provenance: 'Whole Kernels · Pepitas',
+    origin: 'West Bengal, Odisha, Tamil Nadu & Karnataka',
+    images: [
+      {
+        src: ASSETS.products.seeds.pumpkinSeeds,
+        alt: 'Pumpkin Seeds',
+      },
+    ],
+    variants: [
+      { id: 'pmp-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 55 },
+      { id: 'pmp-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 38 },
+    ],
+    badges: ['Zero Added Sugar'],
+    zeroAddedSugar: true,
+    needsFssaiReview: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: '28 g',
+    nutritionFacts: [
+      { nutrient: 'Energy', per100g: '574 kcal', perServe: '161 kcal', rda: '8%' },
+      { nutrient: 'Protein', per100g: '29.8 g', perServe: '8.3 g', rda: null },
+      { nutrient: 'Carbohydrate', per100g: '14.7 g', perServe: '4.1 g', rda: null },
+      { nutrient: 'Total Sugars', per100g: '1.3 g', perServe: '0.4 g', rda: null },
+      { nutrient: 'Added Sugars', per100g: '0.0 g', perServe: '0.0 g', rda: '0%' },
+      { nutrient: 'Total Fat', per100g: '49.1 g', perServe: '13.7 g', rda: '20%' },
+      { nutrient: 'Saturated Fat', per100g: '8.5 g', perServe: '2.4 g', rda: '11%' },
+      { nutrient: 'Trans Fat', per100g: '0.0 g', perServe: '0.0 g', rda: '0%' },
+      { nutrient: 'Sodium', per100g: '18 mg', perServe: '5 mg', rda: '<1%' },
+      { nutrient: 'Dietary Fiber', per100g: '6.5 g', perServe: '1.8 g', rda: null },
+    ],
+    nutritionFootnote:
+      'Values shown are indicative averages and may vary by harvest batch. % Recommended Dietary Allowance (RDA) per serve based on a 2,000 kcal reference diet.',
+    ingredients: 'Pumpkin Seed Kernels (100%).',
+    allergenAdvice: 'May contain traces of tree nuts, peanuts, sesame, or soy.',
+    howToUse: null,
+    storage: 'Store in a cool, dry place away from direct sunlight. Keep airtight after opening.',
+    tags: ['pumpkin seeds', 'pepitas', 'protein', 'seeds'],
+    isFeatured: true,
+    isBestseller: false,
+    relatedSlugs: ['sunflower-seeds', 'flax-seeds', 'chia-seeds'],
+  },
+  {
+    id: 'prod-chia-seeds',
+    slug: 'chia-seeds',
+    name: 'Chia Seeds',
+    category: 'Seeds & Grains',
+    categorySlug: 'seeds-and-grains',
+    shortDescription:
+      'Whole Salvia hispanica seeds suitable for soaking in water, curd, porridge, or smoothies.',
+    description:
+      'Chia seeds (Salvia hispanica) pack high dietary fiber, plant-based omega-3 fatty acids, protein, and key minerals like calcium and magnesium to aid digestion, heart health, and steady energy. Grown in Madhya Pradesh, Maharashtra, Karnataka, and Rajasthan during rabi and winter months, and packed under strict hygiene to keep out dust, stones, and moisture. Stir these whole seeds into water, curd, porridge, or smoothies for an easy daily addition.',
+    provenance: 'Rabi & Winter Harvest',
+    origin: 'Madhya Pradesh, Maharashtra, Karnataka & Rajasthan',
+    images: [
+      {
+        src: ASSETS.products.seeds.chiaSeeds,
+        alt: 'Chia Seeds',
+      },
+    ],
+    variants: [
+      { id: 'chi-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 70 },
+      { id: 'chi-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 50 },
+    ],
+    badges: ['Zero Added Sugar'],
+    zeroAddedSugar: true,
+    needsFssaiReview: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: '15 g (Approx. 1 tbsp)',
+    nutritionFacts: [
+      { nutrient: 'Energy', per100g: '486.0 kcal', perServe: '73.0 kcal', rda: '3.7%' },
+      { nutrient: 'Protein', per100g: '16.5 g', perServe: '2.5 g', rda: null },
+      { nutrient: 'Total Carbohydrate', per100g: '42.1 g', perServe: '6.3 g', rda: null },
+      { nutrient: 'Total Sugars', per100g: '0.0 g', perServe: '0.0 g', rda: null },
+      { nutrient: 'Added Sugars', per100g: '0.0 g', perServe: '0.0 g', rda: '0%' },
+      { nutrient: 'Dietary Fiber', per100g: '34.4 g', perServe: '5.2 g', rda: null },
+      { nutrient: 'Total Fat', per100g: '30.7 g', perServe: '4.6 g', rda: '6.9%' },
+      { nutrient: 'Saturated Fat', per100g: null, perServe: null, rda: null },
+      { nutrient: 'Trans Fat', per100g: '0.0 g', perServe: '0.0 g', rda: '0%' },
+      { nutrient: 'Omega-3 Fatty Acids (ALA)', per100g: '17.8 g', perServe: '2.7 g', rda: null },
+      { nutrient: 'Cholesterol', per100g: '0.0 mg', perServe: '0.0 mg', rda: null },
+      { nutrient: 'Sodium', per100g: null, perServe: null, rda: null },
+    ],
+    nutritionFootnote:
+      'Values shown are indicative averages based on a 2,000 kcal adult reference diet and may vary by harvest batch.',
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Stir whole seeds into water, curd, porridge, or smoothies.',
+    ],
+    storage: null,
+    tags: ['chia seeds', 'omega 3', 'fiber', 'seeds'],
+    isFeatured: true,
+    isBestseller: true,
+    relatedSlugs: ['flax-seeds', 'sunflower-seeds', 'dried-sea-buckthorn-berries'],
+  },
+  {
+    id: 'prod-sunflower-seeds',
+    slug: 'sunflower-seeds',
+    name: 'Sunflower Seeds',
+    category: 'Seeds & Grains',
+    categorySlug: 'seeds-and-grains',
+    shortDescription:
+      'Sorted whole sunflower kernels naturally free of added sugars for bowls and snacking.',
+    description:
+      'Packed with plant protein, dietary fiber, heart-healthy unsaturated fats, vitamin E, magnesium, and selenium, our sunflower seeds support steady energy, immunity, and everyday wellness. Sourced from sun-drenched farming belts across Karnataka, Maharashtra, and Andhra Pradesh, and cleaned, sorted, and packed under strict hygiene controls to preserve natural freshness and crunch.',
+    provenance: 'Sorted Whole Kernels',
+    origin: 'Karnataka, Maharashtra & Andhra Pradesh',
+    images: [
+      {
+        src: ASSETS.products.seeds.sunflowerSeeds,
+        alt: 'Sunflower Seeds',
+      },
+    ],
+    variants: [
+      { id: 'sun-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 60 },
+      { id: 'sun-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 42 },
+    ],
+    badges: ['Zero Added Sugar'],
+    zeroAddedSugar: true,
+    needsFssaiReview: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: '30 g (approx. 2 tbsp)',
+    nutritionFacts: [
+      { nutrient: 'Energy', per100g: '584 kcal', perServe: '175 kcal', rda: null },
+      { nutrient: 'Protein', per100g: '20.8 g', perServe: '6.2 g', rda: null },
+      { nutrient: 'Total Carbohydrate', per100g: '20.0 g', perServe: '6.0 g', rda: null },
+      { nutrient: 'Dietary Fiber', per100g: '8.6 g', perServe: '2.6 g', rda: null },
+      { nutrient: 'Total Sugars', per100g: '2.6 g', perServe: '0.8 g', rda: null },
+      { nutrient: 'Added Sugars', per100g: '0.0 g', perServe: '0.0 g', rda: null },
+      { nutrient: 'Total Fat', per100g: '51.5 g', perServe: '15.5 g', rda: null },
+      { nutrient: 'Saturated Fat', per100g: '4.5 g', perServe: '1.3 g', rda: null },
+      { nutrient: 'Trans Fat', per100g: '0.0 g', perServe: '0.0 g', rda: null },
+      { nutrient: 'Cholesterol', per100g: '0 mg', perServe: '0 mg', rda: null },
+      { nutrient: 'Sodium', per100g: '9 mg', perServe: '3 mg', rda: null },
+      { nutrient: 'Vitamin E', per100g: '35.2 mg', perServe: '10.6 mg', rda: null },
+      { nutrient: 'Magnesium', per100g: '325 mg', perServe: '97.5 mg', rda: null },
+      { nutrient: 'Selenium', per100g: '53 mcg', perServe: '15.9 mcg', rda: null },
+      { nutrient: 'Iron', per100g: '5.3 mg', perServe: '1.6 mg', rda: null },
+      { nutrient: 'Zinc', per100g: '5.0 mg', perServe: '1.5 mg', rda: null },
+    ],
+    nutritionFootnote:
+      'Values shown are indicative averages based on a 2,000 kcal adult reference diet and may vary by harvest batch.',
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: null,
+    storage: null,
+    tags: ['sunflower seeds', 'vitamin e', 'magnesium', 'seeds'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['pumpkin-seeds', 'flax-seeds', 'chia-seeds'],
+  },
+  {
+    id: 'prod-blueberries',
+    slug: 'dried-blueberries',
+    name: 'Dried Blueberries',
+    category: 'Berries',
+    categorySlug: 'berries',
+    shortDescription:
+      'Whole dried blueberries with concentrated fruit flavour for bowls, baking, and snacking.',
+    description:
+      'Packed with antioxidants, dietary fiber, vitamins C and K, and natural polyphenols, blueberries support cellular protection, heart health, digestion, and healthy vision while delivering concentrated sweetness when dried. Cultivated across cool hill and highland pockets such as Himachal Pradesh, Uttarakhand, the Nilgiris in Karnataka and Tamil Nadu, and controlled farms in Maharashtra, and sourced directly from local growers.',
+    provenance: 'Hill & Highland Groves · Whole Berry',
+    origin: 'Himachal Pradesh, Uttarakhand, Nilgiris & Maharashtra',
+    images: [
+      {
+        src: ASSETS.products.berries.blueberry,
+        alt: 'Dried Blueberries',
+      },
+    ],
+    variants: [
+      { id: 'blu-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 45 },
+      { id: 'blu-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 30 },
+    ],
+    badges: ['Whole Berries'],
+    zeroAddedSugar: false,
+    needsFssaiReview: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: '30 g (~1/4 cup)',
+    nutritionFacts: [
+      { nutrient: 'Energy', per100g: '317 kcal', perServe: '95 kcal', rda: null },
+      { nutrient: 'Total Fat', per100g: '2.5 g', perServe: '0.8 g', rda: '1%' },
+      { nutrient: 'Saturated Fat', per100g: '0.2 g', perServe: '0.1 g', rda: '0%' },
+      { nutrient: 'Trans Fat', per100g: '0 g', perServe: '0 g', rda: null },
+      { nutrient: 'Cholesterol', per100g: '0 mg', perServe: '0 mg', rda: '0%' },
+      { nutrient: 'Sodium', per100g: '3 mg', perServe: '1 mg', rda: '0%' },
+      { nutrient: 'Total Carbohydrate', per100g: '80.0 g', perServe: '24.0 g', rda: '9%' },
+      { nutrient: 'Dietary Fiber', per100g: '7.5 g', perServe: '2.3 g', rda: '8%' },
+      { nutrient: 'Total Sugars', per100g: '67.5 g', perServe: '20.3 g', rda: null },
+      { nutrient: 'Protein', per100g: '2.5 g', perServe: '0.8 g', rda: '2%' },
+      { nutrient: 'Calcium', per100g: '19 mg', perServe: '6 mg', rda: '0%' },
+      { nutrient: 'Iron', per100g: '0.9 mg', perServe: '0.3 mg', rda: '2%' },
+      { nutrient: 'Potassium', per100g: '214 mg', perServe: '64 mg', rda: '1%' },
+      { nutrient: 'Vitamin C', per100g: '24.0 mg', perServe: '7.2 mg', rda: '8%' },
+      { nutrient: 'Vitamin E', per100g: '2.4 mg', perServe: '0.7 mg', rda: '5%' },
+      { nutrient: 'Vitamin K', per100g: '59.0 µg', perServe: '17.7 µg', rda: '15%' },
+    ],
+    nutritionFootnote:
+      'Percent Daily Values (% DV) are based on a 2,000-calorie diet per 30 g serving. Values shown are indicative averages and may vary by harvest batch.',
+    ingredients: 'Blueberries (99.5%), Cane Sugar, Sunflower Oil (anti-clumping glaze).',
+    allergenAdvice:
+      'Naturally free from major allergens. May occasionally contain whole berries, stems, or pit/seed fragments.',
+    howToUse: [
+      'Enjoy straight from the pouch as a convenient between-meal portion (approx. 30 g / 1/4 cup).',
+      'Stir into overnight oats, hot porridge, Greek yogurt, chia pudding, or granola right before serving.',
+      'Fold into muffins, banana bread, scones, or energy bites, or toss into leafy green salads with nuts and vinaigrette.',
+    ],
+    storage:
+      'Store in a cool, dry place away from direct sunlight, heat, and strong odors. Reseal the pouch tightly after each use (or transfer to an airtight container). For extended freshness in warm or humid climates, refrigerate after opening.',
+    tags: ['blueberries', 'berries', 'vitamin k'],
+    isFeatured: true,
+    isBestseller: false,
+    relatedSlugs: ['dried-cranberries', 'dried-sea-buckthorn-berries', 'chia-seeds'],
+  },
+  {
+    id: 'prod-cranberries',
+    slug: 'dried-cranberries',
+    name: 'Dried Cranberries',
+    category: 'Berries',
+    categorySlug: 'berries',
+    shortDescription:
+      'Sweet-tart ruby dried cranberries suited for bowls, salads, trail mixes, and baking.',
+    description:
+      'Cranberries are tart, nutrient-dense superfruits packed with vitamin C, dietary fiber, manganese, and proanthocyanidin polyphenols that support urinary tract wellness, antioxidant defense, and everyday vitality. Every batch is processed and packed under strict hygiene standards to lock in natural tartness, aroma, and clean food safety. By combining grower-direct sourcing with hygienic packing, Yagya brings authentic, wholesome flavor to modern superfood bowls, trail mixes, and baking.',
+    provenance: 'Select Orchard Harvest · Ruby Whole Fruit',
+    origin: 'Himachal Pradesh & Uttarakhand',
+    images: [
+      {
+        src: ASSETS.products.berries.cranberry,
+        alt: 'Dried Cranberries',
+      },
+    ],
+    variants: [
+      { id: 'crn-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 55 },
+      { id: 'crn-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 35 },
+    ],
+    badges: ['Tart & Lively'],
+    zeroAddedSugar: false,
+    needsFssaiReview: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: '30 g (approx. 1/4 cup)',
+    nutritionFacts: [
+      { nutrient: 'Energy (Calories)', per100g: '308 kcal (1,290 kJ)', perServe: '92 kcal (387 kJ)', rda: '5%' },
+      { nutrient: 'Total Fat', per100g: '1.1 g', perServe: '0.3 g', rda: '0%' },
+      { nutrient: 'Saturated Fat', per100g: '0.09 g', perServe: '0.03 g', rda: '0%' },
+      { nutrient: 'Trans Fat', per100g: '0 g', perServe: '0 g', rda: null },
+      { nutrient: 'Cholesterol', per100g: '0 mg', perServe: '0 mg', rda: '0%' },
+      { nutrient: 'Sodium', per100g: '5 mg', perServe: '1.5 mg', rda: '0%' },
+      { nutrient: 'Total Carbohydrate', per100g: '82.8 g', perServe: '24.8 g', rda: '9%' },
+      { nutrient: 'Dietary Fiber', per100g: '5.3 g', perServe: '1.6 g', rda: '6%' },
+      { nutrient: 'Total Sugars', per100g: '72.6 g', perServe: '21.8 g', rda: null },
+      { nutrient: 'Includes Added Sugars', per100g: null, perServe: null, rda: null },
+      { nutrient: 'Protein', per100g: '0.17 g', perServe: '0.05 g', rda: '0%' },
+      { nutrient: 'Vitamin E', per100g: '2.1 mg', perServe: '0.63 mg', rda: '4%' },
+      { nutrient: 'Vitamin K', per100g: '7.6 mcg', perServe: '2.3 mcg', rda: '2%' },
+      { nutrient: 'Niacin (Vitamin B3)', per100g: '0.55 mg', perServe: '0.16 mg', rda: '1%' },
+      { nutrient: 'Potassium', per100g: '49 mg', perServe: '14.7 mg', rda: '0%' },
+      { nutrient: 'Calcium', per100g: '9 mg', perServe: '2.7 mg', rda: '0%' },
+      { nutrient: 'Iron', per100g: '0.39 mg', perServe: '0.12 mg', rda: '1%' },
+      { nutrient: 'Manganese', per100g: '0.18 mg', perServe: '0.05 mg', rda: '2%' },
+    ],
+    nutritionFootnote:
+      'Percent Daily Values (% DV) are based on a 2,000 kcal diet. Exact calorie, sugar, and fat values depend on moisture level and infusion sweetener. Values shown are indicative averages and may vary by harvest batch.',
+    ingredients: 'Cranberries (99.5%), Sugar, Sunflower Oil.',
+    allergenAdvice: 'Naturally free from major food allergens.',
+    howToUse: [
+      'Enjoy straight from the pouch as a sweet-tart snack between meals.',
+      'Stir into oatmeal, overnight oats, muesli, granola, smoothie bowls, or Greek yogurt.',
+      'Toss into leafy green salads, grain pilafs, quinoa bowls, or roasted vegetable platters for contrast.',
+      'Fold into muffins, cookies, energy bites, or homemade nut-and-seed trail mixes.',
+    ],
+    storage:
+      'Store in a cool, dry place away from direct sunlight, heat sources, and strong odours. Reseal the pouch tightly using the zip closure (or transfer to an airtight food-grade container).',
+    tags: ['cranberries', 'berries', 'tart'],
+    isFeatured: true,
+    isBestseller: true,
+    relatedSlugs: ['dried-blueberries', 'dried-sea-buckthorn-berries', 'pumpkin-seeds'],
+  },
+
+  // =========================================================================
+  // DRIED FRUITS (Concise Quality & Culinary Copy Only — Unconfirmed Specs Null)
+  // =========================================================================
+  {
+    id: 'prod-anjeer',
+    slug: 'dried-anjeer-figs',
+    name: 'Dried Anjeer (Figs)',
+    category: 'Dried Fruits',
+    categorySlug: 'dried-fruits',
+    shortDescription:
+      'Tender, chewy dried figs with gentle honeyed sweetness and crunchy natural seeds.',
+    description:
+      'Whole dried anjeer figs prized for their soft, chewy bite and gentle honeyed taste. Enjoy straight as an everyday snack, soaked overnight, or sliced into warm breakfast porridge, dry-fruit desserts, and trail mixes.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.dryFruits.anjeer,
+        alt: 'Dried Anjeer (Figs)',
+      },
+    ],
+    variants: [
+      { id: 'anj-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 45 },
+      { id: 'anj-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 35 },
+      { id: 'anj-500', label: '500g', weight: '500g', priceInr: null, mrpInr: null, sku: null, stock: 20 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Soak 2–3 figs overnight or enjoy sliced into morning bowls.',
+      'Chop into warm porridge, desserts, or homemade trail mixes.',
+    ],
+    storage: null,
+    tags: ['anjeer', 'dried figs', 'dried fruits'],
+    isFeatured: true,
+    isBestseller: false,
+    relatedSlugs: ['dates', 'almonds', 'dried-cranberries'],
+  },
+  {
+    id: 'prod-dates',
+    slug: 'dates',
+    name: 'Dates',
+    category: 'Dried Fruits',
+    categorySlug: 'dried-fruits',
+    shortDescription:
+      'Soft, caramel-rich dates suited for everyday snacking, smoothies, and kitchen prep.',
+    description:
+      'Tender whole dates offering rich caramel notes and a soft, satisfying chew. Pair with whole nuts for a quick tea-time bite, or chop and blend into smoothies, porridge bowls, and homemade snack bars.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.dryFruits.dates,
+        alt: 'Dates',
+      },
+    ],
+    variants: [
+      { id: 'dat-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 60 },
+      { id: 'dat-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 45 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Pair with whole almonds or cashews for a quick snack.',
+      'Blend into smoothies or chop into porridge and snack bars.',
+    ],
+    storage: null,
+    tags: ['dates', 'khajoor', 'dried fruits'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['dried-anjeer-figs', 'almonds', 'cashews'],
+  },
+  {
+    id: 'prod-pineapple',
+    slug: 'dried-pineapple',
+    name: 'Dried Pineapple Rings',
+    category: 'Dried Fruits',
+    categorySlug: 'dried-fruits',
+    shortDescription:
+      'Golden dehydrated pineapple rings with bright tropical sweetness and chewy texture.',
+    description:
+      'Golden pineapple rings offering a vibrant sweet-tangy fruit flavour and tender chew. Enjoy straight from the pack during travel or tea time, or dice into yogurt bowls, granola, and baked treats.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.dryFruits.driedPineapple,
+        alt: 'Dried Pineapple Rings',
+      },
+    ],
+    variants: [
+      { id: 'pin-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 50 },
+      { id: 'pin-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 30 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Enjoy golden rings straight from the pouch as a chewy fruit snack.',
+      'Dice into yogurt bowls, muesli, or trail mixes.',
+    ],
+    storage: null,
+    tags: ['pineapple', 'dried pineapple', 'dried fruits'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['dried-kiwi', 'dried-cranberries', 'pumpkin-seeds'],
+  },
+  {
+    id: 'prod-kiwi',
+    slug: 'dried-kiwi',
+    name: 'Dried Kiwi Slices',
+    category: 'Dried Fruits',
+    categorySlug: 'dried-fruits',
+    shortDescription:
+      'Tangy-sweet dried kiwi rounds bringing crisp fruit flavour to snacks and breakfast bowls.',
+    description:
+      'Sliced dried kiwi rounds balancing lively tang with mild fruit sweetness. Ideal for snack boxes, tea-time platters, or chopped finely over breakfast bowls, oats, and chilled fruit mixes.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.dryFruits.driedKiwi,
+        alt: 'Dried Kiwi Slices',
+      },
+    ],
+    variants: [
+      { id: 'kiw-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 45 },
+      { id: 'kiw-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 30 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Enjoy sliced rounds straight as a tangy-sweet snack.',
+      'Chop into muesli, chia bowls, or mixed dry fruit platters.',
+    ],
+    storage: null,
+    tags: ['kiwi', 'dried kiwi', 'dried fruits'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['dried-pineapple', 'dried-sea-buckthorn-berries', 'chia-seeds'],
+  },
+
+  // =========================================================================
+  // NUTS (Concise Quality & Culinary Copy Only — Unconfirmed Specs Null)
+  // =========================================================================
+  {
+    id: 'prod-pine-nuts',
+    slug: 'pine-nuts',
+    name: 'Pine Nuts (Chilgoza)',
+    category: 'Nuts',
+    categorySlug: 'nuts',
+    shortDescription:
+      'Delicate, buttery shelled pine kernels suited for light toasting, pestos, and snacking.',
+    description:
+      'Creamy, delicate shelled chilgoza pine kernels with a rich nutty aroma. Delicious enjoyed plain in small handfuls, warmed lightly in a dry pan, or scattered over salads, rice dishes, and herb pestos.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.nuts.pineNuts,
+        alt: 'Pine Nuts (Chilgoza)',
+      },
+    ],
+    variants: [
+      { id: 'pnu-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 28 },
+      { id: 'pnu-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 18 },
+      { id: 'pnu-500', label: '500g', weight: '500g', priceInr: null, mrpInr: null, sku: null, stock: 10 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Warm lightly in a dry pan and scatter over salads or pasta.',
+      'Blend into homemade basil pesto or enjoy plain in small portions.',
+    ],
+    storage: null,
+    tags: ['pine nuts', 'chilgoza', 'nuts'],
+    isFeatured: true,
+    isBestseller: false,
+    relatedSlugs: ['almonds', 'hazelnuts', 'cashews'],
+  },
+  {
+    id: 'prod-almonds',
+    slug: 'almonds',
+    name: 'Whole Almonds',
+    category: 'Nuts',
+    categorySlug: 'nuts',
+    shortDescription:
+      'Crisp whole skin-on almonds suited for soaking, slicing, roasting, and daily snacking.',
+    description:
+      'Whole skin-on almonds selected for crisp crunch and mild nutty sweetness. Versatile across daily kitchens for overnight soaking, slicing onto oats and desserts, or blending into homemade almond spreads.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.nuts.almonds,
+        alt: 'Whole Almonds',
+      },
+    ],
+    variants: [
+      { id: 'alm-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 75 },
+      { id: 'alm-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 55 },
+      { id: 'alm-500', label: '500g', weight: '500g', priceInr: null, mrpInr: null, sku: null, stock: 30 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Soak overnight or enjoy whole with morning tea and trail mixes.',
+      'Sliver over porridge, desserts, or salads.',
+    ],
+    storage: null,
+    tags: ['almonds', 'badam', 'nuts'],
+    isFeatured: true,
+    isBestseller: true,
+    relatedSlugs: ['cashews', 'dates', 'dried-anjeer-figs'],
+  },
+  {
+    id: 'prod-cashews',
+    slug: 'cashews',
+    name: 'Whole Cashews',
+    category: 'Nuts',
+    categorySlug: 'nuts',
+    shortDescription:
+      'Creamy whole cashew kernels suited for snacking, dry-roasting, and smooth gravies.',
+    description:
+      'Whole cashew kernels offering a naturally smooth, creamy bite and clean snap. Enjoy straight from the pack, lightly toasted with pantry spices, or soaked and blended into rich curries and desserts.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.nuts.cashews,
+        alt: 'Whole Cashews',
+      },
+    ],
+    variants: [
+      { id: 'cas-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 65 },
+      { id: 'cas-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 45 },
+      { id: 'cas-500', label: '500g', weight: '500g', priceInr: null, mrpInr: null, sku: null, stock: 25 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Toast lightly with a pinch of spice for tea-time snacking.',
+      'Soak and blend into creamy curries, desserts, or smoothies.',
+    ],
+    storage: null,
+    tags: ['cashews', 'kaju', 'nuts'],
+    isFeatured: false,
+    isBestseller: true,
+    relatedSlugs: ['almonds', 'hazelnuts', 'black-pepper-makhana'],
+  },
+  {
+    id: 'prod-hazelnuts',
+    slug: 'hazelnuts',
+    name: 'Whole Hazelnuts',
+    category: 'Nuts',
+    categorySlug: 'nuts',
+    shortDescription:
+      'Fragrant whole hazelnuts ideal for pan-roasting, baking, and breakfast toppings.',
+    description:
+      'Round whole hazelnuts with a crisp texture and warm, toasted-nut aroma when warmed in a skillet. Great chopped over breakfast porridge, folded into baked goods, or blended with cocoa for spreads.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.nuts.hazelnuts,
+        alt: 'Whole Hazelnuts',
+      },
+    ],
+    variants: [
+      { id: 'haz-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 40 },
+      { id: 'haz-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 28 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Warm in a dry pan and crush over oats or fruit bowls.',
+      'Fold into homemade baking recipes or cocoa nut spreads.',
+    ],
+    storage: null,
+    tags: ['hazelnuts', 'nuts', 'baking'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['almonds', 'pine-nuts', 'dried-blueberries'],
+  },
+
+  // =========================================================================
+  // FLAVOURED MAKHANA (100g Packs — Concise Culinary Copy Only)
+  // =========================================================================
+  {
+    id: 'prod-mint-makhana',
+    slug: 'mint-makhana',
+    name: 'Mint Makhana',
+    category: 'Flavoured Makhana',
+    categorySlug: 'flavoured-makhana',
+    shortDescription:
+      'Crisp roasted fox nuts tossed with refreshing garden mint seasoning for tea-time snacking.',
+    description:
+      'Light, crisp popped lotus seeds seasoned with refreshing mint notes. Crafted for effortless afternoon snacking alongside tea, or crushed lightly as a crunchy topping over chaat bowls and soups.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.makhana.mintMakhana,
+        alt: 'Mint Makhana',
+      },
+    ],
+    variants: [
+      { id: 'mkh-mnt-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 60 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Serve crisp straight from the pack with afternoon tea.',
+      'Sprinkle lightly crushed puffs over soups or chaat bowls.',
+    ],
+    storage: null,
+    tags: ['makhana', 'mint makhana', 'fox nuts'],
+    isFeatured: true,
+    isBestseller: true,
+    relatedSlugs: ['black-salt-makhana', 'black-pepper-makhana', 'spicy-masala-makhana'],
+  },
+  {
+    id: 'prod-black-salt-makhana',
+    slug: 'black-salt-makhana',
+    name: 'Black Salt Makhana',
+    category: 'Flavoured Makhana',
+    categorySlug: 'flavoured-makhana',
+    shortDescription:
+      'Light, crisp roasted fox nuts seasoned simply with savoury black salt.',
+    description:
+      'Crisp popped lotus seeds dusted lightly with classic black salt for a clean, savoury crunch. Ideal for everyday desk snacking, evening tea trays, or pairing with roasted nuts.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.makhana.blackSaltMakhana,
+        alt: 'Black Salt Makhana',
+      },
+    ],
+    variants: [
+      { id: 'mkh-slt-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 65 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Enjoy straight from the pack as an everyday savoury crunch.',
+      'Pair alongside roasted cashews and almonds for tea trays.',
+    ],
+    storage: null,
+    tags: ['makhana', 'black salt', 'fox nuts'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['mint-makhana', 'black-pepper-makhana', 'pumpkin-seeds'],
+  },
+  {
+    id: 'prod-peri-peri-makhana',
+    slug: 'peri-peri-makhana',
+    name: 'Peri Peri Makhana',
+    category: 'Flavoured Makhana',
+    categorySlug: 'flavoured-makhana',
+    shortDescription:
+      'Crisp roasted fox nuts coated in bold, tangy peri-peri spice seasoning.',
+    description:
+      'Airy popped lotus seeds tossed with zesty chili-tangy peri-peri seasoning for a vibrant crunch. Serve straight in snack bowls or scatter over soups and savoury snack mixes.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.makhana.periPeriMakhana,
+        alt: 'Peri Peri Makhana',
+      },
+    ],
+    variants: [
+      { id: 'mkh-per-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 55 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Pour straight into snack bowls for bold evening crunch.',
+      'Toss whole puffs over clear broths or warm corn salads.',
+    ],
+    storage: null,
+    tags: ['makhana', 'peri peri', 'fox nuts'],
+    isFeatured: false,
+    isBestseller: true,
+    relatedSlugs: ['spicy-masala-makhana', 'black-pepper-makhana', 'cashews'],
+  },
+  {
+    id: 'prod-black-pepper-makhana',
+    slug: 'black-pepper-makhana',
+    name: 'Black Pepper Makhana',
+    category: 'Flavoured Makhana',
+    categorySlug: 'flavoured-makhana',
+    shortDescription:
+      'Warm, aromatic roasted fox nuts seasoned with cracked black pepper.',
+    description:
+      'Light roasted lotus seeds dusted with fragrant cracked black pepper for a crisp, mildly warming savouriness. Pairs naturally with hot masala chai, black coffee, or toasted seed jars.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.makhana.blackPepperMakhana,
+        alt: 'Black Pepper Makhana',
+      },
+    ],
+    variants: [
+      { id: 'mkh-pep-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 50 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Serve alongside hot tea or clear vegetable soups.',
+      'Mix with toasted sunflower and pumpkin seeds for an office snack jar.',
+    ],
+    storage: null,
+    tags: ['makhana', 'black pepper', 'fox nuts'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['black-salt-makhana', 'mint-makhana', 'cashews'],
+  },
+  {
+    id: 'prod-spicy-masala-makhana',
+    slug: 'spicy-masala-makhana',
+    name: 'Spicy Masala Makhana',
+    category: 'Flavoured Makhana',
+    categorySlug: 'flavoured-makhana',
+    shortDescription:
+      'Homestyle spiced roasted fox nuts blended with classic Indian pantry spices.',
+    description:
+      'Crisp popped lotus seeds coated in a warm homestyle blend of pantry spices for lively tea-time flavour. Ready to serve straight from the pack for travel, desk snacking, or family gatherings.',
+    provenance: null,
+    origin: null,
+    images: [
+      {
+        src: ASSETS.products.makhana.spicyMasalaMakhana,
+        alt: 'Spicy Masala Makhana',
+      },
+    ],
+    variants: [
+      { id: 'mkh-mas-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 58 },
+    ],
+    badges: [],
+    zeroAddedSugar: false,
+    needsFssaiReview: false,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: [
+      'Serve straight for festive tea platters or travel snack tins.',
+      'Garnish yogurt raita or savoury snack bowls for crisp texture.',
+    ],
+    storage: null,
+    tags: ['makhana', 'masala makhana', 'fox nuts'],
+    isFeatured: false,
+    isBestseller: false,
+    relatedSlugs: ['peri-peri-makhana', 'black-salt-makhana', 'mint-makhana'],
+  },
+
+  // =========================================================================
+  // COMING SOON CATALOG LINEUP (From Client Pack-Size Catalog)
+  // =========================================================================
+  {
+    id: 'prod-amaranth-rajgira',
+    slug: 'amaranth-rajgira',
+    name: 'Amaranth (Rajgira)',
+    category: 'Seeds & Grains',
+    categorySlug: 'seeds-and-grains',
+    shortDescription: 'Traditional rajgira seeds coming soon in 100g, 200g, and 500g packs.',
+    description: 'Traditional rajgira (amaranth) seeds scheduled for our upcoming small-batch pantry lineup.',
+    provenance: null,
+    origin: null,
+    images: [],
+    variants: [
+      { id: 'amr-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+      { id: 'amr-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+      { id: 'amr-500', label: '500g', weight: '500g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+    ],
+    badges: ['Coming Soon'],
+    zeroAddedSugar: false,
+    comingSoon: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: null,
+    storage: null,
+    tags: ['amaranth', 'rajgira', 'seeds'],
+    relatedSlugs: ['flax-seeds', 'chia-seeds'],
+  },
+  {
+    id: 'prod-haleel',
+    slug: 'haleel',
+    name: 'Haleel',
+    category: 'Seeds & Grains',
+    categorySlug: 'seeds-and-grains',
+    shortDescription: 'Haleel seeds coming soon in 100g, 200g, and 500g packs.',
+    description: 'Haleel seeds scheduled for our upcoming pantry lineup.',
+    provenance: null,
+    origin: null,
+    images: [],
+    variants: [
+      { id: 'hal-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+      { id: 'hal-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+      { id: 'hal-500', label: '500g', weight: '500g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+    ],
+    badges: ['Coming Soon'],
+    zeroAddedSugar: false,
+    comingSoon: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: null,
+    storage: null,
+    tags: ['haleel', 'seeds'],
+    relatedSlugs: ['flax-seeds', 'pumpkin-seeds'],
+  },
+  {
+    id: 'prod-blackberry',
+    slug: 'dried-blackberries',
+    name: 'Dried Blackberries',
+    category: 'Berries',
+    categorySlug: 'berries',
+    shortDescription: 'Dried blackberries coming soon in 100g and 200g packs.',
+    description: 'Dried blackberries scheduled for our upcoming dried berries lineup.',
+    provenance: null,
+    origin: null,
+    images: [],
+    variants: [
+      { id: 'blk-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+      { id: 'blk-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+    ],
+    badges: ['Coming Soon'],
+    zeroAddedSugar: false,
+    comingSoon: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: null,
+    storage: null,
+    tags: ['blackberries', 'berries'],
+    relatedSlugs: ['dried-blueberries', 'dried-cranberries'],
+  },
+  {
+    id: 'prod-raspberry',
+    slug: 'dried-raspberries',
+    name: 'Dried Raspberries',
+    category: 'Berries',
+    categorySlug: 'berries',
+    shortDescription: 'Dried raspberries coming soon in 100g and 200g packs.',
+    description: 'Dried raspberries scheduled for our upcoming dried berries lineup.',
+    provenance: null,
+    origin: null,
+    images: [],
+    variants: [
+      { id: 'rsp-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+      { id: 'rsp-200', label: '200g', weight: '200g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+    ],
+    badges: ['Coming Soon'],
+    zeroAddedSugar: false,
+    comingSoon: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: null,
+    storage: null,
+    tags: ['raspberries', 'berries'],
+    relatedSlugs: ['dried-blueberries', 'dried-cranberries'],
+  },
+  {
+    id: 'prod-seed-mix',
+    slug: 'seed-mix',
+    name: 'Seed Mix',
+    category: 'Mixture',
+    categorySlug: 'mixture',
+    shortDescription: 'Curated seed mixture coming soon in 100g packs.',
+    description: 'A pantry seed mixture designed for salads, porridge bowls, and everyday snacking.',
+    provenance: null,
+    origin: null,
+    images: [],
+    variants: [
+      { id: 'mix-seed-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+    ],
+    badges: ['Coming Soon'],
+    zeroAddedSugar: false,
+    comingSoon: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: null,
+    storage: null,
+    tags: ['seed mix', 'mixture'],
+    relatedSlugs: ['pumpkin-seeds', 'sunflower-seeds'],
+  },
+  {
+    id: 'prod-dry-fruit-mixture',
+    slug: 'dry-fruit-mixture',
+    name: 'Dry Fruit Mixture',
+    category: 'Mixture',
+    categorySlug: 'mixture',
+    shortDescription: 'Curated dry fruit mixture coming soon in 100g packs.',
+    description: 'An everyday dry fruit blend designed for bowls, gifting, and travel snacking.',
+    provenance: null,
+    origin: null,
+    images: [],
+    variants: [
+      { id: 'mix-df-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+    ],
+    badges: ['Coming Soon'],
+    zeroAddedSugar: false,
+    comingSoon: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: null,
+    storage: null,
+    tags: ['dry fruit mixture', 'mixture'],
+    relatedSlugs: ['almonds', 'cashews', 'dried-anjeer-figs'],
+  },
+  {
+    id: 'prod-all-in-one',
+    slug: 'all-in-one-mix',
+    name: 'All In One Mix',
+    category: 'Mixture',
+    categorySlug: 'mixture',
+    shortDescription: 'Combined seeds, berries, and dry fruit trail mix coming soon in 100g packs.',
+    description: 'An all-in-one pantry mix bringing together seeds, berries, and orchard dry fruits in a 100g pack.',
+    provenance: null,
+    origin: null,
+    images: [],
+    variants: [
+      { id: 'mix-aio-100', label: '100g', weight: '100g', priceInr: null, mrpInr: null, sku: null, stock: 0 },
+    ],
+    badges: ['Coming Soon'],
+    zeroAddedSugar: false,
+    comingSoon: true,
+    rating: null,
+    reviewCount: null,
+    servingSize: null,
+    nutritionFacts: null,
+    nutritionFootnote: null,
+    ingredients: null,
+    allergenAdvice: null,
+    howToUse: null,
+    storage: null,
+    tags: ['all in one', 'trail mix', 'mixture'],
+    relatedSlugs: ['dried-cranberries', 'almonds', 'pumpkin-seeds'],
+  },
+];

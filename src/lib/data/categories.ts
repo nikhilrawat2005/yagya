@@ -5,14 +5,15 @@ export type CategorySlug =
   | 'berries'
   | 'dried-fruits'
   | 'nuts'
-  | 'flavoured-makhana';
+  | 'flavoured-makhana'
+  | 'mixture';
 
 export interface Category {
   id: string;
   name: string;
   slug: CategorySlug;
   description: string;
-  originNote: string;
+  originNote: string | null;
   image: string;
 }
 
@@ -21,40 +22,48 @@ export const categories: Category[] = [
     id: 'cat-seeds-grains',
     name: 'Seeds & Grains',
     slug: 'seeds-and-grains',
-    description: 'Sun-ripened farm seeds cleaned and packed fresh in small batches.',
-    originNote: 'Madhya Pradesh · Rajasthan · Karnataka',
+    description: 'Whole farm seeds cleaned and packed in small batches.',
+    originNote: 'Seeds & Grains',
     image: ASSETS.products.seeds.flaxSeeds,
   },
   {
     id: 'cat-berries',
     name: 'Berries',
     slug: 'berries',
-    description: 'High-altitude Himalayan and orchard berries dried to preserve natural richness.',
-    originNote: 'Ladakh · Himachal · Uttarakhand',
+    description: 'Whole dried mountain and orchard berries packed for everyday bowls and snacking.',
+    originNote: 'Dried Berries',
     image: ASSETS.products.berries.seaBuckthorn,
   },
   {
     id: 'cat-dried-fruits',
     name: 'Dried Fruits',
     slug: 'dried-fruits',
-    description: 'Naturally sun-cured orchard fruits with zero artificial glazing.',
-    originNote: 'Sun-Cured Orchard Harvests',
+    description: 'Whole and sliced dried fruits selected for natural flavour and texture.',
+    originNote: 'Orchard Dried Fruits',
     image: ASSETS.products.dryFruits.anjeer,
   },
   {
     id: 'cat-nuts',
     name: 'Nuts',
     slug: 'nuts',
-    description: 'Single-origin whole nut kernels graded for crispness and natural oil density.',
-    originNote: 'Orchard & Cedar Forest Groves',
+    description: 'Whole tree nut kernels graded for everyday snacking and kitchen prep.',
+    originNote: 'Whole Nuts',
     image: ASSETS.products.nuts.almonds,
   },
   {
     id: 'cat-flavoured-makhana',
     name: 'Flavoured Makhana',
     slug: 'flavoured-makhana',
-    description: 'Hand-popped wetland lotus seeds roasted in small batches with whole spices.',
-    originNote: 'Five Artisan Spice Blends',
+    description: 'Roasted lotus seeds seasoned in five pantry spice blends.',
+    originNote: 'Roasted Fox Nuts',
     image: ASSETS.products.makhana.mintMakhana,
+  },
+  {
+    id: 'cat-mixture',
+    name: 'Mixture',
+    slug: 'mixture',
+    description: 'Upcoming curated seed and dry fruit blends in convenient 100g packs.',
+    originNote: 'Coming Soon',
+    image: ASSETS.backgrounds.signature[1].desktop,
   },
 ];

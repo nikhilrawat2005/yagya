@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Check } from 'lucide-react';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { OatSheet } from '@/components/editorial/OatSheet';
+import { siteConfig } from '@/config/site';
 
 function OrderSuccessContent({
   searchParams,
@@ -9,7 +10,7 @@ function OrderSuccessContent({
   searchParams: Promise<{ orderId?: string; total?: string }>;
 }) {
   return (
-    <Suspense fallback={<div className="text-center py-28 text-xs text-apricot">Loading harvest receipt…</div>}>
+    <Suspense fallback={<div className="text-center py-28 text-xs text-apricot">Loading order summary…</div>}>
       <OrderSuccessDetails searchParams={searchParams} />
     </Suspense>
   );
@@ -21,8 +22,10 @@ async function OrderSuccessDetails({
   searchParams: Promise<{ orderId?: string; total?: string }>;
 }) {
   const resolved = await searchParams;
-  const orderId = resolved.orderId || 'YAG-847291';
-  const total = resolved.total || '249';
+  const orderId = resolved.orderId || 'YAG-PENDING';
+  const total = resolved.total && /^\d+$/.test(resolved.total) ? resolved.total : null;
+  const dispatchInfo =
+    siteConfig.operations.dispatchWindowText ?? 'Will be confirmed by email';
 
   return (
     <div className="min-h-[100dvh] bg-aubergine text-oat pt-24 sm:pt-32 pb-24 px-4 flex items-center">
@@ -32,13 +35,14 @@ async function OrderSuccessDetails({
         </div>
 
         <span className="font-ui-label text-[11px] text-peach block mb-2">
-          Harvest Reserved
+          Order Recorded
         </span>
         <h1 className="font-display text-4xl text-oat font-medium mb-3">
           Order Confirmed
         </h1>
         <p className="text-sm text-apricot/95 max-w-sm mx-auto mb-8">
-          Thank you for choosing Yagya farm-direct superfoods. Your batch is packed fresh and sealed carefully.
+          Thank you for your interest in {siteConfig.brandName}. Your request details have been
+          recorded.
         </p>
 
         <OatSheet tone="medium" interactive={false} className="p-6 text-left mb-8 space-y-3 text-xs">
@@ -48,11 +52,13 @@ async function OrderSuccessDetails({
           </div>
           <div className="flex justify-between pb-3 border-b border-white/15">
             <span className="text-apricot/90">Total Amount</span>
-            <span className="font-semibold text-peach tabular-nums">₹{total}</span>
+            <span className="font-semibold text-peach tabular-nums">
+              {total ? `${siteConfig.currencySymbol}${total}` : 'Confirmed upon review'}
+            </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-apricot/90">Dispatch Cadence</span>
-            <span className="font-medium text-oat">Within 24-48 hours</span>
+            <span className="text-apricot/90">Dispatch Schedule</span>
+            <span className="font-medium text-oat">{dispatchInfo}</span>
           </div>
         </OatSheet>
 
@@ -75,7 +81,7 @@ export default function OrderSuccessPage({
   searchParams: Promise<{ orderId?: string; total?: string }>;
 }) {
   return (
-    <Suspense fallback={<div className="text-center py-28 text-xs text-apricot">Loading harvest receipt…</div>}>
+    <Suspense fallback={<div className="text-center py-28 text-xs text-apricot">Loading order summary…</div>}>
       <OrderSuccessContent searchParams={searchParams} />
     </Suspense>
   );

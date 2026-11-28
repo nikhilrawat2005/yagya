@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Product, ProductVariant } from '@/lib/data/products';
-import { siteConfig } from '@/lib/data/site';
+import type { Product, ProductVariant } from '@/data/products';
+import { siteConfig } from '@/config/site';
 
 export interface CartItem {
   id: string; // composite: `${product.id}-${variant.id}`
@@ -21,23 +21,22 @@ interface CartStore {
   updateQuantity: (id: string, delta: number) => void;
   clearCart: () => void;
   getTotalItems: () => number;
-  getSubtotal: () => number;
-  getShippingFee: () => number;
-  getGrandTotal: () => number;
-  getFreeShippingProgress: () => number;
+  getSubtotalInr: () => number | null;
+  getShippingFeeInr: () => number | null;
+  getGrandTotalInr: () => number | null;
+  getFreeShippingProgress: () => number | null;
 }
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
-      items: [
-        // pre-seed with a default item for initial demo realism if empty
-      ],
+      items: [],
       isOpen: false,
       openCart: () => set({ isOpen: true }),
       closeCart: () => set({ isOpen: false }),
       toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
       addItem: (product, variant, quantity = 1) => {
+        if (product.comingSoon) return;
         const compositeId = `${product.id}-${variant.id}`;
         set((state) => {
           const existing = state.items.find((i) => i.id === compositeId);
@@ -77,20 +76,34 @@ export const useCartStore = create<CartStore>()(
       getTotalItems: () => {
         return get().items.reduce((total, i) => total + i.quantity, 0);
       },
-      getSubtotal: () => {
-        return get().items.reduce((total, i) => total + i.variant.price * i.quantity, 0);
+      getSubtotalInr: () => {
+        const items = get().items;
+        if (!siteConfig.featureFlags.showPrices || items.length === 0) return null;
+        if (items.some((i) => i.variant.priceInr === null)) return null;
+        return items.reduce((total, i) => total + (i.variant.priceInr ?? 0) * i.quantity, 0);
       },
-      getShippingFee: () => {
-        const subtotal = get().getSubtotal();
-        if (subtotal === 0 || subtotal >= siteConfig.freeShippingThreshold) return 0;
-        return 70; // Standard nominal shipping
+      getShippingFeeInr: () => {
+        const { freeShippingThresholdInr, standardShippingFeeInr } = siteConfig.operations;
+        if (standardShippingFeeInr === null) return null;
+        const subtotal = get().getSubtotalInr();
+        if (subtotal === null) return null;
+        if (subtotal === 0) return 0;
+        if (freeShippingThresholdInr !== null && subtotal >= freeShippingThresholdInr) {
+          return 0;
+        }
+        return standardShippingFeeInr;
       },
-      getGrandTotal: () => {
-        return get().getSubtotal() + get().getShippingFee();
+      getGrandTotalInr: () => {
+        const subtotal = get().getSubtotalInr();
+        if (subtotal === null) return null;
+        const shipping = get().getShippingFeeInr();
+        return subtotal + (shipping ?? 0);
       },
       getFreeShippingProgress: () => {
-        const subtotal = get().getSubtotal();
-        return Math.min(100, Math.round((subtotal / siteConfig.freeShippingThreshold) * 100));
+        const threshold = siteConfig.operations.freeShippingThresholdInr;
+        const subtotal = get().getSubtotalInr();
+        if (threshold === null || subtotal === null) return null;
+        return Math.min(100, Math.round((subtotal / threshold) * 100));
       },
     }),
     {

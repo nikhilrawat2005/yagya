@@ -42,13 +42,13 @@ export const journalArticles: JournalArticle[] = [
   {
     id: 'art-3',
     slug: 'orchard-anjeer-and-dates',
-    title: 'Sun-Cured Orchard Figs & Dates: Sweetness Without Glaze',
+    title: 'Orchard Figs & Dates: Everyday Pantry Staples',
     date: '25 Oct 2026',
     readTime: '3 min read',
     excerpt:
-      'Plump Anjeer rings and soft hand-sorted dates cured slowly to preserve natural honeyed chew and seed texture.',
+      'Tender Anjeer rings and soft whole dates for overnight soaking, morning oats, and homemade snack bars.',
     content:
-      'From soaked morning figs to stuffed pre-run dates, unglazed orchard fruit offers clean, steady energy straight from warm groves.',
+      'From soaked morning figs to stuffed pre-workout dates, dried orchard fruits bring chewy texture and kitchen versatility.',
     category: 'Orchard Notes',
     image: ASSETS.products.dryFruits.anjeer,
   },

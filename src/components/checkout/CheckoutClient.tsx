@@ -1,27 +1,33 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AnimatePresence, motion } from 'motion/react';
-import { ShoppingBag, Lock, CheckCircle2 } from 'lucide-react';
+import { motion } from 'motion/react';
+import { ShoppingBag, Lock } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { createOrder } from '@/lib/services/productService';
+import { siteConfig } from '@/config/site';
+import { INDIAN_STATES_AND_UTS, validateCheckoutForm } from '@/lib/validation/forms';
 import { ProductImageWithFallback } from '@/components/ui/ProductImageWithFallback';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { GlowInput } from '@/components/ui/GlowInput';
 import { FadeInSection } from '@/components/motion/FadeInSection';
 import { OatSheet } from '@/components/editorial/OatSheet';
 import { Doodle } from '@/components/doodles';
-import { MOTION_EASE, MOTION_SPRING } from '@/lib/motion/tokens';
+import { MOTION_SPRING } from '@/lib/motion/tokens';
 import { useInteractiveCapabilities } from '@/lib/motion/useInteractiveCapabilities';
 
 export function CheckoutClient() {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
-  const { items, getSubtotal, getShippingFee, clearCart } = useCartStore();
+  const { items, getSubtotalInr, getShippingFeeInr, getGrandTotalInr, clearCart } = useCartStore();
   const { user } = useAuth();
   const { prefersReducedMotion } = useInteractiveCapabilities();
+
+  useEffect(() => {
+    void useCartStore.persist.rehydrate();
+  }, []);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -29,36 +35,27 @@ export function CheckoutClient() {
     phone: '',
     address: '',
     city: '',
-    state: 'Delhi NCR',
+    state: '',
     pincode: '',
     paymentMethod: 'upi',
   });
 
-  const [promoCode, setPromoCode] = useState('PURE15');
-  const [promoApplied, setPromoApplied] = useState(true);
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const normalizedPromo = promoCode.trim().toUpperCase();
-  const discountRate = normalizedPromo === 'PURE15' ? 0.15 : 0.1;
-  const subtotal = getSubtotal();
-  const shipping = getShippingFee();
-  const discount = promoApplied ? Math.round(subtotal * discountRate) : 0;
-  const grandTotal = Math.max(0, subtotal - discount + shipping);
+  const showPrices = siteConfig.featureFlags.showPrices;
+  const subtotal = getSubtotalInr();
+  const shipping = getShippingFeeInr();
+  const grandTotal = getGrandTotalInr();
 
   const validate = () => {
-    const errs: Record<string, string> = {};
-    if (!formData.name.trim()) errs.name = 'Enter your full name to continue.';
-    if (!formData.email.trim() || !formData.email.includes('@')) errs.email = 'Enter a valid email address.';
-    if (!formData.phone.trim() || !/^\d{10}$/.test(formData.phone.trim())) errs.phone = 'Enter a 10-digit mobile number.';
-    if (!formData.address.trim()) errs.address = 'Enter your street delivery address.';
-    if (!formData.pincode.trim() || !/^\d{6}$/.test(formData.pincode.trim())) errs.pincode = 'Enter a 6-digit postal PIN.';
+    const errs = validateCheckoutForm(formData);
     setErrors(errs);
 
     const firstErrorKey = Object.keys(errs)[0];
     if (firstErrorKey && formRef.current) {
-      const target = formRef.current.querySelector<HTMLInputElement>(`[name="${firstErrorKey}"]`);
+      const target = formRef.current.querySelector<HTMLElement>(`[name="${firstErrorKey}"]`);
       target?.focus();
     }
 
@@ -72,27 +69,55 @@ export function CheckoutClient() {
     setLoading(true);
     setSubmitError(null);
     try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          items: items.map((i) => ({
+            productId: i.product.id,
+            variantId: i.variant.id,
+            quantity: i.quantity,
+            priceInr: i.variant.priceInr,
+          })),
+        }),
+      });
+
+      const validationRes = (await res.json()) as {
+        ok?: boolean;
+        errors?: Record<string, string>;
+        message?: string;
+      };
+
+      if (!res.ok || !validationRes.ok) {
+        if (validationRes.errors) setErrors(validationRes.errors);
+        setSubmitError(validationRes.message || 'Please check your delivery details.');
+        setLoading(false);
+        return;
+      }
+
       const order = await createOrder({
         userId: user?.uid || null,
-        customerName: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        city: formData.city,
-        pincode: formData.pincode,
-        state: formData.state,
+        customerName: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        address: formData.address.trim(),
+        city: formData.city.trim(),
+        pincode: formData.pincode.trim(),
+        state: formData.state.trim(),
         paymentMethod: formData.paymentMethod,
         items: items.map((i) => ({
           productId: i.product.id,
           variantId: i.variant.id,
           quantity: i.quantity,
-          price: i.variant.price,
+          priceInr: i.variant.priceInr,
         })),
-        total: grandTotal,
+        totalInr: grandTotal,
       });
 
       clearCart();
-      router.push(`/order-success?orderId=${order.orderId}&total=${grandTotal}`);
+      const totalQuery = grandTotal !== null ? `&total=${grandTotal}` : '';
+      router.push(`/order-success?orderId=${order.orderId}${totalQuery}`);
     } catch (err) {
       setSubmitError(
         err instanceof Error
@@ -114,7 +139,7 @@ export function CheckoutClient() {
             No items to checkout
           </h1>
           <p className="text-sm text-apricot/90 mb-6">
-            Your harvest bag is currently empty. Explore our small-batch seeds and berries first.
+            Your harvest bag is currently empty. Explore our collection first.
           </p>
           <GlowButton href="/shop" variant="cta" magnetic>
             Explore Collection
@@ -132,7 +157,7 @@ export function CheckoutClient() {
             Order Review
           </span>
           <h1 className="font-display text-4xl text-oat font-medium">
-            Express Checkout
+            {showPrices ? 'Express Checkout' : 'Order & Batch Enquiry'}
           </h1>
         </FadeInSection>
 
@@ -159,7 +184,7 @@ export function CheckoutClient() {
                       setFormData({ ...formData, name: e.target.value });
                       if (errors.name) setErrors({ ...errors, name: '' });
                     }}
-                    placeholder="Aarav Singh…"
+                    placeholder="Aarav Singh"
                   />
                   <GlowInput
                     name="email"
@@ -174,13 +199,13 @@ export function CheckoutClient() {
                       setFormData({ ...formData, email: e.target.value });
                       if (errors.email) setErrors({ ...errors, email: '' });
                     }}
-                    placeholder="aarav@example.com…"
+                    placeholder="aarav@example.com"
                   />
                   <GlowInput
                     name="phone"
                     autoComplete="tel"
                     inputMode="tel"
-                    label="Mobile *"
+                    label="10-Digit Mobile *"
                     floatingLabel
                     type="tel"
                     maxLength={10}
@@ -190,7 +215,7 @@ export function CheckoutClient() {
                       setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '') });
                       if (errors.phone) setErrors({ ...errors, phone: '' });
                     }}
-                    placeholder="9876543210…"
+                    placeholder="9123456789"
                     containerClassName="sm:col-span-2"
                   />
                 </div>
@@ -229,35 +254,66 @@ export function CheckoutClient() {
                       setFormData({ ...formData, address: e.target.value });
                       if (errors.address) setErrors({ ...errors, address: '' });
                     }}
-                    placeholder="House 42, Sector 15…"
+                    placeholder="House 42, Sector 15"
                   />
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <GlowInput
                       name="city"
                       autoComplete="address-level2"
-                      label="City"
+                      label="City *"
                       floatingLabel
                       type="text"
                       value={formData.city}
-                      onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      placeholder="Gurugram…"
+                      error={errors.city}
+                      onChange={(e) => {
+                        setFormData({ ...formData, city: e.target.value });
+                        if (errors.city) setErrors({ ...errors, city: '' });
+                      }}
+                      placeholder="New Delhi"
                     />
-                    <GlowInput
-                      name="state"
-                      autoComplete="address-level1"
-                      label="State"
-                      floatingLabel
-                      type="text"
-                      value={formData.state}
-                      onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                    />
+
+                    <div>
+                      <label
+                        htmlFor="checkout-state"
+                        className="block font-ui-label text-[10px] mb-1.5 text-apricot/95"
+                      >
+                        State / UT *
+                      </label>
+                      <select
+                        id="checkout-state"
+                        name="state"
+                        autoComplete="address-level1"
+                        value={formData.state}
+                        aria-invalid={Boolean(errors.state)}
+                        onChange={(e) => {
+                          setFormData({ ...formData, state: e.target.value });
+                          if (errors.state) setErrors({ ...errors, state: '' });
+                        }}
+                        className={`w-full rounded-[6px] border px-3 py-2.5 text-xs bg-[#141C2B]/85 text-oat cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oat ${
+                          errors.state ? 'border-peach' : 'border-white/30'
+                        }`}
+                      >
+                        <option value="">Select State</option>
+                        {INDIAN_STATES_AND_UTS.map((stateName) => (
+                          <option key={stateName} value={stateName}>
+                            {stateName}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.state && (
+                        <p role="alert" className="text-peach text-[11px] font-medium mt-1.5">
+                          {errors.state}
+                        </p>
+                      )}
+                    </div>
+
                     <GlowInput
                       name="pincode"
                       autoComplete="postal-code"
                       inputMode="numeric"
                       spellCheck={false}
-                      label="Pincode *"
+                      label="6-Digit PIN Code *"
                       floatingLabel
                       type="text"
                       maxLength={6}
@@ -267,7 +323,7 @@ export function CheckoutClient() {
                         setFormData({ ...formData, pincode: e.target.value.replace(/\D/g, '') });
                         if (errors.pincode) setErrors({ ...errors, pincode: '' });
                       }}
-                      placeholder="122001…"
+                      placeholder="110001"
                     />
                   </div>
                 </div>
@@ -278,13 +334,13 @@ export function CheckoutClient() {
                   <span className="w-6 h-6 rounded-[4px] bg-flame text-navy text-xs flex items-center justify-center font-sans font-semibold tabular-nums">
                     3
                   </span>
-                  Payment Option
+                  Preferred Payment Method
                 </h2>
                 <div className="space-y-3">
                   {[
-                    { id: 'upi', label: 'Instant UPI', desc: 'Fast zero-touch payment' },
-                    { id: 'card', label: 'Credit or Debit Card', desc: 'Major domestic & international cards' },
-                    { id: 'cod', label: 'Cash on Delivery', desc: 'Available for serviceable PIN codes' },
+                    { id: 'upi', label: 'UPI', desc: 'Instant UPI transfer once confirmed' },
+                    { id: 'card', label: 'Credit or Debit Card', desc: 'Domestic & international cards' },
+                    { id: 'cod', label: 'Cash on Delivery', desc: 'Subject to PIN code eligibility' },
                   ].map((m) => {
                     const selected = formData.paymentMethod === m.id;
                     return (
@@ -332,11 +388,15 @@ export function CheckoutClient() {
                 className="w-full py-4"
               >
                 {loading ? (
-                  <span>Confirming harvest batch…</span>
+                  <span>Submitting order details…</span>
                 ) : (
                   <>
                     <Lock className="w-4 h-4" aria-hidden="true" />
-                    <span className="tabular-nums">Confirm Order · ₹{grandTotal}</span>
+                    <span className="tabular-nums">
+                      {grandTotal !== null
+                        ? `Confirm Order · ${siteConfig.currencySymbol}${grandTotal}`
+                        : 'Submit Order Request'}
+                    </span>
                   </>
                 )}
               </GlowButton>
@@ -357,6 +417,7 @@ export function CheckoutClient() {
                         src={i.product.images[0]?.src || ''}
                         alt={i.product.name}
                         fill
+                        sizes="48px"
                         className={
                           i.product.images[0]?.src?.includes('/assets/products/')
                             ? 'object-cover'
@@ -371,93 +432,42 @@ export function CheckoutClient() {
                       </p>
                     </div>
                     <span className="text-xs font-semibold text-peach tabular-nums">
-                      ₹{i.variant.price * i.quantity}
+                      {showPrices && i.variant.priceInr !== null
+                        ? `${siteConfig.currencySymbol}${i.variant.priceInr * i.quantity}`
+                        : 'Price coming soon'}
                     </span>
                   </div>
                 ))}
               </div>
 
-              <div className="mb-6 pt-4 border-t border-white/15">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-ui-label text-[10px] text-apricot/90">
-                    Promo Code (PURE15 or YAGYA10)
-                  </span>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <GlowInput
-                    name="promoCode"
-                    autoComplete="off"
-                    spellCheck={false}
-                    type="text"
-                    value={promoCode}
-                    onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                    placeholder="PURE15…"
-                    aria-label="Promo code"
-                    inputClassName="uppercase"
-                  />
-                  <GlowButton
-                    type="button"
-                    variant="submit"
-                    size="sm"
-                    onClick={() =>
-                      setPromoApplied(
-                        normalizedPromo === 'PURE15' ||
-                          normalizedPromo === 'YAGYA10' ||
-                          normalizedPromo === 'HARVEST10'
-                      )
-                    }
-                    className="py-2.5 px-5 shrink-0"
-                  >
-                    Apply
-                  </GlowButton>
-                </div>
-                <div aria-live="polite">
-                  <AnimatePresence>
-                    {promoApplied && (
-                      <motion.p
-                        initial={{ opacity: 0, y: -4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -4 }}
-                        transition={{ duration: 0.18, ease: MOTION_EASE.smooth }}
-                        className="text-[11px] text-peach font-medium mt-2 flex items-center gap-1.5"
-                      >
-                        <CheckCircle2 className="w-3.5 h-3.5 text-peach" aria-hidden="true" />
-                        {normalizedPromo || 'PURE15'} applied ({Math.round(discountRate * 100)}% harvest savings)
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-
               <div className="space-y-2 text-xs text-apricot/90 pb-4 border-b border-white/15 tabular-nums">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-semibold text-oat">₹{subtotal}</span>
+                  <span className="font-semibold text-oat">
+                    {subtotal !== null
+                      ? `${siteConfig.currencySymbol}${subtotal}`
+                      : 'Confirmed on review'}
+                  </span>
                 </div>
-                <AnimatePresence>
-                  {promoApplied && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="flex justify-between text-peach overflow-hidden"
-                    >
-                      <span>Harvest Discount ({Math.round(discountRate * 100)}%)</span>
-                      <span>-₹{discount}</span>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
                 <div className="flex justify-between">
                   <span>Shipping</span>
-                  <span className="font-semibold text-oat">
-                    {shipping === 0 ? 'FREE' : `₹${shipping}`}
+                  <span className="font-semibold text-oat text-right">
+                    {shipping === null
+                      ? 'Shipping calculated at confirmation'
+                      : shipping === 0
+                      ? 'FREE'
+                      : `${siteConfig.currencySymbol}${shipping}`}
                   </span>
                 </div>
               </div>
 
               <div className="pt-4 flex justify-between items-baseline tabular-nums">
                 <span className="text-base font-medium text-oat">Total</span>
-                <span className="font-display text-2xl font-semibold text-peach">₹{grandTotal}</span>
+                <span className="font-display text-2xl font-semibold text-peach">
+                  {grandTotal !== null
+                    ? `${siteConfig.currencySymbol}${grandTotal}`
+                    : 'Confirmed on review'}
+                </span>
               </div>
             </OatSheet>
           </div>
